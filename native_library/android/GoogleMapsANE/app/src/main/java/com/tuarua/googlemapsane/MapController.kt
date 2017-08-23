@@ -41,7 +41,6 @@ import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.eventbus.Subscribe
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
-import com.tuarua.MessageEvent
 import com.tuarua.frekotlin.sendEvent
 import com.tuarua.frekotlin.trace
 import java.util.ArrayList
@@ -233,6 +232,8 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
                 .addApi(API)
                 .build()
         googleApiClient?.connect()
+
+        //https://stackoverflow.com/questions/4721449/how-can-i-enable-or-disable-the-gps-programmatically-on-android?noredirect=1&lq=1
 
         val fragmentTransaction: FragmentTransaction = context.activity.fragmentManager.beginTransaction()
         fragmentTransaction.add(newId, mMapFragment)
@@ -491,7 +492,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
     }
 
     companion object {
-        private var TAG = MapController::class.java.simpleName
+        private var TAG = MapController::class.java.canonicalName
     }
 
 

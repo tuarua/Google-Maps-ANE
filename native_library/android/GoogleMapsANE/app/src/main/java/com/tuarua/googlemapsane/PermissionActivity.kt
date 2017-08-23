@@ -21,7 +21,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import com.tuarua.MessageEvent
 import org.greenrobot.eventbus.EventBus
 
 // https://stackoverflow.com/questions/25824288/how-to-close-dialog-themed-activity?noredirect=1&lq=1

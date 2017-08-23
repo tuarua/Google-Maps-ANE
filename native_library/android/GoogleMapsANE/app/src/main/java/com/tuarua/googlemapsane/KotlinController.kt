@@ -444,7 +444,7 @@ class KotlinController : FreKotlinController {
     }
 
     companion object {
-        private var TAG = KotlinController::class.java.simpleName
+        private var TAG = KotlinController::class.java.canonicalName
     }
 
 }

@@ -1,2 +1,2 @@
-package com.tuarua
+package com.tuarua.googlemapsane
 class MessageEvent(val message: String)
