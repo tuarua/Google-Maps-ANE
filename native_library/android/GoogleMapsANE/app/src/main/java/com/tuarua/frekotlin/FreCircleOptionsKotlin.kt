@@ -15,7 +15,6 @@
  */
 package com.tuarua.frekotlin
 
-import android.util.Log
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
@@ -38,62 +37,65 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
     }
 
     override val value: CircleOptions
+        @Throws(FreException::class)
         get() {
-            val center: LatLng = FreCoordinateKotlin(this.getProperty("center")).value
-            val radiusFre = this.getProperty("radius")?.value
-            val radius = (radiusFre as? Int)?.toDouble() ?: radiusFre as Double
-            val strokeWidthFre = this.getProperty("strokeWidth")?.value
-            val strokeWidth = (strokeWidthFre as? Int)?.toDouble() ?: strokeWidthFre as Double
-            val zIndex = this.getProperty("zIndex")?.value as Int
-            val visible = this.getProperty("visible")?.value as Boolean
+            try {
+                val center: LatLng = FreCoordinateKotlin(this.getProperty("center")).value
+                val radiusFre = this.getProperty("radius")?.value
+                val radius = (radiusFre as? Int)?.toDouble() ?: radiusFre as Double
+                val strokeWidthFre = this.getProperty("strokeWidth")?.value
+                val strokeWidth = (strokeWidthFre as? Int)?.toDouble() ?: strokeWidthFre as Double
+                val zIndex = this.getProperty("zIndex")?.value as Int
+                val visible = this.getProperty("visible")?.value as Boolean
 
-            val strokePatternFre = this.getProperty("strokePattern")
-            val strokePatternType = strokePatternFre?.getProperty("type")?.value as? Int ?: 0
-            val strokePatternDashLength = strokePatternFre?.getProperty("dashLength")?.value as? Int ?: 50
-            val strokePatternGapLength = strokePatternFre?.getProperty("gapLength")?.value as? Int ?: 50
-            val strokeColorFre = this.getProperty("strokeColor")
-            val strokeAlphaFre = this.getProperty("strokeAlpha")?.value
-            val strokeAlpha: Double = (strokeAlphaFre as? Int)?.toDouble() ?: strokeAlphaFre as Double
+                val strokePatternFre = this.getProperty("strokePattern")
+                val strokePatternType = strokePatternFre?.getProperty("type")?.value as? Int ?: 0
+                val strokePatternDashLength = strokePatternFre?.getProperty("dashLength")?.value as? Int ?: 50
+                val strokePatternGapLength = strokePatternFre?.getProperty("gapLength")?.value as? Int ?: 50
+                val strokeColorFre = this.getProperty("strokeColor")
+                val strokeAlphaFre = this.getProperty("strokeAlpha")?.value
+                val strokeAlpha: Double = (strokeAlphaFre as? Int)?.toDouble() ?: strokeAlphaFre as Double
 
-            val fillColorFre = this.getProperty("fillColor")
-            val fillAlphaFre = this.getProperty("fillAlpha")?.value
-            val fillAlpha: Double = (fillAlphaFre as? Int)?.toDouble() ?: fillAlphaFre as Double
+                val fillColorFre = this.getProperty("fillColor")
+                val fillAlphaFre = this.getProperty("fillAlpha")?.value
+                val fillAlpha: Double = (fillAlphaFre as? Int)?.toDouble() ?: fillAlphaFre as Double
 
-            val strokeColor = strokeColorFre?.toColor((255 * strokeAlpha).toInt()) ?: 0
-            val fillColor = fillColorFre?.toColor((255 * fillAlpha).toInt()) ?: 0
+                val strokeColor = strokeColorFre?.toColor((255 * strokeAlpha).toInt()) ?: 0
+                val fillColor = fillColorFre?.toColor((255 * fillAlpha).toInt()) ?: 0
 
-            val DOT = Dot()
-            val DASH = Dash(strokePatternDashLength.toFloat())
-            val GAP = Gap(strokePatternGapLength.toFloat())
-            var strokePattern: MutableList<PatternItem>? = null
+                val DOT = Dot()
+                val DASH = Dash(strokePatternDashLength.toFloat())
+                val GAP = Gap(strokePatternGapLength.toFloat())
+                var strokePattern: MutableList<PatternItem>? = null
 
-            Log.d(TAG, strokePatternType.toString())
-            Log.d(TAG, strokePatternDashLength.toString())
-            Log.d(TAG, strokePatternGapLength.toString())
-
-            when (strokePatternType) {
-                0 -> {
-                    strokePattern = null
+                when (strokePatternType) {
+                    0 -> {
+                        strokePattern = null
+                    }
+                    1 -> {
+                        strokePattern = Arrays.asList(DASH, GAP)
+                    }
+                    2 -> {
+                        strokePattern = Arrays.asList(DOT, GAP)
+                    }
+                    3 -> {
+                        strokePattern = Arrays.asList(DOT, GAP, DOT, DASH, GAP)
+                    }
                 }
-                1 -> {
-                    strokePattern = Arrays.asList(DASH, GAP)
-                }
-                2 -> {
-                    strokePattern = Arrays.asList(DOT, GAP)
-                }
-                3 -> {
-                    strokePattern = Arrays.asList(DOT, GAP, DOT, DASH, GAP)
-                }
+
+                return CircleOptions()
+                        .center(center)
+                        .radius(radius)
+                        .strokeWidth(strokeWidth.toFloat())
+                        .zIndex(zIndex.toFloat())
+                        .visible(visible)
+                        .strokeColor(strokeColor)
+                        .fillColor(fillColor)
+                        .strokePattern(strokePattern)
+            } catch (e: FreException) {
+                throw e
+            } catch (e: Exception) {
+                throw FreException(e)
             }
-
-            return CircleOptions()
-                    .center(center)
-                    .radius(radius)
-                    .strokeWidth(strokeWidth.toFloat())
-                    .zIndex(zIndex.toFloat())
-                    .visible(visible)
-                    .strokeColor(strokeColor)
-                    .fillColor(fillColor)
-                    .strokePattern(strokePattern)
         }
 }

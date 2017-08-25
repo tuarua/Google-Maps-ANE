@@ -1,5 +1,6 @@
 package {
 import com.tuarua.GoogleMapsANE;
+import com.tuarua.fre.ANEError;
 import com.tuarua.googlemaps.CameraPosition;
 import com.tuarua.googlemaps.Circle;
 import com.tuarua.googlemaps.Color;
@@ -43,7 +44,28 @@ public class StarlingRoot extends Sprite {
     private var btn6:SimpleButton = new SimpleButton("Satellite");
     private var btn7:SimpleButton = new SimpleButton("Find me");
 
-    private static const nightStyle:String = "[{\"featureType\":\"all\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#242f3e\"}]},{\"featureType\":\"all\",\"elementType\":\"labels.text.stroke\",\"stylers\":[{\"lightness\":-80}]},{\"featureType\":\"administrative\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#746855\"}]},{\"featureType\":\"administrative.locality\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"poi\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"poi.park\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#263c3f\"}]},{\"featureType\":\"poi.park\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#6b9a76\"}]},{\"featureType\":\"road\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#2b3544\"}]},{\"featureType\":\"road\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#9ca5b3\"}]},{\"featureType\":\"road.arterial\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#38414e\"}]},{\"featureType\":\"road.arterial\",\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#212a37\"}]},{\"featureType\":\"road.highway\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#746855\"}]},{\"featureType\":\"road.highway\",\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#1f2835\"}]},{\"featureType\":\"road.highway\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#f3d19c\"}]},{\"featureType\":\"road.local\",\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#38414e\"}]},{\"featureType\":\"road.local\",\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#212a37\"}]},{\"featureType\":\"transit\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#2f3948\"}]},{\"featureType\":\"transit.station\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"water\",\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#17263c\"}]},{\"featureType\":\"water\",\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#515c6d\"}]},{\"featureType\":\"water\",\"elementType\":\"labels.text.stroke\",\"stylers\":[{\"lightness\":-20}]}]";
+    private static const nightStyle:String = "[{\"featureType\":\"all\",\"elementType\":\"geometry\"," +
+            "\"stylers\":[{\"color\":\"#242f3e\"}]},{\"featureType\":\"all\",\"elementType\":\"labels.text.stroke\"," +
+            "\"stylers\":[{\"lightness\":-80}]},{\"featureType\":\"administrative\",\"elementType\":\"labels.text.fill\"," +
+            "\"stylers\":[{\"color\":\"#746855\"}]},{\"featureType\":\"administrative.locality\"," +
+            "\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"poi\"," +
+            "\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"poi.park\"," +
+            "\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#263c3f\"}]},{\"featureType\":\"poi.park\"," +
+            "\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#6b9a76\"}]},{\"featureType\":\"road\"," +
+            "\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#2b3544\"}]},{\"featureType\":\"road\"," +
+            "\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#9ca5b3\"}]},{\"featureType\":\"road.arterial\"," +
+            "\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#38414e\"}]},{\"featureType\":\"road.arterial\"," +
+            "\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#212a37\"}]},{\"featureType\":\"road.highway\"," +
+            "\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#746855\"}]},{\"featureType\":\"road.highway\"," +
+            "\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#1f2835\"}]},{\"featureType\":\"road.highway\"," +
+            "\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#f3d19c\"}]},{\"featureType\":\"road.local\"," +
+            "\"elementType\":\"geometry.fill\",\"stylers\":[{\"color\":\"#38414e\"}]},{\"featureType\":\"road.local\"," +
+            "\"elementType\":\"geometry.stroke\",\"stylers\":[{\"color\":\"#212a37\"}]},{\"featureType\":\"transit\"," +
+            "\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#2f3948\"}]},{\"featureType\":\"transit.station\"," +
+            "\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#d59563\"}]},{\"featureType\":\"water\"," +
+            "\"elementType\":\"geometry\",\"stylers\":[{\"color\":\"#17263c\"}]},{\"featureType\":\"water\"," +
+            "\"elementType\":\"labels.text.fill\",\"stylers\":[{\"color\":\"#515c6d\"}]},{\"featureType\":\"water\"," +
+            "\"elementType\":\"labels.text.stroke\",\"stylers\":[{\"lightness\":-20}]}]";
 
     public function StarlingRoot() {
     }
@@ -53,7 +75,7 @@ public class StarlingRoot extends Sprite {
         var _assets:AssetManager = assets;
 
         googleMaps = new GoogleMapsANE();
-        googleMaps.init("AIzaSyC8SAHtdMZK0KP3uCwgBYybaTg_3xudH2o");
+        googleMaps.init("");
         var viewPort:Rectangle = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
 
         trace("as viewPort", viewPort);
@@ -111,7 +133,7 @@ public class StarlingRoot extends Sprite {
 
     }
 
-    private function onCameraMoveStarted(event:GoogleMapsEvent):void {
+    private static function onCameraMoveStarted(event:GoogleMapsEvent):void {
         switch (event.params.reason) {
             case GoogleMapsEvent.CAMERA_MOVE_REASON_GESTURE:
                 trace("Camera move started", "CAMERA_MOVE_REASON_GESTURE");
@@ -125,13 +147,13 @@ public class StarlingRoot extends Sprite {
         }
     }
 
-    private function onCameraMove(event:GoogleMapsEvent):void {
+    private static function onCameraMove(event:GoogleMapsEvent):void {
         var props:Object = event.params;
         trace("latlng:", props.latitude, props.longitude, "zoom", props.zoom, "tilt", props.tilt, "bearing", props.bearing);
 
     }
 
-    private function onCameraIdle(event:GoogleMapsEvent):void {
+    private static function onCameraIdle(event:GoogleMapsEvent):void {
         trace(event);
     }
 
@@ -170,7 +192,7 @@ public class StarlingRoot extends Sprite {
         trace("user found at", coordinate.latitude, coordinate.longitude);
         var cameraPosition:CameraPosition = new CameraPosition();
         cameraPosition.target = coordinate;
-        googleMaps.moveCamera(cameraPosition)
+        googleMaps.moveCamera(cameraPosition);
     }
 
     private static function onLocationAuthStatus(event:LocationEvent):void {

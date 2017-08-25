@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 package com.tuarua.frekotlin
-import android.util.Log
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.LatLng
 
@@ -34,16 +33,19 @@ class FreCoordinateKotlin() : FreObjectKotlin() {
     }
 
     override val value: LatLng
+        @Throws(FreException::class)
         get() {
-            var lat = 0.0
-            var lng = 0.0
+            var lat:Double
+            var lng:Double
             try {
                 val latFre = this.getProperty("latitude")?.value
                 val lngFre = this.getProperty("longitude")?.value
                 lat = (latFre as? Int)?.toDouble() ?: latFre as Double
                 lng = (lngFre as? Int)?.toDouble() ?: lngFre as Double
+            } catch (e: FreException) {
+                throw e
             } catch (e: Exception) {
-                Log.e(TAG, e.message)
+                throw FreException(e)
             }
             return LatLng(lat, lng)
         }

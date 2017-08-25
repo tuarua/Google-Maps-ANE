@@ -163,12 +163,12 @@ public class GoogleMapsANE extends EventDispatcher {
 
     public function addMarker(marker:Marker):String {
         if (safetyCheck()) {
-            var uuid:* = ctx.call("addMarker", marker);
-            if (uuid is ANEError) {
-                throw uuid as ANEError;
+            var theRet:* = ctx.call("addMarker", marker);
+            if (theRet is ANEError) {
+                throw theRet as ANEError;
             }
-            _markers[uuid as String] = marker;
-            return uuid as String;
+            _markers[theRet as String] = marker;
+            return theRet as String;
         }
         return null;
     }
@@ -176,7 +176,10 @@ public class GoogleMapsANE extends EventDispatcher {
     public function updateMarker(uuid:String):void {
         if (safetyCheck()) {
             var marker:Marker = _markers[uuid]
-            ctx.call("updateMarker", uuid, marker);
+            var theRet:* = ctx.call("updateMarker", uuid, marker);
+            if (theRet is ANEError) {
+                throw theRet as ANEError;
+            }
         }
     }
 
@@ -205,13 +208,6 @@ public class GoogleMapsANE extends EventDispatcher {
             ctx.call("setVisible", value);
         }
     }
-
-
-    /* public function centerTo(coordinate:Coordinate, animates:Boolean = false):void {
-         if (safetyCheck()) {
-             ctx.call("centerTo", coordinate, animates);
-         }
-     }*/
 
     public function moveCamera(position:CameraPosition, animates:Boolean = false):void {
         if (safetyCheck()) {
@@ -294,13 +290,13 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
-    public function showInfoWindow(uuid:String){
+    public function showInfoWindow(uuid:String):void {
         if (safetyCheck()) {
             ctx.call("showInfoWindow", uuid);
         }
     }
 
-    public function hideInfoWindow(uuid:String){
+    public function hideInfoWindow(uuid:String):void {
         if (safetyCheck()) {
             ctx.call("hideInfoWindow", uuid);
         }

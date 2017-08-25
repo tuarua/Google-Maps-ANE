@@ -29,7 +29,6 @@ import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.checkSelfPermission
-import android.util.Log
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.maps.model.*
 import org.json.JSONException
@@ -41,6 +40,7 @@ import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.eventbus.Subscribe
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
+import com.tuarua.frekotlin.FreException
 import com.tuarua.frekotlin.sendEvent
 import com.tuarua.frekotlin.trace
 import java.util.ArrayList
@@ -81,11 +81,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         mv.uiSettings.isTiltGesturesEnabled = settings.tiltGestures
         //TODO other settings for Android
 
-        /*
-        settings.allowScrollGesturesDuringRotateOrZoom = settingsFre.getProperty("allowScrollGesturesDuringRotateOrZoom")?.value as Boolean
-            settings.consumesGesturesInView = settingsFre.getProperty("consumesGesturesInView")?.value as Boolean
-         */
-
         if (asListeners.contains(Constants.DID_TAP_AT)) mv.setOnMapClickListener(this)
         if (asListeners.contains(Constants.DID_LONG_PRESS_AT)) mv.setOnMapLongClickListener(this)
         if (asListeners.contains(Constants.DID_TAP_MARKER)) mv.setOnMarkerClickListener(this)
@@ -96,11 +91,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         if (asListeners.contains(Constants.ON_CAMERA_MOVE)) mv.setOnCameraMoveListener(this)
         if (asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED)) mv.setOnCameraMoveStartedListener(this)
         if (asListeners.contains(Constants.ON_CAMERA_IDLE)) mv.setOnCameraIdleListener(this)
-
-        for (asListener in asListeners) {
-            Log.d(TAG, asListener)
-            trace(asListener)
-        }
 
         mv.moveCamera(CameraUpdateFactory.newLatLngZoom(centerAt, zoomLevel))
         val message = ""
@@ -176,6 +166,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         }
     }
 
+    @Throws(FreException::class)
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageEvent) {
         val mv: GoogleMap = mapView ?: return
@@ -191,7 +182,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
                         val lastKnownLocation = FusedLocationApi.getLastLocation(googleApiClient) ?: return
                         mv.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude), zoomLevel))
                     } catch (e: Exception) {
-                        Log.e(TAG, e.message)
+                        throw FreException(e)
                     }
                 }
             }
@@ -206,7 +197,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
             props.put("status", if (granted) Constants.AUTHORIZATION_STATUS_ALWAYS else Constants.AUTHORIZATION_STATUS_DENIED)
             sendEvent(Constants.DID_TAP_AT, props.toString())
         } catch (e: JSONException) {
-            Log.e(TAG, e.message)
+            throw FreException(e)
         }
         context.dispatchStatusEventAsync(Constants.AUTHORIZATION_STATUS, props.toString())
     }
@@ -233,7 +224,8 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
                 .build()
         googleApiClient?.connect()
 
-        //https://stackoverflow.com/questions/4721449/how-can-i-enable-or-disable-the-gps-programmatically-on-android?noredirect=1&lq=1
+        //TODO https://stackoverflow.com/questions/4721449/how-can-i-enable-or-disable-the-gps-programmatically-on
+        // -android?noredirect=1&lq=1
 
         val fragmentTransaction: FragmentTransaction = context.activity.fragmentManager.beginTransaction()
         fragmentTransaction.add(newId, mMapFragment)
@@ -272,12 +264,13 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
 
     var style: String?
         get() = _style
+        @Throws(FreException::class)
         set(value) {
             _style = value
             try {
                 mapView?.setMapStyle(MapStyleOptions(_style))
             } catch (e: Exception) {
-                Log.e(TAG, e.message)
+                throw FreException(e, "Cannot set map style")
             }
         }
 
@@ -396,7 +389,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
 
     override fun onMapClick(p0: LatLng?) {
         if (!asListeners.contains(Constants.DID_TAP_AT)) return
-        trace("onMapClick")
         val coordinate = p0 ?: return
         val props = JSONObject()
         try {
@@ -404,7 +396,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
             props.put("longitude", coordinate.longitude)
             sendEvent(Constants.DID_TAP_AT, props.toString())
         } catch (e: JSONException) {
-            Log.e(TAG, e.message)
         }
     }
 
@@ -417,7 +408,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
             props.put("longitude", coordinate.longitude)
             context.dispatchStatusEventAsync(props.toString(), Constants.DID_LONG_PRESS_AT)
         } catch (e: JSONException) {
-            Log.e(TAG, e.message)
         }
     }
 
@@ -451,7 +441,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
             props.put("bearing", mv.cameraPosition.bearing)
             sendEvent(Constants.ON_CAMERA_MOVE, props.toString())
         } catch (e: JSONException) {
-            Log.e(TAG, e.message)
+
         }
     }
 
@@ -462,7 +452,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
             props.put("reason", reason)
             sendEvent(Constants.ON_CAMERA_MOVE_STARTED, props.toString())
         } catch (e: JSONException) {
-            Log.e(TAG, e.message)
         }
     }
 

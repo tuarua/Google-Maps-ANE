@@ -16,7 +16,6 @@
 package com.tuarua.frekotlin
 
 import android.graphics.Bitmap
-import android.util.Log
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -35,6 +34,7 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
     }
 
     override val value: MarkerOptions?
+        @Throws(FreException::class)
         get() {
             val coordinate: LatLng = FreCoordinateKotlin(this.getProperty("coordinate")).value
             val title: String? = this.getProperty("title")?.value as String?
@@ -63,9 +63,10 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
                     }
                     bmd.release()
                 }
-            } catch (e: Error) {
-                Log.e(TAG, e.message)
-                e.printStackTrace()
+            } catch (e: FreException) {
+                throw e
+            } catch (e: Exception) {
+                throw FreException(e)
             }
 
             return MarkerOptions()
