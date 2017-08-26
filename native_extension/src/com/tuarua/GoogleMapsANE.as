@@ -1,6 +1,3 @@
-/**
- * Created by User on 04/12/2016.
- */
 package com.tuarua {
 import com.tuarua.fre.ANEError;
 import com.tuarua.googlemaps.CameraPosition;
@@ -32,7 +29,9 @@ public class GoogleMapsANE extends EventDispatcher {
     public function GoogleMapsANE() {
         initiate();
     }
-
+	/**
+	 * This method is omitted from the output. * * @private
+	 */
     private function initiate():void {
         trace("[" + NAME + "] Initalizing ANE...");
         try {
@@ -66,7 +65,9 @@ public class GoogleMapsANE extends EventDispatcher {
             trace("You need to init before removing EventListeners");
         }
     }
-
+	/**
+	 * This method is omitted from the output. * * @private
+	 */
     private function gotEvent(event:StatusEvent):void {
         switch (event.level) {
             case TRACE:
@@ -132,12 +133,26 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
-
+	/**
+	 * 
+	 * @param key
+	 * @return 
+	 * 
+	 */
     public function init(key:String):Boolean {
         _isInited = ctx.call("init", key);
         return _isInited;
     }
 
+	/**
+	 * 
+	 * @param viewPort
+	 * @param centerAt
+	 * @param zoomLevel
+	 * @param settings
+	 * @param scaleFactor
+	 * 
+	 */	
     public function initMap(viewPort:Rectangle, centerAt:Coordinate, zoomLevel:Number, settings:Settings,
                             scaleFactor:Number = 1.0):void {//TODO rename coord to centerAt
         if (_isInited) {
@@ -152,6 +167,11 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
+	/**
+	 * 
+	 * @param circle
+	 * 
+	 */	
     public function addCircle(circle:Circle):void {
         if (safetyCheck()) {
             var theRet:* = ctx.call("addCircle", circle);
@@ -160,7 +180,12 @@ public class GoogleMapsANE extends EventDispatcher {
             }
         }
     }
-
+	/**
+	 * 
+	 * @param marker
+	 * @return 
+	 * 
+	 */
     public function addMarker(marker:Marker):String {
         if (safetyCheck()) {
             var theRet:* = ctx.call("addMarker", marker);
@@ -172,7 +197,11 @@ public class GoogleMapsANE extends EventDispatcher {
         }
         return null;
     }
-
+	/**
+	 * 
+	 * @param uuid
+	 * 
+	 */
     public function updateMarker(uuid:String):void {
         if (safetyCheck()) {
             var marker:Marker = _markers[uuid]
@@ -182,14 +211,21 @@ public class GoogleMapsANE extends EventDispatcher {
             }
         }
     }
-
+	/**
+	 * 
+	 * @param uuid
+	 * 
+	 */
     public function removeMarker(uuid:String):void {
         if (safetyCheck()) {
             delete markers[uuid];
             ctx.call("removeMarker", uuid);
         }
     }
-
+	/**
+	 * 
+	 * 
+	 */
     public function clear():void {
         if (safetyCheck()) {
             ctx.call("clear");
@@ -209,6 +245,12 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
+	/**
+	 * 
+	 * @param position
+	 * @param animates
+	 * 
+	 */	
     public function moveCamera(position:CameraPosition, animates:Boolean = false):void {
         if (safetyCheck()) {
             var target:Coordinate = position.target ? position.target : null;
@@ -222,20 +264,34 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
-
+	/**
+	 * 
+	 * @param animates
+	 * 
+	 */
     public function zoomIn(animates:Boolean = false):void {
         if (safetyCheck()) {
             ctx.call("zoomIn", animates);
         }
     }
 
-
+	/**
+	 * 
+	 * @param animates
+	 * 
+	 */
     public function zoomOut(animates:Boolean = false):void {
         if (safetyCheck()) {
             ctx.call("zoomOut", animates);
         }
     }
 
+	/**
+	 * 
+	 * @param zoomLevel
+	 * @param animates
+	 * 
+	 */	
     public function zoomTo(zoomLevel:Number, animates:Boolean = false):void {
         if (safetyCheck()) {
             ctx.call("zoomTo", zoomLevel, animates);
@@ -252,7 +308,10 @@ public class GoogleMapsANE extends EventDispatcher {
             ctx.call("setMapType", value);
         }
     }
-
+	/**
+	 * 
+	 * 
+	 */
     public function requestLocation():void {
         if (safetyCheck()) {
             ctx.call("requestLocation");
@@ -289,13 +348,21 @@ public class GoogleMapsANE extends EventDispatcher {
             ctx.call("setViewPort", _viewPort);
         }
     }
-
+	/**
+	 * 
+	 * @param uuid
+	 * 
+	 */
     public function showInfoWindow(uuid:String):void {
         if (safetyCheck()) {
             ctx.call("showInfoWindow", uuid);
         }
     }
-
+	/**
+	 * 
+	 * @param uuid
+	 * 
+	 */
     public function hideInfoWindow(uuid:String):void {
         if (safetyCheck()) {
             ctx.call("hideInfoWindow", uuid);
@@ -314,7 +381,11 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
-    // Android only, value in milliseconds
+	/**
+	 * 
+	 * @param value in milliseconds, Android only
+	 * 
+	 */	
     public function set animationDuration(value:int):void {
         if (safetyCheck()) {
             ctx.call("setAnimationDuration", value);
@@ -360,7 +431,11 @@ public class GoogleMapsANE extends EventDispatcher {
         ctx.dispose();
         ctx = null;
     }
-
+	/**
+	 * 
+	 * @return 
+	 * 
+	 */
     public function get markers():Dictionary {
         return _markers;
     }

@@ -134,6 +134,7 @@ class KotlinController : FreKotlinController {
 
     fun updateMarker(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+
         try {
             val uuid: String = FreObjectKotlin(argv[0]).value as String // id:String
             val markerOptionsFre = FreMarkerOptionsKotlin(argv[1]) // marker:Marker
@@ -144,6 +145,7 @@ class KotlinController : FreKotlinController {
         } catch (e: Exception) {
             return FreException(e).getError(Thread.currentThread().stackTrace)
         }
+
         return null
     }
 
@@ -313,8 +315,7 @@ class KotlinController : FreKotlinController {
         }
         return null
     }
-
-
+    
     override fun onStarted() {
         super.onStarted()
     }

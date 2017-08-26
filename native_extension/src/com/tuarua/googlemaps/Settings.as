@@ -19,7 +19,6 @@ public class Settings {
      * does not limit programmatic control of the camera's viewingAngle.
      */
     public var tiltGestures:Boolean = true;
-
     /**
      * Controls whether rotate gestures are enabled (default) or disabled. If
      * enabled, users may use a two-finger rotate gesture to rotate the camera. This
@@ -37,7 +36,6 @@ public class Settings {
      * complex view hierarchies or requirements.
      */
     public var consumesGesturesInView:Boolean = true;
-
     /**
      * Enables or disables the compass. The compass is an icon on the map that
      * indicates the direction of north on the map.
@@ -48,7 +46,6 @@ public class Settings {
      * the compass will never be displayed.
      */
     public var compassButton:Boolean = false;
-
     /**
      * Enables or disables the My Location button. This is a button visible on the
      * map that, when tapped by users, will center the map on the current user
@@ -62,7 +59,6 @@ public class Settings {
      * the indoorDisplay mapView property.
      */
     public var indoorPicker:Boolean = true;
-
     /**
      * Controls whether rotate and zoom gestures can be performed off-center and scrolled around
      * (default true).

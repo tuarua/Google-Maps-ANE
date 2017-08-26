@@ -68,7 +68,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
     private val markers = mutableMapOf<String, Marker>()
     var animationDuration: Int = 2000
     override fun onMapReady(googleMap: GoogleMap?) {
-        trace("onMapReady")
         mapView = googleMap
         val mv: GoogleMap = mapView ?: return
 
@@ -97,7 +96,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         context.dispatchStatusEventAsync(message, Constants.ON_READY)
     }
 
-
     constructor(context: FREContext, coordinate: LatLng, zoomLevel: Float, viewPort: Rect, settings: Settings) {
         this.context = context
         this.centerAt = coordinate
@@ -118,12 +116,10 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
             type == Constants.DID_TAP_MARKER && asListeners.contains(Constants.DID_TAP_MARKER) -> mv.setOnMarkerClickListener(this)
             type == Constants.DID_DRAG && asListeners.contains(Constants.DID_DRAG) -> mv.setOnMarkerDragListener(this)
             type == Constants.DID_TAP_INFO_WINDOW && asListeners.contains(Constants.DID_TAP_INFO_WINDOW) -> mv.setOnInfoWindowClickListener(this)
-            type == Constants.DID_LONG_PRESS_INFO_WINDOW && asListeners.contains(Constants
-                    .DID_LONG_PRESS_INFO_WINDOW) -> mv.setOnInfoWindowLongClickListener(this)
+            type == Constants.DID_LONG_PRESS_INFO_WINDOW && asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW) -> mv.setOnInfoWindowLongClickListener(this)
             type == Constants.DID_CLOSE_INFO_WINDOW && asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW) -> mv.setOnInfoWindowCloseListener(this)
             type == Constants.ON_CAMERA_MOVE && asListeners.contains(Constants.ON_CAMERA_MOVE) -> mv.setOnCameraMoveListener(this)
-            asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) && asListeners.contains(Constants
-                    .ON_CAMERA_MOVE_STARTED) -> mv.setOnCameraMoveStartedListener(this)
+            asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) && asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) -> mv.setOnCameraMoveStartedListener(this)
             asListeners.contains(Constants.ON_CAMERA_IDLE) && asListeners.contains(Constants.ON_CAMERA_IDLE) -> mv.setOnCameraIdleListener(this)
         }
     }
