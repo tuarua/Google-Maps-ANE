@@ -191,11 +191,10 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         val props = JSONObject()
         try {
             props.put("status", if (granted) Constants.AUTHORIZATION_STATUS_ALWAYS else Constants.AUTHORIZATION_STATUS_DENIED)
-            sendEvent(Constants.DID_TAP_AT, props.toString())
+            sendEvent(Constants.AUTHORIZATION_STATUS, props.toString())
         } catch (e: JSONException) {
             throw FreException(e)
         }
-        context.dispatchStatusEventAsync(Constants.AUTHORIZATION_STATUS, props.toString())
     }
 
     fun add() {

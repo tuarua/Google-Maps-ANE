@@ -315,7 +315,7 @@ class KotlinController : FreKotlinController {
         }
         return null
     }
-    
+
     override fun onStarted() {
         super.onStarted()
     }
