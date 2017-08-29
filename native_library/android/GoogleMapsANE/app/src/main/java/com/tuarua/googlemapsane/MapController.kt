@@ -61,7 +61,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
     private var zoomLevel = 12.0F
     private var centerAt: LatLng
     private var mapView: GoogleMap? = null
-    private var airView: ViewGroup? = null
+    private var airView: ViewGroup
     private var container: FrameLayout? = null
     private var settings: Settings
     private var asListeners: ArrayList<String> = ArrayList()
@@ -96,8 +96,10 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         context.dispatchStatusEventAsync(message, Constants.ON_READY)
     }
 
-    constructor(context: FREContext, coordinate: LatLng, zoomLevel: Float, viewPort: Rect, settings: Settings) {
+    constructor(context: FREContext, airView:ViewGroup, coordinate: LatLng, zoomLevel: Float, viewPort: Rect,
+                settings: Settings) {
         this.context = context
+        this.airView = airView
         this.centerAt = coordinate
         this.zoomLevel = zoomLevel
         this._viewPort = viewPort
@@ -199,18 +201,13 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
 
     fun add() {
         val newId = View.generateViewId()
-
-        airView = context.activity.findViewById(android.R.id.content) as ViewGroup
-        airView = (airView as ViewGroup).getChildAt(0) as ViewGroup
-
         container = FrameLayout(context.activity)
-
         val frame = container ?: return
         frame.layoutParams = FrameLayout.LayoutParams(viewPort.width(), viewPort.height())
         frame.x = viewPort.left.toFloat()
         frame.y = viewPort.top.toFloat()
         frame.id = newId
-        (airView as ViewGroup).addView(frame)
+        airView.addView(frame)
 
         val mMapFragment: MapFragment = MapFragment.newInstance()
         googleApiClient = GoogleApiClient.Builder(this.context.activity.applicationContext)

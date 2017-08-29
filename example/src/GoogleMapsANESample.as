@@ -34,9 +34,6 @@ public class GoogleMapsANESample extends Sprite {
         // The third parameter describes the available asset sets (here, '1x' and '2x').
 
         var screen:ScreenSetup = new ScreenSetup(stage.fullScreenWidth, stage.fullScreenHeight, [1, 2]);
-
-        trace(screen.viewPort);
-
         Starling.multitouchEnabled = true; // we want to make use of multitouch
 
         mStarling = new Starling(StarlingRoot, stage, screen.viewPort);

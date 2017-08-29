@@ -17,6 +17,7 @@ package com.tuarua.googlemapsane
 
 import android.content.Intent
 import android.graphics.Rect
+import android.view.ViewGroup
 import com.adobe.fre.FREContext
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
@@ -30,6 +31,7 @@ typealias FREArgv = ArrayList<FREObject>
 class KotlinController : FreKotlinController {
     private var scaleFactor: Double = 1.0
     private var context: FREContext? = null
+    private lateinit var airView: ViewGroup
     private val TRACE = "TRACE"
     private var isAdded: Boolean = false
     private var settings: Settings = Settings()
@@ -43,6 +45,8 @@ class KotlinController : FreKotlinController {
     }
 
     fun init(ctx: FREContext, argv: FREArgv): FREObject? {
+        airView = context?.activity?.findViewById(android.R.id.content) as ViewGroup
+        airView = airView.getChildAt(0) as ViewGroup
         return FreObjectKotlin(true).rawValue.guard { return null }
     }
 
@@ -63,7 +67,7 @@ class KotlinController : FreKotlinController {
             settings.scrollGestures = settingsFre.getProperty("scrollGestures")?.value as Boolean
             settings.tiltGestures = settingsFre.getProperty("tiltGestures")?.value as Boolean
             settings.zoomGestures = settingsFre.getProperty("zoomGestures")?.value as Boolean
-            mapController = MapController(ctx, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
+            mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace) //return the error as an actionscript error
         } catch (e: Exception) {

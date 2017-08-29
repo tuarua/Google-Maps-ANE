@@ -23,7 +23,7 @@ import com.tuarua.frekotlin.FreKotlinController;
 public class GoogleMapsANEContext extends FreKotlinContext implements TRActivityResultCallback, TRStateChangeCallback {
     private AndroidActivityWrapper aaw;
     private FreKotlinController controller;
-    public GoogleMapsANEContext(String name, FreKotlinController controller, String[] functions) {
+    GoogleMapsANEContext(String name, FreKotlinController controller, String[] functions) {
         super(name, controller, functions);
         this.controller = controller;
         aaw = AndroidActivityWrapper.GetAndroidActivityWrapper();

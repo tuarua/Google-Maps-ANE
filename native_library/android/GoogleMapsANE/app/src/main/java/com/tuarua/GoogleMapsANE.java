@@ -20,8 +20,7 @@ import com.adobe.fre.FREExtension;
 import com.tuarua.googlemapsane.KotlinController;
 
 public class GoogleMapsANE implements FREExtension {
-    private String NAME = "com.tuarua.GoogleMapsANE";
-    public static final String[] FUNCTIONS = {
+    private static final String[] FUNCTIONS = {
              "isSupported"
             ,"init"
             ,"initMap"
@@ -48,7 +47,7 @@ public class GoogleMapsANE implements FREExtension {
 
     };
 
-    public static GoogleMapsANEContext extensionContext;
+    private static GoogleMapsANEContext extensionContext;
 
     @Override
     public void initialize() {
@@ -57,6 +56,7 @@ public class GoogleMapsANE implements FREExtension {
 
     @Override
     public FREContext createContext(String s) {
+        String NAME = "com.tuarua.GoogleMapsANE";
         return extensionContext = new GoogleMapsANEContext(NAME, new KotlinController(), FUNCTIONS);
     }
 
