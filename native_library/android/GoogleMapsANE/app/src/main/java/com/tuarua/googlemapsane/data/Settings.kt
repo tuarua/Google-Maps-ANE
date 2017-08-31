@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tuarua.googlemapsane
+package com.tuarua.googlemapsane.data
 data class Settings(
         var scrollGestures: Boolean = false,
         var zoomGestures: Boolean = true,

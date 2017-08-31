@@ -20,12 +20,13 @@ android {
 
 dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
-    implementation 'com.google.android.gms:play-services-location:11.2.0'
-    implementation 'com.google.android.gms:play-services-maps:11.2.0'
+    implementation "com.google.android.gms:play-services-location:$play_services_version"
+    implementation "com.google.android.gms:play-services-maps:$play_services_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "com.google.code.gson:gson:$gson_version"
     implementation files('libs/FlashRuntimeExtensions.jar')
     implementation files('libs/runtimeClasses.jar')
-    implementation files('libs/frekotlin-1.1.4-2.jar')
+    implementation files('libs/frekotlin-1.1.4-3.jar')
 }
 repositories {
     mavenCentral()

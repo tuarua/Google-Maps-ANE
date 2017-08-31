@@ -24,13 +24,14 @@ import com.google.android.gms.maps.model.*
 
 import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.geom.FreRectangleKotlin
+import com.tuarua.googlemapsane.data.Settings
 import java.util.ArrayList
 
-typealias FREArgv = ArrayList<FREObject>
 @Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST")
-class KotlinController : FreKotlinController {
+class KotlinController : FreKotlinMainController {
+
+
     private var scaleFactor: Double = 1.0
-    private var context: FREContext? = null
     private lateinit var airView: ViewGroup
     private val TRACE = "TRACE"
     private var isAdded: Boolean = false
@@ -344,20 +345,13 @@ class KotlinController : FreKotlinController {
         super.onDestroyed()
     }
 
-    override fun setFREContext(context: FREContext) {
-        this.context = context
-    }
-
-    private fun trace(vararg value: Any?) {
-        context?.trace(TAG, value)
-    }
-
-    private fun sendEvent(name: String, value: String) {
-        context?.sendEvent(name, value)
-    }
-
-    companion object {
-        private var TAG = KotlinController::class.java.canonicalName
-    }
+    override val TAG: String
+        get() = this::class.java.canonicalName
+    private var _context: FREContext? = null
+    override var context: FREContext?
+        get() = _context
+        set(value) {
+            _context = value
+        }
 
 }

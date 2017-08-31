@@ -72,6 +72,9 @@
             <entry library-name="com.google.android.gms.play-services-base-11.2.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="AIRSDK_26" />
         </dependencies>
@@ -122,5 +125,6 @@
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-base-11.2.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-maps-11.2.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-location-11.2.0" level="project" />
+    <orderEntry type="library" exported="" name="com.google.code.gson.gson-2.8.1" level="project" />
   </component>
 </module>

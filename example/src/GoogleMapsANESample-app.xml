@@ -4,7 +4,7 @@
     <id>com.tuarua.googlemapsane</id> <!-- Bundle Identifier. Required. -->
     <filename>GoogleMapsANESample-mobile</filename> <!-- Used as the filename for the application. Required. -->
     <name>GoogleMapsANESample-mobile</name> <!-- The name that is displayed below the app icon. -->
-    <versionNumber>0.0.5</versionNumber> <!-- Required. -->
+    <versionNumber>0.0.4</versionNumber> <!-- Required. -->
 
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>
@@ -129,6 +129,7 @@
         <extensionID>com.google.android.gms.play-services-location</extensionID>
         <extensionID>com.google.android.gms.play-services-maps</extensionID>
         <extensionID>com.android.support.support-v4</extensionID>
+        <extensionID>com.google.code.gson.gson</extensionID>
         <extensionID>com.tuarua.GoogleMapsANE</extensionID>
     </extensions>
 

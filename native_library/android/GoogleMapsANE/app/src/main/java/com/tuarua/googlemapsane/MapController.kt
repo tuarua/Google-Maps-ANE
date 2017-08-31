@@ -31,8 +31,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat.checkSelfPermission
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.maps.model.*
-import org.json.JSONException
-import org.json.JSONObject
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices.*
 import org.greenrobot.eventbus.EventBus
@@ -40,33 +38,35 @@ import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.eventbus.Subscribe
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
+import com.google.gson.Gson
 import com.tuarua.frekotlin.FreException
-import com.tuarua.frekotlin.sendEvent
-import com.tuarua.frekotlin.trace
+import com.tuarua.frekotlin.FreKotlinController
+import com.tuarua.googlemapsane.data.*
 import java.util.ArrayList
 
 
-class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
+class MapController(override var context: FREContext?, private var airView: ViewGroup, coordinate: LatLng,
+                    private var zoomLevel: Float, viewPort: Rect, private var settings: Settings) : FreKotlinController,
+        OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowClickListener,
-        GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnInfoWindowLongClickListener, GoogleApiClient
-        .ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnCameraMoveListener,
-        GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener {
+        GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnInfoWindowLongClickListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener {
+
 
     private var googleApiClient: GoogleApiClient? = null
-    private var context: FREContext
-    private var _viewPort: Rect
+    private var _viewPort: Rect = viewPort
     private var _visible: Boolean = false
     private var _style: String? = null
     private var _mapType = 0
-    private var zoomLevel = 12.0F
-    private var centerAt: LatLng
+    private var centerAt: LatLng = coordinate
     private var mapView: GoogleMap? = null
-    private var airView: ViewGroup
     private var container: FrameLayout? = null
-    private var settings: Settings
     private var asListeners: ArrayList<String> = ArrayList()
     private val markers = mutableMapOf<String, Marker>()
     var animationDuration: Int = 2000
+    private val gson = Gson()
     override fun onMapReady(googleMap: GoogleMap?) {
         mapView = googleMap
         val mv: GoogleMap = mapView ?: return
@@ -92,23 +92,10 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         if (asListeners.contains(Constants.ON_CAMERA_IDLE)) mv.setOnCameraIdleListener(this)
 
         mv.moveCamera(CameraUpdateFactory.newLatLngZoom(centerAt, zoomLevel))
-        val message = ""
-        context.dispatchStatusEventAsync(message, Constants.ON_READY)
-    }
-
-    constructor(context: FREContext, airView:ViewGroup, coordinate: LatLng, zoomLevel: Float, viewPort: Rect,
-                settings: Settings) {
-        this.context = context
-        this.airView = airView
-        this.centerAt = coordinate
-        this.zoomLevel = zoomLevel
-        this._viewPort = viewPort
-        this.settings = settings
-        EventBus.getDefault().register(this)
+        sendEvent(Constants.ON_READY, "")
     }
 
     fun addEventListener(type: String) {
-        trace("adding event listener", type)
         asListeners.add(type)
         val mv: GoogleMap = mapView ?: return
 
@@ -127,7 +114,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
     }
 
     fun removeEventListener(type: String) {
-        trace("remove event listener", type)
         asListeners.remove(type)
         val mv: GoogleMap = mapView ?: return
         if (type == Constants.DID_TAP_AT) {
@@ -168,10 +154,11 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageEvent) {
         val mv: GoogleMap = mapView ?: return
+        val ctx = this.context ?: return
         var granted = false
         when {
             event.message == Constants.AUTHORIZATION_GRANTED -> {
-                if (checkSelfPermission(this.context.activity.applicationContext,
+                if (checkSelfPermission(ctx.activity.applicationContext,
                         ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mv.isMyLocationEnabled = true
                     mv.uiSettings?.isMyLocationButtonEnabled = true
@@ -190,18 +177,15 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
             }
         }
 
-        val props = JSONObject()
-        try {
-            props.put("status", if (granted) Constants.AUTHORIZATION_STATUS_ALWAYS else Constants.AUTHORIZATION_STATUS_DENIED)
-            sendEvent(Constants.AUTHORIZATION_STATUS, props.toString())
-        } catch (e: JSONException) {
-            throw FreException(e)
-        }
+        sendEvent(Constants.AUTHORIZATION_STATUS, gson.toJson(AuthorizationEvent(
+                if (granted) Constants.AUTHORIZATION_STATUS_ALWAYS
+                else Constants.AUTHORIZATION_STATUS_DENIED)))
     }
 
     fun add() {
         val newId = View.generateViewId()
-        container = FrameLayout(context.activity)
+        val ctx = this.context ?: return
+        container = FrameLayout(ctx.activity)
         val frame = container ?: return
         frame.layoutParams = FrameLayout.LayoutParams(viewPort.width(), viewPort.height())
         frame.x = viewPort.left.toFloat()
@@ -210,7 +194,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         airView.addView(frame)
 
         val mMapFragment: MapFragment = MapFragment.newInstance()
-        googleApiClient = GoogleApiClient.Builder(this.context.activity.applicationContext)
+        googleApiClient = GoogleApiClient.Builder(ctx.activity.applicationContext)
                 .addConnectionCallbacks(this)
                 .addApi(API)
                 .build()
@@ -219,7 +203,7 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         //TODO https://stackoverflow.com/questions/4721449/how-can-i-enable-or-disable-the-gps-programmatically-on
         // -android?noredirect=1&lq=1
 
-        val fragmentTransaction: FragmentTransaction = context.activity.fragmentManager.beginTransaction()
+        val fragmentTransaction: FragmentTransaction = ctx.activity.fragmentManager.beginTransaction()
         fragmentTransaction.add(newId, mMapFragment)
         fragmentTransaction.commit()
         mMapFragment.getMapAsync(this)
@@ -320,14 +304,11 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         val mv: GoogleMap = mapView ?: return null
         val marker: Marker = mv.addMarker(markerOptions) ?: return null
         markers[marker.id] = marker
-        trace("adding marker id: ${marker.id}")
-        trace("have a google mapView")
         return marker
     }
 
     fun updateMarker(uuid: String, markerOptions: MarkerOptions) {
         val marker = markers[uuid] ?: return
-        trace("updateMarker: $uuid")
         marker.position = markerOptions.position
         marker.title = markerOptions.title
         marker.snippet = markerOptions.snippet
@@ -336,7 +317,6 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         marker.alpha = markerOptions.alpha
         marker.setIcon(markerOptions.icon)
         marker.rotation = markerOptions.rotation
-
     }
 
     fun removeMarker(uuid: String) {
@@ -382,25 +362,18 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
     override fun onMapClick(p0: LatLng?) {
         if (!asListeners.contains(Constants.DID_TAP_AT)) return
         val coordinate = p0 ?: return
-        val props = JSONObject()
-        try {
-            props.put("latitude", coordinate.latitude)
-            props.put("longitude", coordinate.longitude)
-            sendEvent(Constants.DID_TAP_AT, props.toString())
-        } catch (e: JSONException) {
-        }
+
+        sendEvent(Constants.DID_TAP_AT, gson.toJson(MapEvent(
+                coordinate.latitude,
+                coordinate.longitude)))
     }
 
     override fun onMapLongClick(p0: LatLng?) {
         if (!asListeners.contains(Constants.DID_LONG_PRESS_AT)) return
         val coordinate = p0 ?: return
-        val props = JSONObject()
-        try {
-            props.put("latitude", coordinate.latitude)
-            props.put("longitude", coordinate.longitude)
-            context.dispatchStatusEventAsync(props.toString(), Constants.DID_LONG_PRESS_AT)
-        } catch (e: JSONException) {
-        }
+        sendEvent(Constants.DID_LONG_PRESS_AT, gson.toJson(MapEvent(
+                coordinate.latitude,
+                coordinate.longitude)))
     }
 
     override fun onInfoWindowClick(p0: Marker?) {
@@ -424,27 +397,20 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
     override fun onCameraMove() {
         if (!asListeners.contains(Constants.ON_CAMERA_MOVE)) return
         val mv: GoogleMap = mapView ?: return
-        val props = JSONObject()
-        try {
-            props.put("latitude", mv.cameraPosition.target.latitude)
-            props.put("longitude", mv.cameraPosition.target.longitude)
-            props.put("zoom", mv.cameraPosition.zoom)
-            props.put("tilt", mv.cameraPosition.tilt)
-            props.put("bearing", mv.cameraPosition.bearing)
-            sendEvent(Constants.ON_CAMERA_MOVE, props.toString())
-        } catch (e: JSONException) {
 
-        }
+        sendEvent(Constants.ON_CAMERA_MOVE, gson.toJson(CameraMoveEvent(
+                mv.cameraPosition.target.latitude,
+                mv.cameraPosition.target.longitude,
+                mv.cameraPosition.zoom,
+                mv.cameraPosition.tilt,
+                mv.cameraPosition.bearing)))
+
+
     }
 
     override fun onCameraMoveStarted(reason: Int) {
         if (!asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED)) return
-        val props = JSONObject()
-        try {
-            props.put("reason", reason)
-            sendEvent(Constants.ON_CAMERA_MOVE_STARTED, props.toString())
-        } catch (e: JSONException) {
-        }
+        sendEvent(Constants.ON_CAMERA_MOVE_STARTED, gson.toJson(CameraMoveStartedEvent(reason)))
     }
 
     override fun onCameraIdle() {
@@ -464,19 +430,12 @@ class MapController : OnMapReadyCallback, GoogleMap.OnMarkerClickListener, Googl
         trace("GoogleApiClient onConnectionSuspended")
     }
 
-    private fun trace(vararg value: Any?) {
-        context.trace(TAG, value)
+    init {
+        EventBus.getDefault().register(this)
     }
 
-    private fun sendEvent(name: String, value: String) {
-        context.sendEvent(name, value)
-    }
-
-    companion object {
-        private var TAG = MapController::class.java.canonicalName
-    }
-
-
+    override val TAG: String
+        get() = this::class.java.canonicalName
 
 
 }

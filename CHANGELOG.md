@@ -1,3 +1,7 @@
+### 0.0.4  
+- Updated to FreKotlin 1.1.4-3
+- Use Gson
+
 ### 0.0.3  
 - Improved exception handling
 
