@@ -26,6 +26,7 @@ Much time, skill and effort has gone into this. Help support the project
     <extensionID>com.google.android.gms.play-services-location</extensionID>
     <extensionID>com.google.android.gms.play-services-maps</extensionID>
     <extensionID>com.android.support.support-v4</extensionID>
+    <extensionID>com.google.code.gson.gson</extensionID>
     ...
 </extensions>
 `````
