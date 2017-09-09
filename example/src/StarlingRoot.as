@@ -43,6 +43,7 @@ public class StarlingRoot extends Sprite {
     private var btn5:SimpleButton = new SimpleButton("Night");
     private var btn6:SimpleButton = new SimpleButton("Satellite");
     private var btn7:SimpleButton = new SimpleButton("Find me");
+    private var btn8:SimpleButton = new SimpleButton("Zoom In");
 
     private static const nightStyle:String = "[{\"featureType\":\"all\",\"elementType\":\"geometry\"," +
             "\"stylers\":[{\"color\":\"#242f3e\"}]},{\"featureType\":\"all\",\"elementType\":\"labels.text.stroke\"," +
@@ -75,15 +76,27 @@ public class StarlingRoot extends Sprite {
         var _assets:AssetManager = assets;
 
         googleMaps = new GoogleMapsANE();
-        googleMaps.init("");
-        var viewPort:Rectangle = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
+        var isInited:Boolean = googleMaps.init("AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc"); //iOS API_KEY - Android is set in the manifest
+        trace("isInited",isInited);
 
-        trace("as viewPort", viewPort);
+        if(!isInited){
+            return;
+        }
+
+        var viewPort:Rectangle = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
 
         var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
         trace("coordinate passed into ANE", coordinate.latitude, coordinate.longitude);
 
-        googleMaps.initMap(viewPort, coordinate, 12.0, new Settings(), Starling.current.contentScaleFactor);
+        try{
+            googleMaps.initMap(viewPort, coordinate, 12.0, new Settings(), Starling.current.contentScaleFactor);
+        }catch(e:ANEError){
+            trace(e.source)
+            trace(e.message)
+            trace(e.getStackTrace());
+            trace(e.errorID);
+        }
+
         googleMaps.addEventListener(GoogleMapsEvent.ON_READY, onMapReady);
         googleMaps.addEventListener(GoogleMapsEvent.DID_TAP_AT, onDidTapAt);
         googleMaps.addEventListener(GoogleMapsEvent.DID_LONG_PRESS_AT, onDidLongPressAt);
@@ -101,8 +114,8 @@ public class StarlingRoot extends Sprite {
 
         btn.x = 10;
         btn7.y = btn3.y = btn2.y = btn.y = 10;
-        btn6.y = btn5.y = btn4.y = 60;
-        btn.addEventListener(TouchEvent.TOUCH, onZoomIn);
+        btn8.y = btn6.y = btn5.y = btn4.y = 60;
+        btn.addEventListener(TouchEvent.TOUCH, onSetBounds);
         addChild(btn);
 
         btn2.x = 100;
@@ -128,6 +141,10 @@ public class StarlingRoot extends Sprite {
         btn7.x = 280;
         btn7.addEventListener(TouchEvent.TOUCH, onFindMe);
         addChild(btn7);
+
+        btn8.x = 280;
+        btn8.addEventListener(TouchEvent.TOUCH, onZoomIn);
+        addChild(btn8);
 
         stage.addEventListener(Event.RESIZE, onResize);
 
@@ -160,7 +177,7 @@ public class StarlingRoot extends Sprite {
     private function onMapReady(event:GoogleMapsEvent):void {
         var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
         var marker:Marker = new Marker(coordinate, "Dunleer", "Home");
-        marker.color = Color.YELLOW;
+        marker.color = Color.RED;
         marker.icon = (new pinImage() as Bitmap).bitmapData;
         marker.isFlat = false;
         marker.isDraggable = true;
@@ -195,6 +212,7 @@ public class StarlingRoot extends Sprite {
         googleMaps.moveCamera(cameraPosition);
     }
 
+
     private static function onLocationAuthStatus(event:LocationEvent):void {
         var status:int = event.params.status;
         switch (status) {
@@ -227,7 +245,7 @@ public class StarlingRoot extends Sprite {
     }
 
     private function onZoomIn(event:TouchEvent):void {
-        var touch:Touch = event.getTouch(btn);
+        var touch:Touch = event.getTouch(btn8);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             googleMaps.animationDuration = 500;
             googleMaps.zoomIn(true); // googleMaps.zoomOut();
@@ -253,6 +271,18 @@ public class StarlingRoot extends Sprite {
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             googleMaps.clear();
         }
+    }
+
+    private function onSetBounds(event:TouchEvent):void {
+        var touch:Touch = event.getTouch(btn);
+        if (touch != null && touch.phase == TouchPhase.ENDED) {
+            var vancouver:Coordinate = new Coordinate(49.26, -123.11);
+            var calgary:Coordinate = new Coordinate(51.05, -114.05);
+            googleMaps.setBounds(vancouver, calgary)
+        }
+
+        //let vancouver = CLLocationCoordinate2D(latitude: 49.26, longitude: -123.11)
+        //let calgary = CLLocationCoordinate2D(latitude: 51.05,longitude: -114.05)
     }
 
     private function onSetViewPort(event:TouchEvent):void {

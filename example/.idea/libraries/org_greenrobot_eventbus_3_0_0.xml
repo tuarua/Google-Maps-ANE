@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="org.greenrobot.eventbus-3.0.0" type="flex">
     <CLASSES>
-      <root url="jar://$DOCUMENTS$/Google-Maps-ANE/native_extension/ane/org.greenrobot.eventbus-3.0.0.ane!/" />
+      <root url="jar://$DOCUMENTS$/Google-Maps-ANE/example/android_dependencies/org.greenrobot.eventbus-3.0.0.ane!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

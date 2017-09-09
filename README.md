@@ -1,8 +1,9 @@
 # Google-Maps-ANE
 
-Google Maps Adobe Air Native Extension for Android 19+.
-This project is working but still in progress. More features are planned.
-
+Google Maps Adobe Air Native Extension for iOS9.0+, Android 19+.    
+Embed Google Maps in your AIR mobile apps with an identical API.   
+Complete example included.
+Written in Swift 3.1 and Kotlin 1.1.   
 -------------
 
 Much time, skill and effort has gone into this. Help support the project
@@ -13,10 +14,16 @@ Much time, skill and effort has gone into this. Help support the project
  
  ## Android
  
- **Dependencies**
- Several dependency ANEs are needed.
- They can be found in this repo:  
- [https://github.com/tuarua/Android-ANE-Dependancies/tree/master/anes]
+ **Dependencies**  
+Several dependency ANEs are needed.
+
+From the command line cd into /example and run:
+````shell
+bash get_android_dependencies.sh
+`````
+
+They can be downloaded directly from this repo:  
+[https://github.com/tuarua/Android-ANE-Dependancies/tree/master/anes]
  
 ````xml
 <extensions>
@@ -61,20 +68,39 @@ You will also need to include the following in your app manifest. Update accordi
 `````
 ## iOS
 
-Coming soon...   
-The iOS version will also use GoogleMaps SDK
+**Dependencies**   
+From the command line cd into /example and run:
+````shell
+bash get_ios_dependencies.sh
+`````
 
-### Technical Details
-The Android version is written in Kotlin. Kotlin is a joy to work with and provides a syntax more familiar to Actionscript or Swift developers.
-Full source is provided.
+You will need a Google API key   
+[https://developers.google.com/maps/documentation/ios-sdk/get-api-key]
+
+You will also need to include the following in your app manifest. Update accordingly.
+````xml
+<InfoAdditions><![CDATA[            
+    <key>UIDeviceFamily</key>
+    <array>
+        <string>1</string>
+        <string>2</string>
+    </array>
+    <key>MinimumOSVersion</key>
+    <string>9.0</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Your message</string>
+]]></InfoAdditions>
+`````
 
 ### Prerequisites
 
 You will need:
 
-- IntelliJ IDEA
-- AIR 26
-- Android Studio 3 Beta if you wish to edit the source
+- IntelliJ IDEA / Flash Builder
+- AIR 26 + AIR 27 Beta
+- Android Studio 3 Beta if you wish to edit the Android source
+- Xcode 8.3 if you wish to edit the Android source
+- wget on OSX
 
 ### References
 * [https://developers.google.com/maps/documentation/android-api/]
