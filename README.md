@@ -1,8 +1,8 @@
-# Google-Maps-ANE
+# Google-Maps-ANE   
 
 Google Maps Adobe Air Native Extension for iOS9.0+, Android 19+.    
 Embed Google Maps in your AIR mobile apps with an identical API.   
-Complete example included.
+Complete examples included.
 Written in Swift 3.1 and Kotlin 1.1.   
 -------------
 
@@ -12,7 +12,7 @@ Much time, skill and effort has gone into this. Help support the project
 
 -------------
  
- ## Android
+ ## Android   
  
  **Dependencies**  
 Several dependency ANEs are needed.
@@ -99,7 +99,7 @@ You will need:
 - IntelliJ IDEA / Flash Builder
 - AIR 26 + AIR 27 Beta
 - Android Studio 3 Beta if you wish to edit the Android source
-- Xcode 8.3 if you wish to edit the Android source
+- Xcode 8.3 if you wish to edit the iOS source
 - wget on OSX
 
 ### References
