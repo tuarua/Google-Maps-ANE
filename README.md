@@ -1,6 +1,6 @@
 # GoogleMaps-ANE
 
-Google MapsAdobe Air Native Extension for iOS 9.0+, Android 19+.    
+
 -------------
 
 Much time, skill and effort has gone into this. Help support the project
@@ -9,9 +9,9 @@ Much time, skill and effort has gone into this. Help support the project
 
 -------------
  
- ## Android   
+## Android
  
- **Dependencies**  
+**Dependencies**  
 Several dependency ANEs are needed.
 
 From the command line cd into /example and run:
