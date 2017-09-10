@@ -115,7 +115,7 @@ public class StarlingRoot extends Sprite {
         btn.x = 10;
         btn7.y = btn3.y = btn2.y = btn.y = 10;
         btn8.y = btn6.y = btn5.y = btn4.y = 60;
-        btn.addEventListener(TouchEvent.TOUCH, onSetBounds);
+        btn.addEventListener(TouchEvent.TOUCH, onClear);
         addChild(btn);
 
         btn2.x = 100;

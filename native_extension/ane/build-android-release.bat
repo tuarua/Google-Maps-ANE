@@ -26,7 +26,7 @@ call %SZIP% x %pathtome%platforms\android\app-release.aar -o%pathtome%platforms\
 
 
 echo "GENERATING ANE"
-call %AIR_PATH%adt.bat -package -target ane %pathtome%%projectName%.ane extension_mobile.xml ^
+call %AIR_PATH%adt.bat -package -target ane %pathtome%%projectName%.ane extension_android.xml ^
 -swc %projectName%.swc ^
 -platform Android-ARM ^
 -C platforms/android library.swf classes.jar ^
@@ -50,9 +50,3 @@ call DEL /F /Q /A %pathtome%catalog.xml
 call DEL /F /Q /A %pathtome%%projectName%.swc
 
 echo "DONE!"
-
-REM res/values/styles.xml ^
-REM res/layout/activity_maps.xml ^
-REM play-services-maps.jar ^
-REM play-services-base.jar ^
-REM play-services-basement.jar

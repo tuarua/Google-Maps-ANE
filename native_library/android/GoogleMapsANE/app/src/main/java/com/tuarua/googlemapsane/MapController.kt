@@ -18,7 +18,6 @@ package com.tuarua.googlemapsane
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.FragmentTransaction
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -41,6 +40,7 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.gson.Gson
 import com.tuarua.frekotlin.FreException
 import com.tuarua.frekotlin.FreKotlinController
+import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.*
 import java.util.ArrayList
 
@@ -187,9 +187,9 @@ class MapController(override var context: FREContext?, private var airView: View
         val ctx = this.context ?: return
         container = FrameLayout(ctx.activity)
         val frame = container ?: return
-        frame.layoutParams = FrameLayout.LayoutParams(viewPort.width(), viewPort.height())
-        frame.x = viewPort.left.toFloat()
-        frame.y = viewPort.top.toFloat()
+        frame.layoutParams = FrameLayout.LayoutParams(viewPort.width.toInt(), viewPort.height.toInt())
+        frame.x = viewPort.x.toFloat()
+        frame.y = viewPort.y.toFloat()
         frame.id = newId
         airView.addView(frame)
 
@@ -225,9 +225,15 @@ class MapController(override var context: FREContext?, private var airView: View
         set(value) {
             this._viewPort = value
             val frame = container ?: return
-            frame.layoutParams = FrameLayout.LayoutParams(viewPort.width(), viewPort.height())
-            frame.x = viewPort.left.toFloat()
-            frame.y = viewPort.top.toFloat()
+            frame.layoutParams = FrameLayout.LayoutParams(viewPort.width.toInt(), viewPort.height.toInt())
+            frame.x = viewPort.x.toFloat()
+            frame.y = viewPort.y.toFloat()
+
+            trace(
+                    "setViewPort post-resize",
+                    "${frame.x} ${frame.y} ${viewPort.width.toInt()} ${viewPort.height.toInt()}"
+            )
+
         }
         get() = _viewPort
 
