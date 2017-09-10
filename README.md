@@ -22,8 +22,13 @@ Download the latest from the [Releases](https://github.com/tuarua/Google-Maps-AN
 Several dependency ANEs are needed.
 
 From the command line cd into /example and run:
+ - OSX
 ````shell
 bash get_android_dependencies.sh
+`````
+ - Windows Powershell
+````shell
+PS get_android_dependencies.ps1
 `````
 
 They can be downloaded directly from this repo:  
