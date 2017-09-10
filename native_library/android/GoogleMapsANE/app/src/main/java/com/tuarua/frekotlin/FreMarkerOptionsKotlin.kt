@@ -25,6 +25,7 @@ import java.nio.ByteBuffer
 
 class FreMarkerOptionsKotlin() : FreObjectKotlin() {
     private var TAG = "com.tuarua.FreMarkerOptionsKotlin"
+
     constructor(freObjectKotlin: FreObjectKotlin?) : this() {
         rawValue = freObjectKotlin?.rawValue
     }
@@ -33,19 +34,18 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
         rawValue = freObject
     }
 
-    override val value: MarkerOptions?
+    override val value: MarkerOptions
         @Throws(FreException::class)
         get() {
-            val coordinate: LatLng = FreCoordinateKotlin(this.getProperty("coordinate")).value
-            val title: String? = this.getProperty("title")?.value as String?
-            val snippet: String? = this.getProperty("snippet")?.value as String?
-            val draggable: Boolean = this.getProperty("isDraggable")?.value as Boolean
-            val flat: Boolean = this.getProperty("isFlat")?.value as Boolean
-            val tappable: Boolean = this.getProperty("isTappable")?.value as Boolean //TODO
-            val opacityFre = this.getProperty("opacity")?.value
-            val rotationFre = this.getProperty("rotation")?.value
-            val opacity: Float = (opacityFre as? Int)?.toFloat() ?: (opacityFre as Double).toFloat()
-            val rotation: Float = (rotationFre as? Int)?.toFloat() ?: (rotationFre as Double).toFloat()
+            val coordinate = LatLng(this.getProperty("coordinate"))
+            val title = String(this.getProperty("title"))
+            val snippet = String(this.getProperty("snippet"))
+            val draggable = Boolean(this.getProperty("isDraggable")) == true
+            val flat = Boolean(this.getProperty("isFlat")) == true
+            val tappable = Boolean(this.getProperty("isTappable")) == true
+
+            val opacity = Float(this.getProperty("opacity")) ?: 1.0F
+            val rotation = Float(this.getProperty("rotation")) ?: 0.0F
 
             val colorFre = this.getProperty("color")
             val color = colorFre?.toHSV() ?: 0.0F
@@ -82,3 +82,5 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
                     .rotation(rotation)
         }
 }
+
+fun MarkerOptions(freObject: FREObject?): MarkerOptions = FreMarkerOptionsKotlin(freObject = freObject).value

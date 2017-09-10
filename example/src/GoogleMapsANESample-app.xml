@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <application xmlns="http://ns.adobe.com/air/application/26.0">
 
-    <id>com.tuarua.googlemapsane</id> <!-- Bundle Identifier. Required. -->
+    <id>MainMaps</id> <!-- Bundle Identifier. Required. -->
     <filename>GoogleMapsANESample-mobile</filename> <!-- Used as the filename for the application. Required. -->
     <name>GoogleMapsANESample-mobile</name> <!-- The name that is displayed below the app icon. -->
     <versionNumber>0.0.4</versionNumber> <!-- Required. -->
@@ -43,12 +43,12 @@
         <image167x167>icon167.png</image167x167>
     </icon>
 
-    <embedFonts>
+    <!--<embedFonts>
         <font>
             <fontName>FiraSansEmbed</fontName>
             <fontPath>fira-sans-embed.ttf</fontPath>
         </font>
-    </embedFonts>
+    </embedFonts>-->
 
     <!-- iOS specific capabilities -->
     <iPhone>

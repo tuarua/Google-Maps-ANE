@@ -40,25 +40,21 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
         @Throws(FreException::class)
         get() {
             try {
-                val center: LatLng = FreCoordinateKotlin(this.getProperty("center")).value
-                val radiusFre = this.getProperty("radius")?.value
-                val radius = (radiusFre as? Int)?.toDouble() ?: radiusFre as Double
-                val strokeWidthFre = this.getProperty("strokeWidth")?.value
-                val strokeWidth = (strokeWidthFre as? Int)?.toDouble() ?: strokeWidthFre as Double
-                val zIndex = this.getProperty("zIndex")?.value as Int
-                val visible = this.getProperty("visible")?.value as Boolean
+                val center = LatLng(this.getProperty("coordinate"))
+                val radius = Double(this.getProperty("radius")) ?: 1.0
+                val strokeWidth = Float(this.getProperty("strokeWidth")) ?: 10.0F
+                val zIndex = Float(this.getProperty("zIndex")) ?: 0.0F
+                val visible = Boolean(this.getProperty("visible")) == true
 
                 val strokePatternFre = this.getProperty("strokePattern")
-                val strokePatternType = strokePatternFre?.getProperty("type")?.value as? Int ?: 0
-                val strokePatternDashLength = strokePatternFre?.getProperty("dashLength")?.value as? Int ?: 50
-                val strokePatternGapLength = strokePatternFre?.getProperty("gapLength")?.value as? Int ?: 50
-                val strokeColorFre = this.getProperty("strokeColor")
-                val strokeAlphaFre = this.getProperty("strokeAlpha")?.value
-                val strokeAlpha: Double = (strokeAlphaFre as? Int)?.toDouble() ?: strokeAlphaFre as Double
+                val strokePatternType = Int(strokePatternFre?.getProperty("type")) ?: 0
+                val strokePatternDashLength = Int(strokePatternFre?.getProperty("dashLength")) ?: 50
+                val strokePatternGapLength = Int(strokePatternFre?.getProperty("gapLength")) ?: 50
 
+                val strokeColorFre = this.getProperty("strokeColor")
+                val strokeAlpha = Double(this.getProperty("strokeAlpha")) ?: 1.0
                 val fillColorFre = this.getProperty("fillColor")
-                val fillAlphaFre = this.getProperty("fillAlpha")?.value
-                val fillAlpha: Double = (fillAlphaFre as? Int)?.toDouble() ?: fillAlphaFre as Double
+                val fillAlpha = Double(this.getProperty("fillAlpha")) ?: 1.0
 
                 val strokeColor = strokeColorFre?.toColor((255 * strokeAlpha).toInt()) ?: 0
                 val fillColor = fillColorFre?.toColor((255 * fillAlpha).toInt()) ?: 0
@@ -86,8 +82,8 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
                 return CircleOptions()
                         .center(center)
                         .radius(radius)
-                        .strokeWidth(strokeWidth.toFloat())
-                        .zIndex(zIndex.toFloat())
+                        .strokeWidth(strokeWidth)
+                        .zIndex(zIndex)
                         .visible(visible)
                         .strokeColor(strokeColor)
                         .fillColor(fillColor)
@@ -99,3 +95,5 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
             }
         }
 }
+
+fun CircleOptions(freObject: FREObject?): CircleOptions = FreCircleOptionsKotlin(freObject = freObject).value

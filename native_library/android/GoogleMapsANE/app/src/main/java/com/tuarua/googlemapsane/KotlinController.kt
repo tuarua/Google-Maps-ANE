@@ -16,21 +16,18 @@
 package com.tuarua.googlemapsane
 
 import android.content.Intent
-import android.graphics.Rect
 import android.view.ViewGroup
 import com.adobe.fre.FREContext
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
 
 import com.tuarua.frekotlin.*
-import com.tuarua.frekotlin.geom.FreRectangleKotlin
+import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.Settings
 import java.util.ArrayList
 
 @Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST")
 class KotlinController : FreKotlinMainController {
-
-
     private var scaleFactor: Double = 1.0
     private lateinit var airView: ViewGroup
     private val TRACE = "TRACE"
@@ -54,20 +51,18 @@ class KotlinController : FreKotlinMainController {
     fun initMap(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 4 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val zl = FreObjectKotlin(argv[2]).value // zoomLevel:Number
-            val sf = FreObjectKotlin(argv[4]).value // scaleFactor:Number
-            val zoomLevel = (zl as? Int)?.toFloat() ?: (zl as Double).toFloat()
-            scaleFactor = (sf as? Int)?.toDouble() ?: sf as Double
-            val centerAt = FreCoordinateKotlin(argv[1]).value // centerAt:Coordinate
-            val viewPort = FreRectangleKotlin(argv[0]).value // viewPort:Rectangle
+            val zoomLevel = Float(argv[2]) ?: 12.0F
+            scaleFactor = Double(argv[4]) ?: 1.0
+            val centerAt = LatLng(argv[1])
+            val viewPort = Rect(argv[0])
             val settingsFre = FreObjectKotlin(argv[3]) // settings: Settings
-            settings.compassButton = settingsFre.getProperty("compassButton")?.value as Boolean
-            settings.indoorPicker = settingsFre.getProperty("indoorPicker")?.value as Boolean
-            settings.myLocationButton = settingsFre.getProperty("myLocationButton")?.value as Boolean
-            settings.rotateGestures = settingsFre.getProperty("rotateGestures")?.value as Boolean
-            settings.scrollGestures = settingsFre.getProperty("scrollGestures")?.value as Boolean
-            settings.tiltGestures = settingsFre.getProperty("tiltGestures")?.value as Boolean
-            settings.zoomGestures = settingsFre.getProperty("zoomGestures")?.value as Boolean
+            settings.compassButton = Boolean(settingsFre.getProperty("compassButton")) == true
+            settings.indoorPicker = Boolean(settingsFre.getProperty("indoorPicker")) == true
+            settings.myLocationButton = Boolean(settingsFre.getProperty("myLocationButton")) == true
+            settings.rotateGestures = Boolean(settingsFre.getProperty("rotateGestures")) == true
+            settings.scrollGestures = Boolean(settingsFre.getProperty("scrollGestures")) == true
+            settings.tiltGestures = Boolean(settingsFre.getProperty("tiltGestures")) == true
+            settings.zoomGestures = Boolean(settingsFre.getProperty("zoomGestures")) == true
             mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace) //return the error as an actionscript error
@@ -79,7 +74,7 @@ class KotlinController : FreKotlinMainController {
 
     fun addEventListener(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val type: String = FreObjectKotlin(argv[0]).value as? String ?: return null
+        val type = String(argv[0]) ?: return null
         if (mapController == null) {
             asListeners.add(type)
         } else {
@@ -96,7 +91,7 @@ class KotlinController : FreKotlinMainController {
 
     fun removeEventListener(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val type: String = FreObjectKotlin(argv[0]).value as? String ?: return null
+        val type = String(argv[0]) ?: return null
         if (mapController == null) {
             asListeners.remove(type)
         } else {
@@ -113,8 +108,7 @@ class KotlinController : FreKotlinMainController {
     fun addCircle(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val circleOptions: CircleOptions = FreCircleOptionsKotlin(argv[0]).value
-            mapController?.addCircle(circleOptions)
+            mapController?.addCircle(CircleOptions(argv[0]))
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
@@ -126,9 +120,7 @@ class KotlinController : FreKotlinMainController {
     fun addMarker(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val markerOptionsFre = FreMarkerOptionsKotlin(argv[0]) // marker:Marker
-            val markerOptions = markerOptionsFre.value ?: return null
-            val addedMarker: Marker? = mapController?.addMarker(markerOptions)
+            val addedMarker: Marker? = mapController?.addMarker(MarkerOptions(argv[0]))
             return FreObjectKotlin(addedMarker?.id).rawValue.guard { return null }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
@@ -141,10 +133,10 @@ class KotlinController : FreKotlinMainController {
         argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
 
         try {
-            val uuid: String = FreObjectKotlin(argv[0]).value as String // id:String
-            val markerOptionsFre = FreMarkerOptionsKotlin(argv[1]) // marker:Marker
-            val markerOptions = markerOptionsFre.value ?: return null
-            mapController?.updateMarker(uuid, markerOptions)
+            val uuid = String(argv[0]) // id:String
+            if (uuid != null) {
+                mapController?.updateMarker(uuid, MarkerOptions(argv[1]))
+            }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
@@ -157,8 +149,10 @@ class KotlinController : FreKotlinMainController {
     fun removeMarker(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val uuid: String = FreObjectKotlin(argv[0]).value as String
-            mapController?.removeMarker(uuid)
+            val uuid = String(argv[0])
+            if (uuid != null) {
+                mapController?.removeMarker(uuid)
+            }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
@@ -170,8 +164,10 @@ class KotlinController : FreKotlinMainController {
     fun showInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val uuid: String = FreObjectKotlin(argv[0]).value as String // uuid:String
-            mapController?.showInfoWindow(uuid)
+            val uuid = String(argv[0])
+            if (uuid != null) {
+                mapController?.showInfoWindow(uuid)
+            }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
@@ -183,8 +179,10 @@ class KotlinController : FreKotlinMainController {
     fun hideInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val uuid: String = FreObjectKotlin(argv[0]).value as String  // uuid:String
-            mapController?.hideInfoWindow(uuid)
+            val uuid = String(argv[0])
+            if (uuid != null) {
+                mapController?.hideInfoWindow(uuid)
+            }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
@@ -198,21 +196,30 @@ class KotlinController : FreKotlinMainController {
         return null
     }
 
-    private fun scaleViewPort(rect: Rect): Rect {
-        return Rect((rect.left * scaleFactor).toInt(), (rect.top * scaleFactor).toInt(),
-                (rect.width() * scaleFactor).toInt(), ((rect.height() + rect.top) * scaleFactor).toInt())
+    private fun scaleViewPort(rect: Rect?): Rect {
+        if (rect == null) {
+            return Rect(0, 0, 0, 0)
+        }
+        return Rect(
+                (rect.x * scaleFactor).toInt(),
+                (rect.y * scaleFactor).toInt(),
+                (rect.width * scaleFactor).toInt(),
+                (rect.height * scaleFactor).toInt())
     }
 
     fun setViewPort(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val viewPortFre = FreRectangleKotlin(argv[0]).value // viewPort:Rectangle
+        val viewPortFre = Rect(argv[0])
+
+        trace("setViewPort pre-resize", "${viewPortFre?.x} ${viewPortFre?.y} ${viewPortFre?.width} ${viewPortFre?.height}")
+
         mapController?.viewPort = scaleViewPort(viewPortFre)
         return null
     }
 
     fun setVisible(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val visible = FreObjectKotlin(argv[0]).value as Boolean
+        val visible = Boolean(argv[0]) == true
         if (!isAdded) {
             mapController?.add()
             isAdded = true
@@ -225,27 +232,15 @@ class KotlinController : FreKotlinMainController {
         argv.takeIf { argv.size > 4 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         val cameraPositionBuilder: CameraPosition.Builder = CameraPosition.builder()
         try {
-            val targetFre = FreCoordinateKotlin(argv[0])
-            val zoomFre = FreObjectKotlin(argv[1])
-            val tiltFre = FreObjectKotlin(argv[2])
-            val bearingFre = FreObjectKotlin(argv[3])
-            val animates = FreObjectKotlin(argv[4]).value as Boolean
-
-            if (targetFre.getType() != FreObjectTypeKotlin.NULL) {
-                cameraPositionBuilder.target(targetFre.value)
-            }
-            if (zoomFre.getType() != FreObjectTypeKotlin.NULL) {
-                val zoom: Float = (zoomFre.value as? Int)?.toFloat() ?: (zoomFre.value as Double).toFloat()
-                cameraPositionBuilder.zoom(zoom)
-            }
-            if (tiltFre.getType() != FreObjectTypeKotlin.NULL) {
-                val tilt: Float = (tiltFre.value as? Int)?.toFloat() ?: (tiltFre.value as Double).toFloat()
-                cameraPositionBuilder.tilt(tilt)
-            }
-            if (bearingFre.getType() != FreObjectTypeKotlin.NULL) {
-                val bearing: Float = (bearingFre.value as? Int)?.toFloat() ?: (bearingFre.value as Double).toFloat()
-                cameraPositionBuilder.bearing(bearing)
-            }
+            val target = LatLng(argv[0])
+            val zoom = Float(argv[1])
+            val tilt = Float(argv[2])
+            val bearing = Float(argv[3])
+            val animates = Boolean(argv[4]) == true
+            cameraPositionBuilder.target(target)
+            if (zoom != null) cameraPositionBuilder.zoom(zoom)
+            if (tilt != null) cameraPositionBuilder.tilt(tilt)
+            if (bearing != null) cameraPositionBuilder.bearing(bearing)
             mapController?.moveCamera(cameraPositionBuilder.build(), animates)
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
@@ -257,46 +252,50 @@ class KotlinController : FreKotlinMainController {
 
     fun setBounds(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val southWest = FreCoordinateKotlin(argv[0]).value
-        val northEast = FreCoordinateKotlin(argv[1]).value
-        val animates = FreObjectKotlin(argv[2]).value as Boolean
+        val southWest = LatLng(argv[0])
+        val northEast = LatLng(argv[1])
+        val animates = Boolean(argv[2]) == true
         mapController?.setBounds(LatLngBounds(southWest, northEast), animates)
         return null
     }
 
     fun zoomIn(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val animates = FreObjectKotlin(argv[0]).value as Boolean
+        val animates = Boolean(argv[0]) == true
         mapController?.zoomIn(animates)
         return null
     }
 
     fun zoomOut(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val animates = FreObjectKotlin(argv[0]).value as Boolean
+        val animates = Boolean(argv[0]) == true
         mapController?.zoomOut(animates)
         return null
     }
 
     fun zoomTo(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val toFre = FreObjectKotlin(argv[0]).value
-        val zoomLevel = (toFre as? Int)?.toFloat() ?: (toFre as Double).toFloat()
-        val animates = FreObjectKotlin(argv[1]).value as Boolean
-        mapController?.zoomTo(zoomLevel, animates)
+        val zoomLevel = Float(argv[0])
+        val animates = Boolean(argv[1]) == true
+        if (zoomLevel != null) {
+            mapController?.zoomTo(zoomLevel, animates)
+        }
         return null
     }
 
     fun setAnimationDuration(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        mapController?.animationDuration = FreObjectKotlin(argv[0]).value as Int
+        val duration = Int(argv[0])
+        if (duration != null) {
+            mapController?.animationDuration = duration
+        }
         return null
     }
 
     fun setStyle(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val json = FreObjectKotlin(argv[0]).value as String
+            val json = String(argv[0])
             mapController?.style = json
         } catch (e: Exception) {
             return FreException(e).getError(Thread.currentThread().stackTrace)
@@ -306,8 +305,8 @@ class KotlinController : FreKotlinMainController {
 
     fun setMapType(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val type: Int = FreObjectKotlin(argv[0]).value as Int
-        mapController?.mapType = type
+        val type = Int(argv[0])
+        if (type is Int) mapController?.mapType = type
         return null
     }
 

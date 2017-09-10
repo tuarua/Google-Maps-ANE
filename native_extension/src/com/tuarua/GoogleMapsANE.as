@@ -245,6 +245,22 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
+    /**
+     *
+     * @param southWest
+     * @param northEast
+     * @param animates
+     *
+     */
+    public function setBounds(southWest:Coordinate, northEast:Coordinate, animates:Boolean = false):void {
+        if (safetyCheck()) {
+            var theRet:* = ctx.call("setBounds", southWest, northEast, animates);
+            if (theRet is ANEError) {
+                throw theRet as ANEError;
+            }
+        }
+    }
+
 	/**
 	 * 
 	 * @param position

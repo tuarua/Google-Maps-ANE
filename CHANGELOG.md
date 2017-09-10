@@ -1,3 +1,6 @@
+### 0.0.5 
+iOS version
+
 ### 0.0.4  
 - Updated to FreKotlin 1.1.4-3
 - Use Gson

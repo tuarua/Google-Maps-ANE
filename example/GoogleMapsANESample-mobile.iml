@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="FlexBuildConfigurationManager" active="Android Device">
+  <component name="FlexBuildConfigurationManager" active="iOS Device">
     <configurations>
       <configuration name="iOS Device" target-platform="Mobile" pure-as="true" main-class="GoogleMapsANESample" output-file="GoogleMapsANESample-mobile.swf" output-folder="$MODULE_DIR$/bin-release/device">
         <dependencies>
@@ -14,17 +14,34 @@
             <entry library-name="GoogleMapsANE" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.android.support.support-v4-25.3.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
             <entry library-name="com.google.android.gms.play-services-base-11.2.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.google.android.gms.play-services-location-11.2.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-maps-11.2.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.tuarua.frekotlin" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
-          <sdk name="AIRSDK_26" />
+          <sdk name="AIRSDK_27_B" />
         </dependencies>
         <compiler-options>
           <map>
             <entry key="compiler.locale" value="en_US" />
           </map>
-          <option name="additionalOptions" value="-swf-version=38" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="GoogleMapsANESample-mobile">
@@ -33,13 +50,14 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
           </files-to-package>
         </packaging-android>
-        <packaging-ios use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="GoogleMapsANESample-mobile">
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-27.xml" package-file-name="GoogleMapsANESample">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
-            <FilePathAndPathInPackage file-path="$MODULE_DIR$/native/device" path-in-package="." />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/ios_dependencies/device" path-in-package="." />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/ios_dependencies/GoogleMaps.bundle" path-in-package="GoogleMaps.bundle" />
           </files-to-package>
-          <AirSigningOptions sdk="/Applications/Xcode-beta.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk" keystore-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/tuarua_dev.p12" provisioning-profile-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/Tua_Rua_Dev_Provisioning-4.mobileprovision" />
+          <AirSigningOptions keystore-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/tuarua_dev.p12" provisioning-profile-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/Tua_Rua_Dev_Provisioning.mobileprovision" />
         </packaging-ios>
       </configuration>
       <configuration name="Android Device" target-platform="Mobile" pure-as="true" main-class="GoogleMapsANESample" output-file="GoogleMapsANESample-android-mobile.swf" output-folder="$MODULE_DIR$/bin-release/device">
@@ -89,7 +107,7 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
           </files-to-package>
-          <AirSigningOptions keystore-path="$DOCUMENTS$/TuaRua2017.p12" use-temp-certificate="false" />
+          <AirSigningOptions keystore-path="$DOCUMENTS$/tuaruaWin.p12" use-temp-certificate="false" />
         </packaging-android>
         <packaging-ios use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="mobile_Android_Device">
           <files-to-package>
@@ -98,6 +116,64 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/native/device" path-in-package="." />
           </files-to-package>
           <AirSigningOptions sdk="/Applications/Xcode-beta.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk" keystore-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/tuarua_dev.p12" provisioning-profile-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/Tua_Rua_Dev_Provisioning-4.mobileprovision" />
+        </packaging-ios>
+      </configuration>
+      <configuration name="iOS Simulator" target-platform="Mobile" pure-as="true" main-class="GoogleMapsANESample" output-file="iOS_Simulator.swf" output-folder="$MODULE_DIR$/bin-release/device">
+        <dependencies>
+          <entries>
+            <entry library-name="starling" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="FiraSansSemiBold" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="GoogleMapsANE" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.android.support.support-v4-25.3.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-base-11.2.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-location-11.2.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-maps-11.2.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.tuarua.frekotlin" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="AIRSDK_26" />
+        </dependencies>
+        <compiler-options>
+          <map>
+            <entry key="compiler.locale" value="en_US" />
+          </map>
+        </compiler-options>
+        <packaging-air-desktop />
+        <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="iOS_Simulator">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
+          </files-to-package>
+        </packaging-android>
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="iOS_Simulator">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/ios_dependencies/simulator" path-in-package="." />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/ios_dependencies/GoogleMaps.bundle" path-in-package="GoogleMaps.bundle" />
+          </files-to-package>
+          <AirSigningOptions keystore-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/tuarua_dev.p12" provisioning-profile-path="$USER_HOME$/Documents/appleCertsProv/2017/dev/Tua_Rua_Dev_Provisioning.mobileprovision" />
         </packaging-ios>
       </configuration>
     </configurations>
@@ -110,7 +186,7 @@
       <sourceFolder url="file://$MODULE_DIR$/system" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assets" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="AIRSDK_26" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="AIRSDK_27_B&#9;AIRSDK_26" jdkType="__CompositeFlexSdk__" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="starling" level="project" />
     <orderEntry type="library" exported="" name="WebViewANE-ios" level="project" />
