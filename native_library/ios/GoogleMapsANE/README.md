@@ -17,5 +17,3 @@ Copy GoogleMapsBase.framework into the Frameworks folder
 
 Copy GoogleMapsCore.framework into the Frameworks folder
 
-Copy GoogleMapsCore.framework into the Frameworks folder
-
