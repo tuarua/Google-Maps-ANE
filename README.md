@@ -1,5 +1,7 @@
 # GoogleMaps-ANE
 
+Google Maps Adobe Air Native Extension for iOS 9.0+ and Android 19+.
+
 
 -------------
 
@@ -8,6 +10,11 @@ Much time, skill and effort has gone into this. Help support the project
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5UR2T52J633RC)
 
 -------------
+ 
+## The ANE
+ 
+Download the latest from the [Releases](https://github.com/tuarua/Google-Maps-ANE/releases) page.
+
  
 ## Android
  

@@ -16,7 +16,6 @@
 		CE576CDD1F60B7FB009DB96C /* FreCircleOptionsSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE576CDC1F60B7FB009DB96C /* FreCircleOptionsSwift.swift */; };
 		CE5E29881F6452CC00FDB81A /* MarkerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5E29871F6452CC00FDB81A /* MarkerOptions.swift */; };
 		CE60CCC41F63DA7F004B1BE7 /* FreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE60CCC31F63DA7F004B1BE7 /* FreSwift.framework */; };
-		CE60CCCA1F63E0C2004B1BE7 /* FlashRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = CE60CCC91F63E0C2004B1BE7 /* FlashRuntimeExtensions.h */; };
 		CE60CCCB1F63E25C004B1BE7 /* FreSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE60CCC31F63DA7F004B1BE7 /* FreSwift.framework */; };
 		CE60CCCC1F63E444004B1BE7 /* FreMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CE60CCC11F63DA4D004B1BE7 /* FreMacros.h */; };
 		CEA0DE161F5DF7330012EB4E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA0DE151F5DF7330012EB4E /* Accelerate.framework */; };
@@ -82,7 +81,6 @@
 		CE5E29871F6452CC00FDB81A /* MarkerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkerOptions.swift; sourceTree = "<group>"; };
 		CE60CCC11F63DA4D004B1BE7 /* FreMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreMacros.h; sourceTree = "<group>"; };
 		CE60CCC31F63DA7F004B1BE7 /* FreSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FreSwift.framework; path = Carthage/Build/iOS/FreSwift.framework; sourceTree = "<group>"; };
-		CE60CCC91F63E0C2004B1BE7 /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
 		CEA0DE151F5DF7330012EB4E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CEA0DE171F5DF7490012EB4E /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		CEA0DE191F5DF7650012EB4E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -166,7 +164,6 @@
 		CE3551E11E7F1C37009375A7 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				CE60CCC91F63E0C2004B1BE7 /* FlashRuntimeExtensions.h */,
 				CE3980991E58BC3B0062485B /* GoogleMapsANE_FW-Swift.h */,
 				CE39808C1E58BAA90062485B /* GoogleMapsANE_FW.h */,
 			);
@@ -265,7 +262,6 @@
 				CEB5ED121F5C4F7800AE8B16 /* SwiftyJSON.h in Headers */,
 				CE39809A1E58BC3B0062485B /* GoogleMapsANE_FW-Swift.h in Headers */,
 				CE39808E1E58BAA90062485B /* GoogleMapsANE_FW.h in Headers */,
-				CE60CCCA1F63E0C2004B1BE7 /* FlashRuntimeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
