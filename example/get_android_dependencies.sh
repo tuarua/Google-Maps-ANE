@@ -7,7 +7,4 @@ wget -O android_dependencies/com.google.android.gms.play-services-base-11.2.0.an
 wget -O android_dependencies/com.google.android.gms.play-services-location-11.2.0.ane https://github.com/tuarua/Android-ANE-Dependencies/blob/master/anes/play-services/com.google.android.gms.play-services-location-11.2.0.ane?raw=true
 wget -O android_dependencies/com.google.android.gms.play-services-maps-11.2.0.ane https://github.com/tuarua/Android-ANE-Dependencies/blob/master/anes/play-services/com.google.android.gms.play-services-maps-11.2.0.ane?raw=true
 
-
-
-
-
+wget -O ../native_extension/ane/GoogleMapsANE.ane https://github.com/tuarua/Google-Maps-ANE/releases/download/0.0.5/GoogleMapsANE.ane?raw=true
