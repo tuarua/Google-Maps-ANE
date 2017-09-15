@@ -85,5 +85,6 @@ fabric.properties
 Frameworks/*.bundle
 Frameworks/*.framework
 Carthage/
+Carthage_bak/
 FreSwift_bak/
 

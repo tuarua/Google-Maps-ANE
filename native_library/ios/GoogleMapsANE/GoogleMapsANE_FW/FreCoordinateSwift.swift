@@ -31,12 +31,8 @@ class FreCoordinateSwift: FreObjectSwift {
     public init(value: CLLocationCoordinate2D) {
         var freObject: FREObject? = nil
         do {
-            let argsArray: NSPointerArray = NSPointerArray(options: .opaqueMemory)
-            let arg0: FREObject? = try FreObjectSwift.init(cgFloat: CGFloat(value.latitude)).rawValue
-            argsArray.addPointer(arg0)
-            let arg1: FREObject? = try FreObjectSwift.init(cgFloat: CGFloat(value.longitude)).rawValue
-            argsArray.addPointer(arg1)
-            freObject = try FreSwiftHelper.newObject("com.tuarua.googlemaps.Coordinate", argsArray)
+            freObject = try FREObject.init(className: "fcom.tuarua.googlemaps.Coordinate",
+                                           args: CGFloat.init(value.latitude), CGFloat.init(value.longitude))
         } catch {
         }
         
@@ -58,11 +54,12 @@ class FreCoordinateSwift: FreObjectSwift {
     
     private func getAsCLLocationCoordinate2D(_ rawValue: FREObject) throws -> CLLocationCoordinate2D {
         var ret: CLLocationCoordinate2D = CLLocationCoordinate2D.init()
-        if let lat = try CLLocationDegrees.init(FreSwiftHelper.getProperty(rawValue: rawValue, name: "latitude")),
-            let lng = try CLLocationDegrees.init(FreSwiftHelper.getProperty(rawValue: rawValue, name: "longitude"))
-            {
+        if let lat = try CLLocationDegrees.init(rawValue.getProp(name: "latitude")),
+            let lng = try CLLocationDegrees.init(rawValue.getProp(name: "longitude"))
+        {
             ret = CLLocationCoordinate2D.init(latitude: lat, longitude: lng)
         }
+        
         return ret
     }
     
@@ -78,12 +75,6 @@ public extension CLLocationCoordinate2D {
         } else {
             return nil
         }
-    }
-    init?(_ freObjectSwift: FreObjectSwift?) {
-        guard let val = freObjectSwift, let rv = val.rawValue else {
-            return nil
-        }
-        self.init(rv)
     }
 }
 

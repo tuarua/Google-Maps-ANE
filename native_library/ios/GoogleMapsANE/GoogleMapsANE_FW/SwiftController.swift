@@ -386,6 +386,9 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     @objc public func setFREContext(ctx: FREContext) {
         self.context = FreContextSwift.init(freContext: ctx)
     }
+    
+    @objc public func onLoad() {
+    }
 
 
 }

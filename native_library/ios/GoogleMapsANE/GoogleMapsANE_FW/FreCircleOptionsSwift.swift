@@ -24,10 +24,6 @@ class FreCircleOptionsSwift: FreObjectSwift {
         super.init(freObject: freObject)
     }
     
-    override public init(freObjectSwift: FreObjectSwift?) {
-        super.init(freObjectSwift: freObjectSwift)
-    }
-    
     override public var value: Any? {
         get {
             do {
@@ -46,14 +42,13 @@ class FreCircleOptionsSwift: FreObjectSwift {
         
         if let centerFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "center"),
             let center: CLLocationCoordinate2D = FreCoordinateSwift.init(freObject: centerFre).value as? CLLocationCoordinate2D,
-            let radiusFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "radius"),
+            let radiusFre = try rawValue.getProp(name: "radius"),
             let radius = Double(radiusFre),
-            let strokeWidthFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "strokeWidth"),
-            let strokeWidth = CGFloat(strokeWidthFre),
-            let strokeColorFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "strokeColor"),
-            let strokeAlphaFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "strokeAlpha"),
-            let fillColorFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "fillColor"),
-            let fillAlphaFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "fillAlpha")
+            let strokeWidth = try CGFloat(rawValue.getProp(name: "strokeWidth")),
+            let strokeColorFre = try rawValue.getProp(name: "strokeColor"),
+            let strokeAlphaFre = try rawValue.getProp(name: "strokeAlpha"),
+            let fillColorFre = try rawValue.getProp(name: "fillColor"),
+            let fillAlphaFre = try rawValue.getProp(name: "fillAlpha")
             {
             ret = GMSCircle(position: center, radius: radius)
             ret.strokeWidth = strokeWidth
