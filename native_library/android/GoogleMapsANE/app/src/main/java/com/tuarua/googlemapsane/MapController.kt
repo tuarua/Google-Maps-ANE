@@ -42,7 +42,6 @@ import com.tuarua.frekotlin.FreException
 import com.tuarua.frekotlin.FreKotlinController
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.*
-import java.util.ArrayList
 
 
 class MapController(override var context: FREContext?, private var airView: ViewGroup, coordinate: LatLng,
@@ -63,7 +62,7 @@ class MapController(override var context: FREContext?, private var airView: View
     private var centerAt: LatLng = coordinate
     private var mapView: GoogleMap? = null
     private var container: FrameLayout? = null
-    private var asListeners: ArrayList<String> = ArrayList()
+    private var asListeners: MutableList<String> = mutableListOf()
     private val markers = mutableMapOf<String, Marker>()
     var animationDuration: Int = 2000
     private val gson = Gson()

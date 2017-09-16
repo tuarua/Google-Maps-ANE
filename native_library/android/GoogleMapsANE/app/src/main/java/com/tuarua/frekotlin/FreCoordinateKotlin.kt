@@ -22,11 +22,7 @@ class FreCoordinateKotlin() : FreObjectKotlin() {
     private var TAG = "com.tuarua.FreCoordinateKotlin"
 
     constructor(value: LatLng) : this() {
-        rawValue = FreObjectKotlin("com.tuarua.googlemaps.Coordinate", value.longitude, value.latitude).rawValue
-    }
-
-    constructor(freObjectKotlin: FreObjectKotlin?) : this() {
-        rawValue = freObjectKotlin?.rawValue
+        rawValue = FREObject("com.tuarua.googlemaps.Coordinate", value.longitude, value.latitude)
     }
 
     constructor(freObject: FREObject?) : this() {
@@ -38,22 +34,27 @@ class FreCoordinateKotlin() : FreObjectKotlin() {
         get() {
             var lat = 0.0
             var lng = 0.0
-            if (this.rawValue == null) return LatLng(lat, lng)
-            try {
-                val latFre = Double(this.getProperty("latitude"))
-                val lngFre = Double(this.getProperty("longitude"))
-                if (latFre != null && lngFre != null) {
-                    lat = latFre
-                    lng = lngFre
+
+            val rv = rawValue
+            if (rv == null) {
+                return LatLng(lat, lng)
+            } else {
+                try {
+                    val latFre = Double(rv.getProp("latitude"))
+                    val lngFre = Double(rv.getProp("longitude"))
+                    if (latFre != null && lngFre != null) {
+                        lat = latFre
+                        lng = lngFre
+                    }
+                } catch (e: FreException) {
+                    throw e
+                } catch (e: Exception) {
+                    throw FreException(e)
                 }
-            } catch (e: FreException) {
-                throw e
-            } catch (e: Exception) {
-                throw FreException(e)
+                return LatLng(lat, lng)
             }
-            return LatLng(lat, lng)
+
         }
 }
 
 fun LatLng(freObject: FREObject?): LatLng = FreCoordinateKotlin(freObject = freObject).value
-fun LatLng(freObjectKotlin: FreObjectKotlin?): LatLng = FreCoordinateKotlin(freObjectKotlin = freObjectKotlin).value
