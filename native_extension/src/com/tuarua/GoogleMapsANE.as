@@ -71,7 +71,7 @@ public class GoogleMapsANE extends EventDispatcher {
     private function gotEvent(event:StatusEvent):void {
         switch (event.level) {
             case TRACE:
-                trace(event.code);
+                trace("[" + NAME + "]", event.code);
                 break;
             case GoogleMapsEvent.DID_TAP_AT:
             case GoogleMapsEvent.DID_LONG_PRESS_AT:
