@@ -24,7 +24,6 @@ import com.google.android.gms.maps.model.*
 import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.Settings
-import java.util.ArrayList
 
 @Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST")
 class KotlinController : FreKotlinMainController {
@@ -33,19 +32,19 @@ class KotlinController : FreKotlinMainController {
     private val TRACE = "TRACE"
     private var isAdded: Boolean = false
     private var settings: Settings = Settings()
-    private var asListeners: ArrayList<String> = ArrayList()
+    private var asListeners: MutableList<String> = mutableListOf()
     private var listenersAddedToMapC: Boolean = false
 
     private var mapController: MapController? = null
 
     fun isSupported(ctx: FREContext, argv: FREArgv): FREObject? {
-        return FreObjectKotlin(true).rawValue.guard { return null }
+        return true.toFREObject()
     }
 
     fun init(ctx: FREContext, argv: FREArgv): FREObject? {
         airView = context?.activity?.findViewById(android.R.id.content) as ViewGroup
         airView = airView.getChildAt(0) as ViewGroup
-        return FreObjectKotlin(true).rawValue.guard { return null }
+        return true.toFREObject()
     }
 
     fun initMap(ctx: FREContext, argv: FREArgv): FREObject? {
@@ -55,17 +54,17 @@ class KotlinController : FreKotlinMainController {
             scaleFactor = Double(argv[4]) ?: 1.0
             val centerAt = LatLng(argv[1])
             val viewPort = Rect(argv[0])
-            val settingsFre = FreObjectKotlin(argv[3]) // settings: Settings
-            settings.compassButton = Boolean(settingsFre.getProperty("compassButton")) == true
-            settings.indoorPicker = Boolean(settingsFre.getProperty("indoorPicker")) == true
-            settings.myLocationButton = Boolean(settingsFre.getProperty("myLocationButton")) == true
-            settings.rotateGestures = Boolean(settingsFre.getProperty("rotateGestures")) == true
-            settings.scrollGestures = Boolean(settingsFre.getProperty("scrollGestures")) == true
-            settings.tiltGestures = Boolean(settingsFre.getProperty("tiltGestures")) == true
-            settings.zoomGestures = Boolean(settingsFre.getProperty("zoomGestures")) == true
+            val settingsFre = argv[3] // settings: Settings
+            settings.compassButton = Boolean(settingsFre.getProp("compassButton")) == true
+            settings.indoorPicker = Boolean(settingsFre.getProp("indoorPicker")) == true
+            settings.myLocationButton = Boolean(settingsFre.getProp("myLocationButton")) == true
+            settings.rotateGestures = Boolean(settingsFre.getProp("rotateGestures")) == true
+            settings.scrollGestures = Boolean(settingsFre.getProp("scrollGestures")) == true
+            settings.tiltGestures = Boolean(settingsFre.getProp("tiltGestures")) == true
+            settings.zoomGestures = Boolean(settingsFre.getProp("zoomGestures")) == true
             mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
         } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace) //return the error as an actionscript error
+            return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
             return FreException(e).getError(Thread.currentThread().stackTrace)
         }
@@ -121,7 +120,7 @@ class KotlinController : FreKotlinMainController {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
             val addedMarker: Marker? = mapController?.addMarker(MarkerOptions(argv[0]))
-            return FreObjectKotlin(addedMarker?.id).rawValue.guard { return null }
+            return addedMarker?.id?.toFREObject()
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
@@ -133,7 +132,7 @@ class KotlinController : FreKotlinMainController {
         argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
 
         try {
-            val uuid = String(argv[0]) // id:String
+            val uuid = String(argv[0])
             if (uuid != null) {
                 mapController?.updateMarker(uuid, MarkerOptions(argv[1]))
             }
@@ -210,9 +209,7 @@ class KotlinController : FreKotlinMainController {
     fun setViewPort(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         val viewPortFre = Rect(argv[0])
-
-        trace("setViewPort pre-resize", "${viewPortFre?.x} ${viewPortFre?.y} ${viewPortFre?.width} ${viewPortFre?.height}")
-
+       /* trace("setViewPort pre-resize", "${viewPortFre?.x} ${viewPortFre?.y} ${viewPortFre?.width} ${viewPortFre?.height}")*/
         mapController?.viewPort = scaleViewPort(viewPortFre)
         return null
     }

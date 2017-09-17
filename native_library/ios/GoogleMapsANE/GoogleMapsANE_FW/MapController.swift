@@ -20,7 +20,7 @@ import GoogleMaps
 import FreSwift
 
 class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
-    internal var TAG: String? = "GoogleMapsANE"
+    internal var TAG: String? = "MapController"
     internal var context: FreContextSwift!
     public var mapView: GMSMapView!
     private var settings: Settings?

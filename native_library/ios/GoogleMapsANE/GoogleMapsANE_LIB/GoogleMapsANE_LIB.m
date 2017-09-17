@@ -29,7 +29,7 @@
 FRE_OBJC_BRIDGE_FUNCS
 @end
 
-
+@implementation GoogleMapsANE_LIB
 SWIFT_DECL(TRGMA) // use unique prefix throughout to prevent clashes with other ANEs
 CONTEXT_INIT(TRGMA) {
     SWIFT_INITS(TRGMA)
@@ -77,3 +77,4 @@ CONTEXT_FIN(TRGMA) {
 }
 EXTENSION_INIT(TRGMA)
 EXTENSION_FIN(TRGMA)
+@end

@@ -26,10 +26,6 @@ import java.nio.ByteBuffer
 class FreMarkerOptionsKotlin() : FreObjectKotlin() {
     private var TAG = "com.tuarua.FreMarkerOptionsKotlin"
 
-    constructor(freObjectKotlin: FreObjectKotlin?) : this() {
-        rawValue = freObjectKotlin?.rawValue
-    }
-
     constructor(freObject: FREObject?) : this() {
         rawValue = freObject
     }
@@ -37,49 +33,53 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
     override val value: MarkerOptions
         @Throws(FreException::class)
         get() {
-            val coordinate = LatLng(this.getProperty("coordinate"))
-            val title = String(this.getProperty("title"))
-            val snippet = String(this.getProperty("snippet"))
-            val draggable = Boolean(this.getProperty("isDraggable")) == true
-            val flat = Boolean(this.getProperty("isFlat")) == true
-            val tappable = Boolean(this.getProperty("isTappable")) == true
+            val rv = rawValue
+            if (rv != null) {
+                val coordinate = LatLng(rv.getProp("coordinate"))
+                val title = String(rv.getProp("title"))
+                val snippet = String(rv.getProp("snippet"))
+                val draggable = Boolean(rv.getProp("isDraggable")) == true
+                val flat = Boolean(rv.getProp("isFlat")) == true
+                val tappable = Boolean(rv.getProp("isTappable")) == true
 
-            val opacity = Float(this.getProperty("opacity")) ?: 1.0F
-            val rotation = Float(this.getProperty("rotation")) ?: 0.0F
+                val opacity = Float(rv.getProp("opacity")) ?: 1.0F
+                val rotation = Float(rv.getProp("rotation")) ?: 0.0F
 
-            val colorFre = this.getProperty("color")
-            val color = colorFre?.toHSV() ?: 0.0F
+                val colorFre = rv.getProp("color")
+                val color = colorFre?.toHSV() ?: 0.0F
 
-            val iconFre = (this.getProperty("icon") as FreObjectKotlin).rawValue
-            var icon: Bitmap? = null
-            try {
-                if (iconFre is FREObject) {
-                    val bmd = FreBitmapDataKotlin(iconFre)
-                    bmd.acquire()
-                    if (bmd.bits32 is ByteBuffer) {
-                        icon = Bitmap.createBitmap(bmd.width, bmd.height, Bitmap.Config.ARGB_8888)
-                        icon.copyPixelsFromBuffer(bmd.bits32)
-                        //icon.recycle()
+                val iconFre = rv.getProp("icon")
+                var icon: Bitmap? = null
+                try {
+                    if (iconFre is FREObject) {
+                        val bmd = FreBitmapDataKotlin(iconFre)
+                        bmd.acquire()
+                        if (bmd.bits32 is ByteBuffer) {
+                            icon = Bitmap.createBitmap(bmd.width, bmd.height, Bitmap.Config.ARGB_8888)
+                            icon.copyPixelsFromBuffer(bmd.bits32)
+                            //icon.recycle()
+                        }
+                        bmd.release()
                     }
-                    bmd.release()
+                } catch (e: FreException) {
+                    throw e
+                } catch (e: Exception) {
+                    throw FreException(e)
                 }
-            } catch (e: FreException) {
-                throw e
-            } catch (e: Exception) {
-                throw FreException(e)
-            }
 
+                return MarkerOptions()
+                        .position(coordinate)
+                        .title(title)
+                        .snippet(snippet)
+                        .draggable(draggable)
+                        .flat(flat)
+                        .alpha(opacity)
+                        .icon(if (icon is Bitmap) BitmapDescriptorFactory
+                                .fromBitmap(icon) else BitmapDescriptorFactory
+                                .defaultMarker(color))
+                        .rotation(rotation)
+            }
             return MarkerOptions()
-                    .position(coordinate)
-                    .title(title)
-                    .snippet(snippet)
-                    .draggable(draggable)
-                    .flat(flat)
-                    .alpha(opacity)
-                    .icon(if (icon is Bitmap) BitmapDescriptorFactory
-                            .fromBitmap(icon) else BitmapDescriptorFactory
-                            .defaultMarker(color))
-                    .rotation(rotation)
         }
 }
 

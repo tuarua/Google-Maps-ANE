@@ -18,7 +18,7 @@ import UIKit
 import GoogleMaps
 import FreSwift
 
-class MarkerOptions: FreObjectSwift {
+class MarkerOptions: NSObject {
     var coordinate: CLLocationCoordinate2D?
     var rotation: CLLocationDegrees = CLLocationDegrees.init(0)
     var color:UIColor?
@@ -30,57 +30,61 @@ class MarkerOptions: FreObjectSwift {
     var isTappable: Bool = false
     var icon: UIImage?
     
-    override public init(freObject: FREObject?) {
-        super.init(freObject: freObject)
+    public init(freObject: FREObject?) {
+        //super.init(freObject: freObject)
         
         do {
-            if let _coordinate = try CLLocationCoordinate2D.init(self.getProperty(name: "coordinate")) {
+            if let _coordinate = try CLLocationCoordinate2D.init(freObject?.getProp(name: "coordinate")) {
                 coordinate = _coordinate
                 
-                if let _title = try String(self.getProperty(name: "title")) {
+                if let _title = try String(freObject?.getProp(name: "title")) {
                     title = _title
                 }
 
-                if let _snippet = try String(self.getProperty(name: "snippet")) {
+                if let _snippet = try String(freObject?.getProp(name: "snippet")) {
                     snippet = _snippet
                 }
-                if let freColor = try self.getProperty(name: "color")?.rawValue {
+                if let freColor = try freObject?.getProp(name: "color") {
                     let _color = UIColor.init(freObject: freColor)
                     color = _color
                 }
                 
-                if let _isDraggable = try Bool(self.getProperty(name: "isDraggable")) {
+                if let _isDraggable = try Bool(freObject?.getProp(name: "isDraggable")) {
                     isDraggable = _isDraggable
                 }
                 
-                if let _isFlat = try Bool(self.getProperty(name: "isFlat")) {
+                if let _isFlat = try Bool(freObject?.getProp(name: "isFlat")) {
                     isFlat = _isFlat
                 }
                 
-                if let _isTappable = try Bool(self.getProperty(name: "isTappable")) {
+                if let _isTappable = try Bool(freObject?.getProp(name: "isTappable")) {
                     isTappable = _isTappable
                 }
                 
                 
-                if let rotationInt: Int = try Int(self.getProperty(name: "rotation")) {
+                if let rotationInt: Int = try Int(freObject?.getProp(name: "rotation")) {
                     rotation = CLLocationDegrees.init(rotationInt)
                 }
                 
                 
-                if let _opacity = try CGFloat(self.getProperty(name: "opacity")) {
+                if let _opacity = try CGFloat(freObject?.getProp(name: "opacity")) {
                     opacity = _opacity
                 }
                 
-                let asBitmapData = try FreBitmapDataSwift.init(freObjectSwift: self.getProperty(name: "icon"))
-                defer {
-                    asBitmapData.releaseData()
-                }
-                do {
-                    if let cgimg = try asBitmapData.getAsImage() {
-                        icon = UIImage.init(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
+                if let _icon = try freObject?.getProp(name: "icon") {
+                    let asBitmapData = FreBitmapDataSwift.init(freObject: _icon)
+                    defer {
+                        asBitmapData.releaseData()
                     }
-                } catch {
+                    do {
+                        if let cgimg = try asBitmapData.getAsImage() {
+                            icon = UIImage.init(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
+                        }
+                    }
+                    catch {}
                 }
+                
+                
                 
                 
             }

@@ -20,7 +20,7 @@ import GoogleMaps
 import FreSwift
 
 public class SwiftController: NSObject, FreSwiftMainController, CLLocationManagerDelegate {
-    public var TAG: String? = "GoogleMapsANE"
+    public var TAG: String? = "SwiftController"
     public var context: FreContextSwift!
     public var functionsToSet: FREFunctionMap = [:]
     private var locationManager = CLLocationManager()
@@ -56,12 +56,8 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         functionsToSet["\(prefix)addCircle"] = addCircle
         functionsToSet["\(prefix)showInfoWindow"] = showInfoWindow
         functionsToSet["\(prefix)hideInfoWindow"] = hideInfoWindow
-        
-        
         functionsToSet["\(prefix)setBounds"] = setBounds
         
-        
-
         var arr: Array<String> = []
         for key in functionsToSet.keys {
             arr.append(key)
@@ -385,6 +381,9 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
 
     @objc public func setFREContext(ctx: FREContext) {
         self.context = FreContextSwift.init(freContext: ctx)
+    }
+    
+    @objc public func onLoad() {
     }
 
 
