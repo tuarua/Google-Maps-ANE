@@ -18,8 +18,9 @@
 import UIKit
 import GoogleMaps
 import FreSwift
+import MapKit
 
-class FreCircleOptionsSwift: FreObjectSwift {
+class FreGMSCircle: FreObjectSwift {
     override public init(freObject: FREObject?) {
         super.init(freObject: freObject)
     }
@@ -41,7 +42,7 @@ class FreCircleOptionsSwift: FreObjectSwift {
         var ret: GMSCircle = GMSCircle.init()
         
         if let centerFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "center"),
-            let center: CLLocationCoordinate2D = FreCoordinateSwift.init(freObject: centerFre).value as? CLLocationCoordinate2D,
+            let center: CLLocationCoordinate2D = FreCLLocationCoordinate.init(freObject: centerFre).value as? CLLocationCoordinate2D,
             let radiusFre = try rawValue.getProp(name: "radius"),
             let radius = Double(radiusFre),
             let strokeWidth = try CGFloat(rawValue.getProp(name: "strokeWidth")),
@@ -66,7 +67,7 @@ public extension GMSCircle {
         guard let rv = freObject else {
             return nil
         }
-        if let circ = FreCircleOptionsSwift.init(freObject: rv).value as? GMSCircle {
+        if let circ = FreGMSCircle.init(freObject: rv).value as? GMSCircle {
             self.init(position: circ.position, radius: circ.radius)
             self.fillColor = circ.fillColor
             self.strokeColor = circ.strokeColor

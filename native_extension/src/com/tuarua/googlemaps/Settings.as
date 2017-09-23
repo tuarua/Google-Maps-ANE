@@ -34,6 +34,9 @@ public class Settings {
      * this means that gestures on the map will not be additional consumed as scroll
      * gestures.  However, disabling this (set to NO) may be useful to support
      * complex view hierarchies or requirements.
+     *
+     * Ignored on Apple Maps
+     *
      */
     public var consumesGesturesInView:Boolean = true;
     /**
@@ -57,11 +60,17 @@ public class Settings {
      * visible when the view is focused on a building with indoor floor data.
      * If disabled, the selected floor can still be controlled programmatically via
      * the indoorDisplay mapView property.
+     *
+     * Ignored on Apple Maps
+     *
      */
     public var indoorPicker:Boolean = true;
     /**
      * Controls whether rotate and zoom gestures can be performed off-center and scrolled around
      * (default true).
+     *
+     * Ignored on Apple Maps
+     *
      */
     public var allowScrollGesturesDuringRotateOrZoom:Boolean = true;
 

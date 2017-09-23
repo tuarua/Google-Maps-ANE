@@ -1,3 +1,10 @@
+### 0.0.7 
+Added Apple Maps on iOS
+asdocs
+
+### 0.0.6 
+Minor changes
+
 ### 0.0.5 
 iOS version
 

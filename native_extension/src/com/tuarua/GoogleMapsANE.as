@@ -4,6 +4,8 @@ import com.tuarua.googlemaps.CameraPosition;
 import com.tuarua.googlemaps.Circle;
 import com.tuarua.googlemaps.Coordinate;
 import com.tuarua.googlemaps.GoogleMapsEvent;
+import com.tuarua.googlemaps.MapProvider;
+import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.location.LocationEvent;
@@ -29,9 +31,10 @@ public class GoogleMapsANE extends EventDispatcher {
     public function GoogleMapsANE() {
         initiate();
     }
-	/**
-	 * This method is omitted from the output. * * @private
-	 */
+
+    /**
+     * This method is omitted from the output. * * @private
+     */
     private function initiate():void {
         trace("[" + NAME + "] Initalizing ANE...");
         try {
@@ -65,9 +68,10 @@ public class GoogleMapsANE extends EventDispatcher {
             trace("You need to init before removing EventListeners");
         }
     }
-	/**
-	 * This method is omitted from the output. * * @private
-	 */
+
+    /**
+     * This method is omitted from the output. * * @private
+     */
     private function gotEvent(event:StatusEvent):void {
         switch (event.level) {
             case TRACE:
@@ -85,7 +89,6 @@ public class GoogleMapsANE extends EventDispatcher {
                 break;
             case GoogleMapsEvent.DID_TAP_MARKER:
             case GoogleMapsEvent.DID_BEGIN_DRAGGING:
-            case GoogleMapsEvent.DID_END_DRAGGING:
             case GoogleMapsEvent.DID_DRAG:
             case GoogleMapsEvent.DID_TAP_INFO_WINDOW:
             case GoogleMapsEvent.DID_CLOSE_INFO_WINDOW:
@@ -109,52 +112,57 @@ public class GoogleMapsANE extends EventDispatcher {
                     dispatchEvent(new LocationEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
-                    break;
                 }
                 break;
-            case GoogleMapsEvent.ON_CAMERA_MOVE:
+            case GoogleMapsEvent.DID_END_DRAGGING:
                 try {
                     argsAsJSON = JSON.parse(event.code);
+                    var id:String = argsAsJSON.id;
+                    var latitude:Number = argsAsJSON.latitude;
+                    var longitude:Number = argsAsJSON.longitude;
+                    var marker:Marker = _markers[id] as Marker;
+                    marker.coordinate.latitude = latitude;
+                    marker.coordinate.longitude = longitude;
                     dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
-                    break;
                 }
                 break;
+            case GoogleMapsEvent.ON_CAMERA_MOVE:
             case GoogleMapsEvent.ON_CAMERA_MOVE_STARTED:
                 try {
                     argsAsJSON = JSON.parse(event.code);
                     dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
-                    break;
                 }
                 break;
         }
     }
 
-	/**
-	 * 
-	 * @param key
-	 * @return 
-	 * 
-	 */
-    public function init(key:String):Boolean {
-        _isInited = ctx.call("init", key);
+    /**
+     *
+     * @param key
+     * @return
+     * @param mapProvider
+     *
+     */
+    public function init(key:String, mapProvider:int = MapProvider.GOOGLE):Boolean {
+        _isInited = ctx.call("init", key ,mapProvider);
         return _isInited;
     }
 
-	/**
-	 * 
-	 * @param viewPort
-	 * @param centerAt
-	 * @param zoomLevel
-	 * @param settings
-	 * @param scaleFactor
-	 * 
-	 */	
+    /**
+     *
+     * @param viewPort
+     * @param centerAt
+     * @param zoomLevel
+     * @param settings
+     * @param scaleFactor
+     *
+     */
     public function initMap(viewPort:Rectangle, centerAt:Coordinate, zoomLevel:Number, settings:Settings,
-                            scaleFactor:Number = 1.0):void {//TODO rename coord to centerAt
+                            scaleFactor:Number = 1.0):void {
         if (_isInited) {
             _viewPort = viewPort;
             var theRet:* = ctx.call("initMap", _viewPort, centerAt, zoomLevel, settings, scaleFactor);
@@ -167,11 +175,11 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
-	/**
-	 * 
-	 * @param circle
-	 * 
-	 */	
+    /**
+     *
+     * @param circle
+     *
+     */
     public function addCircle(circle:Circle):void {
         if (safetyCheck()) {
             var theRet:* = ctx.call("addCircle", circle);
@@ -180,12 +188,13 @@ public class GoogleMapsANE extends EventDispatcher {
             }
         }
     }
-	/**
-	 * 
-	 * @param marker
-	 * @return 
-	 * 
-	 */
+
+    /**
+     *
+     * @param marker
+     * @return
+     *
+     */
     public function addMarker(marker:Marker):String {
         if (safetyCheck()) {
             var theRet:* = ctx.call("addMarker", marker);
@@ -197,11 +206,12 @@ public class GoogleMapsANE extends EventDispatcher {
         }
         return null;
     }
-	/**
-	 * 
-	 * @param uuid
-	 * 
-	 */
+
+    /**
+     *
+     * @param uuid
+     *
+     */
     public function updateMarker(uuid:String):void {
         if (safetyCheck()) {
             var marker:Marker = _markers[uuid]
@@ -211,21 +221,23 @@ public class GoogleMapsANE extends EventDispatcher {
             }
         }
     }
-	/**
-	 * 
-	 * @param uuid
-	 * 
-	 */
+
+    /**
+     *
+     * @param uuid
+     *
+     */
     public function removeMarker(uuid:String):void {
         if (safetyCheck()) {
             delete markers[uuid];
             ctx.call("removeMarker", uuid);
         }
     }
-	/**
-	 * 
-	 * 
-	 */
+
+    /**
+     *
+     *
+     */
     public function clear():void {
         if (safetyCheck()) {
             ctx.call("clear");
@@ -261,53 +273,53 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
-	/**
-	 * 
-	 * @param position
-	 * @param animates
-	 * 
-	 */	
+    /**
+     *
+     * @param position
+     * @param animates
+     *
+     */
     public function moveCamera(position:CameraPosition, animates:Boolean = false):void {
         if (safetyCheck()) {
-            var target:Coordinate = position.target ? position.target : null;
+            var centerAt:Coordinate = position.centerAt ? position.centerAt : null;
             var zoom:* = position.zoom != -9999 ? position.zoom : null;
             var tilt:* = position.tilt != -9999 ? position.tilt : null;
             var bearing:* = position.bearing != -9999 ? position.bearing : null;
-            var theRet:* = ctx.call("moveCamera", target, zoom, tilt, bearing, animates);
+            var theRet:* = ctx.call("moveCamera", centerAt, zoom, tilt, bearing, animates);
             if (theRet is ANEError) {
                 throw theRet as ANEError;
             }
         }
     }
 
-	/**
-	 * 
-	 * @param animates
-	 * 
-	 */
+    /**
+     *
+     * @param animates
+     *
+     */
     public function zoomIn(animates:Boolean = false):void {
         if (safetyCheck()) {
             ctx.call("zoomIn", animates);
         }
     }
 
-	/**
-	 * 
-	 * @param animates
-	 * 
-	 */
+    /**
+     *
+     * @param animates
+     *
+     */
     public function zoomOut(animates:Boolean = false):void {
         if (safetyCheck()) {
             ctx.call("zoomOut", animates);
         }
     }
 
-	/**
-	 * 
-	 * @param zoomLevel
-	 * @param animates
-	 * 
-	 */	
+    /**
+     *
+     * @param zoomLevel
+     * @param animates
+     *
+     */
     public function zoomTo(zoomLevel:Number, animates:Boolean = false):void {
         if (safetyCheck()) {
             ctx.call("zoomTo", zoomLevel, animates);
@@ -324,10 +336,11 @@ public class GoogleMapsANE extends EventDispatcher {
             ctx.call("setMapType", value);
         }
     }
-	/**
-	 * 
-	 * 
-	 */
+
+    /**
+     *
+     *
+     */
     public function requestLocation():void {
         if (safetyCheck()) {
             ctx.call("requestLocation");
@@ -364,21 +377,23 @@ public class GoogleMapsANE extends EventDispatcher {
             ctx.call("setViewPort", _viewPort);
         }
     }
-	/**
-	 * 
-	 * @param uuid
-	 * 
-	 */
+
+    /**
+     *
+     * @param uuid
+     *
+     */
     public function showInfoWindow(uuid:String):void {
         if (safetyCheck()) {
             ctx.call("showInfoWindow", uuid);
         }
     }
-	/**
-	 * 
-	 * @param uuid
-	 * 
-	 */
+
+    /**
+     *
+     * @param uuid
+     *
+     */
     public function hideInfoWindow(uuid:String):void {
         if (safetyCheck()) {
             ctx.call("hideInfoWindow", uuid);
@@ -397,11 +412,11 @@ public class GoogleMapsANE extends EventDispatcher {
         }
     }
 
-	/**
-	 * 
-	 * @param value in milliseconds, Android only
-	 * 
-	 */	
+    /**
+     *
+     * @param value in milliseconds, Android only
+     *
+     */
     public function set animationDuration(value:int):void {
         if (safetyCheck()) {
             ctx.call("setAnimationDuration", value);
@@ -447,11 +462,12 @@ public class GoogleMapsANE extends EventDispatcher {
         ctx.dispose();
         ctx = null;
     }
-	/**
-	 * 
-	 * @return 
-	 * 
-	 */
+
+    /**
+     *
+     * @return
+     *
+     */
     public function get markers():Dictionary {
         return _markers;
     }

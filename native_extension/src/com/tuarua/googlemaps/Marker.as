@@ -24,7 +24,7 @@ public class Marker {
 	 */	
     public var isDraggable:Boolean = false;
 	/**
-	 * 
+	 * Ignored when using Apple Maps
 	 */	
     public var isFlat:Boolean = false;
 	/**
@@ -34,9 +34,9 @@ public class Marker {
 	/**
 	 * 
 	 */	
-    public var opacity:Number = 1.0;
+    public var alpha:Number = 1.0;
 	/**
-	 * 
+	 * Ignored when using Apple Maps
 	 */	
     public var rotation:int = 0;
 	/**
@@ -51,15 +51,15 @@ public class Marker {
 	 * @param color
 	 * @param icon
 	 * @param isDraggable
-	 * @param isFlat
+	 * @param isFlat Ignored when using Apple Maps
 	 * @param isTappable
-	 * @param rotation
-	 * @param opacity
+	 * @param rotation Ignored when using Apple Maps
+	 * @param alpha
 	 * 
 	 */
     public function Marker(coordinate:Coordinate, title:String = null, snippet:String = null, color:uint = Color.RED,
                            icon:BitmapData = null, isDraggable:Boolean = false, isFlat:Boolean = false,
-                           isTappable:Boolean = true, rotation:int = 0, opacity:Number = 1.0) {
+                           isTappable:Boolean = true, rotation:int = 0, alpha:Number = 1.0) {
         this.coordinate = coordinate;
         this.title = title ? title : "";
         this.snippet = snippet ? snippet : "";
@@ -67,7 +67,7 @@ public class Marker {
         this.isFlat = isFlat;
         this.isTappable = isTappable;
         this.color = color;
-        this.opacity = opacity;
+        this.alpha = alpha;
         this.rotation = rotation;
         this.icon = icon;
     }

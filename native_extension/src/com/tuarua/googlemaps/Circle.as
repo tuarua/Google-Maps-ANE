@@ -27,7 +27,7 @@ public class Circle {
     public var strokeAlpha:Number = 1.0;
 
     /**
-     *
+     * Ignored on Apple Maps
      */
     public var strokePattern:StrokePattern = new StrokePattern();
 
@@ -45,16 +45,20 @@ public class Circle {
 	 * (including GroundOverlays, TileOverlays, Polylines, and Polygons but not Markers). 
 	 * An overlay with a larger z-index is drawn over overlays with smaller z-indices. 
 	 * The order of overlays with the same z-index is arbitrary. The default zIndex is 0.
+     *
+     * Ignored on Apple Maps
+     *
      */
     public var zIndex:uint = 0;
     /**
      * Indicates if the circle is visible or invisible, i.e., whether it is drawn on the map. 
 	 * An invisible circle is not drawn, but retains all of its other properties. 
 	 * The default is true, i.e., visible.
+     *
+     * Ignored on Apple Maps
+     *
      */
     public var visible:Boolean = true;
-
-
 	/**
 	 * 
 	 * @param center

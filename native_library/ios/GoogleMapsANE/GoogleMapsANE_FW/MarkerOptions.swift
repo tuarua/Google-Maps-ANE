@@ -22,7 +22,7 @@ class MarkerOptions: NSObject {
     var coordinate: CLLocationCoordinate2D?
     var rotation: CLLocationDegrees = CLLocationDegrees.init(0)
     var color:UIColor?
-    var opacity: CGFloat = CGFloat.init(1)
+    var alpha: CGFloat = CGFloat.init(1)
     var title: String?
     var snippet: String?
     var isDraggable: Bool = false
@@ -31,8 +31,6 @@ class MarkerOptions: NSObject {
     var icon: UIImage?
     
     public init(freObject: FREObject?) {
-        //super.init(freObject: freObject)
-        
         do {
             if let _coordinate = try CLLocationCoordinate2D.init(freObject?.getProp(name: "coordinate")) {
                 coordinate = _coordinate
@@ -67,8 +65,8 @@ class MarkerOptions: NSObject {
                 }
                 
                 
-                if let _opacity = try CGFloat(freObject?.getProp(name: "opacity")) {
-                    opacity = _opacity
+                if let _alpha = try CGFloat(freObject?.getProp(name: "alpha")) {
+                    alpha = _alpha
                 }
                 
                 if let _icon = try freObject?.getProp(name: "icon") {
@@ -83,10 +81,6 @@ class MarkerOptions: NSObject {
                     }
                     catch {}
                 }
-                
-                
-                
-                
             }
         } catch _ as FreError {
         } catch {

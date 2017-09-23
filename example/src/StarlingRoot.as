@@ -6,6 +6,7 @@ import com.tuarua.googlemaps.Circle;
 import com.tuarua.googlemaps.Color;
 import com.tuarua.googlemaps.Coordinate;
 import com.tuarua.googlemaps.GoogleMapsEvent;
+import com.tuarua.googlemaps.MapProvider;
 import com.tuarua.googlemaps.MapType;
 import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Settings;
@@ -76,21 +77,19 @@ public class StarlingRoot extends Sprite {
         var _assets:AssetManager = assets;
 
         googleMaps = new GoogleMapsANE();
-        var isInited:Boolean = googleMaps.init("AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc"); //iOS API_KEY - Android is set in the manifest
-        trace("isInited",isInited);
+        var isInited:Boolean = googleMaps.init("AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc", MapProvider.GOOGLE); //iOS API_KEY - Android is set in the manifest
+        trace("isInited", isInited);
 
-        if(!isInited){
+        if (!isInited) {
             return;
         }
 
         var viewPort:Rectangle = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
-
         var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
-        trace("coordinate passed into ANE", coordinate.latitude, coordinate.longitude);
 
-        try{
+        try {
             googleMaps.initMap(viewPort, coordinate, 12.0, new Settings(), Starling.current.contentScaleFactor);
-        }catch(e:ANEError){
+        } catch (e:ANEError) {
             trace(e.source)
             trace(e.message)
             trace(e.getStackTrace());
@@ -180,6 +179,7 @@ public class StarlingRoot extends Sprite {
         marker.color = Color.RED;
         marker.icon = (new pinImage() as Bitmap).bitmapData;
         marker.isFlat = false;
+        marker.isTappable = false;
         marker.isDraggable = true;
         firstMarkerId = googleMaps.addMarker(marker);
         trace("uuid for marker", firstMarkerId);
@@ -188,9 +188,9 @@ public class StarlingRoot extends Sprite {
 
     private function onDidEndDragging(event:GoogleMapsEvent):void {
         trace(event);
-        var uuid:String = event.params as String;
+        var uuid:String = event.params.id as String;
         var marker:Marker = googleMaps.markers[uuid] as Marker;
-        trace("end drag marker", uuid, marker.title);
+        trace("end drag marker", uuid, marker.title, "new coordinate", marker.coordinate.latitude, marker.coordinate.longitude);
     }
 
     private function onDidBeginDragging(event:GoogleMapsEvent):void {
@@ -208,7 +208,7 @@ public class StarlingRoot extends Sprite {
         var coordinate:Coordinate = event.params as Coordinate;
         trace("user found at", coordinate.latitude, coordinate.longitude);
         var cameraPosition:CameraPosition = new CameraPosition();
-        cameraPosition.target = coordinate;
+        cameraPosition.centerAt = coordinate;
         googleMaps.moveCamera(cameraPosition);
     }
 
@@ -259,7 +259,7 @@ public class StarlingRoot extends Sprite {
             circle.fillAlpha = 0.2;
             circle.fillColor = Color.PURPLE;
             circle.radius = 2000;
-            circle.strokeWidth = 8.0;
+            circle.strokeWidth = 4.0;
             circle.strokeColor = Color.GREEN;
             circle.strokePattern = new StrokePattern(StrokePatternType.DOTTED, 100, 100);
             googleMaps.addCircle(circle);
@@ -280,15 +280,11 @@ public class StarlingRoot extends Sprite {
             var calgary:Coordinate = new Coordinate(51.05, -114.05);
             googleMaps.setBounds(vancouver, calgary)
         }
-
-        //let vancouver = CLLocationCoordinate2D(latitude: 49.26, longitude: -123.11)
-        //let calgary = CLLocationCoordinate2D(latitude: 51.05,longitude: -114.05)
     }
 
     private function onSetViewPort(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn2);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            trace("set viewpport the map");
             googleMaps.viewPort = new Rectangle(0, 200, 400, 400);
         }
     }
@@ -305,7 +301,7 @@ public class StarlingRoot extends Sprite {
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             var dublin:Coordinate = new Coordinate(53.341273, -6.2887817);
             var newPosition:CameraPosition = new CameraPosition();
-            newPosition.target = dublin;
+            newPosition.centerAt = dublin;
             newPosition.zoom = 10.0;
             newPosition.bearing = 90;
             newPosition.tilt = 30;
@@ -361,14 +357,12 @@ public class StarlingRoot extends Sprite {
         current.viewPort.width = stage.stageWidth * scale;
         current.viewPort.height = stage.stageHeight * scale;
 
-        trace(current.viewPort);
-
         googleMaps.viewPort = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
 
     }
 
     /**
-     * It's very important to call webView.dispose(); when the app is exiting.
+     * It's very important to call dispose(); on any ANEs when the app is exiting.
      */
     private function onExiting(event:Event):void {
         googleMaps.dispose();
