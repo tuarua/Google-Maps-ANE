@@ -183,6 +183,7 @@ public class StarlingRoot extends Sprite {
         marker.isDraggable = true;
         firstMarkerId = googleMaps.addMarker(marker);
         trace("uuid for marker", firstMarkerId);
+        
     }
 
 

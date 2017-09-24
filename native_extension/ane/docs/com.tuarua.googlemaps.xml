@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="com.tuarua.googlemaps"><apiName>com.tuarua.googlemaps</apiName><apiDetail/><apiClassifier id="com.tuarua.googlemaps:CameraPosition"><apiName>CameraPosition</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiValue id="com.tuarua.googlemaps:CameraPosition:bearing"><apiName>bearing</apiName><shortdesc>
+	 aka heading
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>-9999</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+	 aka heading
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:CameraPosition:centerAt"><apiName>centerAt</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>null</apiData><apiValueClassifier>com.tuarua.googlemaps:Coordinate</apiValueClassifier></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:CameraPosition:tilt"><apiName>tilt</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>-9999</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:CameraPosition:zoom"><apiName>zoom</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>-9999</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:Circle"><apiName>Circle</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua.googlemaps:Circle:Circle"><apiName>Circle</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>center</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Coordinate</apiOperationClassifier><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>radius</apiItemName><apiType value="Number"/><apiData>1000.0</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>strokeWidth</apiItemName><apiType value="Number"/><apiData>10.0</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>strokeColor</apiItemName><apiType value="uint"/><apiData>0x000000</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>strokeAlpha</apiItemName><apiType value="Number"/><apiData>1.0</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>strokePattern</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:StrokePattern</apiOperationClassifier><apiData>null</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>fillColor</apiItemName><apiType value="uint"/><apiData>0x000000</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>fillAlpha</apiItemName><apiType value="Number"/><apiData>0.0</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>zIndex</apiItemName><apiType value="uint"/><apiData>0</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>visible</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc> 
+	 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+	 
+	 </apiDesc></apiConstructorDetail></apiConstructor><apiValue id="com.tuarua.googlemaps:Circle:center"><apiName>center</apiName><shortdesc>
+     The center of the Circle is specified as a LatLng.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueClassifier>com.tuarua.googlemaps:Coordinate</apiValueClassifier></apiValueDef><apiDesc>
+     The center of the Circle is specified as a LatLng.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:fillAlpha"><apiName>fillAlpha</apiName><shortdesc>
+     The alpha of the circle fill.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0.0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+     The alpha of the circle fill.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:fillColor"><apiName>fillColor</apiName><shortdesc>
+     The color of the circle fill.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0x000000</apiData><apiType value="uint"/></apiValueDef><apiDesc>
+     The color of the circle fill.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:radius"><apiName>radius</apiName><shortdesc>
+     The radius of the circle, specified in meters.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>1.0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+     The radius of the circle, specified in meters. It should be zero or greater.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:strokeAlpha"><apiName>strokeAlpha</apiName><shortdesc>
+     The alpha of the circle outline.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>1.0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+     The alpha of the circle outline.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:strokeColor"><apiName>strokeColor</apiName><shortdesc>
+     The color of the circle outline in RGB format, the same format used by Color.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0x000000</apiData><apiType value="uint"/></apiValueDef><apiDesc>
+     The color of the circle outline in RGB format, the same format used by Color. 
+	 The default value is black (0xff000000).
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:strokePattern"><apiName>strokePattern</apiName><shortdesc>
+     Ignored on Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiValueClassifier>com.tuarua.googlemaps:StrokePattern</apiValueClassifier></apiValueDef><apiDesc>
+     Ignored on Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:strokeWidth"><apiName>strokeWidth</apiName><shortdesc>
+     The width of the circle's outline in screen pixels.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>10.0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+     The width of the circle's outline in screen pixels. 
+	 The width is constant and independent of the camera's zoom level. 
+	 The default value is 10.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:visible"><apiName>visible</apiName><shortdesc>
+     Indicates if the circle is visible or invisible, i.e., whether it is drawn on the map.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Indicates if the circle is visible or invisible, i.e., whether it is drawn on the map. 
+	 An invisible circle is not drawn, but retains all of its other properties. 
+	 The default is true, i.e., visible.
+     
+     Ignored on Apple Maps
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Circle:zIndex"><apiName>zIndex</apiName><shortdesc>
+     The order in which this tile overlay is drawn with respect to other overlays 
+	 (including GroundOverlays, TileOverlays, Polylines, and Polygons but not Markers).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="uint"/></apiValueDef><apiDesc>
+     The order in which this tile overlay is drawn with respect to other overlays 
+	 (including GroundOverlays, TileOverlays, Polylines, and Polygons but not Markers). 
+	 An overlay with a larger z-index is drawn over overlays with smaller z-indices. 
+	 The order of overlays with the same z-index is arbitrary. The default zIndex is 0.
+     
+     Ignored on Apple Maps
+     
+     </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:MapProvider"><apiName>MapProvider</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiValue id="com.tuarua.googlemaps:MapProvider:APPLE"><apiName>APPLE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:MapProvider:GOOGLE"><apiName>GOOGLE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:StrokePattern"><apiName>StrokePattern</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua.googlemaps:StrokePattern:StrokePattern"><apiName>StrokePattern</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>type</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>dashLength</apiItemName><apiType value="int"/><apiData>50</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>gapLength</apiItemName><apiType value="int"/><apiData>50</apiData><apiDesc> 
+	 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+	 
+	 </apiDesc></apiConstructorDetail></apiConstructor><apiValue id="com.tuarua.googlemaps:StrokePattern:dashLength"><apiName>dashLength</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="int"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:StrokePattern:gapLength"><apiName>gapLength</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="int"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:StrokePattern:type"><apiName>type</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="int"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:Coordinate"><apiName>Coordinate</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua.googlemaps:Coordinate:Coordinate"><apiName>Coordinate</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>latitude</apiItemName><apiType value="Number"/><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>longitude</apiItemName><apiType value="Number"/><apiDesc> 
+	 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+	 
+	 </apiDesc></apiConstructorDetail></apiConstructor><apiValue id="com.tuarua.googlemaps:Coordinate:latitude"><apiName>latitude</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="Number"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Coordinate:longitude"><apiName>longitude</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="Number"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:Color"><apiName>Color</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiValue id="com.tuarua.googlemaps:Color:BLACK"><apiName>BLACK</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0x000000</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:BLUE"><apiName>BLUE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0x0000FF</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:BROWN"><apiName>BROWN</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0xA06633</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:CYAN"><apiName>CYAN</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0x00FFFF</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:DARK_GREY"><apiName>DARK_GREY</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0x545454</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:GREEN"><apiName>GREEN</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0x00FF00</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:GREY"><apiName>GREY</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0x808080</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:LIGHT_GREY"><apiName>LIGHT_GREY</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0xABABAB</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:MAGENTA"><apiName>MAGENTA</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0xFF00FF</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:ORANGE"><apiName>ORANGE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0xFF7A00</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:PURPLE"><apiName>PURPLE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0x7A007A</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:RED"><apiName>RED</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0xFF0000</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Color:YELLOW"><apiName>YELLOW</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0xFFFF00</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:Marker"><apiName>Marker</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua.googlemaps:Marker:Marker"><apiName>Marker</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>coordinate</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Coordinate</apiOperationClassifier><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>title</apiItemName><apiType value="String"/><apiData>null</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>snippet</apiItemName><apiType value="String"/><apiData>null</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>color</apiItemName><apiType value="uint"/><apiData>unknown</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>icon</apiItemName><apiType value="flash.display:BitmapData"/><apiData>null</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>isDraggable</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>isFlat</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>Ignored when using Apple Maps
+	 </apiDesc></apiParam><apiParam><apiItemName>isTappable</apiItemName><apiType value="Boolean"/><apiData>true</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>rotation</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>Ignored when using Apple Maps
+	 </apiDesc></apiParam><apiParam><apiItemName>alpha</apiItemName><apiType value="Number"/><apiData>1.0</apiData><apiDesc> 
+	 </apiDesc></apiParam></apiConstructorDef><apiDesc>
+	 
+	 </apiDesc></apiConstructorDetail></apiConstructor><apiValue id="com.tuarua.googlemaps:Marker:alpha"><apiName>alpha</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>1.0</apiData><apiType value="Number"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:color"><apiName>color</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0xFF0000</apiData><apiType value="uint"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:coordinate"><apiName>coordinate</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>unknown</apiData><apiValueClassifier>com.tuarua.googlemaps:Coordinate</apiValueClassifier></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:icon"><apiName>icon</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="flash.display:BitmapData"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:isDraggable"><apiName>isDraggable</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:isFlat"><apiName>isFlat</apiName><shortdesc>
+	 Ignored when using Apple Maps
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+	 Ignored when using Apple Maps
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:isTappable"><apiName>isTappable</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:rotation"><apiName>rotation</apiName><shortdesc>
+	 Ignored when using Apple Maps
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+	 Ignored when using Apple Maps
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:snippet"><apiName>snippet</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="String"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Marker:title"><apiName>title</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value="String"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:StrokePatternType"><apiName>StrokePatternType</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiValue id="com.tuarua.googlemaps:StrokePatternType:DASHED"><apiName>DASHED</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:StrokePatternType:DOTTED"><apiName>DOTTED</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="int"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:StrokePatternType:MIXED"><apiName>MIXED</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>3</apiData><apiType value="int"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:StrokePatternType:SOLID"><apiName>SOLID</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+	 
+	 </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:Settings"><apiName>Settings</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua.googlemaps:Settings:Settings"><apiName>Settings</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiValue id="com.tuarua.googlemaps:Settings:allowScrollGesturesDuringRotateOrZoom"><apiName>allowScrollGesturesDuringRotateOrZoom</apiName><shortdesc>
+     Controls whether rotate and zoom gestures can be performed off-center and scrolled around
+     (default true).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Controls whether rotate and zoom gestures can be performed off-center and scrolled around
+     (default true).
+     
+     Ignored on Apple Maps
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:compassButton"><apiName>compassButton</apiName><shortdesc>
+     Enables or disables the compass.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Enables or disables the compass. The compass is an icon on the map that
+     indicates the direction of north on the map.
+     
+     If enabled, it is only shown when the camera is rotated away from its default
+     orientation (bearing of 0). When a user taps the compass, the camera orients
+     itself to its default orientation and fades away shortly after. If disabled,
+     the compass will never be displayed.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:consumesGesturesInView"><apiName>consumesGesturesInView</apiName><shortdesc>
+     Controls whether gestures by users are completely consumed by the GMSMapView
+     when gestures are enabled (default true).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Controls whether gestures by users are completely consumed by the GMSMapView
+     when gestures are enabled (default true).  This prevents these gestures from
+     being received by parent views.
+     
+     When the GMSMapView is contained by a UIScrollView (or other scrollable area),
+     this means that gestures on the map will not be additional consumed as scroll
+     gestures.  However, disabling this (set to NO) may be useful to support
+     complex view hierarchies or requirements.
+     
+     Ignored on Apple Maps
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:indoorPicker"><apiName>indoorPicker</apiName><shortdesc>
+     Enables (default) or disables the indoor floor picker.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Enables (default) or disables the indoor floor picker. If enabled, it is only
+     visible when the view is focused on a building with indoor floor data.
+     If disabled, the selected floor can still be controlled programmatically via
+     the indoorDisplay mapView property.
+     
+     Ignored on Apple Maps
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:myLocationButton"><apiName>myLocationButton</apiName><shortdesc>
+     Enables or disables the My Location button.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Enables or disables the My Location button. This is a button visible on the
+     map that, when tapped by users, will center the map on the current user
+     location.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:rotateGestures"><apiName>rotateGestures</apiName><shortdesc>
+     Controls whether rotate gestures are enabled (default) or disabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Controls whether rotate gestures are enabled (default) or disabled. If
+     enabled, users may use a two-finger rotate gesture to rotate the camera. This
+     does not limit programmatic control of the camera's bearing.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:scrollGestures"><apiName>scrollGestures</apiName><shortdesc>
+     Controls whether scroll gestures are enabled (default) or disabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Controls whether scroll gestures are enabled (default) or disabled. If
+     enabled, users may drag to pan the camera. This does not limit programmatic
+     movement of the camera.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:tiltGestures"><apiName>tiltGestures</apiName><shortdesc>
+     Controls whether tilt gestures are enabled (default) or disabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Controls whether tilt gestures are enabled (default) or disabled. If enabled,
+     users may use a two-finger vertical down or up swipe to tilt the camera. This
+     does not limit programmatic control of the camera's viewingAngle.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:zoomGestures"><apiName>zoomGestures</apiName><shortdesc>
+     Controls whether zoom gestures are enabled (default) or disabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Controls whether zoom gestures are enabled (default) or disabled. If
+     enabled, users may double tap/two-finger tap or pinch to zoom the camera.
+     This does not limit programmatic movement of the camera.
+     </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:MapType"><apiName>MapType</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiValue id="com.tuarua.googlemaps:MapType:HYBRID"><apiName>HYBRID</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>4</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:MapType:NONE"><apiName>NONE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:MapType:NORMAL"><apiName>NORMAL</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:MapType:SATELLITE"><apiName>SATELLITE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="uint"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:MapType:TERRAIN"><apiName>TERRAIN</apiName><shortdesc>
+     This option is not available with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>3</apiData><apiType value="uint"/></apiValueDef><apiDesc>
+     This option is not available with Apple Maps
+     </apiDesc></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps:GoogleMapsEvent"><apiName>GoogleMapsEvent</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flash.events:Event</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua.googlemaps:GoogleMapsEvent:GoogleMapsEvent"><apiName>GoogleMapsEvent</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>type</apiItemName><apiType value="String"/></apiParam><apiParam><apiItemName>params</apiItemName><apiType value="any"/><apiData>null</apiData></apiParam><apiParam><apiItemName>bubbles</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam><apiParam><apiItemName>cancelable</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="com.tuarua.googlemaps:GoogleMapsEvent:clone"><apiName>clone</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="flash.events:Event"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="com.tuarua.googlemaps:GoogleMapsEvent:toString"><apiName>toString</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="String"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:CAMERA_MOVE_REASON_API_ANIMATION"><apiName>CAMERA_MOVE_REASON_API_ANIMATION</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:CAMERA_MOVE_REASON_DEVELOPER_ANIMATION"><apiName>CAMERA_MOVE_REASON_DEVELOPER_ANIMATION</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>3</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:CAMERA_MOVE_REASON_GESTURE"><apiName>CAMERA_MOVE_REASON_GESTURE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_BEGIN_DRAGGING"><apiName>DID_BEGIN_DRAGGING</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidBeginDragging</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_CLOSE_INFO_WINDOW"><apiName>DID_CLOSE_INFO_WINDOW</apiName><shortdesc>
+     This event is not fired with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidCloseInfoWindow</apiData><apiType value="String"/></apiValueDef><apiDesc>
+     This event is not fired with Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_DRAG"><apiName>DID_DRAG</apiName><shortdesc>
+     This event is not fired with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidDrag</apiData><apiType value="String"/></apiValueDef><apiDesc>
+     This event is not fired with Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_END_DRAGGING"><apiName>DID_END_DRAGGING</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidEndDragging</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_LONG_PRESS_AT"><apiName>DID_LONG_PRESS_AT</apiName><shortdesc>
+     This event is not fired with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidLongPressAt</apiData><apiType value="String"/></apiValueDef><apiDesc>
+     This event is not fired with Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_LONG_PRESS_INFO_WINDOW"><apiName>DID_LONG_PRESS_INFO_WINDOW</apiName><shortdesc>
+     This event is not fired with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidLongPressInfoWindow</apiData><apiType value="String"/></apiValueDef><apiDesc>
+     This event is not fired with Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_TAP_AT"><apiName>DID_TAP_AT</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidTapAt</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_TAP_INFO_WINDOW"><apiName>DID_TAP_INFO_WINDOW</apiName><shortdesc>
+     This event is not fired with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidTapInfoWindow</apiData><apiType value="String"/></apiValueDef><apiDesc>
+     This event is not fired with Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_TAP_MARKER"><apiName>DID_TAP_MARKER</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidTapMarker</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_CAMERA_IDLE"><apiName>ON_CAMERA_IDLE</apiName><shortdesc>
+     This event is not fired with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnCameraIdle</apiData><apiType value="String"/></apiValueDef><apiDesc>
+     This event is not fired with Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_CAMERA_MOVE_STARTED"><apiName>ON_CAMERA_MOVE_STARTED</apiName><shortdesc>
+     This event is not fired with Apple Maps
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnCameraMoveStarted</apiData><apiType value="String"/></apiValueDef><apiDesc>
+     This event is not fired with Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_CAMERA_MOVE"><apiName>ON_CAMERA_MOVE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnCameraMove</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_READY"><apiName>ON_READY</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnReady</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:params"><apiName>params</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value=""/></apiValueDef></apiValueDetail></apiValue></apiClassifier></apiPackage>

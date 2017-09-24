@@ -16,5 +16,11 @@ public class CameraPosition {
 	 * aka heading
 	 */	
     public var bearing:Number = -9999;
+	/**
+	 * This method is omitted from the output. * * @private
+	 */
+	public function CameraPosition() {
+	}
+	
 }
 }

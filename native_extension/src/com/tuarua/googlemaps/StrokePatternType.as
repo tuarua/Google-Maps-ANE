@@ -16,5 +16,12 @@ public class StrokePatternType {
 	 * 
 	 */	
     public static const MIXED:int = 3;
+	
+	/**
+	 * This method is omitted from the output. * * @private
+	 */
+	public function StrokePatternType() {
+	}
+	
 }
 }

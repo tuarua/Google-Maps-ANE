@@ -18,6 +18,7 @@ package com.tuarua.googlemapsane
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.FragmentTransaction
 import android.content.pm.PackageManager
+import android.location.Location
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -26,17 +27,15 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
-import android.os.Bundle
 import android.support.v4.content.ContextCompat.checkSelfPermission
-import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.maps.model.*
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationServices.*
+import com.google.android.gms.location.FusedLocationProviderClient
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.eventbus.Subscribe
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
 import com.tuarua.frekotlin.FreException
 import com.tuarua.frekotlin.FreKotlinController
@@ -50,11 +49,10 @@ class MapController(override var context: FREContext?, private var airView: View
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnInfoWindowLongClickListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener {
 
 
-    private var googleApiClient: GoogleApiClient? = null
+    private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var _viewPort: Rect = viewPort
     private var _visible: Boolean = false
     private var _style: String? = null
@@ -159,15 +157,28 @@ class MapController(override var context: FREContext?, private var airView: View
             event.message == Constants.AUTHORIZATION_GRANTED -> {
                 if (checkSelfPermission(ctx.activity.applicationContext,
                         ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    mv.isMyLocationEnabled = true
-                    mv.uiSettings?.isMyLocationButtonEnabled = true
                     granted = true
-                    try {
-                        val lastKnownLocation = FusedLocationApi.getLastLocation(googleApiClient) ?: return
-                        mv.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude), zoomLevel))
-                    } catch (e: Exception) {
-                        throw FreException(e)
+                    if (fusedLocationProviderClient == null) {
+                        fusedLocationProviderClient = FusedLocationProviderClient(ctx.activity.applicationContext)
                     }
+                    val fusedProvider = fusedLocationProviderClient ?: return
+
+                    val locationResult = fusedProvider.lastLocation
+                    locationResult.addOnCompleteListener(ctx.activity, { task: Task<Location> ->
+                        if (task.isSuccessful) {
+                            mv.isMyLocationEnabled = true
+                            mv.uiSettings?.isMyLocationButtonEnabled = true
+                            val lastKnownLocation = task.result
+                            if (lastKnownLocation != null) {
+                                sendEvent(Constants.LOCATION_UPDATED, gson.toJson(MapEvent(
+                                        lastKnownLocation.latitude,
+                                        lastKnownLocation.longitude)))
+                            }
+                        } else {
+                            mv.isMyLocationEnabled = false
+                            mv.uiSettings?.isMyLocationButtonEnabled = false
+                        }
+                    })
                 }
             }
             event.message == Constants.AUTHORIZATION_DENIED -> {
@@ -193,15 +204,6 @@ class MapController(override var context: FREContext?, private var airView: View
         airView.addView(frame)
 
         val mMapFragment: MapFragment = MapFragment.newInstance()
-        googleApiClient = GoogleApiClient.Builder(ctx.activity.applicationContext)
-                .addConnectionCallbacks(this)
-                .addApi(API)
-                .build()
-        googleApiClient?.connect()
-
-        //TODO https://stackoverflow.com/questions/4721449/how-can-i-enable-or-disable-the-gps-programmatically-on
-        // -android?noredirect=1&lq=1
-
         val fragmentTransaction: FragmentTransaction = ctx.activity.fragmentManager.beginTransaction()
         fragmentTransaction.add(newId, mMapFragment)
         fragmentTransaction.commit()
@@ -227,12 +229,6 @@ class MapController(override var context: FREContext?, private var airView: View
             frame.layoutParams = FrameLayout.LayoutParams(viewPort.width.toInt(), viewPort.height.toInt())
             frame.x = viewPort.x.toFloat()
             frame.y = viewPort.y.toFloat()
-
-            trace(
-                    "setViewPort post-resize",
-                    "${frame.x} ${frame.y} ${viewPort.width.toInt()} ${viewPort.height.toInt()}"
-            )
-
         }
         get() = _viewPort
 
@@ -264,12 +260,28 @@ class MapController(override var context: FREContext?, private var airView: View
         }
     }
 
-    fun moveCamera(position: CameraPosition, animates: Boolean) {
+    fun moveCamera(centerAt: LatLng, zoom: Float?, tilt: Float?, bearing: Float?, animates: Boolean) {
         val mv: GoogleMap = this.mapView ?: return
-        if (animates) {
-            mv.animateCamera(CameraUpdateFactory.newCameraPosition(position), animationDuration, null)
-        } else {
-            mv.moveCamera(CameraUpdateFactory.newCameraPosition(position))
+        val currentCamera = mv.cameraPosition
+        val cameraPositionBuilder: CameraPosition.Builder = CameraPosition.builder()
+        cameraPositionBuilder.target(centerAt)
+
+        when (zoom) {
+            null -> cameraPositionBuilder.zoom(currentCamera.zoom)
+            else -> cameraPositionBuilder.zoom(zoom)
+        }
+        when (tilt) {
+            null -> cameraPositionBuilder.tilt(currentCamera.tilt)
+            else -> cameraPositionBuilder.tilt(tilt)
+        }
+        when (bearing) {
+            null -> cameraPositionBuilder.bearing(currentCamera.bearing)
+            else -> cameraPositionBuilder.bearing(bearing)
+        }
+        val position = cameraPositionBuilder.build()
+        when {
+            animates -> mv.animateCamera(CameraUpdateFactory.newCameraPosition(position), animationDuration, null)
+            else -> mv.moveCamera(CameraUpdateFactory.newCameraPosition(position))
         }
     }
 
@@ -348,8 +360,11 @@ class MapController(override var context: FREContext?, private var airView: View
 
     override fun onMarkerDragEnd(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_END_DRAGGING)) return
-        val marker = p0 ?: return //TODO return marker - as its coordinates will have updated
-        sendEvent(Constants.DID_END_DRAGGING, marker.id)
+        val marker = p0 ?: return
+        val coordinate = marker.position
+        sendEvent(Constants.DID_END_DRAGGING, gson.toJson(MapEvent(
+                coordinate.latitude,
+                coordinate.longitude, marker.id)))
     }
 
     override fun onMarkerDragStart(p0: Marker?) {
@@ -361,7 +376,7 @@ class MapController(override var context: FREContext?, private var airView: View
     override fun onMarkerDrag(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_DRAG)) return
         val marker = p0 ?: return
-        sendEvent(Constants.DID_DRAG, marker.id)
+        sendEvent(Constants.DID_DRAG, marker.id) //TODO coordinates ?
     }
 
     override fun onMapClick(p0: LatLng?) {
@@ -423,24 +438,14 @@ class MapController(override var context: FREContext?, private var airView: View
         sendEvent(Constants.ON_CAMERA_IDLE, "")
     }
 
-    override fun onConnectionFailed(p0: ConnectionResult) {
-        trace("GoogleApiClient Not Connected")
-    }
-
-    override fun onConnected(p0: Bundle?) {
-        trace("GoogleApiClient onConnected")
-    }
-
-    override fun onConnectionSuspended(p0: Int) {
-        trace("GoogleApiClient onConnectionSuspended")
-    }
-
     init {
         EventBus.getDefault().register(this)
     }
 
     override val TAG: String
         get() = this::class.java.canonicalName
+
+
 
 
 }

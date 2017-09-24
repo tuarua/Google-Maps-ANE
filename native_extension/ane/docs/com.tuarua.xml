@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="com.tuarua"><apiName>com.tuarua</apiName><apiDetail/><apiClassifier id="com.tuarua:GoogleMapsANE"><apiName>GoogleMapsANE</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flash.events:EventDispatcher</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua:GoogleMapsANE:GoogleMapsANE"><apiName>GoogleMapsANE</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="com.tuarua:GoogleMapsANE:addCircle"><apiName>addCircle</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>circle</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Circle</apiOperationClassifier><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:addEventListener"><apiName>addEventListener</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>type</apiItemName><apiType value="String"/><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>listener</apiItemName><apiType value="Function"/><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>useCapture</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>priority</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>useWeakReference</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc> 
+	 </apiDesc></apiParam></apiOperationDef><apiDesc>
+	 
+	 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:addMarker"><apiName>addMarker</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>
+     
+     </apiDesc><apiType value="String"/></apiReturn><apiParam><apiItemName>marker</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Marker</apiOperationClassifier><apiDesc>    </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:clear"><apiName>clear</apiName><shortdesc>
+     
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+     
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:dispose"><apiName>dispose</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:hideInfoWindow"><apiName>hideInfoWindow</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>uuid</apiItemName><apiType value="String"/><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:initMap"><apiName>initMap</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>viewPort</apiItemName><apiType value="flash.geom:Rectangle"/><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>centerAt</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Coordinate</apiOperationClassifier><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>zoomLevel</apiItemName><apiType value="Number"/><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>settings</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Settings</apiOperationClassifier><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>scaleFactor</apiItemName><apiType value="Number"/><apiData>1.0</apiData><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:init"><apiName>init</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiDesc>
+     </apiDesc><apiType value="Boolean"/></apiReturn><apiParam><apiItemName>key</apiItemName><apiType value="String"/><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>mapProvider</apiItemName><apiType value="int"/><apiData>unknown</apiData><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:moveCamera"><apiName>moveCamera</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>position</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:CameraPosition</apiOperationClassifier><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>animates</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:removeEventListener"><apiName>removeEventListener</apiName><shortdesc>
+	 
+	 </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>type</apiItemName><apiType value="String"/><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>listener</apiItemName><apiType value="Function"/><apiDesc> </apiDesc></apiParam><apiParam><apiItemName>useCapture</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc> 
+	 </apiDesc></apiParam></apiOperationDef><apiDesc>
+	 
+	 </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:removeMarker"><apiName>removeMarker</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>uuid</apiItemName><apiType value="String"/><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:requestLocation"><apiName>requestLocation</apiName><shortdesc>
+     
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+     
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:setBounds"><apiName>setBounds</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>southWest</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Coordinate</apiOperationClassifier><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>northEast</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Coordinate</apiOperationClassifier><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>animates</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:showInfoWindow"><apiName>showInfoWindow</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>uuid</apiItemName><apiType value="String"/><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:updateMarker"><apiName>updateMarker</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>uuid</apiItemName><apiType value="String"/><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:zoomIn"><apiName>zoomIn</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>animates</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:zoomOut"><apiName>zoomOut</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>animates</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:zoomTo"><apiName>zoomTo</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>zoomLevel</apiItemName><apiType value="Number"/><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>animates</apiItemName><apiType value="Boolean"/><apiData>false</apiData><apiDesc>    
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiValue id="com.tuarua:GoogleMapsANE:isInited:get"><apiName>isInited</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:isMapInited:get"><apiName>isMapInited</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:markers:get"><apiName>markers</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="flash.utils:Dictionary"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:viewPort:get"><apiName>viewPort</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="flash.geom:Rectangle"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:visible:get"><apiName>visible</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:animationDuration:set"><apiName>animationDuration</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="int"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:mapType:set"><apiName>mapType</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="uint"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:style:set"><apiName>style</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="String"/></apiValueDef><apiDesc>
+     
+     </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage>

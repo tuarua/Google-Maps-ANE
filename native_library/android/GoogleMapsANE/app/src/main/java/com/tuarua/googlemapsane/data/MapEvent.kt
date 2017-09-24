@@ -15,4 +15,4 @@
  */
 package com.tuarua.googlemapsane.data
 
-data class MapEvent (val latitude: Double, val longitude: Double)
+data class MapEvent (val latitude: Double, val longitude: Double, val id:String? = null)

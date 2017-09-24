@@ -20,7 +20,7 @@ public class StrokePattern {
 	 * @param gapLength
 	 * 
 	 */	
-    public function StrokePattern(type:int = StrokePatternType.SOLID, dashLength:int = 50, gapLength:int=50) {
+    public function StrokePattern(type:int = 0, dashLength:int = 50, gapLength:int=50) {
         this.type = type;
         this.dashLength = dashLength;
         this.gapLength = gapLength;

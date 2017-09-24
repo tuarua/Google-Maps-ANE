@@ -49,7 +49,15 @@ public class GoogleMapsANE extends EventDispatcher {
             trace("[" + NAME + "] ANE Not loaded properly.  Future calls will fail.");
         }
     }
-
+	/**
+	 * 
+	 * @param type
+	 * @param listener
+	 * @param useCapture
+	 * @param priority
+	 * @param useWeakReference
+	 * 
+	 */
     override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0,
                                               useWeakReference:Boolean = false):void {
         super.addEventListener(type, listener, useCapture, priority, useWeakReference);
@@ -59,7 +67,13 @@ public class GoogleMapsANE extends EventDispatcher {
             trace("You need to init before adding EventListeners");
         }
     }
-
+	/**
+	 * 
+	 * @param type
+	 * @param listener
+	 * @param useCapture
+	 * 
+	 */
     override public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void {
         super.removeEventListener(type, listener, useCapture);
         if (_isInited) {

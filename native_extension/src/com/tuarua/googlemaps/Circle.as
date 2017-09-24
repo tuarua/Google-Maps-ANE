@@ -1,6 +1,6 @@
 package com.tuarua.googlemaps {
 [RemoteClass(alias="com.tuarua.googlemaps.Circle")]
-public class Circle {
+public class Circle extends Object {
     /**
      * The center of the Circle is specified as a LatLng.
      */

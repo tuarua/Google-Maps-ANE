@@ -84,6 +84,7 @@ class KotlinController : FreKotlinMainController {
             }
             listenersAddedToMapC = true
         }
+
         mapController?.addEventListener(type)
         return null
     }
@@ -114,6 +115,7 @@ class KotlinController : FreKotlinMainController {
             return FreException(e).getError(Thread.currentThread().stackTrace)
         }
         return null
+
     }
 
     fun addMarker(ctx: FREContext, argv: FREArgv): FREObject? {
@@ -209,7 +211,6 @@ class KotlinController : FreKotlinMainController {
     fun setViewPort(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         val viewPortFre = Rect(argv[0])
-       /* trace("setViewPort pre-resize", "${viewPortFre?.x} ${viewPortFre?.y} ${viewPortFre?.width} ${viewPortFre?.height}")*/
         mapController?.viewPort = scaleViewPort(viewPortFre)
         return null
     }
@@ -227,18 +228,13 @@ class KotlinController : FreKotlinMainController {
 
     fun moveCamera(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 4 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val cameraPositionBuilder: CameraPosition.Builder = CameraPosition.builder()
         try {
-            val target = LatLng(argv[0])
+            val centerAt = LatLng(argv[0])
             val zoom = Float(argv[1])
             val tilt = Float(argv[2])
             val bearing = Float(argv[3])
             val animates = Boolean(argv[4]) == true
-            cameraPositionBuilder.target(target)
-            if (zoom != null) cameraPositionBuilder.zoom(zoom)
-            if (tilt != null) cameraPositionBuilder.tilt(tilt)
-            if (bearing != null) cameraPositionBuilder.bearing(bearing)
-            mapController?.moveCamera(cameraPositionBuilder.build(), animates)
+            mapController?.moveCamera(centerAt, zoom, tilt, bearing, animates)
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
@@ -314,6 +310,7 @@ class KotlinController : FreKotlinMainController {
         } catch (e: Exception) {
             return FreException(e).getError(Thread.currentThread().stackTrace)
         }
+
         return null
     }
 
