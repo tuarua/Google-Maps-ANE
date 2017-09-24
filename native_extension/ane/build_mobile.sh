@@ -12,7 +12,7 @@ PROJECTNAME=GoogleMapsANE
 fwSuffix="_FW"
 libSuffix="_LIB"
 
-AIR_SDK="/Users/User/sdks/AIR/AIRSDK_27_B"
+AIR_SDK="/Users/User/sdks/AIR/AIRSDK_27"
 echo $AIR_SDK
 
 if [ ! -d "$pathtome/../../native_library/ios/$PROJECTNAME/Build/Products/Release-iphonesimulator/" ]; then
@@ -157,4 +157,7 @@ rm -r "$pathtome/platforms/ios/simulator"
 rm -r "$pathtome/platforms/ios/device"
 rm "$pathtome/$PROJECTNAME.swc"
 rm "$pathtome/library.swf"
-echo "Finished."
+
+echo "Packaging docs into ANE."
+zip "$pathtome/$PROJECTNAME.ane" -u docs/*
+echo "DONE!"

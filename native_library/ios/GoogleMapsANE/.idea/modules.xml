@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/AdMobANE.iml" filepath="$PROJECT_DIR$/.idea/AdMobANE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/GoogleMapsANE.iml" filepath="$PROJECT_DIR$/.idea/GoogleMapsANE.iml" />
     </modules>
   </component>
 </project>

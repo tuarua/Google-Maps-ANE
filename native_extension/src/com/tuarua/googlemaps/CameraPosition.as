@@ -3,7 +3,7 @@ public class CameraPosition {
 	/**
 	 * 
 	 */	
-    public var target:Coordinate = null;
+    public var centerAt:Coordinate = null;
 	/**
 	 * 
 	 */	
@@ -13,8 +13,14 @@ public class CameraPosition {
 	 */	
     public var tilt:Number = -9999;
 	/**
-	 * 
+	 * aka heading
 	 */	
     public var bearing:Number = -9999;
+	/**
+	 * This method is omitted from the output. * * @private
+	 */
+	public function CameraPosition() {
+	}
+	
 }
 }

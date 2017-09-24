@@ -23,24 +23,18 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import org.greenrobot.eventbus.EventBus
 
-// https://stackoverflow.com/questions/25824288/how-to-close-dialog-themed-activity?noredirect=1&lq=1
-
 class PermissionActivity : Activity(), ActivityCompat.OnRequestPermissionsResultCallback {
-    //inner class MessageEvent(val message: String)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (ContextCompat.checkSelfPermission(this.applicationContext,
                 ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             EventBus.getDefault().post(MessageEvent(Constants.AUTHORIZATION_GRANTED))
+            finish()
         } else {
             val permissions = arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
             ActivityCompat.requestPermissions(this, permissions, 19001)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

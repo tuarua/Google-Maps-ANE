@@ -1,7 +1,8 @@
 # GoogleMaps-ANE
 
-Google Maps Adobe Air Native Extension for iOS 9.0+ and Android 19+.
+Google Maps Adobe Air Native Extension for iOS 9.0+ and Android 19+. Also includes option to use Apple Maps on iOS.   
 
+[asdocs](https://tuarua.github.io/asdocs/googlemapsane/)   
 
 -------------
 

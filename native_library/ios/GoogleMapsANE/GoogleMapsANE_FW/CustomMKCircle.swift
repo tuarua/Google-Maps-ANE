@@ -13,6 +13,20 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tuarua.googlemapsane.data
 
-data class MapEvent (val latitude: Double, val longitude: Double, val id:String? = null)
+import Foundation
+import MapKit
+import UIKit
+
+open class CustomMKCircle: MKCircle {
+    var identifier: String = ""
+    var strokeWidth: CGFloat = 1.0
+    var strokeColor: UIColor?
+    var fillColor: UIColor?
+
+    convenience init(center: CLLocationCoordinate2D, radius: CLLocationDistance, identifier: String) {
+        self.init()
+        self.init(center: center, radius: radius)
+        self.identifier = identifier
+    }
+}

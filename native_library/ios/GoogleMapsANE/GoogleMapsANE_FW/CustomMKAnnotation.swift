@@ -13,6 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tuarua.googlemapsane.data
 
-data class MapEvent (val latitude: Double, val longitude: Double, val id:String? = null)
+import Foundation
+import MapKit
+import UIKit
+
+class CustomMKAnnotation: NSObject, MKAnnotation {
+    var identifier: String
+    var color: UIColor?
+    var icon: UIImage?
+    var userData: Any?
+    var coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var title: String?
+    var subtitle: String?
+    var isDraggable: Bool = false
+    var isTappable: Bool = false
+    var opacity: CGFloat = 1.0
+
+    init(coordinate: CLLocationCoordinate2D, identifier: String) {
+        self.coordinate = coordinate
+        self.identifier = identifier
+        self.userData = identifier
+    }
+    
+
+}

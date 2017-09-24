@@ -19,8 +19,8 @@ import UIKit
 import GoogleMaps
 import FreSwift
 
-class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
-    internal var TAG: String? = "MapController"
+class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
+    internal var TAG: String? = "GMSMapController"
     internal var context: FreContextSwift!
     public var mapView: GMSMapView!
     private var settings: Settings?
@@ -55,6 +55,7 @@ class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
             mapView.settings.scrollGestures = settings.scrollGestures
             mapView.settings.rotateGestures = settings.rotateGestures
             mapView.settings.zoomGestures = settings.zoomGestures
+            mapView.settings.tiltGestures = settings.tiltGestures
         }
         
         view.addSubview(container)
@@ -63,16 +64,16 @@ class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
     }
     
     public func addMarker(markerOptions: MarkerOptions) -> GMSMarker {
-        let uuid = UUID.init().uuidString
+        let identifier = UUID.init().uuidString
         let marker = GMSMarker()
-        markers[uuid] = marker
-        updateMarker(uuid: uuid, markerOptions: markerOptions)
+        markers[identifier] = marker
+        updateMarker(identifier: identifier, markerOptions: markerOptions)
         return marker
     }
     
-    public func updateMarker(uuid: String, markerOptions: MarkerOptions) {
+    public func updateMarker(identifier: String, markerOptions: MarkerOptions) {
 
-        if let marker: GMSMarker = markers[uuid], let coordinate = markerOptions.coordinate {
+        if let marker: GMSMarker = markers[identifier], let coordinate = markerOptions.coordinate {
             marker.tracksInfoWindowChanges = true
             marker.position = coordinate
             if let icon = markerOptions.icon {
@@ -85,15 +86,15 @@ class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
             marker.isDraggable = markerOptions.isDraggable
             marker.isFlat = markerOptions.isFlat
             marker.isTappable = markerOptions.isTappable
-            marker.opacity = Float(markerOptions.opacity)
+            marker.opacity = Float(markerOptions.alpha)
             marker.map = mapView
-            marker.userData = uuid
+            marker.userData = identifier
             marker.rotation = markerOptions.rotation
         }
     }
     
-    public func removeMarker(uuid: String) {
-        if let marker: GMSMarker = markers[uuid] {
+    public func removeMarker(identifier: String) {
+        if let marker: GMSMarker = markers[identifier] {
             marker.map = nil
         }
     }
@@ -140,14 +141,14 @@ class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
     }
     
     
-    public func moveCamera(target: CLLocationCoordinate2D?, zoom: Float?, tilt:Double?, bearing:Double?, animates: Bool) {
+    public func moveCamera(centerAt: CLLocationCoordinate2D?, zoom: Float?, tilt:Double?, bearing:Double?, animates: Bool) {
         let currentCamPosition = mapView.camera
-        var newTarget = currentCamPosition.target
+        var newCenterAt = currentCamPosition.target
         var newBearing = currentCamPosition.bearing
         var newViewingAngle = currentCamPosition.viewingAngle
         var newZoom = currentCamPosition.zoom
-        if let t = target {
-            newTarget = t
+        if let c = centerAt {
+            newCenterAt = c
         }
         if let b = bearing {
             newBearing = b
@@ -158,7 +159,7 @@ class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
         if let z = zoom {
             newZoom = z
         }
-        let camPosition:GMSCameraPosition = GMSCameraPosition.init(target: newTarget, zoom: newZoom, bearing: newBearing, viewingAngle: newViewingAngle)
+        let camPosition:GMSCameraPosition = GMSCameraPosition.init(target: newCenterAt, zoom: newZoom, bearing: newBearing, viewingAngle: newViewingAngle)
         
         let update = GMSCameraUpdate.setCamera(camPosition)
         
@@ -247,67 +248,72 @@ class MapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
     
     func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
         if !asListeners.contains(Constants.DID_DRAG) {return}
-        var uuid: String = ""
-        if let _uuid = marker.userData as? String {
-            uuid = _uuid
+        var identifier: String = ""
+        if let _identifier = marker.userData as? String {
+            identifier = _identifier
         }
-        sendEvent(name: Constants.DID_DRAG, value: uuid)
+        sendEvent(name: Constants.DID_DRAG, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
         if !asListeners.contains(Constants.DID_END_DRAGGING) {return}
-        var uuid: String = ""
-        if let _uuid = marker.userData as? String {
-            uuid = _uuid
+        var identifier: String = ""
+        if let _identifier = marker.userData as? String {
+            identifier = _identifier
         }
-        sendEvent(name: Constants.DID_END_DRAGGING, value: uuid)
+        var props: Dictionary<String, Any> = Dictionary()
+        props["id"] = identifier
+        props["latitude"] = marker.position.latitude
+        props["longitude"] = marker.position.longitude
+        let json = JSON(props)
+        sendEvent(name: Constants.DID_END_DRAGGING, value: json.description)
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         if !asListeners.contains(Constants.DID_TAP_MARKER) {return false}
-        var uuid: String = ""
-        if let _uuid = marker.userData as? String {
-            uuid = _uuid
+        var identifier: String = ""
+        if let _identifier = marker.userData as? String {
+            identifier = _identifier
         }
-        sendEvent(name: Constants.DID_TAP_MARKER, value: uuid)
+        sendEvent(name: Constants.DID_TAP_MARKER, value: identifier)
         return false
     }
     
     func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
         if !asListeners.contains(Constants.DID_BEGIN_DRAGGING) {return}
-        var uuid: String = ""
-        if let _uuid = marker.userData as? String {
-            uuid = _uuid
+        var identifier: String = ""
+        if let _identifier = marker.userData as? String {
+            identifier = _identifier
         }
-        sendEvent(name: Constants.DID_BEGIN_DRAGGING, value: uuid)
+        sendEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
     }
     
     
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         if !asListeners.contains(Constants.DID_TAP_INFO_WINDOW) {return}
-        var uuid: String = ""
-        if let _uuid = marker.userData as? String {
-            uuid = _uuid
+        var identifier: String = ""
+        if let _identifier = marker.userData as? String {
+            identifier = _identifier
         }
-        sendEvent(name: Constants.DID_TAP_INFO_WINDOW, value: uuid)
+        sendEvent(name: Constants.DID_TAP_INFO_WINDOW, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
         if !asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW) {return}
-        var uuid: String = ""
-        if let _uuid = marker.userData as? String {
-            uuid = _uuid
+        var identifier: String = ""
+        if let _identifier = marker.userData as? String {
+            identifier = _identifier
         }
-        sendEvent(name: Constants.DID_CLOSE_INFO_WINDOW, value: uuid)
+        sendEvent(name: Constants.DID_CLOSE_INFO_WINDOW, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didLongPressInfoWindowOf marker: GMSMarker) {
         if !asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW) {return}
-        var uuid: String = ""
-        if let _uuid = marker.userData as? String {
-            uuid = _uuid
+        var identifier: String = ""
+        if let _identifier = marker.userData as? String {
+            identifier = _identifier
         }
-        sendEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: uuid)
+        sendEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didTapPOIWithPlaceID placeID: String, name: String, location: CLLocationCoordinate2D) {

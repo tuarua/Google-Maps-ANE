@@ -19,7 +19,7 @@ import GoogleMaps
 import FreSwift
 
 
-class FreCoordinateSwift: FreObjectSwift {
+class FreCLLocationCoordinate: FreObjectSwift {
     override public init(freObject: FREObject?) {
         super.init(freObject: freObject)
     }
@@ -70,7 +70,7 @@ public extension CLLocationCoordinate2D {
         guard let rv = freObject else {
             return nil
         }
-        if let coo = FreCoordinateSwift.init(freObject: rv).value as? CLLocationCoordinate2D {
+        if let coo = FreCLLocationCoordinate.init(freObject: rv).value as? CLLocationCoordinate2D {
             self.init(latitude: coo.latitude, longitude: coo.longitude)
         } else {
             return nil

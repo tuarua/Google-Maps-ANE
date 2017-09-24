@@ -18,14 +18,10 @@ package com.tuarua.frekotlin
 import android.graphics.Bitmap
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.tuarua.frekotlin.display.FreBitmapDataKotlin
-import java.nio.ByteBuffer
+import com.tuarua.frekotlin.display.Bitmap
 
 class FreMarkerOptionsKotlin() : FreObjectKotlin() {
-    private var TAG = "com.tuarua.FreMarkerOptionsKotlin"
-
     constructor(freObject: FREObject?) : this() {
         rawValue = freObject
     }
@@ -40,9 +36,8 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
                 val snippet = String(rv.getProp("snippet"))
                 val draggable = Boolean(rv.getProp("isDraggable")) == true
                 val flat = Boolean(rv.getProp("isFlat")) == true
-                val tappable = Boolean(rv.getProp("isTappable")) == true
 
-                val opacity = Float(rv.getProp("opacity")) ?: 1.0F
+                val alpha = Float(rv.getProp("alpha")) ?: 1.0F
                 val rotation = Float(rv.getProp("rotation")) ?: 0.0F
 
                 val colorFre = rv.getProp("color")
@@ -51,16 +46,7 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
                 val iconFre = rv.getProp("icon")
                 var icon: Bitmap? = null
                 try {
-                    if (iconFre is FREObject) {
-                        val bmd = FreBitmapDataKotlin(iconFre)
-                        bmd.acquire()
-                        if (bmd.bits32 is ByteBuffer) {
-                            icon = Bitmap.createBitmap(bmd.width, bmd.height, Bitmap.Config.ARGB_8888)
-                            icon.copyPixelsFromBuffer(bmd.bits32)
-                            //icon.recycle()
-                        }
-                        bmd.release()
-                    }
+                    icon = Bitmap(iconFre)
                 } catch (e: FreException) {
                     throw e
                 } catch (e: Exception) {
@@ -73,7 +59,7 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
                         .snippet(snippet)
                         .draggable(draggable)
                         .flat(flat)
-                        .alpha(opacity)
+                        .alpha(alpha)
                         .icon(if (icon is Bitmap) BitmapDescriptorFactory
                                 .fromBitmap(icon) else BitmapDescriptorFactory
                                 .defaultMarker(color))
