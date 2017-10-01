@@ -56,7 +56,7 @@ You will also need to include the following in your app manifest. Update accordi
 ````xml
 <manifest android:installLocation="auto">
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -107,7 +107,7 @@ You will also need to include the following in your app manifest. Update accordi
 You will need:
 
 - IntelliJ IDEA / Flash Builder
-- AIR 26 + AIR 27 Beta
+- AIR 26 + AIR 27
 - Android Studio 3 Beta if you wish to edit the Android source
 - Xcode 8.3 if you wish to edit the iOS source
 - wget on OSX
