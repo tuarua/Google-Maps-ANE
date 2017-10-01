@@ -34,9 +34,13 @@ public struct Constants {
     public static let ON_CAMERA_IDLE: String = "GoogleMaps.OnCameraIdle"
     
     public static let LOCATION_UPDATED:String = "Location.LocationUpdated"
-    public static let AUTHORIZATION_STATUS:String = "Location.AuthorizationStatus"
-    public static let AUTHORIZATION_GRANTED: String = "Location.AuthorizationGranted"
-    public static let AUTHORIZATION_DENIED: String = "Location.AuthorizationDenied"
-    public static let AUTHORIZATION_STATUS_ALWAYS:Int = 3
-    public static let AUTHORIZATION_STATUS_DENIED:Int = 2
+    public static let ON_PERMISSION_STATUS:String = "Permission.OnStatus"
+    
+    public static let ON_BITMAP_READY:String = "GoogleMaps.OnBitmapReady"
+    
+    public static let PERMISSION_NOT_DETERMINED = 0
+    public static let PERMISSION_RESTRICTED = 1
+    public static let PERMISSION_DENIED = 2
+    public static let PERMISSION_ALWAYS = 3
+    public static let PERMISSION_WHEN_IN_USE = 4
 }

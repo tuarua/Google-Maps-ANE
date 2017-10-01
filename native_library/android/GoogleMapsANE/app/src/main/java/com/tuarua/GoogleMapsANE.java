@@ -38,12 +38,15 @@ public class GoogleMapsANE implements FREExtension {
             ,"moveCamera"
             ,"setStyle"
             ,"setMapType"
-            ,"requestLocation"
+            ,"showUserLocation"
             ,"setBounds"
             ,"zoomIn"
             ,"zoomOut"
             ,"zoomTo"
             ,"setAnimationDuration"
+            ,"requestPermissions"
+            ,"capture"
+            ,"getCapture"
 
     };
 

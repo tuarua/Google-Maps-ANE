@@ -1,3 +1,7 @@
+### 0.0.8
+Added capture method
+Improved Permissions
+
 ### 0.0.7 
 Added Apple Maps on iOS
 asdocs

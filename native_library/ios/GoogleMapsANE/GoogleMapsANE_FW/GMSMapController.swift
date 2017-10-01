@@ -30,6 +30,8 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     private var viewPort: CGRect = CGRect.zero
     private var markers: Dictionary<String, GMSMarker> = Dictionary()
     private var asListeners:Array<String> = []
+    private var lastCapture:CGImage? = nil
+    private var captureDimensions:CGRect = CGRect.zero
     
     convenience init(context: FreContextSwift, coordinate: CLLocationCoordinate2D, zoomLevel: CGFloat, frame: CGRect, settings: Settings?) {
         self.init()
@@ -57,10 +59,35 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
             mapView.settings.zoomGestures = settings.zoomGestures
             mapView.settings.tiltGestures = settings.tiltGestures
         }
-        
+
         view.addSubview(container)
         container.addSubview(mapView)
         sendEvent(name: Constants.ON_READY, value: "")
+    }
+    
+    public func capture(captureDimensions:CGRect) {
+        self.captureDimensions = captureDimensions
+        DispatchQueue.main.async {
+            UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, UIScreen.main.scale )
+            self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates: true)
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            if let ui = newImage {
+                if let ci = CIImage.init(image: ui) {
+                    let context = CIContext(options: nil)
+                    if let cg = context.createCGImage(ci, from: ci.extent) {
+                        if let ret = cg.copy(colorSpace: CGColorSpaceCreateDeviceRGB()) {
+                            self.lastCapture = ret
+                            self.sendEvent(name: Constants.ON_BITMAP_READY, value: "")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public func getCapture() -> (CGImage?, CGRect) {
+        return (lastCapture, captureDimensions)
     }
     
     public func addMarker(markerOptions: MarkerOptions) -> GMSMarker {

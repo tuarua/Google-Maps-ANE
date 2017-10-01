@@ -12,11 +12,13 @@ import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.googlemaps.StrokePattern;
 import com.tuarua.googlemaps.StrokePatternType;
-import com.tuarua.location.AuthorizationStatus;
+import com.tuarua.googlemaps.permissions.PermissionStatus;
+import com.tuarua.googlemaps.permissions.PermissionEvent;
 import com.tuarua.location.LocationEvent;
 
 import flash.desktop.NativeApplication;
 import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.events.Event;
 import flash.geom.Rectangle;
 
@@ -45,6 +47,7 @@ public class StarlingRoot extends Sprite {
     private var btn6:SimpleButton = new SimpleButton("Satellite");
     private var btn7:SimpleButton = new SimpleButton("Find me");
     private var btn8:SimpleButton = new SimpleButton("Zoom In");
+    private var btn9:SimpleButton = new SimpleButton("Capture");
 
     private static const nightStyle:String = "[{\"featureType\":\"all\",\"elementType\":\"geometry\"," +
             "\"stylers\":[{\"color\":\"#242f3e\"}]},{\"featureType\":\"all\",\"elementType\":\"labels.text.stroke\"," +
@@ -90,8 +93,8 @@ public class StarlingRoot extends Sprite {
         try {
             googleMaps.initMap(viewPort, coordinate, 12.0, new Settings(), Starling.current.contentScaleFactor);
         } catch (e:ANEError) {
-            trace(e.source)
-            trace(e.message)
+            trace(e.source);
+            trace(e.message);
             trace(e.getStackTrace());
             trace(e.errorID);
         }
@@ -107,12 +110,12 @@ public class StarlingRoot extends Sprite {
         //googleMaps.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE, onCameraMove);
         googleMaps.addEventListener(GoogleMapsEvent.ON_CAMERA_IDLE, onCameraIdle);
         googleMaps.addEventListener(LocationEvent.LOCATION_UPDATED, onLocationUpdated);
-        googleMaps.addEventListener(LocationEvent.AUTHORIZATION_STATUS, onLocationAuthStatus);
+        googleMaps.addEventListener(PermissionEvent.ON_PERMISSION_STATUS, onPermissionStatus);
         googleMaps.visible = true; //map is invisible by default when inited
 
 
         btn.x = 10;
-        btn7.y = btn3.y = btn2.y = btn.y = 10;
+        btn9.y = btn7.y = btn3.y = btn2.y = btn.y = 10;
         btn8.y = btn6.y = btn5.y = btn4.y = 60;
         btn.addEventListener(TouchEvent.TOUCH, onClear);
         addChild(btn);
@@ -145,8 +148,33 @@ public class StarlingRoot extends Sprite {
         btn8.addEventListener(TouchEvent.TOUCH, onZoomIn);
         addChild(btn8);
 
+        btn9.x = 370;
+        btn9.addEventListener(TouchEvent.TOUCH, onCapture);
+        addChild(btn9);
+
         stage.addEventListener(Event.RESIZE, onResize);
 
+    }
+
+    private function onCapture(event:TouchEvent):void {
+        var touch:Touch = event.getTouch(btn9);
+        if (touch != null && touch.phase == TouchPhase.ENDED) {
+            googleMaps.addEventListener(GoogleMapsEvent.ON_BITMAP_READY, onBitmapReady);
+            googleMaps.capture(20, 20, 400, 400);
+        }
+    }
+
+    private function onBitmapReady(event:GoogleMapsEvent):void {
+        trace(event);
+        var bmd:BitmapData = googleMaps.getCapture();
+        trace(bmd);
+        if (bmd) {
+            trace(bmd.width, bmd.height);
+            var bmp:Bitmap = new Bitmap(bmd);
+            bmp.y = 250;
+            googleMaps.visible = false;
+            Starling.current.nativeStage.addChild(bmp);
+        }
     }
 
     private static function onCameraMoveStarted(event:GoogleMapsEvent):void {
@@ -166,7 +194,6 @@ public class StarlingRoot extends Sprite {
     private static function onCameraMove(event:GoogleMapsEvent):void {
         var props:Object = event.params;
         trace("latlng:", props.latitude, props.longitude, "zoom", props.zoom, "tilt", props.tilt, "bearing", props.bearing);
-
     }
 
     private static function onCameraIdle(event:GoogleMapsEvent):void {
@@ -183,7 +210,6 @@ public class StarlingRoot extends Sprite {
         marker.isDraggable = true;
         firstMarkerId = googleMaps.addMarker(marker);
         trace("uuid for marker", firstMarkerId);
-        
     }
 
 
@@ -214,23 +240,21 @@ public class StarlingRoot extends Sprite {
     }
 
 
-    private static function onLocationAuthStatus(event:LocationEvent):void {
+    private function onPermissionStatus(event:PermissionEvent):void {
+        trace(event);
         var status:int = event.params.status;
         switch (status) {
-            case AuthorizationStatus.ALWAYS:
-                trace("Location status: Always");
+            case PermissionStatus.ALWAYS:
+            case PermissionStatus.WHEN_IN_USE:
+                googleMaps.showUserLocation();
                 break;
-            case AuthorizationStatus.WHEN_IN_USE:
-                trace("Location status: When in use");
+            case PermissionStatus.DENIED:
+            case PermissionStatus.NOT_DETERMINED:
+            case PermissionStatus.RESTRICTED:
+                trace("Not allowed to use location services");
                 break;
-            case AuthorizationStatus.RESTRICTED:
-                trace("Location status: Restricted");
-                break;
-            case AuthorizationStatus.DENIED:
-                trace("Location status: Denied");
-                break;
-            case AuthorizationStatus.NOT_DETERMINED:
-                trace("Location status: Not determined");
+            case PermissionStatus.SHOW_RATIONALE:
+                trace("Show a rationale");
                 break;
         }
     }
@@ -327,7 +351,7 @@ public class StarlingRoot extends Sprite {
     private function onFindMe(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn7);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.requestLocation();
+            googleMaps.requestPermissions();
         }
     }
 
