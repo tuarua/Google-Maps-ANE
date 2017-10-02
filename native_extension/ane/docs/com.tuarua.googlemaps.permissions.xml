@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><apiPackage id="com.tuarua.googlemaps.permissions"><apiName>com.tuarua.googlemaps.permissions</apiName><apiDetail/><apiClassifier id="com.tuarua.googlemaps.permissions:PermissionEvent"><apiName>PermissionEvent</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>flash.events:Event</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiConstructor id="com.tuarua.googlemaps.permissions:PermissionEvent:PermissionEvent"><apiName>PermissionEvent</apiName><shortdesc/><prolog/><apiConstructorDetail><apiConstructorDef><apiAccess value="public"/><apiParam><apiItemName>type</apiItemName><apiType value="String"/></apiParam><apiParam><apiItemName>params</apiItemName><apiType value="any"/><apiData>null</apiData></apiParam><apiParam><apiItemName>bubbles</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam><apiParam><apiItemName>cancelable</apiItemName><apiType value="Boolean"/><apiData>false</apiData></apiParam></apiConstructorDef></apiConstructorDetail></apiConstructor><apiOperation id="com.tuarua.googlemaps.permissions:PermissionEvent:clone"><apiName>clone</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="flash.events:Event"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="com.tuarua.googlemaps.permissions:PermissionEvent:toString"><apiName>toString</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiIsOverride/><apiReturn><apiType value="String"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiValue id="com.tuarua.googlemaps.permissions:PermissionEvent:ON_PERMISSION_STATUS"><apiName>ON_PERMISSION_STATUS</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>Permission.OnStatus</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps.permissions:PermissionEvent:params"><apiName>params</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value=""/></apiValueDef></apiValueDetail></apiValue></apiClassifier><apiClassifier id="com.tuarua.googlemaps.permissions:PermissionStatus"><apiName>PermissionStatus</apiName><shortdesc/><prolog><asMetadata/></prolog><apiClassifierDetail><apiClassifierDef><apiAccess value="public"/><apiStatic/><apiBaseClassifier>Object</apiBaseClassifier></apiClassifierDef></apiClassifierDetail><apiValue id="com.tuarua.googlemaps.permissions:PermissionStatus:ALWAYS"><apiName>ALWAYS</apiName><shortdesc>
+     User has granted authorization to use their location at any time,
+     including monitoring for regions, visits, or significant location changes.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>3</apiData><apiType value="int"/></apiValueDef><apiDesc>
+     User has granted authorization to use their location at any time,
+     including monitoring for regions, visits, or significant location changes.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps.permissions:PermissionStatus:DENIED"><apiName>DENIED</apiName><shortdesc>
+     User has explicitly denied authorization for this application, or
+     location services are disabled in Settings.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>2</apiData><apiType value="int"/></apiValueDef><apiDesc>
+     User has explicitly denied authorization for this application, or
+     location services are disabled in Settings.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps.permissions:PermissionStatus:NOT_DETERMINED"><apiName>NOT_DETERMINED</apiName><shortdesc>
+     User has not yet made a choice with regards to this application
+     </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>0</apiData><apiType value="int"/></apiValueDef><apiDesc>
+     User has not yet made a choice with regards to this application
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps.permissions:PermissionStatus:RESTRICTED"><apiName>RESTRICTED</apiName><shortdesc>
+     This application is not authorized to use location services.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>1</apiData><apiType value="int"/></apiValueDef><apiDesc>
+     This application is not authorized to use location services.  Due
+     to active restrictions on location services, the user cannot change
+     this status, and may not have personally denied authorization
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps.permissions:PermissionStatus:SHOW_RATIONALE"><apiName>SHOW_RATIONALE</apiName><shortdesc>
+     User should be shown rationale to explain why the app needs permissions.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>5</apiData><apiType value="int"/></apiValueDef><apiDesc>
+     User should be shown rationale to explain why the app needs permissions.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps.permissions:PermissionStatus:WHEN_IN_USE"><apiName>WHEN_IN_USE</apiName><shortdesc>
+     User has granted authorization to use their location only when your app
+     is visible to them (it will be made visible to them if you continue to
+     receive location updates while in the background).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>4</apiData><apiType value="int"/></apiValueDef><apiDesc>
+     User has granted authorization to use their location only when your app
+     is visible to them (it will be made visible to them if you continue to
+     receive location updates while in the background).  Authorization to use
+     launch APIs has not been granted.
+     </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage>
