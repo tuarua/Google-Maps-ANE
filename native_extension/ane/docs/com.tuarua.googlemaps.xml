@@ -247,7 +247,7 @@
      This event is not fired with Apple Maps
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidTapInfoWindow</apiData><apiType value="String"/></apiValueDef><apiDesc>
      This event is not fired with Apple Maps
-     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_TAP_MARKER"><apiName>DID_TAP_MARKER</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidTapMarker</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_CAMERA_IDLE"><apiName>ON_CAMERA_IDLE</apiName><shortdesc>
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:DID_TAP_MARKER"><apiName>DID_TAP_MARKER</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.DidTapMarker</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_BITMAP_READY"><apiName>ON_BITMAP_READY</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnBitmapReady</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_CAMERA_IDLE"><apiName>ON_CAMERA_IDLE</apiName><shortdesc>
      This event is not fired with Apple Maps
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnCameraIdle</apiData><apiType value="String"/></apiValueDef><apiDesc>
      This event is not fired with Apple Maps

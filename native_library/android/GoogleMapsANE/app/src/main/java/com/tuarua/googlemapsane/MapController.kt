@@ -18,6 +18,8 @@ package com.tuarua.googlemapsane
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.FragmentTransaction
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.Location
 import android.view.View
 import android.view.ViewGroup
@@ -30,9 +32,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import android.support.v4.content.ContextCompat.checkSelfPermission
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.location.FusedLocationProviderClient
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.ThreadMode
-import org.greenrobot.eventbus.Subscribe
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.tasks.Task
@@ -41,6 +40,9 @@ import com.tuarua.frekotlin.FreException
 import com.tuarua.frekotlin.FreKotlinController
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.*
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback
+
+
 
 
 class MapController(override var context: FREContext?, private var airView: ViewGroup, coordinate: LatLng,
@@ -58,12 +60,14 @@ class MapController(override var context: FREContext?, private var airView: View
     private var _style: String? = null
     private var _mapType = 0
     private var centerAt: LatLng = coordinate
+    private lateinit var mMapFragment: MapFragment
     private var mapView: GoogleMap? = null
     private var container: FrameLayout? = null
     private var asListeners: MutableList<String> = mutableListOf()
     private val markers = mutableMapOf<String, Marker>()
     var animationDuration: Int = 2000
     private val gson = Gson()
+    private var lastCapture:Bitmap? = null
     override fun onMapReady(googleMap: GoogleMap?) {
         mapView = googleMap
         val mv: GoogleMap = mapView ?: return
@@ -75,7 +79,6 @@ class MapController(override var context: FREContext?, private var airView: View
         mv.uiSettings.isScrollGesturesEnabled = settings.scrollGestures
         mv.uiSettings.isZoomGesturesEnabled = settings.zoomGestures
         mv.uiSettings.isTiltGesturesEnabled = settings.tiltGestures
-        //TODO other settings for Android
 
         if (asListeners.contains(Constants.DID_TAP_AT)) mv.setOnMapClickListener(this)
         if (asListeners.contains(Constants.DID_LONG_PRESS_AT)) mv.setOnMapLongClickListener(this)
@@ -147,49 +150,33 @@ class MapController(override var context: FREContext?, private var airView: View
         }
     }
 
-    @Throws(FreException::class)
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: MessageEvent) {
+    fun showUserLocation() {
         val mv: GoogleMap = mapView ?: return
         val ctx = this.context ?: return
-        var granted = false
-        when {
-            event.message == Constants.AUTHORIZATION_GRANTED -> {
-                if (checkSelfPermission(ctx.activity.applicationContext,
-                        ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    granted = true
-                    if (fusedLocationProviderClient == null) {
-                        fusedLocationProviderClient = FusedLocationProviderClient(ctx.activity.applicationContext)
+        if (checkSelfPermission(ctx.activity.applicationContext, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (fusedLocationProviderClient == null) {
+                fusedLocationProviderClient = FusedLocationProviderClient(ctx.activity.applicationContext)
+            }
+            val fusedProvider = fusedLocationProviderClient ?: return
+
+            val locationResult = fusedProvider.lastLocation
+            locationResult.addOnCompleteListener(ctx.activity, { task: Task<Location> ->
+                if (task.isSuccessful) {
+                    mv.isMyLocationEnabled = true
+                    mv.uiSettings?.isMyLocationButtonEnabled = true
+                    val lastKnownLocation = task.result
+                    if (lastKnownLocation != null) {
+                        sendEvent(Constants.LOCATION_UPDATED, gson.toJson(MapEvent(
+                                lastKnownLocation.latitude,
+                                lastKnownLocation.longitude)))
                     }
-                    val fusedProvider = fusedLocationProviderClient ?: return
-
-                    val locationResult = fusedProvider.lastLocation
-                    locationResult.addOnCompleteListener(ctx.activity, { task: Task<Location> ->
-                        if (task.isSuccessful) {
-                            mv.isMyLocationEnabled = true
-                            mv.uiSettings?.isMyLocationButtonEnabled = true
-                            val lastKnownLocation = task.result
-                            if (lastKnownLocation != null) {
-                                sendEvent(Constants.LOCATION_UPDATED, gson.toJson(MapEvent(
-                                        lastKnownLocation.latitude,
-                                        lastKnownLocation.longitude)))
-                            }
-                        } else {
-                            mv.isMyLocationEnabled = false
-                            mv.uiSettings?.isMyLocationButtonEnabled = false
-                        }
-                    })
+                } else {
+                    mv.isMyLocationEnabled = false
+                    mv.uiSettings?.isMyLocationButtonEnabled = false
                 }
-            }
-            event.message == Constants.AUTHORIZATION_DENIED -> {
-                mv.isMyLocationEnabled = false
-                mv.uiSettings?.isMyLocationButtonEnabled = false
-            }
-        }
+            })
 
-        sendEvent(Constants.AUTHORIZATION_STATUS, gson.toJson(AuthorizationEvent(
-                if (granted) Constants.AUTHORIZATION_STATUS_ALWAYS
-                else Constants.AUTHORIZATION_STATUS_DENIED)))
+        }
     }
 
     fun add() {
@@ -203,11 +190,12 @@ class MapController(override var context: FREContext?, private var airView: View
         frame.id = newId
         airView.addView(frame)
 
-        val mMapFragment: MapFragment = MapFragment.newInstance()
+        mMapFragment = MapFragment.newInstance()
         val fragmentTransaction: FragmentTransaction = ctx.activity.fragmentManager.beginTransaction()
         fragmentTransaction.add(newId, mMapFragment)
         fragmentTransaction.commit()
         mMapFragment.getMapAsync(this)
+
     }
 
     fun clear() {
@@ -351,6 +339,21 @@ class MapController(override var context: FREContext?, private var airView: View
         marker.hideInfoWindow()
     }
 
+    fun capture(x: Int, y: Int, w: Int, h: Int) {
+        val mv: GoogleMap = mapView ?: return
+        mv.snapshot { _bitmap ->
+            lastCapture = when {
+                w > 0 && h > 0 -> Bitmap.createBitmap(_bitmap, x, y, w, h)
+                else -> _bitmap
+            }
+            sendEvent(Constants.ON_BITMAP_READY, "")
+        }
+    }
+
+    fun getCapture():Bitmap? {
+        return lastCapture
+    }
+
     override fun onMarkerClick(p0: Marker?): Boolean {
         if (!asListeners.contains(Constants.DID_TAP_MARKER)) return false
         val marker = p0 ?: return true
@@ -424,8 +427,6 @@ class MapController(override var context: FREContext?, private var airView: View
                 mv.cameraPosition.zoom,
                 mv.cameraPosition.tilt,
                 mv.cameraPosition.bearing)))
-
-
     }
 
     override fun onCameraMoveStarted(reason: Int) {
@@ -438,12 +439,8 @@ class MapController(override var context: FREContext?, private var airView: View
         sendEvent(Constants.ON_CAMERA_IDLE, "")
     }
 
-    init {
-        EventBus.getDefault().register(this)
-    }
-
     override val TAG: String
-        get() = this::class.java.canonicalName
+        get() = this::class.java.simpleName
 
 
 

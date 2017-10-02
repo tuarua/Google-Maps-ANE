@@ -34,6 +34,9 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     private var circles: Dictionary<String, CustomMKCircle> = Dictionary()
     private var tapGestureRecogniser:UITapGestureRecognizer?
     private var _showsUserLocation: Bool = false
+    private var lastCapture:CGImage? = nil
+    private var captureDimensions:CGRect = CGRect.zero
+    
     var showsUserLocation: Bool {
         set {
             _showsUserLocation = newValue
@@ -203,7 +206,31 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         view.addSubview(container)
         container.addSubview(mapView)
         sendEvent(name: Constants.ON_READY, value: "")
-
+    }
+    
+    public func capture(captureDimensions:CGRect) {
+        self.captureDimensions = captureDimensions
+        DispatchQueue.main.async {
+            UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, UIScreen.main.scale )
+            self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates: true)
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            if let ui = newImage {
+                if let ci = CIImage.init(image: ui) {
+                    let context = CIContext(options: nil)
+                    if let cg = context.createCGImage(ci, from: ci.extent) {
+                        if let ret = cg.copy(colorSpace: CGColorSpaceCreateDeviceRGB()) {
+                            self.lastCapture = ret
+                            self.sendEvent(name: Constants.ON_BITMAP_READY, value: "")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public func getCapture() -> (CGImage?, CGRect) {
+        return (lastCapture, captureDimensions)
     }
 
     public func setViewPort(frame: CGRect) {

@@ -39,6 +39,8 @@ public class GoogleMapsEvent extends Event {
     public static const CAMERA_MOVE_REASON_GESTURE:int = 1;
     public static const CAMERA_MOVE_REASON_API_ANIMATION:int = 2;
     public static const CAMERA_MOVE_REASON_DEVELOPER_ANIMATION:int = 3;
+    public static const ON_BITMAP_READY:String = "GoogleMaps.OnBitmapReady";
+
     public var params:*;
 
     //noinspection ReservedWordAsName

@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-//#include "FlashRuntimeExtensions.h"
 #import "FreMacros.h"
 #import "GoogleMapsANE_LIB.h"
 #import <FreSwift/FreSwift-iOS-Swift.h>
@@ -52,7 +51,7 @@ CONTEXT_INIT(TRGMA) {
         ,MAP_FUNCTION(TRGMA, moveCamera)
         ,MAP_FUNCTION(TRGMA, setStyle)
         ,MAP_FUNCTION(TRGMA, setMapType)
-        ,MAP_FUNCTION(TRGMA, requestLocation)
+        ,MAP_FUNCTION(TRGMA, showUserLocation)
         ,MAP_FUNCTION(TRGMA, addEventListener)
         ,MAP_FUNCTION(TRGMA, removeEventListener)
         ,MAP_FUNCTION(TRGMA, zoomIn)
@@ -63,6 +62,11 @@ CONTEXT_INIT(TRGMA) {
         ,MAP_FUNCTION(TRGMA, hideInfoWindow)
         ,MAP_FUNCTION(TRGMA, addCircle)
         ,MAP_FUNCTION(TRGMA, setBounds)
+        ,MAP_FUNCTION(TRGMA, requestPermissions)
+        ,MAP_FUNCTION(TRGMA, capture)
+        ,MAP_FUNCTION(TRGMA, getCapture)
+        
+        
     };
     
     /**************************************************************************/

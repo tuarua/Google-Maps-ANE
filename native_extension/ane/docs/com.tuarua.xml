@@ -14,13 +14,27 @@
      
      </apiDesc><apiType value="String"/></apiReturn><apiParam><apiItemName>marker</apiItemName><apiOperationClassifier>com.tuarua.googlemaps:Marker</apiOperationClassifier><apiDesc>    </apiDesc></apiParam></apiOperationDef><apiDesc>
      
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:capture"><apiName>capture</apiName><shortdesc>
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>x</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>y</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>    </apiDesc></apiParam><apiParam><apiItemName>width</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>leaving as default of 0 captures the full width
+     </apiDesc></apiParam><apiParam><apiItemName>height</apiItemName><apiType value="int"/><apiData>0</apiData><apiDesc>leaving as default of 0 captures the full height
+     
+     <p>Captures the mapView. This is asynchronous.
+     Listen for GoogleMapsEvent.ON_BITMAP_READY event and then call getCapture()</p>
+     
+     </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
      </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:clear"><apiName>clear</apiName><shortdesc>
      
      
      </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
      
      
-     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:dispose"><apiName>dispose</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:hideInfoWindow"><apiName>hideInfoWindow</apiName><shortdesc>
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:dispose"><apiName>dispose</apiName><shortdesc/><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:getCapture"><apiName>getCapture</apiName><shortdesc>
+     Returns the last bitmap capture of the mapView
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="flash.display:BitmapData"/></apiReturn></apiOperationDef><apiDesc>
+     <p>Returns the last bitmap capture of the mapView</p>
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:hideInfoWindow"><apiName>hideInfoWindow</apiName><shortdesc>
      
      </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>uuid</apiItemName><apiType value="String"/><apiDesc>    
      </apiDesc></apiParam></apiOperationDef><apiDesc>
@@ -51,7 +65,7 @@
      </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>uuid</apiItemName><apiType value="String"/><apiDesc>    
      </apiDesc></apiParam></apiOperationDef><apiDesc>
      
-     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:requestLocation"><apiName>requestLocation</apiName><shortdesc>
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:requestPermissions"><apiName>requestPermissions</apiName><shortdesc>
      
      
      </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
@@ -66,6 +80,12 @@
      
      </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn><apiParam><apiItemName>uuid</apiItemName><apiType value="String"/><apiDesc>    
      </apiDesc></apiParam></apiOperationDef><apiDesc>
+     
+     </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:showUserLocation"><apiName>showUserLocation</apiName><shortdesc>
+     
+     
+     </shortdesc><prolog/><apiOperationDetail><apiOperationDef><apiAccess value="public"/><apiReturn><apiType value="void"/></apiReturn></apiOperationDef><apiDesc>
+     
      
      </apiDesc></apiOperationDetail></apiOperation><apiOperation id="com.tuarua:GoogleMapsANE:updateMarker"><apiName>updateMarker</apiName><shortdesc>
      

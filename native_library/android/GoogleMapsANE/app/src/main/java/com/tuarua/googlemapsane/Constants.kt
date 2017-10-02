@@ -16,7 +16,7 @@
 package com.tuarua.googlemapsane
 
 object Constants {
-    val ON_READY: String = "GoogleMaps.OnReady";
+    val ON_READY: String = "GoogleMaps.OnReady"
     val DID_TAP_AT: String = "GoogleMaps.DidTapAt"
     val DID_LONG_PRESS_AT: String = "GoogleMaps.DidLongPressAt"
     val DID_TAP_MARKER: String = "GoogleMaps.DidTapMarker"
@@ -30,9 +30,12 @@ object Constants {
     val ON_CAMERA_MOVE_STARTED: String = "GoogleMaps.OnCameraMoveStarted"
     val ON_CAMERA_IDLE: String = "GoogleMaps.OnCameraIdle"
     val LOCATION_UPDATED: String = "Location.LocationUpdated"
-    val AUTHORIZATION_STATUS: String = "Location.AuthorizationStatus"
-    val AUTHORIZATION_GRANTED: String = "Location.AuthorizationGranted"
-    val AUTHORIZATION_DENIED: String = "Location.AuthorizationDenied"
-    val AUTHORIZATION_STATUS_ALWAYS:Int = 3
-    val AUTHORIZATION_STATUS_DENIED:Int = 2
+
+    val ON_PERMISSION_STATUS:String = "Permission.OnStatus"
+    val PERMISSION_DENIED = 2
+    val PERMISSION_ALWAYS = 3
+    val PERMISSION_SHOW_RATIONALE = 5
+
+    val ON_BITMAP_READY:String = "GoogleMaps.OnBitmapReady"
+
 }

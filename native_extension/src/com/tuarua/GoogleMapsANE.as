@@ -6,9 +6,11 @@ import com.tuarua.googlemaps.Coordinate;
 import com.tuarua.googlemaps.GoogleMapsEvent;
 import com.tuarua.googlemaps.MapProvider;
 import com.tuarua.googlemaps.Marker;
-import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.location.LocationEvent;
+import com.tuarua.googlemaps.permissions.PermissionEvent;
+
+import flash.display.BitmapData;
 
 import flash.events.EventDispatcher;
 import flash.events.StatusEvent;
@@ -23,7 +25,7 @@ public class GoogleMapsANE extends EventDispatcher {
     private var _visible:Boolean;
     private var _isInited:Boolean;
     private var _isMapInited:Boolean;
-    private var _isSupported:Boolean = true; //TODO
+    private var _isSupported:Boolean = true;
     private var _markers:Dictionary = new Dictionary();
     private var argsAsJSON:Object;
     private static const TRACE:String = "TRACE";
@@ -109,6 +111,7 @@ public class GoogleMapsANE extends EventDispatcher {
             case GoogleMapsEvent.DID_LONG_PRESS_INFO_WINDOW:
             case GoogleMapsEvent.ON_READY:
             case GoogleMapsEvent.ON_CAMERA_IDLE:
+            case GoogleMapsEvent.ON_BITMAP_READY:
                 dispatchEvent(new GoogleMapsEvent(event.level, event.code));
                 break;
             case LocationEvent.LOCATION_UPDATED:
@@ -120,10 +123,10 @@ public class GoogleMapsANE extends EventDispatcher {
                     trace(e.message);
                 }
                 break;
-            case LocationEvent.AUTHORIZATION_STATUS:
+            case PermissionEvent.ON_PERMISSION_STATUS:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    dispatchEvent(new LocationEvent(event.level, argsAsJSON));
+                    dispatchEvent(new PermissionEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -228,7 +231,7 @@ public class GoogleMapsANE extends EventDispatcher {
      */
     public function updateMarker(uuid:String):void {
         if (safetyCheck()) {
-            var marker:Marker = _markers[uuid]
+            var marker:Marker = _markers[uuid];
             var theRet:* = ctx.call("updateMarker", uuid, marker);
             if (theRet is ANEError) {
                 throw theRet as ANEError;
@@ -355,11 +358,56 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      *
      */
-    public function requestLocation():void {
+    public function showUserLocation():void {
         if (safetyCheck()) {
-            ctx.call("requestLocation");
+            ctx.call("showUserLocation");
         }
     }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param width leaving as default of 0 captures the full width
+     * @param height leaving as default of 0 captures the full height
+     *
+     * <p>Captures the mapView. This is asynchronous.
+     * Listen for GoogleMapsEvent.ON_BITMAP_READY event and then call getCapture()</p>
+     *
+     */
+    public function capture(x:int = 0, y:int = 0, width:int = 0, height:int = 0):void {
+        if (safetyCheck()) {
+            var theRet:* = ctx.call("capture", x, y, width, height) as BitmapData;
+            if (theRet is ANEError) {
+                throw theRet as ANEError;
+            }
+        }
+    }
+
+    /**
+     * <p>Returns the last bitmap capture of the mapView</p>
+     */
+    public function getCapture():BitmapData {
+        if (safetyCheck()) {
+            var theRet:* = ctx.call("getCapture") as BitmapData;
+            if (theRet is ANEError) {
+                throw theRet as ANEError;
+            }
+            return theRet;
+        }
+        return null;
+    }
+
+    /**
+     *
+     *
+     */
+    public function requestPermissions():void {
+        if (safetyCheck()) {
+            ctx.call("requestPermissions");
+        }
+    }
+
 
     /**
      *
@@ -416,7 +464,7 @@ public class GoogleMapsANE extends EventDispatcher {
 
     /**
      *
-     * @param value
+     * @param json
      * <p>Sets the style of the map.</p>
      *
      */

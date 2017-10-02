@@ -32,6 +32,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     private var asListeners: Array<String> = []
     private var listenersAddedToMapC: Bool = false
     private var isAdded: Bool = false
+    private var permissionsGranted:Bool = false
 
     public enum MapProvider: Int {
         case google
@@ -55,7 +56,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         functionsToSet["\(prefix)moveCamera"] = moveCamera
         functionsToSet["\(prefix)setStyle"] = setStyle
         functionsToSet["\(prefix)setMapType"] = setMapType
-        functionsToSet["\(prefix)requestLocation"] = requestLocation
+        functionsToSet["\(prefix)showUserLocation"] = showUserLocation
         functionsToSet["\(prefix)addEventListener"] = addEventListener
         functionsToSet["\(prefix)removeEventListener"] = removeEventListener
         functionsToSet["\(prefix)zoomIn"] = zoomIn
@@ -66,6 +67,11 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         functionsToSet["\(prefix)showInfoWindow"] = showInfoWindow
         functionsToSet["\(prefix)hideInfoWindow"] = hideInfoWindow
         functionsToSet["\(prefix)setBounds"] = setBounds
+        functionsToSet["\(prefix)requestPermissions"] = requestPermissions
+        functionsToSet["\(prefix)capture"] = capture
+        functionsToSet["\(prefix)getCapture"] = getCapture
+        
+        
 
         var arr: Array<String> = []
         for key in functionsToSet.keys {
@@ -113,6 +119,66 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
 
         mapControllerMK?.removeEventListener(type: type)
         mapControllerGMS?.removeEventListener(type: type)
+        return nil
+    }
+    func capture(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 3,
+            let xFre = Int(argv[0]),
+            let yFre = Int(argv[1]),
+            let wFre = Int(argv[2]),
+            let hFre = Int(argv[3]) else {
+                return ArgCountError(message: "capture").getError(#file, #line, #column)
+        }
+
+        
+        let x = xFre * Int(UIScreen.main.scale)
+        let y = yFre * Int(UIScreen.main.scale)
+        let w = wFre * Int(UIScreen.main.scale)
+        let h = hFre * Int(UIScreen.main.scale)
+        
+        mapControllerGMS?.capture(captureDimensions:CGRect.init(x: x,y: y,width: w, height: h))
+        mapControllerMK?.capture(captureDimensions:CGRect.init(x: x,y: y,width: w, height: h))
+        
+        return nil
+    }
+    
+    func getCapture(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        if let capGMS = mapControllerGMS?.getCapture(), let cgiGMS = capGMS.0 {
+            return getCaptureImage(cgImage: cgiGMS, captureDimensions: capGMS.1)
+        } else if let capMK = mapControllerMK?.getCapture(), let cgiMK = capMK.0{
+            return getCaptureImage(cgImage: cgiMK, captureDimensions: capMK.1)
+        }
+        return nil
+    }
+    
+    private func getCaptureImage(cgImage: CGImage, captureDimensions:CGRect) -> FREObject? {
+        do {
+            if let freObject = try FREObject.init(className: "flash.display.BitmapData", args: cgImage.width, cgImage.height, false),
+                let destBmd = try FREObject.init(className: "flash.display.BitmapData", args: captureDimensions.width, captureDimensions.height, false) {
+                
+                let asBitmapData = FreBitmapDataSwift.init(freObject: freObject)
+                defer {
+                    asBitmapData.releaseData()
+                }
+                do {
+                    try asBitmapData.acquire()
+                    try asBitmapData.setPixels(cgImage: cgImage)
+                    asBitmapData.releaseData()
+                    
+                    let rect = FreRectangleSwift.init(value: captureDimensions)
+                    let pt = FrePointSwift.init(value: CGPoint.zero)
+                    if let bmd = asBitmapData.rawValue, let sourceRect = rect.rawValue, let destPoint = pt.rawValue {
+                        _ = try destBmd.call(method: "copyPixels", args: bmd, sourceRect, destPoint)
+                        return destBmd
+                    }
+                } catch let e as FreError {
+                    return e.getError(#file, #line, #column)
+                } catch {}
+            }
+        } catch let e as FreError {
+            return e.getError(#file, #line, #column)
+        } catch {
+        }
         return nil
     }
 
@@ -376,13 +442,45 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         return nil
     }
 
-    public func requestLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        locationManager = CLLocationManager()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        locationManager.distanceFilter = 50
-        locationManager.startUpdatingLocation()
-        locationManager.delegate = self
+    public func requestPermissions(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        let requiredKey = "NSLocationAlwaysUsageDescription"
+        var pListDict: NSDictionary?
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+            pListDict = NSDictionary(contentsOfFile: path)
+        }
+        var hasRequiredInfoAddition = false
+        if let dict = pListDict {
+            for key in dict.allKeys {
+                if (key as! String) == requiredKey {
+                    hasRequiredInfoAddition = true
+                    break
+                }
+            }
+        }
+        if(hasRequiredInfoAddition){
+            locationManager = CLLocationManager()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestAlwaysAuthorization()
+            locationManager.delegate = self
+        }else{
+            warning("Please add \(requiredKey) to InfoAdditions in your AIR manifest")
+        }
+        
+        return nil
+    }
+    
+    public func showUserLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        if permissionsGranted {
+            locationManager.requestLocation()
+            mapControllerMK?.showsUserLocation = true
+            mapControllerGMS?.mapView.isMyLocationEnabled = true
+            if let loc = userLocation?.coordinate {
+                mapControllerMK?.moveCamera(centerAt: loc, tilt: nil, bearing: nil, animates: true)
+                mapControllerGMS?.moveCamera(centerAt: loc, zoom: nil, tilt: nil, bearing: nil, animates: true)
+            }
+        } else {
+            warning("No permissions to locatte user")
+        }
         return nil
     }
 
@@ -400,23 +498,26 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         props["status"] = status.rawValue
         switch status {
         case .restricted:
-            props["status"] = Constants.AUTHORIZATION_STATUS_DENIED //TODO restricted
-        case .notDetermined: fallthrough
+            props["status"] = Constants.PERMISSION_RESTRICTED
+        case .notDetermined:
+            props["status"] = Constants.PERMISSION_NOT_DETERMINED
         case .denied:
-            props["status"] = Constants.AUTHORIZATION_STATUS_DENIED
-        case .authorizedAlways: fallthrough
+            props["status"] = Constants.PERMISSION_DENIED
+        case .authorizedAlways:
+            props["status"] = Constants.PERMISSION_ALWAYS
+            permissionsGranted = true
         case .authorizedWhenInUse:
-            props["status"] = Constants.AUTHORIZATION_STATUS_ALWAYS
-            locationManager.requestLocation()
-            mapControllerMK?.showsUserLocation = true
-            mapControllerGMS?.mapView.isMyLocationEnabled = true
-            if let loc = userLocation?.coordinate {
-                mapControllerMK?.moveCamera(centerAt: loc, tilt: nil, bearing: nil, animates: true)
-                mapControllerGMS?.moveCamera(centerAt: loc, zoom: nil, tilt: nil, bearing: nil, animates: true)
-            }
+            props["status"] = Constants.PERMISSION_WHEN_IN_USE
+            permissionsGranted = true
         }
+        
+        if permissionsGranted {
+            locationManager.startUpdatingLocation()
+            locationManager.distanceFilter = 50
+        }
+        
         let json = JSON(props)
-        sendEvent(name: Constants.AUTHORIZATION_STATUS, value: json.description)
+        sendEvent(name: Constants.ON_PERMISSION_STATUS, value: json.description)
     }
 
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
