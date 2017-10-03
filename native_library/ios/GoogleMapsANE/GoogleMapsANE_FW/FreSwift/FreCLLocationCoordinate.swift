@@ -31,7 +31,7 @@ class FreCLLocationCoordinate: FreObjectSwift {
     public init(value: CLLocationCoordinate2D) {
         var freObject: FREObject? = nil
         do {
-            freObject = try FREObject.init(className: "fcom.tuarua.googlemaps.Coordinate",
+            freObject = try FREObject.init(className: "com.tuarua.googlemaps.Coordinate",
                                            args: CGFloat.init(value.latitude), CGFloat.init(value.longitude))
         } catch {
         }
