@@ -1,16 +1,19 @@
+### 0.0.9
+- iOS Updated FreSwift
+
 ### 0.0.8
-Added capture method
-Improved Permissions
+- Added capture method
+- Improved Permissions
 
 ### 0.0.7 
-Added Apple Maps on iOS
-asdocs
+- Added Apple Maps on iOS
+- asdocs
 
 ### 0.0.6 
-Minor changes
+- Minor changes
 
 ### 0.0.5 
-iOS version
+- iOS version
 
 ### 0.0.4  
 - Updated to FreKotlin 1.1.4-3
