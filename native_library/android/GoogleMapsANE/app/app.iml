@@ -110,24 +110,29 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="runtimeClasses" level="project" />
-    <orderEntry type="library" name="play-services-location-11.4.0" level="project" />
-    <orderEntry type="library" name="play-services-maps-11.4.0" level="project" />
-    <orderEntry type="library" name="gson-2.8.1" level="project" />
-    <orderEntry type="library" name="annotations-13.0" level="project" />
-    <orderEntry type="library" name="frekotlin-1.1.50" level="project" />
-    <orderEntry type="library" name="eventbus-3.0.0" level="project" />
-    <orderEntry type="library" name="support-core-ui-25.3.1" level="project" />
-    <orderEntry type="library" name="kotlin-stdlib-1.1.50" level="project" />
-    <orderEntry type="library" name="support-v4-25.3.1" level="project" />
-    <orderEntry type="library" name="support-media-compat-25.3.1" level="project" />
-    <orderEntry type="library" name="play-services-basement-11.4.0" level="project" />
-    <orderEntry type="library" name="FlashRuntimeExtensions" level="project" />
-    <orderEntry type="library" name="support-annotations-25.3.1" level="project" />
-    <orderEntry type="library" name="play-services-tasks-11.4.0" level="project" />
-    <orderEntry type="library" name="support-compat-25.3.1" level="project" />
-    <orderEntry type="library" name="play-services-base-11.4.0" level="project" />
-    <orderEntry type="library" name="support-fragment-25.3.1" level="project" />
-    <orderEntry type="library" name="support-core-utils-25.3.1" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tasks-license-11.4.2" level="project" />
+    <orderEntry type="library" name="__local_aars__:/Users/User/flash/Google-Maps-ANE/native_library/android/GoogleMapsANE/app/libs/runtimeClasses.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="__local_aars__:/Users/User/flash/Google-Maps-ANE/native_library/android/GoogleMapsANE/app/libs/frekotlin-1.1.51.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-tasks-11.4.2" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-base-license-11.4.2" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlin:kotlin-stdlib:1.1.51@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-maps-11.4.2" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-ui-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-compat-25.4.0" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.8.1@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-location-11.4.2" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-maps-license-11.4.2" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-location-license-11.4.2" level="project" />
+    <orderEntry type="library" name="org.jetbrains:annotations:13.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-basement-license-11.4.2" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.4.2" level="project" />
+    <orderEntry type="library" name="__local_aars__:/Users/User/flash/Google-Maps-ANE/native_library/android/GoogleMapsANE/app/libs/FlashRuntimeExtensions.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-annotations:25.4.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.gms:play-services-base-11.4.2" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-utils-25.4.0" level="project" />
+    <orderEntry type="library" name="org.greenrobot:eventbus:3.0.0@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-v4-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-fragment-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-media-compat-25.4.0" level="project" />
   </component>
 </module>

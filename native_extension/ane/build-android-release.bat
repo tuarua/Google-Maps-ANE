@@ -1,7 +1,7 @@
 @echo off
 SET pathtome=%~dp0
 SET SZIP="C:\Program Files\7-Zip\7z.exe"
-SET AIR_PATH="D:\dev\sdks\AIR\AIRSDK_26\bin\"
+SET AIR_PATH="D:\dev\sdks\AIR\AIRSDK_27\bin\"
 
 SET projectName=GoogleMapsANE
 
@@ -23,7 +23,8 @@ copy /Y %pathtome%..\..\native_library\android\%projectName%\app\build\outputs\a
 
 echo "GETTING ANDROID JAR"
 call %SZIP% x %pathtome%platforms\android\app-release.aar -o%pathtome%platforms\android\ classes.jar
-
+call %SZIP% x %pathtome%platforms\android\app-release.aar -o%pathtome%platforms\android\ res
+ren %pathtome%platforms\android\res com.tuarua.%projectName%-res
 
 echo "GENERATING ANE"
 call %AIR_PATH%adt.bat -package -target ane %pathtome%%projectName%.ane extension_android.xml ^
@@ -37,10 +38,6 @@ com.tuarua.%projectName%-res/. ^
 com.tuarua.%projectName%-res/. ^
 -platformoptions platforms/android/platform.xml
 
-
-REM res/.
-
-
 del %pathtome%platforms\\android\\classes.jar
 del %pathtome%platforms\\android\\app-release.aar
 del %pathtome%platforms\\android\\library.swf
@@ -48,5 +45,7 @@ del %pathtome%platforms\\android\\library.swf
 call DEL /F /Q /A %pathtome%library.swf
 call DEL /F /Q /A %pathtome%catalog.xml
 call DEL /F /Q /A %pathtome%%projectName%.swc
+
+call rmdir /Q /S %pathtome%platforms\android\com.tuarua.%projectName%-res
 
 echo "DONE!"
