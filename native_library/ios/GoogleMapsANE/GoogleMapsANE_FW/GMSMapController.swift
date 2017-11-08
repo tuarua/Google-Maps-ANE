@@ -53,7 +53,8 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         mapView.delegate = self
         if let settings = self.settings {
             mapView.settings.compassButton = settings.compassButton
-            mapView.settings.myLocationButton = settings.myLocationButton
+            mapView.settings.myLocationButton = settings.myLocationButtonEnabled
+            mapView.isMyLocationEnabled = settings.myLocationEnabled
             mapView.settings.scrollGestures = settings.scrollGestures
             mapView.settings.rotateGestures = settings.rotateGestures
             mapView.settings.zoomGestures = settings.zoomGestures

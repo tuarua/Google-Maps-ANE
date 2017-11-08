@@ -20,6 +20,7 @@ data class Settings(
         var tiltGestures: Boolean = true,
         var rotateGestures: Boolean = true,
         var compassButton: Boolean = false,
-        var myLocationButton: Boolean = false,
+        var myLocationButtonEnabled: Boolean = false,
+        var myLocationEnabled: Boolean = false,
         var indoorPicker: Boolean = true
 )

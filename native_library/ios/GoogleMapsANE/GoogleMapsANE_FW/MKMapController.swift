@@ -194,7 +194,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         mapView.delegate = self
         if let settings = self.settings {
             mapView.showsCompass = settings.compassButton
-            mapView.showsUserLocation = settings.myLocationButton
+            mapView.showsUserLocation = settings.myLocationEnabled
             mapView.isScrollEnabled = settings.scrollGestures
             mapView.isRotateEnabled = settings.rotateGestures
             mapView.isZoomEnabled = settings.zoomGestures

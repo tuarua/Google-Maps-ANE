@@ -19,7 +19,6 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.FragmentTransaction
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.location.Location
 import android.view.View
 import android.view.ViewGroup
@@ -40,10 +39,6 @@ import com.tuarua.frekotlin.FreException
 import com.tuarua.frekotlin.FreKotlinController
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.*
-import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback
-
-
-
 
 class MapController(override var context: FREContext?, private var airView: ViewGroup, coordinate: LatLng,
                     private var zoomLevel: Float, viewPort: Rect, private var settings: Settings) : FreKotlinController,
@@ -72,7 +67,16 @@ class MapController(override var context: FREContext?, private var airView: View
         mapView = googleMap
         val mv: GoogleMap = mapView ?: return
 
-        mv.uiSettings.isMyLocationButtonEnabled = settings.myLocationButton
+        val ctx = context
+        if (ctx != null) {
+            if (ctx.activity != null) {
+                if (checkSelfPermission(ctx.activity.applicationContext, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    mv.uiSettings.isMyLocationButtonEnabled = settings.myLocationButtonEnabled
+                    mv.isMyLocationEnabled = settings.myLocationEnabled
+                }
+            }
+        }
+
         mv.uiSettings.isCompassEnabled = settings.compassButton
         mv.uiSettings.isRotateGesturesEnabled = settings.rotateGestures
         mv.uiSettings.isIndoorLevelPickerEnabled = settings.indoorPicker
@@ -162,8 +166,8 @@ class MapController(override var context: FREContext?, private var airView: View
             val locationResult = fusedProvider.lastLocation
             locationResult.addOnCompleteListener(ctx.activity, { task: Task<Location> ->
                 if (task.isSuccessful) {
-                    mv.isMyLocationEnabled = true
-                    mv.uiSettings?.isMyLocationButtonEnabled = true
+                    mv.isMyLocationEnabled = settings.myLocationEnabled
+                    mv.uiSettings?.isMyLocationButtonEnabled = settings.myLocationButtonEnabled
                     val lastKnownLocation = task.result
                     if (lastKnownLocation != null) {
                         sendEvent(Constants.LOCATION_UPDATED, gson.toJson(MapEvent(
@@ -341,9 +345,21 @@ class MapController(override var context: FREContext?, private var airView: View
 
     fun capture(x: Int, y: Int, w: Int, h: Int) {
         val mv: GoogleMap = mapView ?: return
+        var theW = w
+        var theH = h
+
         mv.snapshot { _bitmap ->
+
+            if ((x + theW) > _bitmap.width) {
+                theW = _bitmap.width - x
+            }
+
+            if ((y + theH) > _bitmap.height) {
+                theH = _bitmap.height - y
+            }
+
             lastCapture = when {
-                w > 0 && h > 0 -> Bitmap.createBitmap(_bitmap, x, y, w, h)
+                w > 0 && h > 0 -> Bitmap.createBitmap(_bitmap, x, y, theW, theH)
                 else -> _bitmap
             }
             sendEvent(Constants.ON_BITMAP_READY, "")

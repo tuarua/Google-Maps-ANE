@@ -105,7 +105,6 @@ class KotlinController : FreKotlinMainController {
     fun getCapture(ctx: FREContext, argv: FREArgv): FREObject? {
         val bmp = mapController?.getCapture()
         if (bmp != null) {
-            trace("bmp is not null")
             val bmd = FreBitmapDataKotlin(bmp)
             return bmd.rawValue
         }
@@ -170,7 +169,8 @@ class KotlinController : FreKotlinMainController {
             val settingsFre = argv[3] // settings: Settings
             settings.compassButton = Boolean(settingsFre.getProp("compassButton")) == true
             settings.indoorPicker = Boolean(settingsFre.getProp("indoorPicker")) == true
-            settings.myLocationButton = Boolean(settingsFre.getProp("myLocationButton")) == true
+            settings.myLocationButtonEnabled = Boolean(settingsFre.getProp("myLocationButtonEnabled")) == true
+            settings.myLocationEnabled = Boolean(settingsFre.getProp("myLocationEnabled")) == true
             settings.rotateGestures = Boolean(settingsFre.getProp("rotateGestures")) == true
             settings.scrollGestures = Boolean(settingsFre.getProp("scrollGestures")) == true
             settings.tiltGestures = Boolean(settingsFre.getProp("tiltGestures")) == true
@@ -233,13 +233,13 @@ class KotlinController : FreKotlinMainController {
 
     fun addMarker(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
+        return try {
             val addedMarker: Marker? = mapController?.addMarker(MarkerOptions(argv[0]))
-            return addedMarker?.id?.toFREObject()
+            addedMarker?.id?.toFREObject()
         } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
+            e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
+            FreException(e).getError(Thread.currentThread().stackTrace)
         }
     }
 
@@ -414,30 +414,6 @@ class KotlinController : FreKotlinMainController {
         val type = Int(argv[0])
         if (type is Int) mapController?.mapType = type
         return null
-    }
-
-    override fun onStarted() {
-        super.onStarted()
-    }
-
-    override fun onRestarted() {
-        super.onRestarted()
-    }
-
-    override fun onResumed() {
-        super.onResumed()
-    }
-
-    override fun onPaused() {
-        super.onPaused()
-    }
-
-    override fun onStopped() {
-        super.onStopped()
-    }
-
-    override fun onDestroyed() {
-        super.onDestroyed()
     }
 
     override val TAG: String

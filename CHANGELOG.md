@@ -1,3 +1,6 @@
+### 0.0.11
+- Fix for Issue #12
+
 ### 0.0.10
 - Updated FreKotlin
 - Updated Android Play Services to 11.4.2

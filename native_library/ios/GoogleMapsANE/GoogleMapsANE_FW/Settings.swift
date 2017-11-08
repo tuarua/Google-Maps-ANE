@@ -21,8 +21,9 @@ public struct Settings {
     public var tiltGestures: Bool = true
     public var rotateGestures: Bool = true
     public var consumesGesturesInView: Bool = true
-    public var compassButton: Bool = true
-    public var myLocationButton: Bool = true
+    public var compassButton: Bool = false
+    public var myLocationButtonEnabled: Bool = false
+    public var myLocationEnabled: Bool = false
     public var indoorPicker: Bool = true
     public var allowScrollGesturesDuringRotateOrZoom: Bool = true
     
@@ -45,8 +46,11 @@ public struct Settings {
         if let cb = dictionary["compassButton"] as? Bool {
             compassButton = cb
         }
-        if let ml = dictionary["myLocationButton"] as? Bool {
-            myLocationButton = ml
+        if let mlb = dictionary["myLocationButtonEnabled"] as? Bool {
+            myLocationButtonEnabled = mlb
+        }
+        if let ml = dictionary["myLocationEnabled"] as? Bool {
+            myLocationEnabled = ml
         }
         if let ip = dictionary["indoorPicker"] as? Bool {
             indoorPicker = ip

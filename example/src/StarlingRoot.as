@@ -90,8 +90,11 @@ public class StarlingRoot extends Sprite {
         var viewPort:Rectangle = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
         var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
 
+        var settings:Settings = new Settings();
+        settings.myLocationButtonEnabled = false;
+        settings.myLocationEnabled = true;
         try {
-            googleMaps.initMap(viewPort, coordinate, 12.0, new Settings(), Starling.current.contentScaleFactor);
+            googleMaps.initMap(viewPort, coordinate, 12.0, settings, Starling.current.contentScaleFactor);
         } catch (e:ANEError) {
             trace(e.source);
             trace(e.message);
@@ -115,8 +118,8 @@ public class StarlingRoot extends Sprite {
 
 
         btn.x = 10;
-        btn9.y = btn7.y = btn3.y = btn2.y = btn.y = 10;
-        btn8.y = btn6.y = btn5.y = btn4.y = 60;
+        btn8.y = btn7.y = btn3.y = btn2.y = btn.y = 10;
+        btn9.y = btn6.y = btn5.y = btn4.y = 60;
         btn.addEventListener(TouchEvent.TOUCH, onClear);
         addChild(btn);
 
@@ -144,11 +147,11 @@ public class StarlingRoot extends Sprite {
         btn7.addEventListener(TouchEvent.TOUCH, onFindMe);
         addChild(btn7);
 
-        btn8.x = 280;
+        btn8.x = 370;
         btn8.addEventListener(TouchEvent.TOUCH, onZoomIn);
         addChild(btn8);
 
-        btn9.x = 370;
+        btn9.x = 280;
         btn9.addEventListener(TouchEvent.TOUCH, onCapture);
         addChild(btn9);
 
@@ -160,18 +163,17 @@ public class StarlingRoot extends Sprite {
         var touch:Touch = event.getTouch(btn9);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             googleMaps.addEventListener(GoogleMapsEvent.ON_BITMAP_READY, onBitmapReady);
-            googleMaps.capture(20, 20, 400, 400);
+            googleMaps.capture(0, 0, stage.stageWidth, (stage.stageHeight - 100)/2);
         }
     }
 
     private function onBitmapReady(event:GoogleMapsEvent):void {
         trace(event);
         var bmd:BitmapData = googleMaps.getCapture();
-        trace(bmd);
         if (bmd) {
             trace(bmd.width, bmd.height);
             var bmp:Bitmap = new Bitmap(bmd);
-            bmp.y = 250;
+            bmp.y = 100 * Starling.contentScaleFactor;
             googleMaps.visible = false;
             Starling.current.nativeStage.addChild(bmp);
         }
@@ -201,6 +203,7 @@ public class StarlingRoot extends Sprite {
     }
 
     private function onMapReady(event:GoogleMapsEvent):void {
+        trace(event);
         var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
         var marker:Marker = new Marker(coordinate, "Dunleer", "Home");
         marker.color = Color.RED;
