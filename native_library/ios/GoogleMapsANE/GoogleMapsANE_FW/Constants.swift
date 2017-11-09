@@ -17,7 +17,8 @@
 import Foundation
 
 public struct Constants {
-    public static let ON_READY: String = "GoogleMaps.OnReady";
+    public static let ON_LOADED: String = "GoogleMaps.OnLoaded"
+    public static let ON_READY: String = "GoogleMaps.OnReady"
     public static let DID_TAP_AT: String = "GoogleMaps.DidTapAt"
     public static let DID_LONG_PRESS_AT: String = "GoogleMaps.DidLongPressAt"
     public static let DID_TAP_MARKER: String = "GoogleMaps.DidTapMarker"

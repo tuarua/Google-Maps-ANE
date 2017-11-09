@@ -2,7 +2,7 @@
 
 Write-Host "current directory $currentDir"
 
-Invoke-WebRequest -Uri https://github.com/tuarua/Google-Maps-ANE/releases/download/0.0.9/GoogleMapsANE.ane?raw=true -OutFile "$currentDir\..\native_extension\ane\GoogleMapsANE.ane"
+Invoke-WebRequest -Uri https://github.com/tuarua/Google-Maps-ANE/releases/download/0.0.11/GoogleMapsANE.ane?raw=true -OutFile "$currentDir\..\native_extension\ane\GoogleMapsANE.ane"
 Invoke-WebRequest -OutFile "$currentDir\android_dependencies\com.tuarua.frekotlin.ane" -Uri https://github.com/tuarua/Android-ANE-Dependencies/blob/master/anes/kotlin/com.tuarua.frekotlin.ane?raw=true
 Invoke-WebRequest -OutFile "$currentDir\android_dependencies\org.greenrobot.eventbus-3.0.0.ane" -Uri https://github.com/tuarua/Android-ANE-Dependencies/blob/master/anes/misc/org.greenrobot.eventbus-3.0.0.ane?raw=true
 Invoke-WebRequest -OutFile "$currentDir\android_dependencies\com.google.code.gson.gson-2.8.1.ane" -Uri https://github.com/tuarua/Android-ANE-Dependencies/blob/master/anes/misc/com.google.code.gson.gson-2.8.1.ane?raw=true

@@ -46,7 +46,9 @@ class MapController(override var context: FREContext?, private var airView: View
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnInfoWindowLongClickListener,
-        GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener {
+        GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener,
+        GoogleMap.OnMapLoadedCallback {
+
 
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
@@ -66,6 +68,8 @@ class MapController(override var context: FREContext?, private var airView: View
     override fun onMapReady(googleMap: GoogleMap?) {
         mapView = googleMap
         val mv: GoogleMap = mapView ?: return
+
+        mv.setOnMapLoadedCallback(this)
 
         val ctx = context
         if (ctx != null) {
@@ -97,6 +101,10 @@ class MapController(override var context: FREContext?, private var airView: View
 
         mv.moveCamera(CameraUpdateFactory.newLatLngZoom(centerAt, zoomLevel))
         sendEvent(Constants.ON_READY, "")
+    }
+
+    override fun onMapLoaded() {
+        sendEvent(Constants.ON_LOADED, "")
     }
 
     fun addEventListener(type: String) {

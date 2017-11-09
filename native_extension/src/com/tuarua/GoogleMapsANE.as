@@ -110,6 +110,7 @@ public class GoogleMapsANE extends EventDispatcher {
             case GoogleMapsEvent.DID_CLOSE_INFO_WINDOW:
             case GoogleMapsEvent.DID_LONG_PRESS_INFO_WINDOW:
             case GoogleMapsEvent.ON_READY:
+            case GoogleMapsEvent.ON_LOADED:
             case GoogleMapsEvent.ON_CAMERA_IDLE:
             case GoogleMapsEvent.ON_BITMAP_READY:
                 dispatchEvent(new GoogleMapsEvent(event.level, event.code));

@@ -103,6 +103,7 @@ public class StarlingRoot extends Sprite {
         }
 
         googleMaps.addEventListener(GoogleMapsEvent.ON_READY, onMapReady);
+        googleMaps.addEventListener(GoogleMapsEvent.ON_LOADED, onMapsLoaded);
         googleMaps.addEventListener(GoogleMapsEvent.DID_TAP_AT, onDidTapAt);
         googleMaps.addEventListener(GoogleMapsEvent.DID_LONG_PRESS_AT, onDidLongPressAt);
         googleMaps.addEventListener(GoogleMapsEvent.DID_TAP_MARKER, onDidTapMarker);
@@ -157,6 +158,10 @@ public class StarlingRoot extends Sprite {
 
         stage.addEventListener(Event.RESIZE, onResize);
 
+    }
+
+    private function onMapsLoaded(event:GoogleMapsEvent):void {
+        trace(event);
     }
 
     private function onCapture(event:TouchEvent):void {

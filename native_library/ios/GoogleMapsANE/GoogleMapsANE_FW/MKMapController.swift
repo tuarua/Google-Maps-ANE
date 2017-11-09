@@ -36,6 +36,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     private var _showsUserLocation: Bool = false
     private var lastCapture:CGImage? = nil
     private var captureDimensions:CGRect = CGRect.zero
+    private var isMapLoaded:Bool = false
     
     var showsUserLocation: Bool {
         set {
@@ -73,6 +74,13 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         let json = JSON(props)
         sendEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
         
+    }
+    
+    internal func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        if !isMapLoaded {
+            sendEvent(name: Constants.ON_LOADED, value: "")
+        }
+        isMapLoaded = true
     }
 
     internal func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {

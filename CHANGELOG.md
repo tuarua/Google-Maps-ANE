@@ -1,5 +1,6 @@
 ### 0.0.11
 - Fix for Issue #12
+- Add ON_LOADED event Issue #11
 
 ### 0.0.10
 - Updated FreKotlin
