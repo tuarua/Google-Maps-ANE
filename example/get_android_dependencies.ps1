@@ -1,4 +1,4 @@
-﻿$currentDir = (Get-Item -Path ".\" -Verbose).FullName
+$currentDir = (Get-Item -Path ".\" -Verbose).FullName
 
 Write-Host "current directory $currentDir"
 
