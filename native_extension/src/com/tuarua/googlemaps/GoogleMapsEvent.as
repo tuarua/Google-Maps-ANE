@@ -2,6 +2,7 @@ package com.tuarua.googlemaps {
 import flash.events.Event;
 
 public class GoogleMapsEvent extends Event {
+    public static const ON_LOADED:String = "GoogleMaps.OnLoaded";
     public static const ON_READY:String = "GoogleMaps.OnReady";
     public static const DID_TAP_AT:String = "GoogleMaps.DidTapAt";
     /**

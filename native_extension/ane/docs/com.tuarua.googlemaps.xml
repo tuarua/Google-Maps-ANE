@@ -198,12 +198,18 @@
      
      Ignored on Apple Maps
      
-     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:myLocationButton"><apiName>myLocationButton</apiName><shortdesc>
+     </apiDesc></apiValueDetail></apiValue>
+     <apiValue id="com.tuarua.googlemaps:Settings:myLocationButtonEnabled"><apiName>myLocationButtonEnabled</apiName><shortdesc>
      Enables or disables the My Location button.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
      Enables or disables the My Location button. This is a button visible on the
      map that, when tapped by users, will center the map on the current user
      location.
-     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:rotateGestures"><apiName>rotateGestures</apiName><shortdesc>
+     </apiDesc></apiValueDetail></apiValue>
+     <apiValue id="com.tuarua.googlemaps:Settings:myLocationEnabled"><apiName>myLocationEnabled</apiName><shortdesc>
+         Enables or disables the my-location layer.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+         Enables or disables the my-location layer.
+         </apiDesc></apiValueDetail></apiValue>
+     <apiValue id="com.tuarua.googlemaps:Settings:rotateGestures"><apiName>rotateGestures</apiName><shortdesc>
      Controls whether rotate gestures are enabled (default) or disabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
      Controls whether rotate gestures are enabled (default) or disabled. If
      enabled, users may use a two-finger rotate gesture to rotate the camera. This

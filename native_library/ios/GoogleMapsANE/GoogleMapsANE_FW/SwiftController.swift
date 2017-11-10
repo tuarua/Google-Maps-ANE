@@ -28,7 +28,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     private var userLocation: CLLocation?
     private var mapControllerGMS: GMSMapController?
     private var mapControllerMK: MKMapController?
-
+    private var settings: Settings?
     private var asListeners: Array<String> = []
     private var listenersAddedToMapC: Bool = false
     private var isAdded: Bool = false
@@ -290,7 +290,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
             return ArgCountError(message: "initMap").getError(#file, #line, #column)
         }
 
-        var settings: Settings?
+        
         if let settingsDict = Dictionary.init(inFRE3) {
             settings = Settings.init(dictionary: settingsDict)
         }
@@ -472,14 +472,18 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     public func showUserLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         if permissionsGranted {
             locationManager.requestLocation()
-            mapControllerMK?.showsUserLocation = true
-            mapControllerGMS?.mapView.isMyLocationEnabled = true
+            if let sttngs = settings {
+                mapControllerMK?.showsUserLocation = sttngs.myLocationEnabled
+                mapControllerGMS?.mapView.settings.myLocationButton = sttngs.myLocationButtonEnabled
+                mapControllerGMS?.mapView.isMyLocationEnabled = sttngs.myLocationEnabled
+            }
+            
             if let loc = userLocation?.coordinate {
                 mapControllerMK?.moveCamera(centerAt: loc, tilt: nil, bearing: nil, animates: true)
                 mapControllerGMS?.moveCamera(centerAt: loc, zoom: nil, tilt: nil, bearing: nil, animates: true)
             }
         } else {
-            warning("No permissions to locatte user")
+            warning("No permissions to locate user")
         }
         return nil
     }

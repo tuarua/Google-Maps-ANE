@@ -32,6 +32,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     private var asListeners:Array<String> = []
     private var lastCapture:CGImage? = nil
     private var captureDimensions:CGRect = CGRect.zero
+    private var isMapLoaded:Bool = false
     
     convenience init(context: FreContextSwift, coordinate: CLLocationCoordinate2D, zoomLevel: CGFloat, frame: CGRect, settings: Settings?) {
         self.init()
@@ -53,7 +54,8 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         mapView.delegate = self
         if let settings = self.settings {
             mapView.settings.compassButton = settings.compassButton
-            mapView.settings.myLocationButton = settings.myLocationButton
+            mapView.settings.myLocationButton = settings.myLocationButtonEnabled
+            mapView.isMyLocationEnabled = settings.myLocationEnabled
             mapView.settings.scrollGestures = settings.scrollGestures
             mapView.settings.rotateGestures = settings.rotateGestures
             mapView.settings.zoomGestures = settings.zoomGestures
@@ -341,6 +343,14 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
             identifier = _identifier
         }
         sendEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: identifier)
+    }
+    
+    func mapViewDidFinishTileRendering(_ mapView: GMSMapView) {
+        if !isMapLoaded {
+            sendEvent(name: Constants.ON_LOADED, value: "")
+        }
+        isMapLoaded = true
+        
     }
     
     func mapView(_ mapView: GMSMapView, didTapPOIWithPlaceID placeID: String, name: String, location: CLLocationCoordinate2D) {

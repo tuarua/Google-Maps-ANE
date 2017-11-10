@@ -17,6 +17,7 @@ package com.tuarua.googlemapsane
 
 object Constants {
     val ON_READY: String = "GoogleMaps.OnReady"
+    val ON_LOADED:String = "GoogleMaps.OnLoaded"
     val DID_TAP_AT: String = "GoogleMaps.DidTapAt"
     val DID_LONG_PRESS_AT: String = "GoogleMaps.DidLongPressAt"
     val DID_TAP_MARKER: String = "GoogleMaps.DidTapMarker"

@@ -54,7 +54,11 @@ public class Settings {
      * map that, when tapped by users, will center the map on the current user
      * location.
      */
-    public var myLocationButton:Boolean = false;
+    public var myLocationButtonEnabled:Boolean = false;
+    /**
+     * Enables or disables the my-location layer.
+     */
+    public var myLocationEnabled:Boolean = false;
     /**
      * Enables (default) or disables the indoor floor picker. If enabled, it is only
      * visible when the view is focused on a building with indoor floor data.
