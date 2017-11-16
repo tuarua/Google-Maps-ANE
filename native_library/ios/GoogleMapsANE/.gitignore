@@ -87,4 +87,5 @@ Frameworks/*.framework
 Carthage/
 Carthage_bak/
 FreSwift_bak/
+Cartfile.resolved
 

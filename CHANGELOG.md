@@ -1,3 +1,7 @@
+### 0.0.12
+- iOS Updated to FreSwift 1.3.0
+- iOS Updated to Xcode 8.3.3
+
 ### 0.0.11
 - Fix for Issue #12
 - Add ON_LOADED event Issue #11
