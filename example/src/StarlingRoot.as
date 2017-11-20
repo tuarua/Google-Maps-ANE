@@ -93,6 +93,7 @@ public class StarlingRoot extends Sprite {
         var settings:Settings = new Settings();
         settings.myLocationButtonEnabled = false;
         settings.myLocationEnabled = true;
+        settings.buildingsEnabled = false;
         try {
             googleMaps.initMap(viewPort, coordinate, 12.0, settings, Starling.current.contentScaleFactor);
         } catch (e:ANEError) {

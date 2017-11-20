@@ -26,6 +26,7 @@ public struct Settings {
     public var myLocationEnabled: Bool = false
     public var indoorPicker: Bool = true
     public var allowScrollGesturesDuringRotateOrZoom: Bool = true
+    public var buildingsEnabled: Bool = true
     
     init(dictionary: Dictionary<String, AnyObject>) {
         if let sg = dictionary["scrollGestures"] as? Bool {
@@ -57,6 +58,9 @@ public struct Settings {
         }
         if let asg = dictionary["allowScrollGesturesDuringRotateOrZoom"] as? Bool {
             allowScrollGesturesDuringRotateOrZoom = asg
+        }
+        if let bld = dictionary["buildingsEnabled"] as? Bool {
+            buildingsEnabled = bld
         }
     }
     

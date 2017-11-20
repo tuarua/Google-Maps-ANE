@@ -60,6 +60,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
             mapView.settings.rotateGestures = settings.rotateGestures
             mapView.settings.zoomGestures = settings.zoomGestures
             mapView.settings.tiltGestures = settings.tiltGestures
+            mapView.isBuildingsEnabled = settings.buildingsEnabled
         }
 
         view.addSubview(container)
