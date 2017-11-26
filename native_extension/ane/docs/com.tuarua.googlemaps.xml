@@ -166,6 +166,12 @@
      
      Ignored on Apple Maps
      
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:buildingsEnabled"><apiName>buildingsEnabled</apiName><shortdesc>
+     Sets whether 3D buildings layer is enabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Sets whether 3D buildings layer is enabled. (default true).
+     
+     Ignored on iOS
+     
      </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:compassButton"><apiName>compassButton</apiName><shortdesc>
      Enables or disables the compass.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
      Enables or disables the compass. The compass is an icon on the map that
@@ -198,18 +204,24 @@
      
      Ignored on Apple Maps
      
-     </apiDesc></apiValueDetail></apiValue>
-     <apiValue id="com.tuarua.googlemaps:Settings:myLocationButtonEnabled"><apiName>myLocationButtonEnabled</apiName><shortdesc>
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:mapToolbarEnabled"><apiName>mapToolbarEnabled</apiName><shortdesc>
+     Sets the preference for whether the Map Toolbar should be enabled or disabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Sets the preference for whether the Map Toolbar should be enabled or disabled. If enabled, and the Map
+     Toolbar can be shown in the current context, users will see a bar with various context-dependent actions,
+     including 'open this map in the Google Maps app' and 'find directions to the highlighted marker in the
+     Google Maps app' (default true).
+     
+     Ignored on Apple Maps
+     
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:myLocationButtonEnabled"><apiName>myLocationButtonEnabled</apiName><shortdesc>
      Enables or disables the My Location button.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
      Enables or disables the My Location button. This is a button visible on the
      map that, when tapped by users, will center the map on the current user
      location.
-     </apiDesc></apiValueDetail></apiValue>
-     <apiValue id="com.tuarua.googlemaps:Settings:myLocationEnabled"><apiName>myLocationEnabled</apiName><shortdesc>
-         Enables or disables the my-location layer.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
-         Enables or disables the my-location layer.
-         </apiDesc></apiValueDetail></apiValue>
-     <apiValue id="com.tuarua.googlemaps:Settings:rotateGestures"><apiName>rotateGestures</apiName><shortdesc>
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:myLocationEnabled"><apiName>myLocationEnabled</apiName><shortdesc>
+     Enables or disables the my-location layer.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>false</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Enables or disables the my-location layer.
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:Settings:rotateGestures"><apiName>rotateGestures</apiName><shortdesc>
      Controls whether rotate gestures are enabled (default) or disabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiData>true</apiData><apiType value="Boolean"/></apiValueDef><apiDesc>
      Controls whether rotate gestures are enabled (default) or disabled. If
      enabled, users may use a two-finger rotate gesture to rotate the camera. This
@@ -261,4 +273,4 @@
      This event is not fired with Apple Maps
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnCameraMoveStarted</apiData><apiType value="String"/></apiValueDef><apiDesc>
      This event is not fired with Apple Maps
-     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_CAMERA_MOVE"><apiName>ON_CAMERA_MOVE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnCameraMove</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_READY"><apiName>ON_READY</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnReady</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:params"><apiName>params</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value=""/></apiValueDef></apiValueDetail></apiValue></apiClassifier></apiPackage>
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_CAMERA_MOVE"><apiName>ON_CAMERA_MOVE</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnCameraMove</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_LOADED"><apiName>ON_LOADED</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnLoaded</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:ON_READY"><apiName>ON_READY</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiAccess value="public"/><apiStatic/><apiData>GoogleMaps.OnReady</apiData><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua.googlemaps:GoogleMapsEvent:params"><apiName>params</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiType value=""/></apiValueDef></apiValueDetail></apiValue></apiClassifier></apiPackage>
