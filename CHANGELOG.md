@@ -1,3 +1,9 @@
+### 1.0.0
+- iOS: Updated to FreSwift 2.0.0
+- iOS: Updated to Xcode 9.1
+- Fix for Issue #18
+- Fix for Issue #17
+
 ### 0.0.12
 - iOS Updated to FreSwift 1.3.0
 - iOS Updated to Xcode 8.3.3

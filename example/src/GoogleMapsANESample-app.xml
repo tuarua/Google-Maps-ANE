@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/26.0">
+<application xmlns="http://ns.adobe.com/air/application/28.0">
 
-    <id>MainMaps</id> <!-- Bundle Identifier. Required. -->
-    <filename>GoogleMapsANESample-mobile</filename> <!-- Used as the filename for the application. Required. -->
-    <name>GoogleMapsANESample-mobile</name> <!-- The name that is displayed below the app icon. -->
-    <versionNumber>0.0.4</versionNumber> <!-- Required. -->
+    <id>com.tuarua.googlemapsaneexample</id> <!-- Bundle Identifier. Required. -->
+    <filename>MainGMaps</filename> <!-- Used as the filename for the application. Required. -->
+    <name>MainGMaps</name> <!-- The name that is displayed below the app icon. -->
+    <versionNumber>0.0.0</versionNumber> <!-- Required. -->
 
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>
@@ -38,9 +38,15 @@
     <!-- Place the icons in a 'source path' (e.g. in the 'src' directory). -->
     <!-- iPhone: 57x57, iPhone HD: 114x114, iPad: 72x72, iPad HD: 144x144 -->
     <icon>
-
+        <image57x57>icon57.png</image57x57>
+        <image72x72>icon72.png</image72x72>
+        <image76x76>icon76.png</image76x76>
+        <image114x114>icon114.png</image114x114>
+        <image120x120>icon120.png</image120x120>
         <image144x144>icon144.png</image144x144>
+        <image152x152>icon152.png</image152x152>
         <image167x167>icon167.png</image167x167>
+        <image180x180>icon180.png</image180x180>
     </icon>
 
     <!--<embedFonts>
@@ -48,13 +54,13 @@
             <fontName>FiraSansEmbed</fontName>
             <fontPath>fira-sans-embed.ttf</fontPath>
         </font>
-    </embedFonts>-->
-
+    </embedFonts>
+-->
     <!-- iOS specific capabilities -->
     <iPhone>
         <!-- A list of plist key/value pairs to be added to the application Info.plist -->
         <!-- UIDeviceFamily: 1 - iPhone/iPod Touch; 2 - iPad; both: universal app -->
-
+        <assetsCar>Assets.car</assetsCar>
         <InfoAdditions><![CDATA[            
             <key>UIDeviceFamily</key>
             <array>
@@ -64,7 +70,7 @@
             <key>MinimumOSVersion</key>
             <string>9.0</string>
             <key>NSLocationAlwaysUsageDescription</key>
-	        <string>Yo your location</string>
+	        <string>We require your location</string>
         ]]></InfoAdditions>
 
         <!-- Display Resolution for the app ("standard" or "high"). Optional. Default "standard" -->

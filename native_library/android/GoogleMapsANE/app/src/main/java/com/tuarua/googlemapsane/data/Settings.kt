@@ -22,5 +22,7 @@ data class Settings(
         var compassButton: Boolean = false,
         var myLocationButtonEnabled: Boolean = false,
         var myLocationEnabled: Boolean = false,
-        var indoorPicker: Boolean = true
+        var indoorPicker: Boolean = true,
+        var mapToolbarEnabled:Boolean = true,
+        var buildingsEnabled:Boolean = true
 )

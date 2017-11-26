@@ -130,7 +130,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         return
     }
 
-    internal func didTapAt(_ recogniser: UITapGestureRecognizer) {
+    @objc internal func didTapAt(_ recogniser: UITapGestureRecognizer) {
         let firstTouch = recogniser.location(ofTouch: 0, in: self.mapView)
         let coordinate = mapView.convert(firstTouch, toCoordinateFrom: mapView)
         var props: Dictionary<String, Any> = Dictionary()

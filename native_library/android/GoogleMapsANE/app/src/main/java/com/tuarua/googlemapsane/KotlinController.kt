@@ -175,6 +175,9 @@ class KotlinController : FreKotlinMainController {
             settings.scrollGestures = Boolean(settingsFre.getProp("scrollGestures")) == true
             settings.tiltGestures = Boolean(settingsFre.getProp("tiltGestures")) == true
             settings.zoomGestures = Boolean(settingsFre.getProp("zoomGestures")) == true
+            settings.mapToolbarEnabled = Boolean(settingsFre.getProp("mapToolbarEnabled")) == true
+            settings.buildingsEnabled = Boolean(settingsFre.getProp("buildingsEnabled")) == true
+
             mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)

@@ -87,6 +87,8 @@ class MapController(override var context: FREContext?, private var airView: View
         mv.uiSettings.isScrollGesturesEnabled = settings.scrollGestures
         mv.uiSettings.isZoomGesturesEnabled = settings.zoomGestures
         mv.uiSettings.isTiltGesturesEnabled = settings.tiltGestures
+        mv.uiSettings.isMapToolbarEnabled = settings.mapToolbarEnabled
+        mv.isBuildingsEnabled = settings.buildingsEnabled
 
         if (asListeners.contains(Constants.DID_TAP_AT)) mv.setOnMapClickListener(this)
         if (asListeners.contains(Constants.DID_LONG_PRESS_AT)) mv.setOnMapLongClickListener(this)

@@ -17,7 +17,7 @@
 #import "FreMacros.h"
 #import "GoogleMapsANE_LIB.h"
 #import <FreSwift/FreSwift-iOS-Swift.h>
-#import "GoogleMapsANE_FW-Swift.h"
+#import <GoogleMapsANE_FW/GoogleMapsANE_FW.h>
 
 
 #define FRE_OBJC_BRIDGE TRGMA_FlashRuntimeExtensionsBridge // use unique prefix throughout to prevent clashes with other ANEs

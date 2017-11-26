@@ -77,6 +77,23 @@ public class Settings {
      *
      */
     public var allowScrollGesturesDuringRotateOrZoom:Boolean = true;
+    /**
+     * Sets the preference for whether the Map Toolbar should be enabled or disabled. If enabled, and the Map
+     * Toolbar can be shown in the current context, users will see a bar with various context-dependent actions,
+     * including 'open this map in the Google Maps app' and 'find directions to the highlighted marker in the
+     * Google Maps app' (default true).
+     *
+     * Ignored on Apple Maps
+     *
+     */
+    public var mapToolbarEnabled:Boolean = true;
+    /**
+     * Sets whether 3D buildings layer is enabled. (default true).
+     *
+     * Ignored on iOS
+     *
+     */
+    public var buildingsEnabled:Boolean = true;
 
     public function Settings() {
     }
