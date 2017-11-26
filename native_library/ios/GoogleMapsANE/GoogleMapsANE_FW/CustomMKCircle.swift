@@ -25,7 +25,6 @@ open class CustomMKCircle: MKCircle {
     var fillColor: UIColor?
 
     convenience init(center: CLLocationCoordinate2D, radius: CLLocationDistance, identifier: String) {
-        self.init()
         self.init(center: center, radius: radius)
         self.identifier = identifier
     }

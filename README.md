@@ -2,7 +2,7 @@
 
 Google Maps Adobe Air Native Extension for iOS 9.0+ and Android 19+. Also includes option to use Apple Maps on iOS.   
 
-[asdocs](https://tuarua.github.io/asdocs/googlemapsane/)   
+[ASDocs Documentation](https://tuarua.github.io/asdocs/googlemapsane/)   
 
 -------------
 
@@ -19,7 +19,7 @@ Download the latest from the [Releases](https://github.com/tuarua/Google-Maps-AN
  
 ## Android
  
-**Dependencies**  
+##### Dependencies
 Several dependency ANEs are needed.
 
 From the command line cd into /example and run:
@@ -78,7 +78,7 @@ You will also need to include the following in your app manifest. Update accordi
 `````
 ## iOS
 
-**Dependencies**   
+##### Dependencies
 From the command line cd into /example and run:
 ````shell
 bash get_ios_dependencies.sh
@@ -104,27 +104,22 @@ You will also need to include the following in your app manifest. Update accordi
 
 ### Running on Simulator
 
-The example project can be run on the Simulator from IntelliJ using AIR 26. AIR 27 contains a bug when packaging.
+The example project can be run on the Simulator from IntelliJ using AIR 28.
 
 ### Running on Device
 
-The example project can be run on the device from IntelliJ using AIR 27.
-AIR 27 now correctly signs the included Swift frameworks and therefore no resigning tool is needed.
-
-### Submitting to App Store
-ADT is not currently producing a valid ipa for the App Store.  
-Please see the [README here](/example/package_for_ios_appstore/) for package script         
-This is a minor inconvenience and only needs to be done when your app is ready to go to the App Store.
+The example project can be run on the device from IntelliJ using AIR 28.
 
 ### Prerequisites
 
 You will need:
 
 - IntelliJ IDEA / Flash Builder
-- AIR 26 + AIR 27
-- Android Studio 3 Beta if you wish to edit the Android source
-- Xcode 8.3.3 if you wish to edit the iOS source
+- AIR 28
+- Android Studio 3 if you wish to edit the Android source
+- Xcode 9.1 if you wish to edit the iOS source
 - wget on OSX
+- Powershell on Windows
 
 ### References
 * [https://developers.google.com/maps/documentation/android-api/]

@@ -75,7 +75,7 @@ class MarkerOptions: NSObject {
                         asBitmapData.releaseData()
                     }
                     do {
-                        if let cgimg = try asBitmapData.getAsImage() {
+                        if let cgimg = try asBitmapData.asCGImage() {
                             icon = UIImage.init(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
                         }
                     }
