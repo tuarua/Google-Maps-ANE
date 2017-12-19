@@ -11,10 +11,11 @@ public class Marker {
 	 * 
 	 */	
     public var title:String = "";
-	/**
-	 * 
-	 */	
-    public var color:uint = Color.RED;
+    /**
+     * The color of the circle outline in ARGB format, the same format used by Color.
+     * The default value is red (0xffff0000).
+     */
+    public var color:uint = ColorARGB.RED;
 	/**
 	 * 
 	 */	
@@ -48,7 +49,7 @@ public class Marker {
 	 * @param coordinate
 	 * @param title
 	 * @param snippet
-	 * @param color
+	 * @param color ARGB format
 	 * @param icon
 	 * @param isDraggable
 	 * @param isFlat Ignored when using Apple Maps
@@ -57,7 +58,7 @@ public class Marker {
 	 * @param alpha
 	 * 
 	 */
-    public function Marker(coordinate:Coordinate, title:String = null, snippet:String = null, color:uint = Color.RED,
+    public function Marker(coordinate:Coordinate, title:String = null, snippet:String = null, color:uint = ColorARGB.RED,
                            icon:BitmapData = null, isDraggable:Boolean = false, isFlat:Boolean = false,
                            isTappable:Boolean = true, rotation:int = 0, alpha:Number = 1.0) {
         this.coordinate = coordinate;

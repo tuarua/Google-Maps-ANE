@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="FlexBuildConfigurationManager" active="iOS Device">
+  <component name="FlexBuildConfigurationManager" active="Android Device">
     <configurations>
       <configuration name="iOS Device" target-platform="Mobile" pure-as="true" main-class="GoogleMapsANESample" output-file="GoogleMapsANESample-mobile.swf" output-folder="$MODULE_DIR$/bin-release/device">
         <dependencies>
@@ -17,13 +17,13 @@
             <entry library-name="com.android.support.support-v4-25.4.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-base-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-location-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-location-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-maps-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
             <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
@@ -83,20 +83,20 @@
             <entry library-name="com.android.support.support-v4-25.4.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-maps-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-location-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-location-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-base-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
             <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="AIRSDK_28_B" />
+          <sdk name="AIRSDK_28" />
         </dependencies>
         <compiler-options>
           <map>
@@ -135,13 +135,13 @@
             <entry library-name="com.android.support.support-v4-25.4.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-base-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-location-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-location-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-11.4.2" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-maps-11.6.2" library-level="project">
               <dependency linkage="Merged" />
             </entry>
             <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
@@ -190,7 +190,7 @@
       <sourceFolder url="file://$MODULE_DIR$/system" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assets" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="AIRSDK_28_B" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="AIRSDK_28_B&#9;AIRSDK_28" jdkType="__CompositeFlexSdk__" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="starling" level="project" />
     <orderEntry type="library" exported="" name="WebViewANE-ios" level="project" />
@@ -202,9 +202,9 @@
     <orderEntry type="library" exported="" name="com.tuarua.frekotlin" level="project" />
     <orderEntry type="library" exported="" name="org.greenrobot.eventbus-3.0.0" level="project" />
     <orderEntry type="library" exported="" name="com.android.support.support-v4-25.4.0" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-base-11.4.2" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-maps-11.4.2" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-location-11.4.2" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-base-11.6.2" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-maps-11.6.2" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-location-11.6.2" level="project" />
     <orderEntry type="library" exported="" name="com.google.code.gson.gson-2.8.1" level="project" />
   </component>
 </module>

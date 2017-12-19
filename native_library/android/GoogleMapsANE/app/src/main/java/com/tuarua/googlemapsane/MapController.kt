@@ -320,6 +320,7 @@ class MapController(override var context: FREContext?, private var airView: View
     }
 
     fun addMarker(markerOptions: MarkerOptions): Marker? {
+        trace("addMarker")
         val mv: GoogleMap = mapView ?: return null
         val marker: Marker = mv.addMarker(markerOptions) ?: return null
         markers[marker.id] = marker

@@ -16,29 +16,19 @@ public class Circle extends Object {
      */
     public var strokeWidth:Number = 10.0;
     /**
-     * The color of the circle outline in RGB format, the same format used by Color. 
+     * The color of the circle outline in ARGB format, the same format used by Color.
 	 * The default value is black (0xff000000).
      */
-    public var strokeColor:uint = 0x000000;
-
-    /**
-     * The alpha of the circle outline.
-     */
-    public var strokeAlpha:Number = 1.0;
-
+    public var strokeColor:uint = ColorARGB.BLACK;
     /**
      * Ignored on Apple Maps
      */
     public var strokePattern:StrokePattern = new StrokePattern();
 
     /**
-     * The color of the circle fill.
+     * The color in ARGB format of the circle fill.
      */
-    public var fillColor:uint = 0x000000;
-    /**
-     * The alpha of the circle fill.
-     */
-    public var fillAlpha:Number = 0.0;
+    public var fillColor:uint = ColorARGB.BLACK;
 
     /**
      * The order in which this tile overlay is drawn with respect to other overlays 
@@ -65,25 +55,21 @@ public class Circle extends Object {
 	 * @param radius
 	 * @param strokeWidth
 	 * @param strokeColor
-	 * @param strokeAlpha
 	 * @param strokePattern
 	 * @param fillColor
-	 * @param fillAlpha
 	 * @param zIndex
 	 * @param visible
 	 * 
 	 */
     public function Circle(center:Coordinate, radius:Number = 1000.0, strokeWidth:Number = 10.0,
-                           strokeColor:uint = 0x000000, strokeAlpha:Number = 1.0, strokePattern:StrokePattern = null, fillColor:uint = 0x000000,
-                           fillAlpha:Number = 0.0, zIndex:uint = 0, visible:Boolean = true) {
+                           strokeColor:uint = ColorARGB.BLACK, strokePattern:StrokePattern = null,
+                           fillColor:uint = ColorARGB.BLACK, zIndex:uint = 0, visible:Boolean = true) {
         this.center = center;
         this.radius = radius;
         this.strokeWidth = strokeWidth;
         this.strokeColor = strokeColor;
-        this.strokeAlpha = strokeAlpha;
         this.strokePattern = strokePattern;
         this.fillColor = fillColor;
-        this.fillAlpha = fillAlpha;
         this.zIndex = zIndex;
         this.visible = visible;
     }

@@ -3,7 +3,7 @@ import com.tuarua.GoogleMapsANE;
 import com.tuarua.fre.ANEError;
 import com.tuarua.googlemaps.CameraPosition;
 import com.tuarua.googlemaps.Circle;
-import com.tuarua.googlemaps.Color;
+import com.tuarua.googlemaps.ColorARGB;
 import com.tuarua.googlemaps.Coordinate;
 import com.tuarua.googlemaps.GoogleMapsEvent;
 import com.tuarua.googlemaps.MapProvider;
@@ -212,7 +212,7 @@ public class StarlingRoot extends Sprite {
         trace(event);
         var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
         var marker:Marker = new Marker(coordinate, "Dunleer", "Home");
-        marker.color = Color.RED;
+        marker.color = ColorARGB.GREEN;
         marker.icon = (new pinImage() as Bitmap).bitmapData;
         marker.isFlat = false;
         marker.isTappable = false;
@@ -272,7 +272,7 @@ public class StarlingRoot extends Sprite {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             var marker:Marker = googleMaps.markers[firstMarkerId];
-            marker.color = Color.GREEN;
+            marker.color = ColorARGB.GREEN;
             marker.title = "Updated title";
             googleMaps.updateMarker(firstMarkerId);
         }
@@ -290,11 +290,10 @@ public class StarlingRoot extends Sprite {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             var circle:Circle = new Circle(new Coordinate(53.836549, -6.393717));
-            circle.fillAlpha = 0.2;
-            circle.fillColor = Color.PURPLE;
+            circle.fillColor = ColorARGB.PURPLE;
             circle.radius = 2000;
             circle.strokeWidth = 4.0;
-            circle.strokeColor = Color.GREEN;
+            circle.strokeColor = ColorARGB.GREEN;
             circle.strokePattern = new StrokePattern(StrokePatternType.DOTTED, 100, 100);
             googleMaps.addCircle(circle);
         }

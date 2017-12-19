@@ -13,6 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+@file:Suppress("unused")
+
 package com.tuarua.frekotlin
 
 import com.adobe.fre.FREObject
@@ -40,8 +42,8 @@ class FreCoordinateKotlin() : FreObjectKotlin() {
                 return LatLng(lat, lng)
             } else {
                 try {
-                    val latFre = Double(rv.getProp("latitude"))
-                    val lngFre = Double(rv.getProp("longitude"))
+                    val latFre = Double(rv["latitude"])
+                    val lngFre = Double(rv["longitude"])
                     if (latFre != null && lngFre != null) {
                         lat = latFre
                         lng = lngFre

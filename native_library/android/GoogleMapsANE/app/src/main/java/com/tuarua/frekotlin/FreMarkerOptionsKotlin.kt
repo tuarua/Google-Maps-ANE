@@ -16,6 +16,7 @@
 package com.tuarua.frekotlin
 
 import android.graphics.Bitmap
+import android.util.Log
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
@@ -31,20 +32,21 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
         get() {
             val rv = rawValue
             if (rv != null) {
-                val coordinate = LatLng(rv.getProp("coordinate"))
-                val title = String(rv.getProp("title"))
-                val snippet = String(rv.getProp("snippet"))
-                val draggable = Boolean(rv.getProp("isDraggable")) == true
-                val flat = Boolean(rv.getProp("isFlat")) == true
+                val coordinate = LatLng(rv["coordinate"])
 
-                val alpha = Float(rv.getProp("alpha")) ?: 1.0F
-                val rotation = Float(rv.getProp("rotation")) ?: 0.0F
+                val title = String(rv["title"])
+                val snippet = String(rv["snippet"])
+                val draggable = Boolean(rv["isDraggable"]) == true
+                val flat = Boolean(rv["isFlat"]) == true
 
-                val colorFre = rv.getProp("color")
-                val color = colorFre?.toHSV() ?: 0.0F
+                val alpha = Float(rv["alpha"]) ?: 1.0F
+                val rotation = Float(rv["rotation"]) ?: 0.0F
 
-                val iconFre = rv.getProp("icon")
-                var icon: Bitmap? = null
+                val colorFre = rv["color"]
+                val color = colorFre?.toHSV(true) ?: 0.0F
+
+                val iconFre = rv["icon"]
+                val icon: Bitmap?
                 try {
                     icon = Bitmap(iconFre)
                 } catch (e: FreException) {
@@ -64,6 +66,7 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
                                 .fromBitmap(icon) else BitmapDescriptorFactory
                                 .defaultMarker(color))
                         .rotation(rotation)
+
             }
             return MarkerOptions()
         }

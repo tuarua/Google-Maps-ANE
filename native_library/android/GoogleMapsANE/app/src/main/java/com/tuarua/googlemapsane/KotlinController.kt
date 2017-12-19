@@ -24,6 +24,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.GET_PERMISSIONS
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.ViewGroup
 import com.adobe.fre.FREContext
 import com.adobe.fre.FREObject
@@ -72,7 +73,7 @@ class KotlinController : FreKotlinMainController {
     fun requestPermissions(ctx: FREContext, argv: FREArgv): FREObject? {
         try {
             val permissionsToCheck = getPermissionsToCheck()
-            if (permissionsToCheck.size == 0 || SDK_INT < M ) {
+            if (permissionsToCheck.size == 0 || SDK_INT < M) {
                 sendEvent(Constants.ON_PERMISSION_STATUS, gson.toJson(PermissionEvent(ACCESS_FINE_LOCATION, Constants.PERMISSION_ALWAYS)))
                 permissionsGranted = true
                 return null
@@ -167,16 +168,16 @@ class KotlinController : FreKotlinMainController {
             val centerAt = LatLng(argv[1])
             val viewPort = Rect(argv[0])
             val settingsFre = argv[3] // settings: Settings
-            settings.compassButton = Boolean(settingsFre.getProp("compassButton")) == true
-            settings.indoorPicker = Boolean(settingsFre.getProp("indoorPicker")) == true
-            settings.myLocationButtonEnabled = Boolean(settingsFre.getProp("myLocationButtonEnabled")) == true
-            settings.myLocationEnabled = Boolean(settingsFre.getProp("myLocationEnabled")) == true
-            settings.rotateGestures = Boolean(settingsFre.getProp("rotateGestures")) == true
-            settings.scrollGestures = Boolean(settingsFre.getProp("scrollGestures")) == true
-            settings.tiltGestures = Boolean(settingsFre.getProp("tiltGestures")) == true
-            settings.zoomGestures = Boolean(settingsFre.getProp("zoomGestures")) == true
-            settings.mapToolbarEnabled = Boolean(settingsFre.getProp("mapToolbarEnabled")) == true
-            settings.buildingsEnabled = Boolean(settingsFre.getProp("buildingsEnabled")) == true
+            settings.compassButton = Boolean(settingsFre["compassButton"]) == true
+            settings.indoorPicker = Boolean(settingsFre["indoorPicker"]) == true
+            settings.myLocationButtonEnabled = Boolean(settingsFre["myLocationButtonEnabled"]) == true
+            settings.myLocationEnabled = Boolean(settingsFre["myLocationEnabled"]) == true
+            settings.rotateGestures = Boolean(settingsFre["rotateGestures"]) == true
+            settings.scrollGestures = Boolean(settingsFre["scrollGestures"]) == true
+            settings.tiltGestures = Boolean(settingsFre["tiltGestures"]) == true
+            settings.zoomGestures = Boolean(settingsFre["zoomGestures"]) == true
+            settings.mapToolbarEnabled = Boolean(settingsFre["mapToolbarEnabled"]) == true
+            settings.buildingsEnabled = Boolean(settingsFre["buildingsEnabled"]) == true
 
             mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
         } catch (e: FreException) {

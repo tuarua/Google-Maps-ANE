@@ -37,26 +37,21 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
             val rv = rawValue
             if (rv != null) {
                 try {
-                    val center = LatLng(rv.getProp("coordinate"))
-                    val radius = Double(rv.getProp("radius")) ?: 1.0
-                    val strokeWidth = Float(rv.getProp("strokeWidth")) ?: 10.0F
-                    val zIndex = Float(rv.getProp("zIndex")) ?: 0.0F
-                    val visible = Boolean(rv.getProp("visible")) == true
+                    val center = LatLng(rv["coordinate"])
+                    val radius = Double(rv["radius"]) ?: 1.0
+                    val strokeWidth = Float(rv["strokeWidth"]) ?: 10.0F
+                    val zIndex = Float(rv["zIndex"]) ?: 0.0F
+                    val visible = Boolean(rv["visible"]) == true
+                    val strokePatternFre = rv["strokePattern"]
+                    val strokePatternType = Int(strokePatternFre?.get("type")) ?: 0
+                    val strokePatternDashLength = Int(strokePatternFre?.get("dashLength")) ?: 50
+                    val strokePatternGapLength = Int(strokePatternFre?.get("gapLength")) ?: 50
+                    val strokeColor = rv["strokeColor"]?.toColor(true) ?: 0
+                    val fillColor = rv["fillColor"]?.toColor(true) ?: 0
 
-                    val strokePatternFre = rv.getProp("strokePattern")
-                    val strokePatternType = Int(strokePatternFre?.getProp("type")) ?: 0
-                    val strokePatternDashLength = Int(strokePatternFre?.getProp("dashLength")) ?: 50
-                    val strokePatternGapLength = Int(strokePatternFre?.getProp("gapLength")) ?: 50
-
-                    val strokeAlpha = Double(rv.getProp("strokeAlpha")) ?: 1.0
-                    val fillAlpha = Double(rv.getProp("fillAlpha")) ?: 1.0
-
-                    val strokeColor = rv.getProp("strokeColor")?.toColor((255 * strokeAlpha).toInt()) ?: 0
-                    val fillColor = rv.getProp("fillColor")?.toColor((255 * fillAlpha).toInt()) ?: 0
-
-                    val DOT = Dot()
-                    val DASH = Dash(strokePatternDashLength.toFloat())
-                    val GAP = Gap(strokePatternGapLength.toFloat())
+                    val dot = Dot()
+                    val dash = Dash(strokePatternDashLength.toFloat())
+                    val gap = Gap(strokePatternGapLength.toFloat())
                     var strokePattern: MutableList<PatternItem>? = null
 
                     when (strokePatternType) {
@@ -64,13 +59,13 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
                             strokePattern = null
                         }
                         1 -> {
-                            strokePattern = Arrays.asList(DASH, GAP)
+                            strokePattern = Arrays.asList(dash, gap)
                         }
                         2 -> {
-                            strokePattern = Arrays.asList(DOT, GAP)
+                            strokePattern = Arrays.asList(dot, gap)
                         }
                         3 -> {
-                            strokePattern = Arrays.asList(DOT, GAP, DOT, DASH, GAP)
+                            strokePattern = Arrays.asList(dot, gap, dot, dash, gap)
                         }
                     }
 
