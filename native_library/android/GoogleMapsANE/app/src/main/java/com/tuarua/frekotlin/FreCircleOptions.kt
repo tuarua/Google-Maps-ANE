@@ -16,17 +16,11 @@
 package com.tuarua.frekotlin
 
 import com.adobe.fre.FREObject
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.PatternItem
-import com.google.android.gms.maps.model.Gap
-import com.google.android.gms.maps.model.Dash
-import com.google.android.gms.maps.model.Dot
+import com.google.android.gms.maps.model.*
 import java.util.Arrays
 
 
-class FreCircleOptionsKotlin() : FreObjectKotlin() {
-    private var TAG = "com.tuarua.FreCircleOptionsKotlin"
-
+class FreCircleOptions() : FreObjectKotlin() {
     constructor(freObject: FREObject?) : this() {
         rawValue = freObject
     }
@@ -37,7 +31,8 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
             val rv = rawValue
             if (rv != null) {
                 try {
-                    val center = LatLng(rv["coordinate"])
+                    val clickable = Boolean(rv["clickable"]) == true
+                    val center = LatLng(rv["center"])
                     val radius = Double(rv["radius"]) ?: 1.0
                     val strokeWidth = Float(rv["strokeWidth"]) ?: 10.0F
                     val zIndex = Float(rv["zIndex"]) ?: 0.0F
@@ -55,18 +50,10 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
                     var strokePattern: MutableList<PatternItem>? = null
 
                     when (strokePatternType) {
-                        0 -> {
-                            strokePattern = null
-                        }
-                        1 -> {
-                            strokePattern = Arrays.asList(dash, gap)
-                        }
-                        2 -> {
-                            strokePattern = Arrays.asList(dot, gap)
-                        }
-                        3 -> {
-                            strokePattern = Arrays.asList(dot, gap, dot, dash, gap)
-                        }
+                        0 -> strokePattern = null
+                        1 -> strokePattern = Arrays.asList(dash, gap)
+                        2 -> strokePattern = Arrays.asList(dot, gap)
+                        3 -> strokePattern = Arrays.asList(dot, gap, dot, dash, gap)
                     }
 
                     return CircleOptions()
@@ -78,6 +65,7 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
                             .strokeColor(strokeColor)
                             .fillColor(fillColor)
                             .strokePattern(strokePattern)
+                            .clickable(clickable)
                 } catch (e: FreException) {
                     throw e
                 } catch (e: Exception) {
@@ -88,4 +76,63 @@ class FreCircleOptionsKotlin() : FreObjectKotlin() {
         }
 }
 
-fun CircleOptions(freObject: FREObject?): CircleOptions = FreCircleOptionsKotlin(freObject = freObject).value
+fun CircleOptions(freObject: FREObject?): CircleOptions = FreCircleOptions(freObject = freObject).value
+fun Circle.setCenter(value: FREObject?) {
+    this.center = LatLng(value)
+}
+fun Circle.setRadius(value: FREObject?) {
+    val v = Double(value)
+    if (v != null) {
+        this.radius = v
+    }
+}
+fun Circle.setStrokeWidth(value: FREObject?) {
+    val v = Float(value)
+    if (v != null) {
+        this.strokeWidth = v
+    }
+}
+fun Circle.setStrokeColor(value: FREObject?) {
+    val strokeColor = value?.toColor(true)
+    if (strokeColor != null) {
+        this.strokeColor = strokeColor
+    }
+}
+fun Circle.setStrokePattern(value: FREObject?) {
+    val strokePatternType = Int(value?.get("type"))
+    val strokePatternDashLength = Int(value?.get("dashLength"))
+    val strokePatternGapLength = Int(value?.get("gapLength"))
+    if (strokePatternDashLength == null) return
+    if (strokePatternGapLength == null) return
+    val dot = Dot()
+    val dash = Dash(strokePatternDashLength.toFloat())
+    val gap = Gap(strokePatternGapLength.toFloat())
+    var strokePattern: MutableList<PatternItem>? = null
+    when (strokePatternType) {
+        0 -> strokePattern = null
+        1 -> strokePattern = Arrays.asList(dash, gap)
+        2 -> strokePattern = Arrays.asList(dot, gap)
+        3 -> strokePattern = Arrays.asList(dot, gap, dot, dash, gap)
+    }
+    this.strokePattern = strokePattern
+}
+
+fun Circle.setFillColor(value: FREObject?) {
+    val fillColor = value?.toColor(true)
+    if (fillColor != null) {
+        this.fillColor = fillColor
+    }
+}
+fun Circle.setVisible(value: FREObject?) {
+    val v = Boolean(value)
+    if (v != null) {
+        this.isVisible = v
+    }
+}
+
+fun Circle.setZIndex(value: FREObject?) {
+    val v = Float(value)
+    if (v != null) {
+        this.zIndex = v
+    }
+}

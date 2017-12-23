@@ -1,5 +1,6 @@
 package com.tuarua.googlemaps {
-public class ColorARGB { 
+public class ColorARGB {
+    public static const WHITE:uint = 0xFFFFFFFF;
     public static const RED:uint = 0xFFFF0000;
     public static const BLACK:uint = 0xFF000000;
     public static const GREEN:uint = 0xFF00FF00;

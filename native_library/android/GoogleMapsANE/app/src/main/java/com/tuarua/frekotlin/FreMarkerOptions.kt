@@ -16,13 +16,13 @@
 package com.tuarua.frekotlin
 
 import android.graphics.Bitmap
-import android.util.Log
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.tuarua.frekotlin.display.Bitmap
 
-class FreMarkerOptionsKotlin() : FreObjectKotlin() {
+class FreMarkerOptions() : FreObjectKotlin() {
     constructor(freObject: FREObject?) : this() {
         rawValue = freObject
     }
@@ -33,18 +33,14 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
             val rv = rawValue
             if (rv != null) {
                 val coordinate = LatLng(rv["coordinate"])
-
                 val title = String(rv["title"])
                 val snippet = String(rv["snippet"])
                 val draggable = Boolean(rv["isDraggable"]) == true
                 val flat = Boolean(rv["isFlat"]) == true
-
                 val alpha = Float(rv["alpha"]) ?: 1.0F
                 val rotation = Float(rv["rotation"]) ?: 0.0F
-
                 val colorFre = rv["color"]
                 val color = colorFre?.toHSV(true) ?: 0.0F
-
                 val iconFre = rv["icon"]
                 val icon: Bitmap?
                 try {
@@ -72,4 +68,63 @@ class FreMarkerOptionsKotlin() : FreObjectKotlin() {
         }
 }
 
-fun MarkerOptions(freObject: FREObject?): MarkerOptions = FreMarkerOptionsKotlin(freObject = freObject).value
+fun MarkerOptions(freObject: FREObject?): MarkerOptions = FreMarkerOptions(freObject = freObject).value
+fun Marker.setFlat(value: FREObject?) {
+    val v = Boolean(value)
+    if (v != null) {
+        this.isFlat = v
+    }
+}
+
+fun Marker.setTitle(value: FREObject?) {
+    this.title = String(value)
+}
+
+fun Marker.setSnippet(value: FREObject?) {
+    this.snippet = String(value)
+}
+
+fun Marker.setDraggable(value: FREObject?) {
+    val v = Boolean(value)
+    if (v != null) {
+        this.isDraggable = v
+    }
+}
+
+fun Marker.setAlpha(value: FREObject?) {
+    val v = Float(value)
+    if (v != null) {
+        this.alpha = v
+    }
+}
+
+fun Marker.setRotation(value: FREObject?) {
+    val v = Float(value)
+    if (v != null) {
+        this.rotation = v
+    }
+}
+
+fun Marker.setIcon(value: FREObject?) {
+    val icon: Bitmap?
+    try {
+        icon = Bitmap(value)
+    } catch (e: FreException) {
+        return
+    } catch (e: Exception) {
+        return
+    }
+    this.setIcon(BitmapDescriptorFactory.fromBitmap(icon))
+}
+
+fun Marker.setColor(value: FREObject?) {
+    val color = value?.toHSV(true)
+    if (color != null) {
+        this.setIcon(BitmapDescriptorFactory.defaultMarker(color))
+    }
+}
+
+fun Marker.setPosition(value: FREObject?) {
+    val coordinate = LatLng(value)
+    this.position = coordinate
+}

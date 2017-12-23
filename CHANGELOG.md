@@ -1,3 +1,12 @@
+### 1.1.0
+- Updated FreKotlin
+- Updated Android Play Services to 11.8.0
+- Colors are now ARGB eg 0xFF000000
+- Added support for GroundOverlay
+- Added support for Polyline
+- Added support for Polygon
+- Make better use of setters/getters
+
 ### 1.0.0
 - iOS: Updated to FreSwift 2.0.0
 - iOS: Updated to Xcode 9.1

@@ -20,8 +20,8 @@ package com.tuarua.frekotlin
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.LatLng
 
-class FreCoordinateKotlin() : FreObjectKotlin() {
-    private var TAG = "com.tuarua.FreCoordinateKotlin"
+class FreCoordinate() : FreObjectKotlin() {
+    private var TAG = "com.tuarua.FreCoordinate"
 
     constructor(value: LatLng) : this() {
         rawValue = FREObject("com.tuarua.googlemaps.Coordinate", value.longitude, value.latitude)
@@ -59,4 +59,4 @@ class FreCoordinateKotlin() : FreObjectKotlin() {
         }
 }
 
-fun LatLng(freObject: FREObject?): LatLng = FreCoordinateKotlin(freObject = freObject).value
+fun LatLng(freObject: FREObject?): LatLng = FreCoordinate(freObject = freObject).value

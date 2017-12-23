@@ -24,7 +24,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.GET_PERMISSIONS
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.ViewGroup
 import com.adobe.fre.FREContext
 import com.adobe.fre.FREObject
@@ -224,15 +223,46 @@ class KotlinController : FreKotlinMainController {
 
     fun addCircle(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        return try {
+            val addedCircle: Circle? = mapController?.addCircle(CircleOptions(argv[0]))
+            addedCircle?.id?.toFREObject()
+        } catch (e: FreException) {
+            e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+    }
+
+    fun setCircleProp(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            mapController?.addCircle(CircleOptions(argv[0]))
+            val id = String(argv[0])
+            val name = String(argv[1])
+            val inFRE2 = argv[2]
+            if (id != null && name != null) {
+                mapController?.setCircleProp(id, name, inFRE2)
+            }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
         } catch (e: Exception) {
             return FreException(e).getError(Thread.currentThread().stackTrace)
         }
         return null
+    }
 
+    fun removeCircle(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val id = String(argv[0])
+            if (id != null) {
+                mapController?.removeCircle(id)
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+        return null
     }
 
     fun addMarker(ctx: FREContext, argv: FREArgv): FREObject? {
@@ -247,13 +277,14 @@ class KotlinController : FreKotlinMainController {
         }
     }
 
-    fun updateMarker(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-
+    fun setMarkerProp(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val uuid = String(argv[0])
-            if (uuid != null) {
-                mapController?.updateMarker(uuid, MarkerOptions(argv[1]))
+            val id = String(argv[0])
+            val name = String(argv[1])
+            val inFRE2 = argv[2]
+            if (id != null && name != null) {
+               mapController?.setMarkerProp(id, name, inFRE2)
             }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
@@ -267,9 +298,145 @@ class KotlinController : FreKotlinMainController {
     fun removeMarker(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val uuid = String(argv[0])
-            if (uuid != null) {
-                mapController?.removeMarker(uuid)
+            val id = String(argv[0])
+            if (id != null) {
+                mapController?.removeMarker(id)
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+        return null
+    }
+
+    fun addGroundOverlay(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        return try {
+            val addedOverlay: GroundOverlay? = mapController?.addGroundOverlay(GroundOverlayOptions(argv[0]))
+            addedOverlay?.id?.toFREObject()
+        } catch (e: FreException) {
+            e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+    }
+
+    fun setGroundOverlayProp(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val id = String(argv[0])
+            val name = String(argv[1])
+            val inFRE2 = argv[2]
+            if (id != null && name != null) {
+                mapController?.setGroundOverlayProp(id, name, inFRE2)
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+
+        return null
+    }
+
+    fun removeGroundOverlay(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val id = String(argv[0])
+            if (id != null) {
+                mapController?.removeGroundOverlay(id)
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+        return null
+    }
+
+    fun addPolyline(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        return try {
+            val addedPolyline: Polyline? = mapController?.addPolyline(PolylineOptions(argv[0]))
+            addedPolyline?.id?.toFREObject()
+        } catch (e: FreException) {
+            e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+    }
+
+    fun setPolylineProp(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val id = String(argv[0])
+            val name = String(argv[1])
+            val inFRE2 = argv[2]
+            if (id != null && name != null) {
+                mapController?.setPolylineProp(id, name, inFRE2)
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+
+        return null
+    }
+
+    fun removePolyline(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val id = String(argv[0])
+            if (id != null) {
+                mapController?.removePolyline(id)
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+        return null
+    }
+
+    fun addPolygon(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        return try {
+            trace("addPolygon Polygon")
+            val addedPolygon: Polygon? = mapController?.addPolygon(PolygonOptions(argv[0]))
+            addedPolygon?.id?.toFREObject()
+        } catch (e: FreException) {
+            e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+    }
+
+    fun setPolygonProp(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val id = String(argv[0])
+            val name = String(argv[1])
+            val inFRE2 = argv[2]
+            if (id != null && name != null) {
+                mapController?.setPolygonProp(id, name, inFRE2)
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+
+        return null
+    }
+
+    fun removePolygon(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val id = String(argv[0])
+            if (id != null) {
+                mapController?.removePolygon(id)
             }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
@@ -282,9 +449,9 @@ class KotlinController : FreKotlinMainController {
     fun showInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val uuid = String(argv[0])
-            if (uuid != null) {
-                mapController?.showInfoWindow(uuid)
+            val id = String(argv[0])
+            if (id != null) {
+                mapController?.showInfoWindow(id)
             }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
@@ -297,9 +464,9 @@ class KotlinController : FreKotlinMainController {
     fun hideInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val uuid = String(argv[0])
-            if (uuid != null) {
-                mapController?.hideInfoWindow(uuid)
+            val id = String(argv[0])
+            if (id != null) {
+                mapController?.hideInfoWindow(id)
             }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)

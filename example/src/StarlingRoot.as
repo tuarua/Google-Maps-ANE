@@ -9,11 +9,12 @@ import com.tuarua.googlemaps.GoogleMapsEvent;
 import com.tuarua.googlemaps.MapProvider;
 import com.tuarua.googlemaps.MapType;
 import com.tuarua.googlemaps.Marker;
+import com.tuarua.googlemaps.Polygon;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.googlemaps.StrokePattern;
 import com.tuarua.googlemaps.StrokePatternType;
-import com.tuarua.googlemaps.permissions.PermissionStatus;
 import com.tuarua.googlemaps.permissions.PermissionEvent;
+import com.tuarua.googlemaps.permissions.PermissionStatus;
 import com.tuarua.location.LocationEvent;
 
 import flash.desktop.NativeApplication;
@@ -33,9 +34,12 @@ import starling.utils.AssetManager;
 import views.SimpleButton;
 
 public class StarlingRoot extends Sprite {
-    private var googleMaps:GoogleMapsANE;
+    private var mapView:GoogleMapsANE;
     [Embed(source="pin_b.png")]
     public static const pinImage:Class;
+
+    [Embed(source="landmark.jpg")]
+    public static const landmarkImage:Class;
 
     private var firstMarkerId:String;
 
@@ -79,11 +83,11 @@ public class StarlingRoot extends Sprite {
         NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
         var _assets:AssetManager = assets;
 
-        googleMaps = new GoogleMapsANE();
-        var isInited:Boolean = googleMaps.init("AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc", MapProvider.GOOGLE); //iOS API_KEY - Android is set in the manifest
-        trace("isInited", isInited);
+        GoogleMapsANE.key = "AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc";
+        GoogleMapsANE.mapProvider = MapProvider.GOOGLE;
+        mapView = GoogleMapsANE.mapView;
 
-        if (!isInited) {
+        if (!mapView.isInited) {
             return;
         }
 
@@ -95,7 +99,7 @@ public class StarlingRoot extends Sprite {
         settings.myLocationEnabled = true;
         settings.buildingsEnabled = false;
         try {
-            googleMaps.initMap(viewPort, coordinate, 12.0, settings, Starling.current.contentScaleFactor);
+            mapView.initMap(viewPort, coordinate, 12.0, settings, Starling.current.contentScaleFactor);
         } catch (e:ANEError) {
             trace(e.source);
             trace(e.message);
@@ -103,26 +107,26 @@ public class StarlingRoot extends Sprite {
             trace(e.errorID);
         }
 
-        googleMaps.addEventListener(GoogleMapsEvent.ON_READY, onMapReady);
-        googleMaps.addEventListener(GoogleMapsEvent.ON_LOADED, onMapsLoaded);
-        googleMaps.addEventListener(GoogleMapsEvent.DID_TAP_AT, onDidTapAt);
-        googleMaps.addEventListener(GoogleMapsEvent.DID_LONG_PRESS_AT, onDidLongPressAt);
-        googleMaps.addEventListener(GoogleMapsEvent.DID_TAP_MARKER, onDidTapMarker);
-        googleMaps.addEventListener(GoogleMapsEvent.DID_BEGIN_DRAGGING, onDidBeginDragging);
-        googleMaps.addEventListener(GoogleMapsEvent.DID_END_DRAGGING, onDidEndDragging);
-        googleMaps.addEventListener(GoogleMapsEvent.DID_DRAG, onDidDrag);
-        googleMaps.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE_STARTED, onCameraMoveStarted);
-        //googleMaps.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE, onCameraMove);
-        googleMaps.addEventListener(GoogleMapsEvent.ON_CAMERA_IDLE, onCameraIdle);
-        googleMaps.addEventListener(LocationEvent.LOCATION_UPDATED, onLocationUpdated);
-        googleMaps.addEventListener(PermissionEvent.ON_PERMISSION_STATUS, onPermissionStatus);
-        googleMaps.visible = true; //map is invisible by default when inited
+        mapView.addEventListener(GoogleMapsEvent.ON_READY, onMapReady);
+        mapView.addEventListener(GoogleMapsEvent.ON_LOADED, onMapsLoaded);
+        mapView.addEventListener(GoogleMapsEvent.DID_TAP_AT, onDidTapAt);
+        mapView.addEventListener(GoogleMapsEvent.DID_LONG_PRESS_AT, onDidLongPressAt);
+        mapView.addEventListener(GoogleMapsEvent.DID_TAP_MARKER, onDidTapMarker);
+        mapView.addEventListener(GoogleMapsEvent.DID_BEGIN_DRAGGING, onDidBeginDragging);
+        mapView.addEventListener(GoogleMapsEvent.DID_END_DRAGGING, onDidEndDragging);
+        mapView.addEventListener(GoogleMapsEvent.DID_DRAG, onDidDrag);
+        mapView.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE_STARTED, onCameraMoveStarted);
+        //mapView.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE, onCameraMove);
+        mapView.addEventListener(GoogleMapsEvent.ON_CAMERA_IDLE, onCameraIdle);
+        mapView.addEventListener(LocationEvent.LOCATION_UPDATED, onLocationUpdated);
+        mapView.addEventListener(PermissionEvent.ON_PERMISSION_STATUS, onPermissionStatus);
+        mapView.visible = true; //map is invisible by default when inited
 
 
         btn.x = 10;
         btn8.y = btn7.y = btn3.y = btn2.y = btn.y = 10;
         btn9.y = btn6.y = btn5.y = btn4.y = 60;
-        btn.addEventListener(TouchEvent.TOUCH, onClear);
+        btn.addEventListener(TouchEvent.TOUCH, onAddCircle);
         addChild(btn);
 
         btn2.x = 100;
@@ -168,24 +172,24 @@ public class StarlingRoot extends Sprite {
     private function onCapture(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn9);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.addEventListener(GoogleMapsEvent.ON_BITMAP_READY, onBitmapReady);
-            googleMaps.capture(0, 0, stage.stageWidth, (stage.stageHeight - 100)/2);
+            mapView.addEventListener(GoogleMapsEvent.ON_BITMAP_READY, onBitmapReady);
+            mapView.capture(0, 0, stage.stageWidth, (stage.stageHeight - 100) / 2);
         }
     }
 
     private function onBitmapReady(event:GoogleMapsEvent):void {
         trace(event);
-        var bmd:BitmapData = googleMaps.getCapture();
+        var bmd:BitmapData = mapView.getCapture();
         if (bmd) {
             trace(bmd.width, bmd.height);
             var bmp:Bitmap = new Bitmap(bmd);
             bmp.y = 100 * Starling.contentScaleFactor;
-            googleMaps.visible = false;
+            mapView.visible = false;
             Starling.current.nativeStage.addChild(bmp);
         }
     }
 
-    private static function onCameraMoveStarted(event:GoogleMapsEvent):void {
+    private function onCameraMoveStarted(event:GoogleMapsEvent):void {
         switch (event.params.reason) {
             case GoogleMapsEvent.CAMERA_MOVE_REASON_GESTURE:
                 trace("Camera move started", "CAMERA_MOVE_REASON_GESTURE");
@@ -199,7 +203,7 @@ public class StarlingRoot extends Sprite {
         }
     }
 
-    private static function onCameraMove(event:GoogleMapsEvent):void {
+    private function onCameraMove(event:GoogleMapsEvent):void {
         var props:Object = event.params;
         trace("latlng:", props.latitude, props.longitude, "zoom", props.zoom, "tilt", props.tilt, "bearing", props.bearing);
     }
@@ -217,22 +221,84 @@ public class StarlingRoot extends Sprite {
         marker.isFlat = false;
         marker.isTappable = false;
         marker.isDraggable = true;
-        firstMarkerId = googleMaps.addMarker(marker);
+        mapView.addMarker(marker);
+        firstMarkerId = marker.id;
         trace("uuid for marker", firstMarkerId);
+
+        //var overlay:GroundOverlay = new GroundOverlay(coordinate, (new landmarkImage() as Bitmap).bitmapData, 2000);
+        //mapView.addGroundOverlay(overlay);
+
+        // Polyline
+        /*var points:Vector.<Coordinate> = new Vector.<Coordinate>();
+        points.push(new Coordinate(-35.016, 143.321));
+        points.push(new Coordinate(-34.747, 145.592));
+        points.push(new Coordinate(-34.364, 147.891));
+        points.push(new Coordinate(-33.501, 150.217));
+        points.push(new Coordinate(-32.306, 149.248));
+        points.push(new Coordinate(-32.491, 147.309));
+
+        var polyline:Polyline = new Polyline(points,ColorARGB.GREEN);
+        mapView.addPolyline(polyline);
+        var cameraPosition:CameraPosition = new CameraPosition();
+        cameraPosition.centerAt = new Coordinate(-23.684, 133.903);
+        cameraPosition.zoom = 4.0;
+        mapView.moveCamera(cameraPosition, false);*/
+
+        //Polygon #1
+        /*var points:Vector.<Coordinate> = new Vector.<Coordinate>();
+        points.push(new Coordinate(-27.457, 153.040));
+        points.push(new Coordinate(-33.852, 151.211));
+        points.push(new Coordinate(-37.813, 144.962));
+        points.push(new Coordinate(-34.928, 138.599));
+        var polygon:Polygon = new Polygon(points);
+        mapView.addPolygon(polygon);
+        polygon.fillColor = ColorARGB.WHITE;
+        polygon.strokeColor = ColorARGB.BLACK;
+        var cameraPosition:CameraPosition = new CameraPosition();
+        cameraPosition.centerAt = new Coordinate(-23.684, 133.903);
+        cameraPosition.zoom = 4.0;
+        mapView.moveCamera(cameraPosition, false);*/
+
+        //Polygon #1
+        /*var points:Vector.<Coordinate> = new Vector.<Coordinate>();
+        var holes:Vector.<Coordinate> = new Vector.<Coordinate>();
+        points.push(new Coordinate(0, 0));
+        points.push(new Coordinate(0, 5));
+        points.push(new Coordinate(3, 5));
+        points.push(new Coordinate(3, 0));
+        points.push(new Coordinate(0, 0));
+
+        holes.push(new Coordinate(1, 1));
+        holes.push(new Coordinate(1, 2));
+        holes.push(new Coordinate(2, 2));
+        holes.push(new Coordinate(2, 1));
+        holes.push(new Coordinate(1, 1));
+
+        var polygon:Polygon = new Polygon(points);
+        polygon.holes.push(holes);
+        polygon.fillColor = ColorARGB.BLUE;
+        mapView.addPolygon(polygon);
+
+        var cameraPosition:CameraPosition = new CameraPosition();
+        cameraPosition.centerAt = new Coordinate(0, 0);
+        cameraPosition.zoom = 6.0;
+        mapView.moveCamera(cameraPosition, false);*/
+
+
     }
 
 
     private function onDidEndDragging(event:GoogleMapsEvent):void {
         trace(event);
         var uuid:String = event.params.id as String;
-        var marker:Marker = googleMaps.markers[uuid] as Marker;
+        var marker:Marker = mapView.markers[uuid] as Marker;
         trace("end drag marker", uuid, marker.title, "new coordinate", marker.coordinate.latitude, marker.coordinate.longitude);
     }
 
     private function onDidBeginDragging(event:GoogleMapsEvent):void {
         trace(event);
         var uuid:String = event.params as String;
-        var marker:Marker = googleMaps.markers[uuid] as Marker;
+        var marker:Marker = mapView.markers[uuid] as Marker;
         trace("begin drag marker", uuid, marker.title);
     }
 
@@ -245,7 +311,7 @@ public class StarlingRoot extends Sprite {
         trace("user found at", coordinate.latitude, coordinate.longitude);
         var cameraPosition:CameraPosition = new CameraPosition();
         cameraPosition.centerAt = coordinate;
-        googleMaps.moveCamera(cameraPosition);
+        mapView.moveCamera(cameraPosition);
     }
 
 
@@ -255,7 +321,7 @@ public class StarlingRoot extends Sprite {
         switch (status) {
             case PermissionStatus.ALWAYS:
             case PermissionStatus.WHEN_IN_USE:
-                googleMaps.showUserLocation();
+                mapView.showUserLocation();
                 break;
             case PermissionStatus.DENIED:
             case PermissionStatus.NOT_DETERMINED:
@@ -271,38 +337,38 @@ public class StarlingRoot extends Sprite {
     private function onUpdateMarker(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            var marker:Marker = googleMaps.markers[firstMarkerId];
-            marker.color = ColorARGB.GREEN;
+            var marker:Marker = mapView.markers[firstMarkerId];
+            marker.color = ColorARGB.CYAN;
             marker.title = "Updated title";
-            googleMaps.updateMarker(firstMarkerId);
         }
     }
 
     private function onZoomIn(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn8);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.animationDuration = 500;
-            googleMaps.zoomIn(true); // googleMaps.zoomOut();
+            mapView.animationDuration = 500;
+            mapView.zoomIn(true); // mapView.zoomOut();
         }
     }
 
     private function onAddCircle(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
+            trace("onAddCircle");
             var circle:Circle = new Circle(new Coordinate(53.836549, -6.393717));
-            circle.fillColor = ColorARGB.PURPLE;
+            circle.fillColor = 0x807A007A; //purple 50% alpha
             circle.radius = 2000;
-            circle.strokeWidth = 4.0;
+            circle.strokeWidth = 20.0;
             circle.strokeColor = ColorARGB.GREEN;
             circle.strokePattern = new StrokePattern(StrokePatternType.DOTTED, 100, 100);
-            googleMaps.addCircle(circle);
+            mapView.addCircle(circle);
         }
     }
 
     private function onClear(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.clear();
+            mapView.clear();
         }
     }
 
@@ -311,21 +377,21 @@ public class StarlingRoot extends Sprite {
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             var vancouver:Coordinate = new Coordinate(49.26, -123.11);
             var calgary:Coordinate = new Coordinate(51.05, -114.05);
-            googleMaps.setBounds(vancouver, calgary)
+            mapView.setBounds(vancouver, calgary)
         }
     }
 
     private function onSetViewPort(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn2);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.viewPort = new Rectangle(0, 200, 400, 400);
+            mapView.viewPort = new Rectangle(0, 200, 400, 400);
         }
     }
 
     private function onToggleVisible(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn3);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.visible = !googleMaps.visible;
+            mapView.visible = !mapView.visible;
         }
     }
 
@@ -338,43 +404,43 @@ public class StarlingRoot extends Sprite {
             newPosition.zoom = 10.0;
             newPosition.bearing = 90;
             newPosition.tilt = 30;
-            googleMaps.moveCamera(newPosition, true);
+            mapView.moveCamera(newPosition, true);
         }
     }
 
     private function onNightStyle(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn5);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.style = nightStyle;
+            mapView.style = nightStyle;
         }
     }
 
     private function onMapType(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn6);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.mapType = MapType.SATELLITE;
+            mapView.mapType = MapType.SATELLITE;
         }
     }
 
     private function onFindMe(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn7);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            googleMaps.requestPermissions();
+            mapView.requestPermissions();
         }
     }
 
     private function onDidTapMarker(event:GoogleMapsEvent):void {
         var uuid:String = event.params as String;
-        var marker:Marker = googleMaps.markers[uuid] as Marker;
+        var marker:Marker = mapView.markers[uuid] as Marker;
         trace("tapped marker", uuid, marker.title);
     }
 
-    private static function onDidTapAt(event:GoogleMapsEvent):void {
+    private function onDidTapAt(event:GoogleMapsEvent):void {
         var coordinate:Coordinate = event.params as Coordinate;
         trace("tapped at", coordinate.latitude, coordinate.longitude);
     }
 
-    private static function onDidLongPressAt(event:GoogleMapsEvent):void {
+    private function onDidLongPressAt(event:GoogleMapsEvent):void {
         var coordinate:Coordinate = event.params as Coordinate;
         trace("long pressed at", coordinate.latitude, coordinate.longitude);
     }
@@ -390,7 +456,7 @@ public class StarlingRoot extends Sprite {
         current.viewPort.width = stage.stageWidth * scale;
         current.viewPort.height = stage.stageHeight * scale;
 
-        googleMaps.viewPort = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
+        mapView.viewPort = new Rectangle(0, 100, stage.stageWidth, stage.stageHeight - 100);
 
     }
 
@@ -398,7 +464,7 @@ public class StarlingRoot extends Sprite {
      * It's very important to call dispose(); on any ANEs when the app is exiting.
      */
     private function onExiting(event:Event):void {
-        googleMaps.dispose();
+        GoogleMapsANE.dispose();
     }
 }
 }

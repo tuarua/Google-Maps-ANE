@@ -7,7 +7,7 @@ run Carthage update in Terminal
 #### To download the required Google Mobile Maps Frameworks
 
 Download and unzip the latest SDK 
-https://dl.google.com/dl/cpdc/ca91069241a099f1/GoogleMaps-2.4.0.tar.gz
+https://dl.google.com/dl/cpdc/6e5f7d9da3112ca6/GoogleMaps-2.5.0.tar.gz
 
 Copy GoogleMaps.framework into the Frameworks folder
 

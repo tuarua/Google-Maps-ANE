@@ -23,6 +23,13 @@ public class GoogleMapsEvent extends Event {
     /**
      * This event is not fired with Apple Maps
      */
+    public static const DID_TAP_GROUND_OVERLAY: String = "GoogleMaps.DidTapGroundOverlay";
+    public static const DID_TAP_POLYLINE: String = "GoogleMaps.DidTapPolyline";
+    public static const DID_TAP_POLYGON: String = "GoogleMaps.DidTapPolygon";
+
+    /**
+     * This event is not fired with Apple Maps
+     */
     public static const DID_CLOSE_INFO_WINDOW:String = "GoogleMaps.DidCloseInfoWindow";
     /**
      * This event is not fired with Apple Maps
