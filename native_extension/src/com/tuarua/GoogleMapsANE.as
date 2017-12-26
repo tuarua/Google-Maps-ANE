@@ -41,25 +41,6 @@ public class GoogleMapsANE extends EventDispatcher {
             _isInited = theRet;
         }
         _mapView = this;
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_TAP_AT, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_LONG_PRESS_AT, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_TAP_MARKER, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_BEGIN_DRAGGING, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_DRAG, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_TAP_INFO_WINDOW, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_TAP_GROUND_OVERLAY, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_CLOSE_INFO_WINDOW, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_LONG_PRESS_INFO_WINDOW, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.ON_READY, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.ON_LOADED, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.ON_CAMERA_IDLE, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.ON_BITMAP_READY, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.DID_END_DRAGGING, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE_STARTED, onContextGoogleMapsEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(LocationEvent.LOCATION_UPDATED, onContextLocationEvent);
-        GoogleMapsANEContext.dispatcher.addEventListener(PermissionEvent.ON_PERMISSION_STATUS, onContextPermissionEvent);
-
     }
 
     private function onContextGoogleMapsEvent(event:GoogleMapsEvent):void {

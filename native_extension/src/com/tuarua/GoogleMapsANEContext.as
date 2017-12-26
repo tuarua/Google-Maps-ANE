@@ -15,7 +15,6 @@ public class GoogleMapsANEContext {
     internal static const TRACE:String = "TRACE";
     private static var _context:ExtensionContext;
     private static var argsAsJSON:Object;
-    public static var dispatcher:EventDispatcher = new EventDispatcher();
     public static var markers:Dictionary = new Dictionary();
     public static var overlays:Dictionary = new Dictionary();
     public static var circles:Dictionary = new Dictionary();
@@ -48,7 +47,7 @@ public class GoogleMapsANEContext {
                 try {
                     argsAsJSON = JSON.parse(event.code);
                     var coordinate:Coordinate = new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude);
-                    dispatcher.dispatchEvent(new GoogleMapsEvent(event.level, coordinate));
+                    GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, coordinate));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -66,7 +65,7 @@ public class GoogleMapsANEContext {
             case GoogleMapsEvent.ON_LOADED:
             case GoogleMapsEvent.ON_CAMERA_IDLE:
             case GoogleMapsEvent.ON_BITMAP_READY:
-                dispatcher.dispatchEvent(new GoogleMapsEvent(event.level, event.code));
+                GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, event.code));
                 break;
             case GoogleMapsEvent.DID_END_DRAGGING:
                 try {
@@ -77,7 +76,7 @@ public class GoogleMapsANEContext {
                     var marker:Marker = markers[id] as Marker;
                     marker.coordinate.latitude = latitude;
                     marker.coordinate.longitude = longitude;
-                    dispatcher.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
+                    GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -86,7 +85,7 @@ public class GoogleMapsANEContext {
             case GoogleMapsEvent.ON_CAMERA_MOVE_STARTED:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    dispatcher.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
+                    GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -95,7 +94,7 @@ public class GoogleMapsANEContext {
                 try {
                     argsAsJSON = JSON.parse(event.code);
                     var location:Coordinate = new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude);
-                    dispatcher.dispatchEvent(new LocationEvent(event.level, location));
+                    GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level, location));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -103,7 +102,7 @@ public class GoogleMapsANEContext {
             case PermissionEvent.ON_PERMISSION_STATUS:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    dispatcher.dispatchEvent(new PermissionEvent(event.level, argsAsJSON));
+                    GoogleMapsANE.mapView.dispatchEvent(new PermissionEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
                 }
