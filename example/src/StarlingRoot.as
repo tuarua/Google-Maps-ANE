@@ -22,6 +22,7 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.events.Event;
 import flash.geom.Rectangle;
+import flash.utils.setTimeout;
 
 import starling.core.Starling;
 import starling.display.Sprite;
@@ -126,7 +127,7 @@ public class StarlingRoot extends Sprite {
         btn.x = 10;
         btn8.y = btn7.y = btn3.y = btn2.y = btn.y = 10;
         btn9.y = btn6.y = btn5.y = btn4.y = 60;
-        btn.addEventListener(TouchEvent.TOUCH, onAddCircle);
+        btn.addEventListener(TouchEvent.TOUCH, onScrollBy);
         addChild(btn);
 
         btn2.x = 100;
@@ -365,6 +366,14 @@ public class StarlingRoot extends Sprite {
         }
     }
 
+    private function onScrollBy(event:TouchEvent):void {
+        var touch:Touch = event.getTouch(btn);
+        if (touch != null && touch.phase == TouchPhase.ENDED) {
+            mapView.scrollBy(0, -(mapView.viewPort.height * 0.5), false);
+
+        }
+    }
+
     private function onClear(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
@@ -412,6 +421,7 @@ public class StarlingRoot extends Sprite {
         var touch:Touch = event.getTouch(btn5);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             mapView.style = nightStyle;
+
         }
     }
 

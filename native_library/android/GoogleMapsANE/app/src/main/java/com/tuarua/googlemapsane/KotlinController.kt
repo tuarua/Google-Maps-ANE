@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
 
 import com.tuarua.frekotlin.*
-import com.tuarua.frekotlin.display.FreBitmapDataKotlin
+import com.tuarua.frekotlin.display.toFREObject
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.Settings
 import org.greenrobot.eventbus.EventBus
@@ -103,12 +103,7 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun getCapture(ctx: FREContext, argv: FREArgv): FREObject? {
-        val bmp = mapController?.getCapture()
-        if (bmp != null) {
-            val bmd = FreBitmapDataKotlin(bmp)
-            return bmd.rawValue
-        }
-        return null
+        return mapController?.getCapture()?.toFREObject()
     }
 
     fun init(ctx: FREContext, argv: FREArgv): FREObject? {
@@ -140,7 +135,7 @@ class KotlinController : FreKotlinMainController {
     @Throws(FreException::class)
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: PermissionEvent) {
-        sendEvent(Constants.ON_PERMISSION_STATUS, gson.toJson(PermissionEvent(event.permission, event.status)))
+        sendEvent(Constants.ON_PERMISSION_STATUS, gson.toJson(event))
         when {
             event.status == Constants.PERMISSION_ALWAYS -> {
                 permissionsGranted = true
@@ -284,7 +279,7 @@ class KotlinController : FreKotlinMainController {
             val name = String(argv[1])
             val inFRE2 = argv[2]
             if (id != null && name != null) {
-               mapController?.setMarkerProp(id, name, inFRE2)
+                mapController?.setMarkerProp(id, name, inFRE2)
             }
         } catch (e: FreException) {
             return e.getError(Thread.currentThread().stackTrace)
@@ -513,7 +508,10 @@ class KotlinController : FreKotlinMainController {
     fun moveCamera(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 4 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
         try {
-            val centerAt = LatLng(argv[0])
+            var centerAt: LatLng? = null
+            if (argv[0].type != FreObjectTypeKotlin.NULL) {
+                centerAt = LatLng(argv[0])
+            }
             val zoom = Float(argv[1])
             val tilt = Float(argv[2])
             val bearing = Float(argv[3])
@@ -556,6 +554,17 @@ class KotlinController : FreKotlinMainController {
         val animates = Boolean(argv[1]) == true
         if (zoomLevel != null) {
             mapController?.zoomTo(zoomLevel, animates)
+        }
+        return null
+    }
+
+    fun scrollBy(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        val x = Float(argv[0])
+        val y = Float(argv[1])
+        val animates = Boolean(argv[2]) == true
+        if (x != null && y != null) {
+            mapController?.scrollBy(x, y, animates)
         }
         return null
     }

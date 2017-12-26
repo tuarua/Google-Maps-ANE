@@ -54,6 +54,7 @@ public class GoogleMapsANE implements FREExtension {
             ,"zoomIn"
             ,"zoomOut"
             ,"zoomTo"
+            ,"scrollBy"
             ,"setAnimationDuration"
             ,"requestPermissions"
             ,"capture"

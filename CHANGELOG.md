@@ -5,6 +5,7 @@
 - Added support for GroundOverlay
 - Added support for Polyline
 - Added support for Polygon
+- Added scrollBy() method
 - Make better use of setters/getters
 
 ### 1.0.0

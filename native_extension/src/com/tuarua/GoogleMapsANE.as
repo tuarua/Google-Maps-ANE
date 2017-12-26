@@ -12,6 +12,7 @@ import com.tuarua.googlemaps.Polyline;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.location.LocationEvent;
 import com.tuarua.googlemaps.permissions.PermissionEvent;
+
 import flash.display.BitmapData;
 import flash.events.EventDispatcher;
 import flash.geom.Rectangle;
@@ -169,6 +170,7 @@ public class GoogleMapsANE extends EventDispatcher {
             GoogleMapsANEContext.circles[id] = circle;
         }
     }
+
     /**
      *
      * @param polyline
@@ -332,6 +334,19 @@ public class GoogleMapsANE extends EventDispatcher {
     public function zoomTo(zoomLevel:Number, animates:Boolean = false):void {
         if (safetyCheck()) {
             GoogleMapsANEContext.context.call("zoomTo", zoomLevel, animates);
+        }
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param animates
+     *
+     */
+    public function scrollBy(x:Number, y:Number, animates:Boolean = false):void {
+        if (safetyCheck()) {
+            GoogleMapsANEContext.context.call("scrollBy", x, y, animates);
         }
     }
 

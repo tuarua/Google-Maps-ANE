@@ -282,12 +282,14 @@ class MapController(override var context: FREContext?, private var airView: View
         }
     }
 
-    fun moveCamera(centerAt: LatLng, zoom: Float?, tilt: Float?, bearing: Float?, animates: Boolean) {
+    fun moveCamera(centerAt: LatLng?, zoom: Float?, tilt: Float?, bearing: Float?, animates: Boolean) {
         val mv: GoogleMap = this.mapView ?: return
         val currentCamera = mv.cameraPosition
         val cameraPositionBuilder: CameraPosition.Builder = CameraPosition.builder()
-        cameraPositionBuilder.target(centerAt)
-
+        when (centerAt) {
+            null -> cameraPositionBuilder.target(currentCamera.target)
+            else -> cameraPositionBuilder.target(centerAt)
+        }
         when (zoom) {
             null -> cameraPositionBuilder.zoom(currentCamera.zoom)
             else -> cameraPositionBuilder.zoom(zoom)
@@ -300,6 +302,7 @@ class MapController(override var context: FREContext?, private var airView: View
             null -> cameraPositionBuilder.bearing(currentCamera.bearing)
             else -> cameraPositionBuilder.bearing(bearing)
         }
+
         val position = cameraPositionBuilder.build()
         when {
             animates -> mv.animateCamera(CameraUpdateFactory.newCameraPosition(position), animationDuration, null)
@@ -331,6 +334,15 @@ class MapController(override var context: FREContext?, private var airView: View
             mv.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel), animationDuration, null)
         } else {
             mv.moveCamera(CameraUpdateFactory.zoomTo(zoomLevel))
+        }
+    }
+
+    fun scrollBy(x: Float, y: Float, animates: Boolean) {
+        val mv: GoogleMap = this.mapView ?: return
+        if (animates) {
+            mv.animateCamera(CameraUpdateFactory.scrollBy(x, y), animationDuration, null)
+        } else {
+            mv.moveCamera(CameraUpdateFactory.scrollBy(x, y))
         }
     }
 
