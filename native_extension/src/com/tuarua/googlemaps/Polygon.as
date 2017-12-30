@@ -22,16 +22,21 @@ public class Polygon extends Shape {
         super();
         this.points = points;
     }
-
-    public function set clickable(value:Boolean):void {
-        _clickable = value;
-        setAneValue("clickable", value);
+    /**
+     * Ignored on Apple Maps
+     */
+    public function set isTappable(value:Boolean):void {
+        _isTappable = value;
+        setAneValue("isTappable", value);
     }
 
     public function get geodesic():Boolean {
         return _geodesic;
     }
 
+    /**
+     * Ignored on Apple Maps
+     */
     public function set geodesic(value:Boolean):void {
         _geodesic = value;
         setAneValue("geodesic", value);
@@ -57,7 +62,9 @@ public class Polygon extends Shape {
     public function get strokeJointType():int {
         return _strokeJointType;
     }
-
+    /**
+     * Ignored on iOS
+     */
     public function set strokeJointType(value:int):void {
         _strokeJointType = value;
         setAneValue("strokeJointType", value);
@@ -96,7 +103,9 @@ public class Polygon extends Shape {
     public function get strokePattern():StrokePattern {
         return _strokePattern;
     }
-
+    /**
+     * Ignored on iOS
+     */
     public function set strokePattern(value:StrokePattern):void {
         _strokePattern = value;
         setAneValue("strokePattern", value);

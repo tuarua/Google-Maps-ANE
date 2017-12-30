@@ -49,6 +49,14 @@
 		CEB5ED121F5C4F7800AE8B16 /* SwiftyJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB5ED101F5C4F7800AE8B16 /* SwiftyJSON.h */; };
 		CEB5ED131F5C4F7800AE8B16 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB5ED111F5C4F7800AE8B16 /* SwiftyJSON.swift */; };
 		CEB5ED151F5C56F900AE8B16 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB5ED141F5C56F900AE8B16 /* Constants.swift */; };
+		CEC1A0FD1FF7187600ED797A /* FreGMSMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1A0FC1FF7187600ED797A /* FreGMSMarker.swift */; };
+		CEFB3BC11FF7C4460095DE62 /* FreGMSGroundOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFB3BC01FF7C4460095DE62 /* FreGMSGroundOverlay.swift */; };
+		CEFB3BC31FF7CC3F0095DE62 /* FreGMSPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFB3BC21FF7CC3F0095DE62 /* FreGMSPolygon.swift */; };
+		CEFB3BC51FF7E21F0095DE62 /* FreGMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFB3BC41FF7E21F0095DE62 /* FreGMSPolyline.swift */; };
+		CEFB3BC71FF802360095DE62 /* CustomMKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFB3BC61FF802360095DE62 /* CustomMKPolygon.swift */; };
+		CEFB3BC91FF805D00095DE62 /* FreMKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFB3BC81FF805D00095DE62 /* FreMKPolygon.swift */; };
+		CEFB3BCB1FF82D240095DE62 /* CustomMKPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFB3BCA1FF82D240095DE62 /* CustomMKPolyline.swift */; };
+		CEFB3BCD1FF82D8F0095DE62 /* FreMKPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFB3BCC1FF82D8F0095DE62 /* FreMKPolyline.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +114,14 @@
 		CEB5ED101F5C4F7800AE8B16 /* SwiftyJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftyJSON.h; path = SwiftyJSON/SwiftyJSON.h; sourceTree = "<group>"; };
 		CEB5ED111F5C4F7800AE8B16 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = SwiftyJSON/SwiftyJSON.swift; sourceTree = "<group>"; };
 		CEB5ED141F5C56F900AE8B16 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		CEC1A0FC1FF7187600ED797A /* FreGMSMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FreGMSMarker.swift; path = FreSwift/FreGMSMarker.swift; sourceTree = "<group>"; };
+		CEFB3BC01FF7C4460095DE62 /* FreGMSGroundOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FreGMSGroundOverlay.swift; path = FreSwift/FreGMSGroundOverlay.swift; sourceTree = "<group>"; };
+		CEFB3BC21FF7CC3F0095DE62 /* FreGMSPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FreGMSPolygon.swift; path = FreSwift/FreGMSPolygon.swift; sourceTree = "<group>"; };
+		CEFB3BC41FF7E21F0095DE62 /* FreGMSPolyline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FreGMSPolyline.swift; path = FreSwift/FreGMSPolyline.swift; sourceTree = "<group>"; };
+		CEFB3BC61FF802360095DE62 /* CustomMKPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMKPolygon.swift; sourceTree = "<group>"; };
+		CEFB3BC81FF805D00095DE62 /* FreMKPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FreMKPolygon.swift; path = FreSwift/FreMKPolygon.swift; sourceTree = "<group>"; };
+		CEFB3BCA1FF82D240095DE62 /* CustomMKPolyline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMKPolyline.swift; sourceTree = "<group>"; };
+		CEFB3BCC1FF82D8F0095DE62 /* FreMKPolyline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FreMKPolyline.swift; path = FreSwift/FreMKPolyline.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +219,8 @@
 				CE6589F41F6F1A9900656914 /* MapViewExtension.swift */,
 				CE93974F1F70772400A1428C /* CustomMKAnnotation.swift */,
 				285FE9BC1B43C00633CEE916 /* CustomMKCircle.swift */,
+				CEFB3BC61FF802360095DE62 /* CustomMKPolygon.swift */,
+				CEFB3BCA1FF82D240095DE62 /* CustomMKPolyline.swift */,
 			);
 			path = GoogleMapsANE_FW;
 			sourceTree = "<group>";
@@ -252,6 +270,12 @@
 				285FE41C9FE2CEB9DCF6CB30 /* FreGMSCircle.swift */,
 				285FE3EB6401C4553D5DC713 /* FreMKCircle.swift */,
 				285FE4E5D8DD21768875CCFD /* FreCLLocationCoordinate.swift */,
+				CEC1A0FC1FF7187600ED797A /* FreGMSMarker.swift */,
+				CEFB3BC01FF7C4460095DE62 /* FreGMSGroundOverlay.swift */,
+				CEFB3BC21FF7CC3F0095DE62 /* FreGMSPolygon.swift */,
+				CEFB3BC41FF7E21F0095DE62 /* FreGMSPolyline.swift */,
+				CEFB3BC81FF805D00095DE62 /* FreMKPolygon.swift */,
+				CEFB3BCC1FF82D8F0095DE62 /* FreMKPolyline.swift */,
 			);
 			name = FreSwift;
 			sourceTree = "<group>";
@@ -359,16 +383,16 @@
 /* Begin PBXShellScriptBuildPhase section */
 		CE3980B21E58C0D80062485B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = ../../../native_extension/ane/build_mobile.sh;
+			shellScript = ../../../native_extension/ane/build_ios.sh;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -377,18 +401,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEFB3BCD1FF82D8F0095DE62 /* FreMKPolyline.swift in Sources */,
 				CE9397501F70772400A1428C /* CustomMKAnnotation.swift in Sources */,
+				CEFB3BC51FF7E21F0095DE62 /* FreGMSPolyline.swift in Sources */,
 				CEB5ED151F5C56F900AE8B16 /* Constants.swift in Sources */,
 				CEA0DE401F5DF9DD0012EB4E /* GMSMapController.swift in Sources */,
+				CEFB3BC91FF805D00095DE62 /* FreMKPolygon.swift in Sources */,
+				CEC1A0FD1FF7187600ED797A /* FreGMSMarker.swift in Sources */,
+				CEFB3BC71FF802360095DE62 /* CustomMKPolygon.swift in Sources */,
 				CE3980981E58BB070062485B /* SwiftController.swift in Sources */,
 				CE6589F51F6F1A9900656914 /* MapViewExtension.swift in Sources */,
 				CEB5ED131F5C4F7800AE8B16 /* SwiftyJSON.swift in Sources */,
 				CE6589F31F6EE39100656914 /* MKMapController.swift in Sources */,
 				CEA0DE421F5DFA7A0012EB4E /* Settings.swift in Sources */,
 				CE5E29881F6452CC00FDB81A /* MarkerOptions.swift in Sources */,
+				CEFB3BC31FF7CC3F0095DE62 /* FreGMSPolygon.swift in Sources */,
 				285FE645B808125071F7A08A /* CustomMKCircle.swift in Sources */,
 				285FE6FF36D515256EAE7B63 /* FreGMSCircle.swift in Sources */,
+				CEFB3BCB1FF82D240095DE62 /* CustomMKPolyline.swift in Sources */,
 				285FE43BB13A003DF0009958 /* FreMKCircle.swift in Sources */,
+				CEFB3BC11FF7C4460095DE62 /* FreGMSGroundOverlay.swift in Sources */,
 				285FE1341741FC686F0BEB75 /* FreCLLocationCoordinate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

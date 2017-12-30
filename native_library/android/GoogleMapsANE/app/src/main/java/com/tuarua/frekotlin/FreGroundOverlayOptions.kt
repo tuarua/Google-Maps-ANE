@@ -33,7 +33,7 @@ class FreGroundOverlayOptions() : FreObjectKotlin() {
             if (rv != null) {
                 val coordinate = LatLng(rv["coordinate"])
                 val bearing = Float(rv["bearing"]) ?: 0f
-                val clickable = Boolean(rv["clickable"]) == true
+                val clickable = Boolean(rv["isTappable"]) == true
                 val visible = Boolean(rv["visible"]) == true
                 val zIndex = Float(rv["zIndex"]) ?: 0f
                 val transparency = Float(rv["transparency"]) ?: 0f

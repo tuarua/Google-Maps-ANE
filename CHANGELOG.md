@@ -1,11 +1,12 @@
 ### 1.1.0
-- Updated FreKotlin
-- Updated Android Play Services to 11.8.0
+- iOS: Updated to FreSwift 2.1.0
+- Android: Updated to FreKotlin 1.0.0
+- Android: Updated to Android Play Services to 11.8.0
+- iOS: Updated to Google Maps SDK 2.5
 - Colors are now ARGB eg 0xFF000000
-- Added support for GroundOverlay
 - Added support for Polyline
 - Added support for Polygon
-- Added scrollBy() method
+- Android: Added scrollBy() method
 - Make better use of setters/getters
 
 ### 1.0.0

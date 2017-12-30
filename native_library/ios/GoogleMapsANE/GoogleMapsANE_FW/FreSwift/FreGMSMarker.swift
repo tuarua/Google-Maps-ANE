@@ -14,72 +14,69 @@
  *  limitations under the License.
  */
 
-import FreSwift
 import Foundation
-import MapKit
-import UIKit
+import GoogleMaps
+import FreSwift
 
-class CustomMKAnnotation: NSObject, MKAnnotation {
-    var identifier: String = UUID.init().uuidString
-    var color: UIColor?
-    var icon: UIImage?
-    var userData: Any?
-    var coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
-    var title: String?
-    var subtitle: String?
-    var isDraggable: Bool = false
-    var isTappable: Bool = false
-    var opacity: CGFloat = 1.0
-
+public extension GMSMarker {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject,
-            let coordinate = CLLocationCoordinate2D.init(rv["coordinate"]),
+       guard let rv = freObject,
+        let coordinate = CLLocationCoordinate2D.init(rv["coordinate"]),
             let title = String(rv["title"]),
             let snippet = String(rv["snippet"]),
             let isDraggable = Bool(rv["isDraggable"]),
+            let isFlat = Bool(rv["isFlat"]),
             let isTappable = Bool(rv["isTappable"]),
-            let alpha = CGFloat(rv["alpha"]),
+            let rotation = CLLocationDegrees(rv["rotation"]),
+            let alpha = Float(rv["alpha"]),
             let color = UIColor.init(freObjectARGB: rv["color"])
             else {
                 return nil
         }
-        
-        self.init()
-
-        self.userData = identifier
-        self.coordinate = coordinate
+        self.init(position: coordinate)
+        self.tracksInfoWindowChanges = true
         self.title = title
-        self.opacity = alpha
-        self.isTappable = isTappable
+        self.snippet = snippet
         self.isDraggable = isDraggable
-        self.color = color
-        self.subtitle = snippet
-        if let icon = rv["icon"],
-            let img = UIImage.init(freObject: icon) {
+        self.isFlat = isFlat
+        self.isTappable = isTappable
+        self.rotation = rotation
+        self.opacity = alpha
+        self.userData = UUID.init().uuidString
+        
+        if let icon = rv["icon"], let img = UIImage.init(freObject: icon) {
             self.icon = img
+        } else {
+            self.icon = GMSMarker.markerImage(with: color)
         }
     }
     
     func setProp(name:String, value:FREObject) {
         switch name {
         case "coordinate":
-            self.coordinate = CLLocationCoordinate2D.init(value) ?? self.coordinate
+            self.position = CLLocationCoordinate2D.init(value) ?? self.position
             break
         case "title":
             self.title = String(value) ?? self.title
             break
         case "snippet":
-            self.subtitle = String(value) ?? self.subtitle
+            self.snippet = String(value) ?? self.snippet
             break
         case "isDraggable":
             self.isDraggable = Bool(value) ?? self.isDraggable
             break
+        case "isFlat":
+            self.isFlat = Bool(value) ?? self.isFlat
+            break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
             break
+        case "rotation":
+            self.rotation = CLLocationDegrees(value) ?? self.rotation
+            break
         case "color":
             if let color = UIColor.init(freObjectARGB: value) {
-                self.color = color
+                self.icon = GMSMarker.markerImage(with: color)
             }
             break
         case "icon":
@@ -88,12 +85,10 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
             }
             break
         case "alpha":
-            self.opacity = CGFloat(value) ?? self.opacity
+            self.opacity = Float(value) ?? self.opacity
             break
         default:
             break
         }
     }
-    
-
 }

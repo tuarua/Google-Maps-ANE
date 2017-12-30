@@ -10,25 +10,26 @@ public class Circle extends Shape {
     private var _strokeColor:uint = ColorARGB.BLACK;
     private var _strokePattern:StrokePattern = new StrokePattern();
     private var _fillColor:uint = ColorARGB.BLACK;
-	/**
-	 * 
-	 * @param center
-	 * @param radius
-	 * @param clickable
-	 * @param strokeWidth
-	 * @param strokeColor
-	 * @param strokePattern
-	 * @param fillColor
-	 * @param zIndex
-	 * @param visible
-	 * 
-	 */
-    public function Circle(center:Coordinate, radius:Number = 1000.0, clickable:Boolean = false, strokeWidth:Number = 10.0,
+
+    /**
+     *
+     * @param center
+     * @param radius
+     * @param isTappable
+     * @param strokeWidth
+     * @param strokeColor
+     * @param strokePattern
+     * @param fillColor
+     * @param zIndex
+     * @param visible
+     *
+     */
+    public function Circle(center:Coordinate, radius:Number = 1000.0, isTappable:Boolean = false, strokeWidth:Number = 10.0,
                            strokeColor:uint = ColorARGB.BLACK, strokePattern:StrokePattern = null,
                            fillColor:uint = ColorARGB.BLACK, zIndex:uint = 0, visible:Boolean = true) {
         _center = center;
         _radius = radius;
-        _clickable = clickable;
+        _isTappable = isTappable;
         _strokeWidth = strokeWidth;
         _strokeColor = strokeColor;
         _strokePattern = strokePattern;
@@ -37,15 +38,18 @@ public class Circle extends Shape {
         _visible = visible;
     }
 
-
-    public function set clickable(value:Boolean):void {
-        _clickable = value;
-        setAneValue("clickable", value);
+    /**
+     * Ignored on Apple Maps
+     */
+    public function set isTappable(value:Boolean):void {
+        _isTappable = value;
+        setAneValue("isTappable", value);
     }
 
     public function get center():Coordinate {
         return _center;
     }
+
     /**
      * The center of the Circle is specified as a LatLng.
      */
@@ -57,6 +61,7 @@ public class Circle extends Shape {
     public function get radius():Number {
         return _radius;
     }
+
     /**
      * The radius of the circle, specified in meters. It should be zero or greater.
      */
@@ -68,6 +73,7 @@ public class Circle extends Shape {
     public function get strokeWidth():Number {
         return _strokeWidth;
     }
+
     /**
      * The width of the circle's outline in screen pixels.
      * The width is constant and independent of the camera's zoom level.
@@ -81,6 +87,7 @@ public class Circle extends Shape {
     public function get strokeColor():uint {
         return _strokeColor;
     }
+
     /**
      * The color of the circle outline in ARGB format, the same format used by Color.
      * The default value is black (0xff000000).
@@ -93,8 +100,9 @@ public class Circle extends Shape {
     public function get strokePattern():StrokePattern {
         return _strokePattern;
     }
+
     /**
-     * Ignored on Apple Maps
+     * Ignored on iOS
      */
     public function set strokePattern(value:StrokePattern):void {
         _strokePattern = value;
@@ -104,6 +112,7 @@ public class Circle extends Shape {
     public function get fillColor():uint {
         return _fillColor;
     }
+
     /**
      * The color in ARGB format of the circle fill.
      */
@@ -111,7 +120,6 @@ public class Circle extends Shape {
         _fillColor = value;
         setAneValue("fillColor", value);
     }
-
 
     /**
      * The order in which this tile overlay is drawn with respect to other overlays
@@ -132,7 +140,7 @@ public class Circle extends Shape {
      * An invisible circle is not drawn, but retains all of its other properties.
      * The default is true, i.e., visible.
      *
-     * Ignored on Apple Maps
+     * Ignored on iOS
      *
      */
     public function set visible(value:Boolean):void {

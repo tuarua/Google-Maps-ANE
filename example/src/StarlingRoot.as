@@ -10,6 +10,7 @@ import com.tuarua.googlemaps.MapProvider;
 import com.tuarua.googlemaps.MapType;
 import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Polygon;
+import com.tuarua.googlemaps.Polyline;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.googlemaps.StrokePattern;
 import com.tuarua.googlemaps.StrokePatternType;
@@ -38,9 +39,6 @@ public class StarlingRoot extends Sprite {
     private var mapView:GoogleMapsANE;
     [Embed(source="pin_b.png")]
     public static const pinImage:Class;
-
-    [Embed(source="landmark.jpg")]
-    public static const landmarkImage:Class;
 
     private var firstMarkerId:String;
 
@@ -85,7 +83,7 @@ public class StarlingRoot extends Sprite {
         var _assets:AssetManager = assets;
 
         GoogleMapsANE.key = "AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc";
-        GoogleMapsANE.mapProvider = MapProvider.GOOGLE;
+        GoogleMapsANE.mapProvider = MapProvider.APPLE;
         mapView = GoogleMapsANE.mapView;
 
         if (!mapView.isInited) {
@@ -127,7 +125,7 @@ public class StarlingRoot extends Sprite {
         btn.x = 10;
         btn8.y = btn7.y = btn3.y = btn2.y = btn.y = 10;
         btn9.y = btn6.y = btn5.y = btn4.y = 60;
-        btn.addEventListener(TouchEvent.TOUCH, onScrollBy);
+        btn.addEventListener(TouchEvent.TOUCH, onAddCircle);
         addChild(btn);
 
         btn2.x = 100;
@@ -215,7 +213,7 @@ public class StarlingRoot extends Sprite {
 
     private function onMapReady(event:GoogleMapsEvent):void {
         trace(event);
-        var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
+        /*var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
         var marker:Marker = new Marker(coordinate, "Dunleer", "Home");
         marker.color = ColorARGB.GREEN;
         marker.icon = (new pinImage() as Bitmap).bitmapData;
@@ -224,10 +222,8 @@ public class StarlingRoot extends Sprite {
         marker.isDraggable = true;
         mapView.addMarker(marker);
         firstMarkerId = marker.id;
-        trace("uuid for marker", firstMarkerId);
+        trace("uuid for marker", firstMarkerId);*/
 
-        //var overlay:GroundOverlay = new GroundOverlay(coordinate, (new landmarkImage() as Bitmap).bitmapData, 2000);
-        //mapView.addGroundOverlay(overlay);
 
         // Polyline
         /*var points:Vector.<Coordinate> = new Vector.<Coordinate>();
@@ -238,7 +234,8 @@ public class StarlingRoot extends Sprite {
         points.push(new Coordinate(-32.306, 149.248));
         points.push(new Coordinate(-32.491, 147.309));
 
-        var polyline:Polyline = new Polyline(points,ColorARGB.GREEN);
+        var polyline:Polyline = new Polyline(points, ColorARGB.GREEN);
+
         mapView.addPolyline(polyline);
         var cameraPosition:CameraPosition = new CameraPosition();
         cameraPosition.centerAt = new Coordinate(-23.684, 133.903);
@@ -252,16 +249,17 @@ public class StarlingRoot extends Sprite {
         points.push(new Coordinate(-37.813, 144.962));
         points.push(new Coordinate(-34.928, 138.599));
         var polygon:Polygon = new Polygon(points);
-        mapView.addPolygon(polygon);
         polygon.fillColor = ColorARGB.WHITE;
         polygon.strokeColor = ColorARGB.BLACK;
+        mapView.addPolygon(polygon);
+
         var cameraPosition:CameraPosition = new CameraPosition();
         cameraPosition.centerAt = new Coordinate(-23.684, 133.903);
         cameraPosition.zoom = 4.0;
         mapView.moveCamera(cameraPosition, false);*/
 
-        //Polygon #1
-        /*var points:Vector.<Coordinate> = new Vector.<Coordinate>();
+        //Polygon #2
+        var points:Vector.<Coordinate> = new Vector.<Coordinate>();
         var holes:Vector.<Coordinate> = new Vector.<Coordinate>();
         points.push(new Coordinate(0, 0));
         points.push(new Coordinate(0, 5));
@@ -283,7 +281,7 @@ public class StarlingRoot extends Sprite {
         var cameraPosition:CameraPosition = new CameraPosition();
         cameraPosition.centerAt = new Coordinate(0, 0);
         cameraPosition.zoom = 6.0;
-        mapView.moveCamera(cameraPosition, false);*/
+        mapView.moveCamera(cameraPosition, false);
 
 
     }
@@ -339,8 +337,10 @@ public class StarlingRoot extends Sprite {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             var marker:Marker = mapView.markers[firstMarkerId];
-            marker.color = ColorARGB.CYAN;
-            marker.title = "Updated title";
+            if (marker) {
+                marker.color = ColorARGB.CYAN;
+                marker.title = "Updated title";
+            }
         }
     }
 

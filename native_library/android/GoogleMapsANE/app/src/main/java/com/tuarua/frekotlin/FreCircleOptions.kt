@@ -31,7 +31,7 @@ class FreCircleOptions() : FreObjectKotlin() {
             val rv = rawValue
             if (rv != null) {
                 try {
-                    val clickable = Boolean(rv["clickable"]) == true
+                    val clickable = Boolean(rv["isTappable"]) == true
                     val center = LatLng(rv["center"])
                     val radius = Double(rv["radius"]) ?: 1.0
                     val strokeWidth = Float(rv["strokeWidth"]) ?: 10.0F
@@ -77,6 +77,12 @@ class FreCircleOptions() : FreObjectKotlin() {
 }
 
 fun CircleOptions(freObject: FREObject?): CircleOptions = FreCircleOptions(freObject = freObject).value
+fun Circle.setClickable(value: FREObject?) {
+    val v = Boolean(value)
+    if (v != null) {
+        this.isClickable = v
+    }
+}
 fun Circle.setCenter(value: FREObject?) {
     this.center = LatLng(value)
 }

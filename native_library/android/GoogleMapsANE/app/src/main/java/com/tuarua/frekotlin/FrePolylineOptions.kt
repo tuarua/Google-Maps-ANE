@@ -32,7 +32,7 @@ class FrePolylineOptions() : FreObjectKotlin() {
             val rv = rawValue
             if (rv != null) {
                 try {
-                    val clickable = Boolean(rv["clickable"]) == true
+                    val clickable = Boolean(rv["isTappable"]) == true
                     val color = rv["color"]?.toColor(true) ?: 0
                     val geodesic = Boolean(rv["geodesic"]) == true
                     val visible = Boolean(rv["visible"]) == true

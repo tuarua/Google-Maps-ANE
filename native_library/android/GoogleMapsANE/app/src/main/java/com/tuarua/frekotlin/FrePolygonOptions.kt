@@ -31,7 +31,7 @@ class FrePolygonOptions() : FreObjectKotlin() {
             val rv = rawValue
             if (rv != null) {
                 try {
-                    val clickable = Boolean(rv["clickable"]) == true
+                    val clickable = Boolean(rv["isTappable"]) == true
                     val geodesic = Boolean(rv["geodesic"]) == true
                     val visible = Boolean(rv["visible"]) == true
                     val zIndex = Float(rv["zIndex"]) ?: 0.0F

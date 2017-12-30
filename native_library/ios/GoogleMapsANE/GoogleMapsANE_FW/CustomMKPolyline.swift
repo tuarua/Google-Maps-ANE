@@ -19,15 +19,16 @@ import Foundation
 import MapKit
 import UIKit
 
-open class CustomMKCircle: MKCircle {
+open class CustomMKPolyline: MKPolyline {
     var identifier: String = ""
-    var strokeWidth: CGFloat = 1.0
-    var strokeColor: UIColor?
-    var fillColor: UIColor?
-    convenience init(center: CLLocationCoordinate2D, radius: CLLocationDistance, identifier: String) {
-        self.init(center: center, radius: radius)
+    var width: CGFloat = 1.0
+    var color: UIColor?
+    convenience init(points: Array<CLLocationCoordinate2D>, identifier: String) {
+        var coordinates = [CLLocationCoordinate2D]()
+        for point in points {
+            coordinates.append(point)
+        }
+        self.init(coordinates: &coordinates, count: points.count)
         self.identifier = identifier
     }
 }
-
-

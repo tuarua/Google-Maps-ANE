@@ -48,8 +48,20 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         functionsToSet["\(prefix)init"] = initController
         functionsToSet["\(prefix)initMap"] = initMap
         functionsToSet["\(prefix)addMarker"] = addMarker
-        functionsToSet["\(prefix)updateMarker"] = updateMarker
+        functionsToSet["\(prefix)setMarkerProp"] = setMarkerProp
         functionsToSet["\(prefix)removeMarker"] = removeMarker
+        functionsToSet["\(prefix)addGroundOverlay"] = addGroundOverlay
+        functionsToSet["\(prefix)setGroundOverlayProp"] = setGroundOverlayProp
+        functionsToSet["\(prefix)removeGroundOverlay"] = removeGroundOverlay
+        functionsToSet["\(prefix)addCircle"] = addCircle
+        functionsToSet["\(prefix)setCircleProp"] = setCircleProp
+        functionsToSet["\(prefix)removeCircle"] = removeCircle
+        functionsToSet["\(prefix)addPolyline"] = addPolyline
+        functionsToSet["\(prefix)setPolylineProp"] = setPolylineProp
+        functionsToSet["\(prefix)removePolyline"] = removePolyline
+        functionsToSet["\(prefix)addPolygon"] = addPolygon
+        functionsToSet["\(prefix)setPolygonProp"] = setPolygonProp
+        functionsToSet["\(prefix)removePolygon"] = removePolygon
         functionsToSet["\(prefix)clear"] = clear
         functionsToSet["\(prefix)setViewPort"] = setViewPort
         functionsToSet["\(prefix)setVisible"] = setVisible
@@ -62,8 +74,8 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         functionsToSet["\(prefix)zoomIn"] = zoomIn
         functionsToSet["\(prefix)zoomOut"] = zoomOut
         functionsToSet["\(prefix)zoomTo"] = zoomTo
+        functionsToSet["\(prefix)scrollBy"] = scrollBy
         functionsToSet["\(prefix)setAnimationDuration"] = setAnimationDuration
-        functionsToSet["\(prefix)addCircle"] = addCircle
         functionsToSet["\(prefix)showInfoWindow"] = showInfoWindow
         functionsToSet["\(prefix)hideInfoWindow"] = hideInfoWindow
         functionsToSet["\(prefix)setBounds"] = setBounds
@@ -197,21 +209,141 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
           else {
             return ArgCountError(message: "addCircle").getError(#file, #line, #column)
         }
-
-        if mapProvider == .apple, let mvc = mapControllerMK,
-           let circle = CustomMKCircle.init(argv[0]) {
+        if mapProvider == .apple,
+            let mvc = mapControllerMK,
+            let circle = CustomMKCircle.init(argv[0]) {
             mvc.addCircle(circle: circle)
+            return circle.identifier.toFREObject()
         } else if let mvc = mapControllerGMS, let circle = GMSCircle.init(argv[0]) {
             mvc.addCircle(circle: circle)
+            if let id = circle.userData as? String {
+                return id.toFREObject()
+            }
         }
 
         return nil
     }
-
-    func removeCircle(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+    
+    func setCircleProp(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let id = String(argv[0]),
+            let name = String(argv[1]),
+            let freValue = argv[2]
+            else {
+                return ArgCountError(message: "setCircleProp").getError(#file, #line, #column)
+        }
+        mapControllerMK?.setCircleProp(id: id, name: name, value: freValue)
+        mapControllerGMS?.setCircleProp(id: id, name: name, value: freValue)
         return nil
     }
 
+    func removeCircle(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let id = String(argv[0])
+            else {
+                return ArgCountError(message: "removeCircle").getError(#file, #line, #column)
+        }
+        mapControllerMK?.removeCircle(id: id)
+        mapControllerGMS?.removeCircle(id: id)
+        return nil
+    }
+    
+    
+    func addGroundOverlay(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        warning("Ground overlays are available on Android only")
+        return nil
+    }
+    func setGroundOverlayProp(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        warning("Ground overlays are available on Android only")
+        return nil
+    }
+    func removeGroundOverlay(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        warning("Ground overlays are available on Android only")
+        return nil
+    }
+    
+    
+    func addPolyline(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0
+            else {
+                return ArgCountError(message: "addPolyline").getError(#file, #line, #column)
+        }
+        if mapProvider == .apple,
+            let mvc = mapControllerMK,
+            let polyline = CustomMKPolyline.init(argv[0]) {
+            mvc.addPolyline(polyline: polyline)
+            return polyline.identifier.toFREObject()
+        } else if let mvc = mapControllerGMS, let polyline = GMSPolyline.init(argv[0]) {
+            mvc.addPolyline(polyline: polyline)
+            if let id = polyline.userData as? String {
+                return id.toFREObject()
+            }
+        }
+        return nil
+    }
+    func setPolylineProp(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let id = String(argv[0]),
+            let name = String(argv[1]),
+            let freValue = argv[2]
+            else {
+                return ArgCountError(message: "setPolylineProp").getError(#file, #line, #column)
+        }
+        mapControllerMK?.setPolylineProp(id: id, name: name, value: freValue) //TODO
+        mapControllerGMS?.setPolylineProp(id: id, name: name, value: freValue)
+        return nil
+    }
+    func removePolyline(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let id = String(argv[0])
+            else {
+                return ArgCountError(message: "removePolyline").getError(#file, #line, #column)
+        }
+        mapControllerMK?.removePolyline(id: id)
+        mapControllerGMS?.removePolyline(id: id)
+        return nil
+    }
+    
+    func addPolygon(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0
+            else {
+                return ArgCountError(message: "addPolygon").getError(#file, #line, #column)
+        }
+        if mapProvider == .apple,
+            let mvc = mapControllerMK,
+            let polygon = CustomMKPolygon.init(argv[0]) {
+            mvc.addPolygon(polygon: polygon)
+            return polygon.identifier.toFREObject()
+        } else if let mvc = mapControllerGMS, let polygon = GMSPolygon.init(argv[0]) {
+            mvc.addPolygon(polygon: polygon)
+            if let id = polygon.userData as? String {
+                return id.toFREObject()
+            }
+        }
+        return nil
+    }
+    func setPolygonProp(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let id = String(argv[0]),
+            let name = String(argv[1]),
+            let freValue = argv[2]
+            else {
+                return ArgCountError(message: "setPolygonProp").getError(#file, #line, #column)
+        }
+        mapControllerMK?.setPolygonProp(id: id, name: name, value: freValue) //TODO
+        mapControllerGMS?.setPolygonProp(id: id, name: name, value: freValue)
+        return nil
+    }
+    func removePolygon(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let id = String(argv[0])
+            else {
+                return ArgCountError(message: "removePolygon").getError(#file, #line, #column)
+        }
+        //mapControllerMK?.removePolygon(id: id) //TODO
+        mapControllerGMS?.removePolygon(id: id)
+        return nil
+    }
 
     func setBounds(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 2,
@@ -257,6 +389,11 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         return nil
     }
 
+    func scrollBy(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        warning("scrollBy not available on iOS")
+        return nil
+    }
+    
     func setAnimationDuration(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         warning("We cannot set animation duration on iOS")
         return nil
@@ -310,17 +447,19 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
           else {
             return ArgCountError(message: "addMarker").getError(#file, #line, #column)
         }
-        let markerOptions = MarkerOptions.init(freObject: inFRE0)
-
         if self.mapProvider == .google {
-            let addedMarker = mapControllerGMS?.addMarker(markerOptions: markerOptions)
-            if let userData = addedMarker?.userData as? String {
-                return userData.toFREObject()
+            if let marker = GMSMarker.init(inFRE0) {
+                mapControllerGMS?.addMarker(marker: marker)
+                if let id = marker.userData as? String {
+                    return id.toFREObject()
+                }
             }
         } else {
-            let addedMarker = mapControllerMK?.addMarker(markerOptions: markerOptions)
-            if let userData = addedMarker?.userData as? String {
-                return userData.toFREObject()
+            if let marker = CustomMKAnnotation.init(inFRE0) {
+                mapControllerMK?.addMarker(marker: marker)
+                if let userData = marker.userData as? String {
+                    return userData.toFREObject()
+                }
             }
         }
 
@@ -328,27 +467,27 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
 
     }
 
-    func updateMarker(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+    func setMarkerProp(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
-              let identifier = String(argv[0]), //marker:Marker
-              let inFRE1 = argv[1]
+            let id = String(argv[0]),
+            let name = String(argv[1]),
+            let freValue = argv[2]
           else {
             return ArgCountError(message: "updateMarker").getError(#file, #line, #column)
         }
-        let markerOptions = MarkerOptions.init(freObject: inFRE1)
-        mapControllerMK?.updateMarker(identifier: identifier, markerOptions: markerOptions)
-        mapControllerGMS?.updateMarker(identifier: identifier, markerOptions: markerOptions)
+        mapControllerMK?.setMarkerProp(id: id, name: name, value: freValue)
+        mapControllerGMS?.setMarkerProp(id: id, name: name, value: freValue)
         return nil
     }
 
     func removeMarker(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
-              let identifier = String(argv[0])
+              let id = String(argv[0])
           else {
             return ArgCountError(message: "removeMarker").getError(#file, #line, #column)
         }
-        mapControllerMK?.removeMarker(identifier: identifier)
-        mapControllerGMS?.removeMarker(identifier: identifier)
+        mapControllerMK?.removeMarker(id: id)
+        mapControllerGMS?.removeMarker(id: id)
         return nil
     }
 

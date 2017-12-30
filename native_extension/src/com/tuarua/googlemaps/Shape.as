@@ -3,7 +3,7 @@ public class Shape {
     protected var _visible:Boolean = true;
     protected var _isAdded:Boolean = false;
     protected var _id:String;
-    protected var _clickable:Boolean = false;
+    protected var _isTappable:Boolean = false;
     protected var _zIndex:Number = 0;
     public function Shape() {
     }
@@ -24,8 +24,8 @@ public class Shape {
         return _visible;
     }
 
-    public function get clickable():Boolean {
-        return _clickable;
+    public function get isTappable():Boolean {
+        return _isTappable;
     }
 
     public function set isAdded(value:Boolean):void {

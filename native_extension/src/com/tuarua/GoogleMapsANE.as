@@ -3,15 +3,11 @@ import com.tuarua.fre.ANEError;
 import com.tuarua.googlemaps.CameraPosition;
 import com.tuarua.googlemaps.Circle;
 import com.tuarua.googlemaps.Coordinate;
-import com.tuarua.googlemaps.GoogleMapsEvent;
-import com.tuarua.googlemaps.GroundOverlay;
 import com.tuarua.googlemaps.MapProvider;
 import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Polygon;
 import com.tuarua.googlemaps.Polyline;
 import com.tuarua.googlemaps.Settings;
-import com.tuarua.location.LocationEvent;
-import com.tuarua.googlemaps.permissions.PermissionEvent;
 
 import flash.display.BitmapData;
 import flash.events.EventDispatcher;
@@ -41,18 +37,6 @@ public class GoogleMapsANE extends EventDispatcher {
             _isInited = theRet;
         }
         _mapView = this;
-    }
-
-    private function onContextGoogleMapsEvent(event:GoogleMapsEvent):void {
-        this.dispatchEvent(event);
-    }
-
-    private function onContextLocationEvent(event:LocationEvent):void {
-        this.dispatchEvent(event);
-    }
-
-    private function onContextPermissionEvent(event:PermissionEvent):void {
-        this.dispatchEvent(event);
     }
 
     public static function get mapView():GoogleMapsANE {
@@ -130,7 +114,7 @@ public class GoogleMapsANE extends EventDispatcher {
             }
             _isMapInited = true;
         } else {
-            trace("init wasn't sucessful");
+            trace("initMap wasn't successful");
         }
     }
 
@@ -213,7 +197,8 @@ public class GoogleMapsANE extends EventDispatcher {
      * @return
      *
      */
-    public function addGroundOverlay(overlay:GroundOverlay):void {
+    // TODO try and align iOS and Android versions - the Google SDK is very different
+    /*public function addGroundOverlay(overlay:GroundOverlay):void {
         if (safetyCheck()) {
             var theRet:* = GoogleMapsANEContext.context.call("addGroundOverlay", overlay);
             if (theRet is ANEError) {
@@ -224,7 +209,7 @@ public class GoogleMapsANE extends EventDispatcher {
             overlay.isAdded = true;
             GoogleMapsANEContext.overlays[id] = overlay;
         }
-    }
+    }*/
 
     /**
      *
@@ -324,6 +309,7 @@ public class GoogleMapsANE extends EventDispatcher {
      * @param y
      * @param animates
      *
+     * <p>Android Only.</p>
      */
     public function scrollBy(x:Number, y:Number, animates:Boolean = false):void {
         if (safetyCheck()) {

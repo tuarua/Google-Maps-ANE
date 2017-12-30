@@ -3,9 +3,7 @@ import com.tuarua.GoogleMapsANEContext;
 import com.tuarua.fre.ANEError;
 [RemoteClass(alias="com.tuarua.googlemaps.Polyline")]
 public class Polyline extends Shape {
-
     private var _color:uint = ColorARGB.RED;
-
     private var _width:Number = 10.0;
     private var _geodesic:Boolean = true;
     private var _pattern:StrokePattern = new StrokePattern();
@@ -14,13 +12,13 @@ public class Polyline extends Shape {
     private var _endCap:int = CapType.SQUARE;
     private var _points:Vector.<Coordinate> = new Vector.<Coordinate>();
 
-    public function Polyline(points:Vector.<Coordinate>, color:uint, clickable:Boolean = false,
+    public function Polyline(points:Vector.<Coordinate>, color:uint, tappable:Boolean = false,
                              visible:Boolean = true, zIndex:Number = 0, width:Number = 10.0, geodesic:Boolean = true,
                              jointType:int = JointType.DEFAULT, startCap:int = CapType.SQUARE,
                              endCap:int = CapType.SQUARE, pattern:StrokePattern = null) {
         _points = points;
         _color = color;
-        _clickable = clickable;
+        _isTappable = tappable;
         _visible = visible;
         _zIndex = zIndex;
         _width = width;
@@ -30,12 +28,12 @@ public class Polyline extends Shape {
         _startCap = startCap;
         _endCap = endCap;
     }
-
-
-
-    public function set clickable(value:Boolean):void {
-        _clickable = value;
-        setAneValue("clickable", value);
+    /**
+     * Ignored on Apple Maps
+     */
+    public function set isTappable(value:Boolean):void {
+        _isTappable = value;
+        setAneValue("isTappable", value);
     }
 
     public function get color():uint {
@@ -65,9 +63,6 @@ public class Polyline extends Shape {
         return _width;
     }
 
-    /**
-     * The width of the ground overlay in meters
-     */
     public function set width(value:Number):void {
         _width = value;
         setAneValue("width", value);
@@ -92,7 +87,9 @@ public class Polyline extends Shape {
     public function get pattern():StrokePattern {
         return _pattern;
     }
-
+    /**
+     * Ignored on iOS
+     */
     public function set pattern(value:StrokePattern):void {
         _pattern = value;
         setAneValue("pattern", value);
@@ -101,7 +98,9 @@ public class Polyline extends Shape {
     public function get jointType():int {
         return _jointType;
     }
-
+    /**
+     * Ignored on iOS
+     */
     public function set jointType(value:int):void {
         _jointType = value;
         setAneValue("jointType", value);
@@ -110,7 +109,9 @@ public class Polyline extends Shape {
     public function get startCap():int {
         return _startCap;
     }
-
+    /**
+     * Ignored on iOS
+     */
     public function set startCap(value:int):void {
         _startCap = value;
         setAneValue("startCap", value);
@@ -119,7 +120,9 @@ public class Polyline extends Shape {
     public function get endCap():int {
         return _endCap;
     }
-
+    /**
+     * Ignored on iOS
+     */
     public function set endCap(value:int):void {
         _endCap = value;
         setAneValue("endCap", value);

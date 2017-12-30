@@ -364,6 +364,7 @@ class MapController(override var context: FREContext?, private var airView: View
             "fillColor" -> circle.setFillColor(value)
             "zIndex" -> circle.setZIndex(value)
             "visible" -> circle.setVisible(value)
+            "isTappable" -> circle.setClickable(value)
         }
     }
 
@@ -413,7 +414,7 @@ class MapController(override var context: FREContext?, private var airView: View
         val overlay = overlays[id] ?: return
         when (name) {
             "bearing" -> overlay.setBearing(value)
-            "clickable" -> overlay.setClickable(value)
+            "isTappable" -> overlay.setClickable(value)
             "visible" -> overlay.setVisible(value)
             "transparency" -> overlay.setTransparency(value)
             "zIndex" -> overlay.setZIndex(value)
@@ -438,7 +439,7 @@ class MapController(override var context: FREContext?, private var airView: View
     fun setPolylineProp(id: String, name: String, value: FREObject?) {
         val polyline = polylines[id] ?: return
         when (name) {
-            "clickable" -> polyline.setClickable(value)
+            "isTappable" -> polyline.setClickable(value)
             "color" -> polyline.setColor(value)
             "visible" -> polyline.setVisible(value)
             "zIndex" -> polyline.setZIndex(value)
@@ -466,7 +467,7 @@ class MapController(override var context: FREContext?, private var airView: View
     fun setPolygonProp(id: String, name: String, value: FREObject?) {
         val polygon = polygons[id] ?: return
         when (name) {
-            "clickable" -> polygon.setClickable(value)
+            "isTappable" -> polygon.setClickable(value)
             "visible" -> polygon.setVisible(value)
             "zIndex" -> polygon.setZIndex(value)
             "geodesic" -> polygon.setGeodesic(value)

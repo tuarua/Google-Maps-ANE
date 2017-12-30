@@ -18,63 +18,25 @@ import Foundation
 import GoogleMaps
 import FreSwift
 
-
-class FreCLLocationCoordinate: FreObjectSwift {
-    override public init(freObject: FREObject?) {
-        super.init(freObject: freObject)
+public extension CLLocationCoordinate2D {
+    init?(_ freObject: FREObject?) {
+        guard let rv = freObject,
+        let lat = CLLocationDegrees(rv["latitude"]),
+        let lng = CLLocationDegrees(rv["longitude"])
+        else {
+            return nil
+        }
+        self.init(latitude: lat, longitude: lng)
     }
-    
-    override public init(freObjectSwift: FreObjectSwift?) {
-        super.init(freObjectSwift: freObjectSwift)
-    }
-    
-    public init(value: CLLocationCoordinate2D) {
+    func toFREObject() -> FREObject? {
         var freObject: FREObject? = nil
         do {
             freObject = try FREObject.init(className: "com.tuarua.googlemaps.Coordinate",
-                                           args: CGFloat.init(value.latitude), CGFloat.init(value.longitude))
+                                                       args: CGFloat.init(self.latitude), CGFloat.init(self.longitude))
+            
         } catch {
         }
-        
-        super.init(freObject: freObject)
-    }
-    
-    override public var value: Any? {
-        get {
-            do {
-                if let raw = rawValue {
-                    let idRes = try getAsCLLocationCoordinate2D(raw) as Any?
-                    return idRes
-                }
-            } catch {
-            }
-            return nil
-        }
-    }
-    
-    private func getAsCLLocationCoordinate2D(_ rawValue: FREObject) throws -> CLLocationCoordinate2D {
-        var ret: CLLocationCoordinate2D = CLLocationCoordinate2D.init()
-        if let lat = try CLLocationDegrees.init(rawValue.getProp(name: "latitude")),
-            let lng = try CLLocationDegrees.init(rawValue.getProp(name: "longitude"))
-        {
-            ret = CLLocationCoordinate2D.init(latitude: lat, longitude: lng)
-        }
-        
-        return ret
-    }
-    
-}
-
-public extension CLLocationCoordinate2D {
-    init?(_ freObject: FREObject?) {
-        guard let rv = freObject else {
-            return nil
-        }
-        if let coo = FreCLLocationCoordinate.init(freObject: rv).value as? CLLocationCoordinate2D {
-            self.init(latitude: coo.latitude, longitude: coo.longitude)
-        } else {
-            return nil
-        }
+        return freObject
     }
 }
 

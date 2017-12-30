@@ -18,39 +18,44 @@ import GoogleMaps
 import FreSwift
 import MapKit
 
-public extension GMSCircle {
+public extension GMSPolyline {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
-        let center = CLLocationCoordinate2D.init(rv["center"]),
-        let radius = Double(rv["radius"]),
-        let isTappable = Bool(rv["isTappable"]),
-        let zIndex = Int(rv["zIndex"]),
-        let strokeWidth = CGFloat(rv["strokeWidth"]),
-        let strokeColor = UIColor.init(freObjectARGB: rv["strokeColor"]),
-        let fillColor = UIColor.init(freObjectARGB: rv["fillColor"])
-        else {
-            return nil
+            let geodesic = Bool(rv["geodesic"]),
+            let zIndex = Int(rv["zIndex"]),
+            let isTappable = Bool(rv["isTappable"]),
+            let strokeWidth = CGFloat(rv["width"]),
+            let strokeColor = UIColor.init(freObjectARGB: rv["color"])
+            else {
+                return nil
         }
-        self.init(position: center, radius: radius)
+        self.init()
+        self.geodesic = geodesic
         self.strokeWidth = strokeWidth
         self.strokeColor = strokeColor
-        self.fillColor = fillColor
         self.zIndex = Int32(zIndex)
         self.isTappable = isTappable
         self.userData = UUID.init().uuidString
         
+        let points = GMSMutablePath.init()
+        if let pointsFre = rv["points"] {
+            let pointsArray = FREArray.init(pointsFre)
+            for i in 0..<pointsArray.length {
+                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                    points.add(point)
+                } 
+            }
+        }
+        self.path = points
     }
     
     func setProp(name:String, value:FREObject) {
         switch name {
-        case "center":
-            self.position = CLLocationCoordinate2D.init(value) ?? self.position
+        case "geodesic":
+            self.geodesic = Bool(value) ?? self.geodesic
             break
-        case "strokeWidth":
+        case "width":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
-            break
-        case "radius":
-            self.radius = Double(value) ?? self.radius
             break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
@@ -60,11 +65,18 @@ public extension GMSCircle {
                 self.zIndex = Int32(z)
             }
             break
-        case "strokeColor":
+        case "color":
             self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
             break
-        case "fillColor":
-            self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
+        case "points":
+            let points = GMSMutablePath.init()
+            let pointsArray = FREArray.init(value)
+            for i in 0..<pointsArray.length {
+                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                    points.add(point)
+                }
+            }
+            self.path = points
             break
         default:
             break

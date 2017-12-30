@@ -32,6 +32,13 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     private var asListeners: Array<String> = []
     private var markers: Dictionary<String, CustomMKAnnotation> = Dictionary()
     private var circles: Dictionary<String, CustomMKCircle> = Dictionary()
+    
+    private var circleRenderers: Dictionary<String, MKCircleRenderer> = Dictionary()
+    private var polygonRenderers: Dictionary<String, MKPolygonRenderer> = Dictionary()
+    private var polylineRenderers: Dictionary<String, MKPolylineRenderer> = Dictionary()
+    private var polygons: Dictionary<String, CustomMKPolygon> = Dictionary()
+    private var polylines: Dictionary<String, CustomMKPolyline> = Dictionary()
+    
     private var tapGestureRecogniser:UITapGestureRecognizer?
     private var _showsUserLocation: Bool = false
     private var lastCapture:CGImage? = nil
@@ -148,9 +155,33 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
             circleRenderer.fillColor = circle.fillColor
             circleRenderer.strokeColor = circle.strokeColor
             circleRenderer.lineWidth = circle.strokeWidth
+            circleRenderers[ol.identifier] = circleRenderer
             return circleRenderer
         }
-        return MKOverlayRenderer(overlay: overlay)
+        
+        if overlay.isKind(of: CustomMKPolygon.self),
+            let ol = overlay as? CustomMKPolygon,
+            let polygon = polygons[ol.identifier] {
+            let polygonRenderer = MKPolygonRenderer(overlay: overlay)
+            polygonRenderer.fillColor = polygon.fillColor
+            polygonRenderer.strokeColor = polygon.strokeColor
+            polygonRenderer.lineWidth = polygon.strokeWidth
+            polygonRenderers[ol.identifier] = polygonRenderer
+            return polygonRenderer
+        }
+        
+        if overlay.isKind(of: CustomMKPolyline.self),
+            let ol = overlay as? CustomMKPolyline,
+            let polyline = polylines[ol.identifier] {
+            let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            polylineRenderer.strokeColor = polyline.color
+            polylineRenderer.lineWidth = polyline.width
+            polylineRenderers[ol.identifier] = polylineRenderer
+            return polylineRenderer
+        }
+        
+        let ret = MKOverlayRenderer(overlay: overlay)
+        return ret
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -183,8 +214,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         }
         return nil
     }
-
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -216,7 +246,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         sendEvent(name: Constants.ON_READY, value: "")
     }
     
-    public func capture(captureDimensions:CGRect) {
+    func capture(captureDimensions:CGRect) {
         self.captureDimensions = captureDimensions
         DispatchQueue.main.async {
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, UIScreen.main.scale )
@@ -237,52 +267,38 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         }
     }
     
-    public func getCapture() -> (CGImage?, CGRect) {
+    func getCapture() -> (CGImage?, CGRect) {
         return (lastCapture, captureDimensions)
     }
 
-    public func setViewPort(frame: CGRect) {
+    func setViewPort(frame: CGRect) {
         viewPort = frame
         self.view.frame = viewPort
         container.frame = CGRect.init(origin: CGPoint.zero, size: self.view.frame.size)
         mapView.frame = container.bounds
     }
-
     
-    public func addMarker(markerOptions: MarkerOptions) -> CustomMKAnnotation {
-        let identifier = UUID.init().uuidString
-        let marker = CustomMKAnnotation(coordinate: markerOptions.coordinate!, identifier: identifier)
-        markers[identifier] = marker
-        updateMarker(identifier: identifier, markerOptions: markerOptions, add: true)
-        return marker
-
-    }
-
-    public func updateMarker(identifier: String, markerOptions: MarkerOptions, add: Bool = false) {
-        if let marker: CustomMKAnnotation = markers[identifier], let coordinate = markerOptions.coordinate {
-            marker.coordinate = coordinate
-            if let icon = markerOptions.icon {
-                marker.icon = icon
-            }
-            marker.title = markerOptions.title
-            marker.subtitle = markerOptions.snippet
-            marker.color = markerOptions.color
-            marker.isDraggable = markerOptions.isDraggable
-            marker.isTappable = markerOptions.isTappable
-            marker.opacity = markerOptions.alpha
-            if add {
-                mapView.addAnnotation(marker)
-            }
+    func addMarker(marker:CustomMKAnnotation) {
+        if let id = marker.userData as? String {
+            markers[id] = marker
+            mapView.addAnnotation(marker)
         }
     }
+    
+    func setMarkerProp(id:String, name: String, value: FREObject) {
+        guard let marker =  markers[id]
+            else { return }
+        marker.setProp(name: name, value: value)
+    }
 
-    public func removeMarker(identifier: String) {
-        if let marker: CustomMKAnnotation = markers[identifier] {
+    func removeMarker(id: String) {
+        if let marker: CustomMKAnnotation = markers[id] {
             mapView.removeAnnotation(marker)
+            markers.removeValue(forKey: id)
         }
     }
 
-    public func clear() {
+    func clear() {
         var annos: Array<MKAnnotation> = []
         for anno in markers {
             annos.append(anno.value)
@@ -290,7 +306,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         mapView.removeAnnotations(annos)
     }
 
-    public func setBounds(bounds: GMSCoordinateBounds, animates: Bool) {
+    func setBounds(bounds: GMSCoordinateBounds, animates: Bool) {
         let topLeftCoord = CLLocationCoordinate2D.init(latitude: bounds.southWest.latitude, longitude: bounds.northEast.longitude)
         
         let bottomRightCoord = CLLocationCoordinate2D.init(latitude: bounds.northEast.latitude, longitude: bounds.southWest.longitude)
@@ -307,35 +323,117 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         
     }
 
-    public func addCircle(circle: CustomMKCircle) {
+    func addCircle(circle: CustomMKCircle) {
         circles[circle.identifier] = circle
         mapView.add(circle)
     }
+    
+    func setCircleProp(id:String, name: String, value: FREObject) {
+        guard let circle =  circles[id],
+        let renderer = circleRenderers[id]
+            else { return }
+        circle.setProp(name: name, value: value)
+        renderer.fillColor = circle.fillColor
+        renderer.strokeColor = circle.strokeColor
+        renderer.lineWidth = circle.strokeWidth
+        renderer.setNeedsDisplay()
+    }
+    
+    func removeCircle(id:String){
+        if let circle: CustomMKCircle = circles[id] {
+            mapView.removeAnnotation(circle)
+            circles.removeValue(forKey: id)
+        }
+    }
+    
+    func addPolygon(polygon: CustomMKPolygon) {
+        polygons[polygon.identifier] = polygon
+        mapView.add(polygon)
+    }
+    
+    func setPolygonProp(id:String, name: String, value: FREObject) {
+        guard let polygon = polygons[id],
+        let renderer = polygonRenderers[id]
+            else { return }
+        // TODO holes
+        if name == "points" {
+            if let replaceWith = CustomMKPolygon.init(value, polygon: polygon) {
+                mapView.removeAnnotation(polygon)
+                polygons[id] = replaceWith
+                mapView.add(replaceWith)
+            }
+        } else {
+            polygon.setProp(name: name, value: value)
+            renderer.fillColor = polygon.fillColor
+            renderer.strokeColor = polygon.strokeColor
+            renderer.lineWidth = polygon.strokeWidth
+            renderer.setNeedsDisplay()
+        }
+    }
+    
+    func removePolygon(id:String) {
+        if let polygon = polygons[id] {
+            mapView.removeAnnotation(polygon)
+            polygons.removeValue(forKey: id)
+        }
+    }
+    
+    func addPolyline(polyline: CustomMKPolyline) {
+        polylines[polyline.identifier] = polyline
+        mapView.add(polyline)
+    }
+    
+    func setPolylineProp(id:String, name: String, value: FREObject) {
+        guard let polyline = polylines[id],
+            let renderer = polylineRenderers[id]
+            else { return }
+        // if points we have to reinit the polyline
+        if name == "points" {
+            if let replaceWith = CustomMKPolyline.init(value, polyline: polyline) {
+                trace("replacing with", replaceWith.debugDescription)
+                mapView.removeAnnotation(polyline)
+                polylines[id] = replaceWith
+                mapView.add(replaceWith)
+            }
+        } else {
+            polyline.setProp(name: name, value: value)
+            renderer.strokeColor = polyline.color
+            renderer.lineWidth = polyline.width
+            renderer.setNeedsDisplay()
+        }
+    }
+    
+    func removePolyline(id:String) {
+        if let polyline = polylines[id] {
+            mapView.removeAnnotation(polyline)
+            polylines.removeValue(forKey: id)
+        }
+    }
 
-    public func addEventListener(type: String) {
+    func addEventListener(type: String) {
         asListeners.append(type)
     }
 
-    public func removeEventListener(type: String) {
+    func removeEventListener(type: String) {
         asListeners = asListeners.filter({ $0 != type })
     }
 
-    public func zoomIn(animates: Bool) {
+    func zoomIn(animates: Bool) {
         let zl = mapView.zoomLevel + 1
         mapView.setCenter(coordinate: mapView.camera.centerCoordinate, zoomLevel: zl, animated: true)
     }
 
-    public func zoomOut(animates: Bool) {
+    func zoomOut(animates: Bool) {
         let zl = mapView.zoomLevel - 1
         mapView.setCenter(coordinate: mapView.camera.centerCoordinate, zoomLevel: zl, animated: true)
     }
 
-    public func zoomTo(zoomLevel: CGFloat, animates: Bool) {
+    func zoomTo(zoomLevel: CGFloat, animates: Bool) {
         let zl = UInt(zoomLevel)
         mapView.setCenter(coordinate: mapView.camera.centerCoordinate, zoomLevel: zl, animated: animates)
     }
 
-    public func moveCamera(centerAt: CLLocationCoordinate2D?, tilt: Double?, bearing: Double?, animates: Bool) {
+    func moveCamera(centerAt: CLLocationCoordinate2D?, tilt: Double?, bearing: Double?, animates: Bool) {
         let currentCamPosition = mapView.camera
         var newCenterAt = currentCamPosition.centerCoordinate
         var newBearing = currentCamPosition.heading
@@ -357,14 +455,13 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         camera.pitch = newViewingAngle
         camera.altitude = newAlt
         mapView.setCamera(camera, animated: animates)
-
     }
 
-    public func setStyle(json: String) {
+    func setStyle(json: String) {
         trace("setStyle is Google Maps only")
     }
 
-    public func setMapType(type: UInt) {
+    func setMapType(type: UInt) {
         //standard is 1
         //satellite is 2
         //hybrid is 4

@@ -8,7 +8,7 @@ import flash.display.BitmapData;
 public class GroundOverlay {
     private var _isAdded:Boolean = false;
     private var _id:String;
-    private var _clickable:Boolean = false;
+    private var _isTappable:Boolean = false;
     private var _coordinate:Coordinate = new Coordinate(0, 0);
     private var _bearing:Number = 0;
     private var _visible:Boolean = true;
@@ -23,19 +23,19 @@ public class GroundOverlay {
      * @param image
      * @param width
      * @param bearing
-     * @param clickable
+     * @param isTappable
      * @param visible
      * @param zIndex
      * @param transparency
      */
     public function GroundOverlay(coordinate:Coordinate, image:BitmapData, width:Number, bearing:Number = 0,
-                                  clickable:Boolean = false, visible:Boolean = true, zIndex:Number = 0,
+                                  isTappable:Boolean = false, visible:Boolean = true, zIndex:Number = 0,
                                   transparency:Number = 0) {
         this._coordinate = coordinate;
         this._image = image;
         this._width = width;
         this._bearing = bearing;
-        this._clickable = clickable;
+        this._isTappable = isTappable;
         this._visible = visible;
         this._zIndex = zIndex;
         this._transparency = transparency;
@@ -84,8 +84,9 @@ public class GroundOverlay {
         setAneValue("bearing", value);
     }
 
-    public function get clickable():Boolean {
-        return _clickable;
+
+    public function get isTappable():Boolean {
+        return _isTappable;
     }
 
     /**
@@ -93,15 +94,17 @@ public class GroundOverlay {
      * change this value at any time. The default is false.
      *
      */
-    public function set clickable(value:Boolean):void {
-        _clickable = value;
-        setAneValue("clickable", value);
+    public function set isTappable(value:Boolean):void {
+        _isTappable = value;
+        setAneValue("isTappable", value);
     }
 
     public function get visible():Boolean {
         return _visible;
     }
-
+    /**
+     * Ignored on iOS
+     */
     public function set visible(value:Boolean):void {
         _visible = value;
         setAneValue("visible", value);
