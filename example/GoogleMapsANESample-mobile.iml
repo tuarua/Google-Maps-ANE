@@ -14,6 +14,27 @@
             <entry library-name="GoogleMapsANE" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.android.support.support-v4-25.4.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-base-11.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-location-11.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-maps-11.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.tuarua.frekotlin" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="AIRSDK_28" />
         </dependencies>
@@ -21,7 +42,6 @@
           <map>
             <entry key="compiler.locale" value="en_US" />
           </map>
-          <option name="additionalOptions" value="-swf-version=39" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="GoogleMapsANESample-mobile">
@@ -81,7 +101,6 @@
           <map>
             <entry key="compiler.locale" value="en_US" />
           </map>
-          <option name="additionalOptions" value="-swf-version=39" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="mobile_Android_Device">
@@ -111,6 +130,27 @@
             <entry library-name="GoogleMapsANE" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.android.support.support-v4-25.4.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-base-11.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-location-11.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-maps-11.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.code.gson.gson-2.8.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.tuarua.frekotlin" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
           <sdk name="AIRSDK_28" />
         </dependencies>
@@ -118,7 +158,6 @@
           <map>
             <entry key="compiler.locale" value="en_US" />
           </map>
-          <option name="additionalOptions" value="-swf-version=39" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="iOS_Simulator">
