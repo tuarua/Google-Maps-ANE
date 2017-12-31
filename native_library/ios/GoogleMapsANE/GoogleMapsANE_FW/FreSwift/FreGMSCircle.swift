@@ -14,66 +14,60 @@
  *  limitations under the License.
  */
 
-
-import UIKit
 import GoogleMaps
 import FreSwift
 import MapKit
 
-class FreGMSCircle: FreObjectSwift {
-    override public init(freObject: FREObject?) {
-        super.init(freObject: freObject)
-    }
-    
-    override public var value: Any? {
-        get {
-            do {
-                if let raw = rawValue {
-                    let idRes = try getAsGMSCircle(raw) as Any?
-                    return idRes
-                }
-            } catch {
-            }
-            return nil
-        }
-    }
-    
-    private func getAsGMSCircle(_ rawValue: FREObject) throws -> GMSCircle {
-        var ret: GMSCircle = GMSCircle.init()
-        
-        if let centerFre = try FreSwiftHelper.getProperty(rawValue: rawValue, name: "center"),
-            let center: CLLocationCoordinate2D = FreCLLocationCoordinate.init(freObject: centerFre).value as? CLLocationCoordinate2D,
-            let radiusFre = try rawValue.getProp(name: "radius"),
-            let radius = Double(radiusFre),
-            let strokeWidth = try CGFloat(rawValue.getProp(name: "strokeWidth")),
-            let strokeColorFre = try rawValue.getProp(name: "strokeColor"),
-            let strokeAlphaFre = try rawValue.getProp(name: "strokeAlpha"),
-            let fillColorFre = try rawValue.getProp(name: "fillColor"),
-            let fillAlphaFre = try rawValue.getProp(name: "fillAlpha")
-            {
-            ret = GMSCircle(position: center, radius: radius)
-            ret.strokeWidth = strokeWidth
-            ret.strokeColor = UIColor.init(freObject: strokeColorFre, alpha: strokeAlphaFre)
-            ret.fillColor = UIColor.init(freObject: fillColorFre, alpha: fillAlphaFre) 
-        }
-        return ret
-    }
-    
-}
-
-
 public extension GMSCircle {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject else {
+        guard let rv = freObject,
+        let center = CLLocationCoordinate2D.init(rv["center"]),
+        let radius = Double(rv["radius"]),
+        let isTappable = Bool(rv["isTappable"]),
+        let zIndex = Int(rv["zIndex"]),
+        let strokeWidth = CGFloat(rv["strokeWidth"]),
+        let strokeColor = UIColor.init(freObjectARGB: rv["strokeColor"]),
+        let fillColor = UIColor.init(freObjectARGB: rv["fillColor"])
+        else {
             return nil
         }
-        if let circ = FreGMSCircle.init(freObject: rv).value as? GMSCircle {
-            self.init(position: circ.position, radius: circ.radius)
-            self.fillColor = circ.fillColor
-            self.strokeColor = circ.strokeColor
-            self.strokeWidth = circ.strokeWidth
-        } else {
-            return nil
+        self.init(position: center, radius: radius)
+        self.strokeWidth = strokeWidth
+        self.strokeColor = strokeColor
+        self.fillColor = fillColor
+        self.zIndex = Int32(zIndex)
+        self.isTappable = isTappable
+        self.userData = UUID.init().uuidString
+        
+    }
+    
+    func setProp(name:String, value:FREObject) {
+        switch name {
+        case "center":
+            self.position = CLLocationCoordinate2D.init(value) ?? self.position
+            break
+        case "strokeWidth":
+            self.strokeWidth = CGFloat(value) ?? self.strokeWidth
+            break
+        case "radius":
+            self.radius = Double(value) ?? self.radius
+            break
+        case "isTappable":
+            self.isTappable = Bool(value) ?? self.isTappable
+            break
+        case "zIndex":
+            if let z = Int(value) {
+                self.zIndex = Int32(z)
+            }
+            break
+        case "strokeColor":
+            self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
+            break
+        case "fillColor":
+            self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
+            break
+        default:
+            break
         }
     }
 }

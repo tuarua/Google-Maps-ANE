@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 
+import FreSwift
 import Foundation
 import MapKit
 import UIKit
@@ -23,9 +24,10 @@ open class CustomMKCircle: MKCircle {
     var strokeWidth: CGFloat = 1.0
     var strokeColor: UIColor?
     var fillColor: UIColor?
-
     convenience init(center: CLLocationCoordinate2D, radius: CLLocationDistance, identifier: String) {
         self.init(center: center, radius: radius)
         self.identifier = identifier
     }
 }
+
+

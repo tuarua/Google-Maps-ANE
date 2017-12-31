@@ -41,9 +41,9 @@
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/GoogleMapsANE.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.android.support.support-v4-25.4.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-base-11.4.2.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-location-11.4.2.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-maps-11.4.2.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-base-11.8.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-location-11.8.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-maps-11.8.0.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.tuarua.frekotlin.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/org.greenrobot.eventbus-3.0.0.ane"/>
     </libraryPath>
@@ -68,9 +68,9 @@
         <anePaths>
           <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/GoogleMapsANE.ane"/>
           <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.android.support.support-v4-25.4.0.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-base-11.4.2.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-location-11.4.2.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-maps-11.4.2.ane"/>
+          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-base-11.8.0.ane"/>
+          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-location-11.8.0.ane"/>
+          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-maps-11.8.0.ane"/>
           <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.tuarua.frekotlin.ane"/>
           <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/org.greenrobot.eventbus-3.0.0.ane"/>
         </anePaths>

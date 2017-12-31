@@ -29,6 +29,9 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D.init()
     private var viewPort: CGRect = CGRect.zero
     private var markers: Dictionary<String, GMSMarker> = Dictionary()
+    private var circles: Dictionary<String, GMSCircle> = Dictionary()
+    private var polygons: Dictionary<String, GMSPolygon> = Dictionary()
+    private var polylines: Dictionary<String, GMSPolyline> = Dictionary()
     private var asListeners:Array<String> = []
     private var lastCapture:CGImage? = nil
     private var captureDimensions:CGRect = CGRect.zero
@@ -68,7 +71,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         sendEvent(name: Constants.ON_READY, value: "")
     }
     
-    public func capture(captureDimensions:CGRect) {
+    func capture(captureDimensions:CGRect) {
         self.captureDimensions = captureDimensions
         DispatchQueue.main.async {
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, UIScreen.main.scale )
@@ -89,89 +92,130 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    public func getCapture() -> (CGImage?, CGRect) {
+    func getCapture() -> (CGImage?, CGRect) {
         return (lastCapture, captureDimensions)
     }
     
-    public func addMarker(markerOptions: MarkerOptions) -> GMSMarker {
-        let identifier = UUID.init().uuidString
-        let marker = GMSMarker()
-        markers[identifier] = marker
-        updateMarker(identifier: identifier, markerOptions: markerOptions)
-        return marker
-    }
     
-    public func updateMarker(identifier: String, markerOptions: MarkerOptions) {
-
-        if let marker: GMSMarker = markers[identifier], let coordinate = markerOptions.coordinate {
-            marker.tracksInfoWindowChanges = true
-            marker.position = coordinate
-            if let icon = markerOptions.icon {
-                marker.icon = icon
-            } else {
-                marker.icon = GMSMarker.markerImage(with: markerOptions.color)
-            }
-            marker.title = markerOptions.title
-            marker.snippet = markerOptions.snippet
-            marker.isDraggable = markerOptions.isDraggable
-            marker.isFlat = markerOptions.isFlat
-            marker.isTappable = markerOptions.isTappable
-            marker.opacity = Float(markerOptions.alpha)
+    
+    
+    
+    func addMarker(marker: GMSMarker) {
+        if let id = marker.userData as? String {
+            markers[id] = marker
             marker.map = mapView
-            marker.userData = identifier
-            marker.rotation = markerOptions.rotation
         }
     }
     
-    public func removeMarker(identifier: String) {
-        if let marker: GMSMarker = markers[identifier] {
+    func setMarkerProp(id:String, name: String, value: FREObject) {
+        guard let marker =  markers[id]
+            else { return }
+        marker.setProp(name: name, value: value)
+    }
+    
+    func removeMarker(id: String) {
+        if let marker = markers[id] {
+            markers.removeValue(forKey: id)
             marker.map = nil
         }
     }
     
-    public func clear() {
+    
+    func clear() {
         mapView.clear()
     }
     
-    //TODO
-    public func addGroundOverlay() {
-        
-    }
     
-    public func setBounds(bounds: GMSCoordinateBounds, animates: Bool){
+    func setBounds(bounds: GMSCoordinateBounds, animates: Bool){
         let update = GMSCameraUpdate.fit(bounds)
         updateCamera(update, animates)
     }
     
-    public func addCircle(circle: GMSCircle) {
-        circle.map = mapView
+    func addCircle(circle: GMSCircle) {
+        if let id = circle.userData as? String {
+            circles[id] = circle
+            circle.map = mapView
+        }
     }
     
-    public func addEventListener(type: String) {
+    func setCircleProp(id:String, name: String, value: FREObject) {
+        guard let circle =  circles[id]
+            else { return }
+        circle.setProp(name: name, value: value)
+    }
+    
+    func removeCircle(id:String){
+        if let circle = circles[id] {
+            circle.map = nil
+            circles.removeValue(forKey: id)
+        }
+    }
+    
+    func addPolygon(polygon: GMSPolygon) {
+        if let id = polygon.userData as? String {
+            polygons[id] = polygon
+            polygon.map = mapView
+        }
+    }
+    
+    func setPolygonProp(id:String, name: String, value: FREObject) {
+        guard let polygon =  polygons[id]
+            else { return }
+        polygon.setProp(name: name, value: value)
+    }
+    
+    func removePolygon(id:String){
+        if let polygon = polygons[id] {
+            polygon.map = nil
+            polygons.removeValue(forKey: id)
+        }
+    }
+    
+    func addPolyline(polyline: GMSPolyline) {
+        if let id = polyline.userData as? String {
+            polylines[id] = polyline
+            polyline.map = mapView
+        }
+    }
+    
+    func setPolylineProp(id:String, name: String, value: FREObject) {
+        guard let polyline =  polylines[id]
+            else { return }
+        polyline.setProp(name: name, value: value)
+    }
+    
+    func removePolyline(id:String){
+        if let polyline = polylines[id] {
+            polyline.map = nil
+            polylines.removeValue(forKey: id)
+        }
+    }
+    
+    func addEventListener(type: String) {
         asListeners.append(type)
     }
     
-    public func removeEventListener(type: String) {
+    func removeEventListener(type: String) {
         asListeners = asListeners.filter( {$0 != type} )
     }
     
-    public func zoomIn(animates: Bool) {
+    func zoomIn(animates: Bool) {
         let update = GMSCameraUpdate.zoomIn()
         updateCamera(update, animates)
     }
     
-    public func zoomOut(animates: Bool) {
+    func zoomOut(animates: Bool) {
         let update = GMSCameraUpdate.zoomOut()
         updateCamera(update, animates)
     }
     
-    public func zoomTo(zoomLevel: CGFloat, animates: Bool){
+    func zoomTo(zoomLevel: CGFloat, animates: Bool){
         let update = GMSCameraUpdate.zoom(to: Float(zoomLevel))
         updateCamera(update, animates)
     }
     
     
-    public func moveCamera(centerAt: CLLocationCoordinate2D?, zoom: Float?, tilt:Double?, bearing:Double?, animates: Bool) {
+    func moveCamera(centerAt: CLLocationCoordinate2D?, zoom: Float?, tilt:Double?, bearing:Double?, animates: Bool) {
         let currentCamPosition = mapView.camera
         var newCenterAt = currentCamPosition.target
         var newBearing = currentCamPosition.bearing
@@ -196,7 +240,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         updateCamera(update, animates)
     }
     
-    public func setStyle(json: String) {
+    func setStyle(json: String) {
         do {
             mapView.mapStyle = try GMSMapStyle(jsonString: json)
         } catch {
@@ -204,7 +248,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    public func setMapType(type: UInt) {
+    func setMapType(type: UInt) {
         //Normal is 1
         //Satellite is 2
         //kGMSTypeTerrain is 3
@@ -223,7 +267,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    public func setViewPort(frame: CGRect) {
+    func setViewPort(frame: CGRect) {
         viewPort = frame
         self.view.frame = viewPort
         container.frame = CGRect.init(origin: CGPoint.zero, size: self.view.frame.size)

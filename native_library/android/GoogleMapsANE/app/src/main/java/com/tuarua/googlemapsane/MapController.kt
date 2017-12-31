@@ -29,14 +29,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
 import android.support.v4.content.ContextCompat.checkSelfPermission
+import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
-import com.tuarua.frekotlin.FreException
-import com.tuarua.frekotlin.FreKotlinController
+import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.*
 
@@ -47,8 +47,8 @@ class MapController(override var context: FREContext?, private var airView: View
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowClickListener,
         GoogleMap.OnInfoWindowCloseListener, GoogleMap.OnInfoWindowLongClickListener,
         GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener,
-        GoogleMap.OnMapLoadedCallback {
-
+        GoogleMap.OnMapLoadedCallback, GoogleMap.OnGroundOverlayClickListener, GoogleMap.OnPolylineClickListener,
+        GoogleMap.OnPolygonClickListener {
 
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
@@ -62,9 +62,13 @@ class MapController(override var context: FREContext?, private var airView: View
     private var container: FrameLayout? = null
     private var asListeners: MutableList<String> = mutableListOf()
     private val markers = mutableMapOf<String, Marker>()
+    private val circles = mutableMapOf<String, Circle>()
+    private val overlays = mutableMapOf<String, GroundOverlay>()
+    private val polylines = mutableMapOf<String, Polyline>()
+    private val polygons = mutableMapOf<String, Polygon>()
     var animationDuration: Int = 2000
     private val gson = Gson()
-    private var lastCapture:Bitmap? = null
+    private var lastCapture: Bitmap? = null
     override fun onMapReady(googleMap: GoogleMap?) {
         mapView = googleMap
         val mv: GoogleMap = mapView ?: return
@@ -95,6 +99,7 @@ class MapController(override var context: FREContext?, private var airView: View
         if (asListeners.contains(Constants.DID_TAP_MARKER)) mv.setOnMarkerClickListener(this)
         if (asListeners.contains(Constants.DID_DRAG)) mv.setOnMarkerDragListener(this)
         if (asListeners.contains(Constants.DID_TAP_INFO_WINDOW)) mv.setOnInfoWindowClickListener(this)
+        if (asListeners.contains(Constants.DID_TAP_GROUND_OVERLAY)) mv.setOnGroundOverlayClickListener(this)
         if (asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW)) mv.setOnInfoWindowLongClickListener(this)
         if (asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW)) mv.setOnInfoWindowCloseListener(this)
         if (asListeners.contains(Constants.ON_CAMERA_MOVE)) mv.setOnCameraMoveListener(this)
@@ -119,6 +124,9 @@ class MapController(override var context: FREContext?, private var airView: View
             type == Constants.DID_TAP_MARKER && asListeners.contains(Constants.DID_TAP_MARKER) -> mv.setOnMarkerClickListener(this)
             type == Constants.DID_DRAG && asListeners.contains(Constants.DID_DRAG) -> mv.setOnMarkerDragListener(this)
             type == Constants.DID_TAP_INFO_WINDOW && asListeners.contains(Constants.DID_TAP_INFO_WINDOW) -> mv.setOnInfoWindowClickListener(this)
+            type == Constants.DID_TAP_GROUND_OVERLAY && asListeners.contains(Constants.DID_TAP_GROUND_OVERLAY) -> mv.setOnGroundOverlayClickListener(this)
+            type == Constants.DID_TAP_POLYLINE && asListeners.contains(Constants.DID_TAP_POLYLINE) -> mv.setOnPolylineClickListener(this)
+            type == Constants.DID_TAP_POLYGON && asListeners.contains(Constants.DID_TAP_POLYGON) -> mv.setOnPolygonClickListener(this)
             type == Constants.DID_LONG_PRESS_INFO_WINDOW && asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW) -> mv.setOnInfoWindowLongClickListener(this)
             type == Constants.DID_CLOSE_INFO_WINDOW && asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW) -> mv.setOnInfoWindowCloseListener(this)
             type == Constants.ON_CAMERA_MOVE && asListeners.contains(Constants.ON_CAMERA_MOVE) -> mv.setOnCameraMoveListener(this)
@@ -148,6 +156,18 @@ class MapController(override var context: FREContext?, private var airView: View
         }
         if (type == Constants.DID_TAP_INFO_WINDOW) {
             mv.setOnInfoWindowClickListener(null)
+            return
+        }
+        if (type == Constants.DID_TAP_POLYLINE) {
+            mv.setOnPolylineClickListener(null)
+            return
+        }
+        if (type == Constants.DID_TAP_POLYGON) {
+            mv.setOnPolygonClickListener(null)
+            return
+        }
+        if (type == Constants.DID_TAP_GROUND_OVERLAY) {
+            mv.setOnGroundOverlayClickListener(null)
             return
         }
         if (type == Constants.DID_LONG_PRESS_INFO_WINDOW) {
@@ -262,12 +282,14 @@ class MapController(override var context: FREContext?, private var airView: View
         }
     }
 
-    fun moveCamera(centerAt: LatLng, zoom: Float?, tilt: Float?, bearing: Float?, animates: Boolean) {
+    fun moveCamera(centerAt: LatLng?, zoom: Float?, tilt: Float?, bearing: Float?, animates: Boolean) {
         val mv: GoogleMap = this.mapView ?: return
         val currentCamera = mv.cameraPosition
         val cameraPositionBuilder: CameraPosition.Builder = CameraPosition.builder()
-        cameraPositionBuilder.target(centerAt)
-
+        when (centerAt) {
+            null -> cameraPositionBuilder.target(currentCamera.target)
+            else -> cameraPositionBuilder.target(centerAt)
+        }
         when (zoom) {
             null -> cameraPositionBuilder.zoom(currentCamera.zoom)
             else -> cameraPositionBuilder.zoom(zoom)
@@ -280,6 +302,7 @@ class MapController(override var context: FREContext?, private var airView: View
             null -> cameraPositionBuilder.bearing(currentCamera.bearing)
             else -> cameraPositionBuilder.bearing(bearing)
         }
+
         val position = cameraPositionBuilder.build()
         when {
             animates -> mv.animateCamera(CameraUpdateFactory.newCameraPosition(position), animationDuration, null)
@@ -314,9 +337,42 @@ class MapController(override var context: FREContext?, private var airView: View
         }
     }
 
-    fun addCircle(circleOptions: CircleOptions) {
-        val mv: GoogleMap = mapView ?: return
-        mv.addCircle(circleOptions)
+    fun scrollBy(x: Float, y: Float, animates: Boolean) {
+        val mv: GoogleMap = this.mapView ?: return
+        if (animates) {
+            mv.animateCamera(CameraUpdateFactory.scrollBy(x, y), animationDuration, null)
+        } else {
+            mv.moveCamera(CameraUpdateFactory.scrollBy(x, y))
+        }
+    }
+
+    fun addCircle(circleOptions: CircleOptions): Circle? {
+        val mv: GoogleMap = mapView ?: return null
+        val circle: Circle = mv.addCircle(circleOptions)
+        circles[circle.id] = circle
+        return circle
+    }
+
+    fun setCircleProp(id: String, name: String, value: FREObject?) {
+        val circle = circles[id] ?: return
+        when (name) {
+            "center" -> circle.setCenter(value)
+            "radius" -> circle.setRadius(value)
+            "strokeWidth" -> circle.setStrokeWidth(value)
+            "strokeColor" -> circle.setStrokeColor(value)
+            "strokePattern" -> circle.setStrokePattern(value)
+            "fillColor" -> circle.setFillColor(value)
+            "zIndex" -> circle.setZIndex(value)
+            "visible" -> circle.setVisible(value)
+            "isTappable" -> circle.setClickable(value)
+        }
+    }
+
+    fun removeCircle(id: String) {
+        val circle = circles[id] ?: return
+        markers.remove(id)
+        circle.remove()
+        circles.remove(id)
     }
 
     fun addMarker(markerOptions: MarkerOptions): Marker? {
@@ -326,30 +382,118 @@ class MapController(override var context: FREContext?, private var airView: View
         return marker
     }
 
-    fun updateMarker(uuid: String, markerOptions: MarkerOptions) {
-        val marker = markers[uuid] ?: return
-        marker.position = markerOptions.position
-        marker.title = markerOptions.title
-        marker.snippet = markerOptions.snippet
-        marker.isFlat = markerOptions.isFlat
-        marker.isDraggable = markerOptions.isDraggable
-        marker.alpha = markerOptions.alpha
-        marker.setIcon(markerOptions.icon)
-        marker.rotation = markerOptions.rotation
+    fun setMarkerProp(id: String, name: String, value: FREObject?) {
+        val marker = markers[id] ?: return
+        when (name) {
+            "isFlat" -> marker.setFlat(value)
+            "title" -> marker.setTitle(value)
+            "snippet" -> marker.setSnippet(value)
+            "isDraggable" -> marker.setDraggable(value)
+            "alpha" -> marker.setAlpha(value)
+            "rotation" -> marker.setRotation(value)
+            "icon" -> marker.setIcon(value)
+            "color" -> marker.setColor(value)
+            "coordinate" -> marker.setPosition(value)
+        }
     }
 
-    fun removeMarker(uuid: String) {
-        val marker = markers[uuid] ?: return
+    fun removeMarker(id: String) {
+        val marker = markers[id] ?: return
         marker.remove()
+        markers.remove(id)
     }
 
-    fun showInfoWindow(uuid: String) {
-        val marker = markers[uuid] ?: return
+    fun addGroundOverlay(options: GroundOverlayOptions): GroundOverlay? {
+        val mv: GoogleMap = mapView ?: return null
+        val overlay: GroundOverlay = mv.addGroundOverlay(options)
+        overlays[overlay.id] = overlay
+        return overlay
+    }
+
+    fun setGroundOverlayProp(id: String, name: String, value: FREObject?) {
+        val overlay = overlays[id] ?: return
+        when (name) {
+            "bearing" -> overlay.setBearing(value)
+            "isTappable" -> overlay.setClickable(value)
+            "visible" -> overlay.setVisible(value)
+            "transparency" -> overlay.setTransparency(value)
+            "zIndex" -> overlay.setZIndex(value)
+            "image" -> overlay.setImage(value)
+            "coordinate" -> overlay.setPosition(value)
+        }
+    }
+
+    fun removeGroundOverlay(id: String) {
+        val overlay = overlays[id] ?: return
+        overlay.remove()
+        overlays.remove(id)
+    }
+
+    fun addPolyline(options: PolylineOptions): Polyline? {
+        val mv: GoogleMap = mapView ?: return null
+        val polyline: Polyline = mv.addPolyline(options)
+        polylines[polyline.id] = polyline
+        return polyline
+    }
+
+    fun setPolylineProp(id: String, name: String, value: FREObject?) {
+        val polyline = polylines[id] ?: return
+        when (name) {
+            "isTappable" -> polyline.setClickable(value)
+            "color" -> polyline.setColor(value)
+            "visible" -> polyline.setVisible(value)
+            "zIndex" -> polyline.setZIndex(value)
+            "width" -> polyline.setWidth(value)
+            "geodesic" -> polyline.setGeodesic(value)
+            "jointType" -> polyline.setJointType(value)
+            "pattern" -> polyline.setPattern(value)
+            "points" -> polyline.addAll(value)
+        }
+    }
+
+    fun removePolyline(id: String) {
+        val polyline = polylines[id] ?: return
+        polyline.remove()
+        polylines.remove(id)
+    }
+
+    fun addPolygon(options: PolygonOptions): Polygon? {
+        val mv: GoogleMap = mapView ?: return null
+        val polygon: Polygon = mv.addPolygon(options)
+        polygons[polygon.id] = polygon
+        return polygon
+    }
+
+    fun setPolygonProp(id: String, name: String, value: FREObject?) {
+        val polygon = polygons[id] ?: return
+        when (name) {
+            "isTappable" -> polygon.setClickable(value)
+            "visible" -> polygon.setVisible(value)
+            "zIndex" -> polygon.setZIndex(value)
+            "geodesic" -> polygon.setGeodesic(value)
+            "fillColor" -> polygon.setFillColor(value)
+            "strokeWidth" -> polygon.setStrokeWidth(value)
+            "strokeColor" -> polygon.setStrokeColor(value)
+            "strokePattern" -> polygon.setStrokePattern(value)
+            "strokeJointType" -> polygon.setStrokeJointType(value)
+            "points" -> polygon.addAll(value)
+            "holes" -> polygon.addHoles(value)
+        }
+    }
+
+    fun removePolygon(id: String) {
+        val polygon = polygons[id] ?: return
+        polygon.remove()
+        polygons.remove(id)
+    }
+
+    fun showInfoWindow(id: String) {
+        val marker = markers[id] ?: return
         marker.showInfoWindow()
     }
 
-    fun hideInfoWindow(uuid: String) {
-        val marker = markers[uuid] ?: return
+    fun hideInfoWindow(id: String) {
+        val marker = markers[id] ?: return
         marker.hideInfoWindow()
     }
 
@@ -376,7 +520,7 @@ class MapController(override var context: FREContext?, private var airView: View
         }
     }
 
-    fun getCapture():Bitmap? {
+    fun getCapture(): Bitmap? {
         return lastCapture
     }
 
@@ -465,10 +609,30 @@ class MapController(override var context: FREContext?, private var airView: View
         sendEvent(Constants.ON_CAMERA_IDLE, "")
     }
 
+    override fun onGroundOverlayClick(p0: GroundOverlay?) {
+        if (!asListeners.contains(Constants.DID_TAP_GROUND_OVERLAY)) return
+        val overlay = p0 ?: return
+        sendEvent(Constants.DID_TAP_GROUND_OVERLAY, overlay.id)
+    }
+
+    override fun onPolylineClick(p0: Polyline?) {
+        if (!asListeners.contains(Constants.DID_TAP_POLYLINE)) return
+        val polyline = p0 ?: return
+        sendEvent(Constants.DID_TAP_POLYLINE, polyline.id)
+    }
+
+    override fun onPolygonClick(p0: Polygon?) {
+        if (!asListeners.contains(Constants.DID_TAP_POLYGON)) return
+        val polygon = p0 ?: return
+        sendEvent(Constants.DID_TAP_POLYGON, polygon.id)
+    }
+
     override val TAG: String
         get() = this::class.java.simpleName
 
 
-
-
 }
+
+
+
+

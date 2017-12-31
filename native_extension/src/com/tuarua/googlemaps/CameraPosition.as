@@ -5,7 +5,7 @@ public class CameraPosition {
 	 */	
     public var centerAt:Coordinate = null;
 	/**
-	 * 
+	 * ignored on Apple Maps
 	 */	
     public var zoom:Number = -9999;
 	/**

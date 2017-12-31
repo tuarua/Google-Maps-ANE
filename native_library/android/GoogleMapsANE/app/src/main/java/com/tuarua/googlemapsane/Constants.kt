@@ -25,18 +25,21 @@ object Constants {
     val DID_END_DRAGGING: String = "GoogleMaps.DidEndDragging"
     val DID_DRAG: String = "GoogleMaps.DidDrag"
     val DID_TAP_INFO_WINDOW: String = "GoogleMaps.DidTapInfoWindow"
+    val DID_TAP_GROUND_OVERLAY: String = "GoogleMaps.DidTapGroundOverlay"
+    val DID_TAP_POLYLINE: String = "GoogleMaps.DidTapPolyline"
+    val DID_TAP_POLYGON: String = "GoogleMaps.DidTapPolygon"
     val DID_CLOSE_INFO_WINDOW: String = "GoogleMaps.DidCloseInfoWindow"
     val DID_LONG_PRESS_INFO_WINDOW: String = "GoogleMaps.DidLongPressInfoWindow"
     val ON_CAMERA_MOVE: String = "GoogleMaps.OnCameraMove"
     val ON_CAMERA_MOVE_STARTED: String = "GoogleMaps.OnCameraMoveStarted"
     val ON_CAMERA_IDLE: String = "GoogleMaps.OnCameraIdle"
+    val ON_BITMAP_READY:String = "GoogleMaps.OnBitmapReady"
+
     val LOCATION_UPDATED: String = "Location.LocationUpdated"
 
     val ON_PERMISSION_STATUS:String = "Permission.OnStatus"
     val PERMISSION_DENIED = 2
     val PERMISSION_ALWAYS = 3
     val PERMISSION_SHOW_RATIONALE = 5
-
-    val ON_BITMAP_READY:String = "GoogleMaps.OnBitmapReady"
 
 }
