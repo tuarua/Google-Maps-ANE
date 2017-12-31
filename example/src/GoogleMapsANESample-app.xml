@@ -71,6 +71,10 @@
             <string>9.0</string>
             <key>NSLocationAlwaysUsageDescription</key>
 	        <string>We require your location</string>
+	        <key>NSLocationWhenInUseUsageDescription</key>
+	        <string>We require your location</string>
+	        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	        <string>We require your location</string>
         ]]></InfoAdditions>
 
         <!-- Display Resolution for the app ("standard" or "high"). Optional. Default "standard" -->
