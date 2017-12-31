@@ -156,6 +156,9 @@ public class Circle extends Shape {
         }
     }
 
+    /**
+     * This method is omitted from the output. * * @private
+     */
     private function setAneValue(name:String, value:*):void {
         if (_isAdded) {
             var theRet:* = GoogleMapsANEContext.context.call("setCircleProp", _id, name, value);

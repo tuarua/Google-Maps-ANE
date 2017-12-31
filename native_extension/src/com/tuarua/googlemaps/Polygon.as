@@ -22,6 +22,7 @@ public class Polygon extends Shape {
         super();
         this.points = points;
     }
+
     /**
      * Ignored on Apple Maps
      */
@@ -35,6 +36,8 @@ public class Polygon extends Shape {
     }
 
     /**
+     * Sets whether to draw each segment of the line as a geodesic or not.
+     *
      * Ignored on Apple Maps
      */
     public function set geodesic(value:Boolean):void {
@@ -42,16 +45,36 @@ public class Polygon extends Shape {
         setAneValue("geodesic", value);
     }
 
+    /**
+     * Indicates if the circle is visible or invisible, i.e., whether it is drawn on the map.
+     * An invisible polygon is not drawn, but retains all of its other properties.
+     * The default is true, i.e., visible.
+     *
+     * Ignored on iOS
+     *
+     */
     public function set visible(value:Boolean):void {
         _visible = value;
         setAneValue("visible", value);
     }
 
+    /**
+     * The order in which this tile overlay is drawn with respect to other overlays
+     * (including GroundOverlays, TileOverlays, Polylines, and Polygons but not Markers).
+     * An overlay with a larger z-index is drawn over overlays with smaller z-indices.
+     * The order of overlays with the same z-index is arbitrary. The default zIndex is 0.
+     *
+     * Ignored on Apple Maps
+     *
+     */
     public function set zIndex(value:Number):void {
         _zIndex = value;
         setAneValue("zIndex", value);
     }
 
+    /**
+     * This method is omitted from the output. * * @private
+     */
     private function setAneValue(name:String, value:*):void {
         if (_isAdded) {
             var theRet:* = GoogleMapsANEContext.context.call("setPolygonProp", _id, name, value);
@@ -59,10 +82,13 @@ public class Polygon extends Shape {
         }
     }
 
+
     public function get strokeJointType():int {
         return _strokeJointType;
     }
     /**
+     * Sets the joint type for all vertices of the polygon's outline.
+     *
      * Ignored on iOS
      */
     public function set strokeJointType(value:int):void {
@@ -86,6 +112,9 @@ public class Polygon extends Shape {
         return _strokeWidth;
     }
 
+    /**
+     * Sets the stroke width of this polygon.
+     */
     public function set strokeWidth(value:Number):void {
         _strokeWidth = value;
         setAneValue("strokeWidth", value);
@@ -95,6 +124,9 @@ public class Polygon extends Shape {
         return _strokeColor;
     }
 
+    /**
+     * Sets the stroke color of this polygon.
+     */
     public function set strokeColor(value:uint):void {
         _strokeColor = value;
         setAneValue("strokeColor", value);
@@ -104,6 +136,8 @@ public class Polygon extends Shape {
         return _strokePattern;
     }
     /**
+     * Sets the stroke pattern of the polygon's outline.
+     *
      * Ignored on iOS
      */
     public function set strokePattern(value:StrokePattern):void {
@@ -119,7 +153,10 @@ public class Polygon extends Shape {
     public function get points():Vector.<Coordinate> {
         return _points;
     }
-
+    /**
+     * Adds a point to the Polygon.
+     *
+     */
     public function add(point:Coordinate):void {
         _points.push(point);
         setAneValue("points", _points);

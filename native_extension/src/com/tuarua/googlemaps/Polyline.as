@@ -49,11 +49,28 @@ public class Polyline extends Shape {
         setAneValue("color", value);
     }
 
+    /**
+     * Indicates if the circle is visible or invisible, i.e., whether it is drawn on the map.
+     * An invisible polyline is not drawn, but retains all of its other properties.
+     * The default is true, i.e., visible.
+     *
+     * Ignored on iOS
+     *
+     */
     public function set visible(value:Boolean):void {
         _visible = value;
         setAneValue("visible", value);
     }
 
+    /**
+     * The order in which this tile overlay is drawn with respect to other overlays
+     * (including GroundOverlays, TileOverlays, Polylines, and Polygons but not Markers).
+     * An overlay with a larger z-index is drawn over overlays with smaller z-indices.
+     * The order of overlays with the same z-index is arbitrary. The default zIndex is 0.
+     *
+     * Ignored on Apple Maps
+     *
+     */
     public function set zIndex(value:Number):void {
         _zIndex = value;
         setAneValue("zIndex", value);
@@ -79,6 +96,11 @@ public class Polyline extends Shape {
         return _geodesic;
     }
 
+    /**
+     * Sets whether to draw each segment of the line as a geodesic or not.
+     *
+     * Ignored on Apple Maps
+     */
     public function set geodesic(value:Boolean):void {
         _geodesic = value;
         setAneValue("geodesic", value);
@@ -88,6 +110,8 @@ public class Polyline extends Shape {
         return _pattern;
     }
     /**
+     * Sets the stroke pattern of the polyline.
+     *
      * Ignored on iOS
      */
     public function set pattern(value:StrokePattern):void {
@@ -99,6 +123,8 @@ public class Polyline extends Shape {
         return _jointType;
     }
     /**
+     * Sets the joint type for all vertices of the polyline except the start and end vertices.
+     *
      * Ignored on iOS
      */
     public function set jointType(value:int):void {
@@ -110,6 +136,8 @@ public class Polyline extends Shape {
         return _startCap;
     }
     /**
+     * Sets the cap at the start vertex of this polyline.
+     *
      * Ignored on iOS
      */
     public function set startCap(value:int):void {
@@ -121,6 +149,8 @@ public class Polyline extends Shape {
         return _endCap;
     }
     /**
+     * Sets the cap at the end vertex of this polyline.
+     *
      * Ignored on iOS
      */
     public function set endCap(value:int):void {
@@ -137,11 +167,18 @@ public class Polyline extends Shape {
         return _points;
     }
 
+    /**
+     * Adds a point to the Polyline.
+     *
+     */
     public function add(point:Coordinate):void {
         _points.push(point);
         setAneValue("points", _points);
     }
 
+    /**
+     * This method is omitted from the output. * * @private
+     */
     private function setAneValue(name:String, value:*):void {
         if (_isAdded) {
             var theRet:* = GoogleMapsANEContext.context.call("setPolylineProp", _id, name, value);
