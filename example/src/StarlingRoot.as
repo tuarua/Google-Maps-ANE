@@ -213,7 +213,7 @@ public class StarlingRoot extends Sprite {
 
     private function onMapReady(event:GoogleMapsEvent):void {
         trace(event);
-        /*var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
+        var coordinate:Coordinate = new Coordinate(53.836549, -6.393717);
         var marker:Marker = new Marker(coordinate, "Dunleer", "Home");
         marker.color = ColorARGB.GREEN;
         marker.icon = (new pinImage() as Bitmap).bitmapData;
@@ -222,7 +222,7 @@ public class StarlingRoot extends Sprite {
         marker.isDraggable = true;
         mapView.addMarker(marker);
         firstMarkerId = marker.id;
-        trace("uuid for marker", firstMarkerId);*/
+        trace("uuid for marker", firstMarkerId);
 
 
         // Polyline
@@ -259,7 +259,7 @@ public class StarlingRoot extends Sprite {
         mapView.moveCamera(cameraPosition, false);*/
 
         //Polygon #2
-        var points:Vector.<Coordinate> = new Vector.<Coordinate>();
+        /*var points:Vector.<Coordinate> = new Vector.<Coordinate>();
         var holes:Vector.<Coordinate> = new Vector.<Coordinate>();
         points.push(new Coordinate(0, 0));
         points.push(new Coordinate(0, 5));
@@ -281,7 +281,7 @@ public class StarlingRoot extends Sprite {
         var cameraPosition:CameraPosition = new CameraPosition();
         cameraPosition.centerAt = new Coordinate(0, 0);
         cameraPosition.zoom = 6.0;
-        mapView.moveCamera(cameraPosition, false);
+        mapView.moveCamera(cameraPosition, false);*/
 
 
     }
@@ -355,7 +355,6 @@ public class StarlingRoot extends Sprite {
     private function onAddCircle(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
-            trace("onAddCircle");
             var circle:Circle = new Circle(new Coordinate(53.836549, -6.393717));
             circle.fillColor = 0x807A007A; //purple 50% alpha
             circle.radius = 2000;
