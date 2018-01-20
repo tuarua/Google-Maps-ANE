@@ -599,6 +599,12 @@ class MapController(override var context: FREContext?, private var airView: View
                 mv.cameraPosition.bearing)))
     }
 
+    fun dispose() {
+        (airView as ViewGroup).removeView(container)
+        container = null
+        mapView = null
+    }
+
     override fun onCameraMoveStarted(reason: Int) {
         if (!asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED)) return
         sendEvent(Constants.ON_CAMERA_MOVE_STARTED, gson.toJson(CameraMoveStartedEvent(reason)))
@@ -629,6 +635,8 @@ class MapController(override var context: FREContext?, private var airView: View
 
     override val TAG: String
         get() = this::class.java.simpleName
+
+
 
 
 }

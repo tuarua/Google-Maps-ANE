@@ -96,10 +96,6 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         return (lastCapture, captureDimensions)
     }
     
-    
-    
-    
-    
     func addMarker(marker: GMSMarker) {
         if let id = marker.userData as? String {
             markers[id] = marker
@@ -120,11 +116,9 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    
     func clear() {
         mapView.clear()
     }
-    
     
     func setBounds(bounds: GMSCoordinateBounds, animates: Bool){
         let update = GMSCameraUpdate.fit(bounds)
@@ -404,6 +398,11 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     
     func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
         sendEvent(name: "TRACE", value: "didTap overlay \(overlay.debugDescription)")
+    }
+    
+    func dispose() {
+        self.view.removeFromSuperview()
+        self.removeFromParentViewController()
     }
     
     override func didReceiveMemoryWarning() {

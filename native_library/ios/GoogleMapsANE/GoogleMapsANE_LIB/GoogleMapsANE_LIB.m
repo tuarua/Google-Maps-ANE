@@ -77,8 +77,7 @@ CONTEXT_INIT(TRGMA) {
         ,MAP_FUNCTION(TRGMA, requestPermissions)
         ,MAP_FUNCTION(TRGMA, capture)
         ,MAP_FUNCTION(TRGMA, getCapture)
-        
-        
+
     };
     
     /**************************************************************************/
@@ -89,7 +88,12 @@ CONTEXT_INIT(TRGMA) {
 }
 
 CONTEXT_FIN(TRGMA) {
-    //any clean up code here
+    [TRGMA_swft dispose];
+    TRGMA_swft = nil;
+    TRGMA_freBridge = nil;
+    TRGMA_swftBridge = nil;
+    TRGMA_funcArray = nil;
+    
 }
 EXTENSION_INIT(TRGMA)
 EXTENSION_FIN(TRGMA)

@@ -563,14 +563,11 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
                 switch mapProvider {
                 case .apple:
                     rootViewController.view.addSubview((mapControllerMK?.view)!)
-                    
                     break
                 case .google:
                     rootViewController.view.addSubview((mapControllerGMS?.view)!)
-                    
                     break
                 }
-
                 isAdded = true
             }
         }
@@ -667,6 +664,13 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         trace("locationManager:didFailWithError", error.localizedDescription) //TODO
     }
 
+    @objc public func dispose() {
+        mapControllerMK?.dispose()
+        mapControllerGMS?.dispose()
+        
+        mapControllerMK = nil
+        mapControllerGMS = nil
+    }
 
     // Must have this function. It exposes the methods to our entry ObjC.
     @objc public func callSwiftFunction(name: String, ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
