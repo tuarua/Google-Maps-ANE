@@ -83,7 +83,7 @@ public class StarlingRoot extends Sprite {
         var _assets:AssetManager = assets;
 
         GoogleMapsANE.key = "AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc";
-        GoogleMapsANE.mapProvider = MapProvider.APPLE;
+        GoogleMapsANE.mapProvider = MapProvider.GOOGLE;
         mapView = GoogleMapsANE.mapView;
 
         if (!mapView.isInited) {
