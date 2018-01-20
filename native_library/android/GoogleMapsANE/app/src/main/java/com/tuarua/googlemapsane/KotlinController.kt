@@ -596,6 +596,13 @@ class KotlinController : FreKotlinMainController {
         return null
     }
 
+
+    override fun dispose() {
+        super.dispose()
+        mapController?.dispose()
+        mapController = null
+    }
+
     override val TAG: String
         get() = this::class.java.simpleName
     private var _context: FREContext? = null

@@ -14,6 +14,7 @@ public class GoogleMapsANEContext {
     internal static const NAME:String = "GoogleMapsANE";
     internal static const TRACE:String = "TRACE";
     private static var _context:ExtensionContext;
+    private static var _isDisposed:Boolean;
     private static var argsAsJSON:Object;
     public static var markers:Dictionary = new Dictionary();
     public static var overlays:Dictionary = new Dictionary();
@@ -30,6 +31,7 @@ public class GoogleMapsANEContext {
                     throw new Error("ANE " + NAME + " not created properly.  Future calls will fail.");
                 }
                 _context.addEventListener(StatusEvent.STATUS, gotEvent);
+                _isDisposed = false;
             } catch (e:Error) {
                 trace("[" + NAME + "] ANE not loaded properly.  Future calls will fail.");
             }
@@ -115,10 +117,15 @@ public class GoogleMapsANEContext {
         if (!_context) {
             return;
         }
+        _isDisposed = true;
         trace("[" + NAME + "] Unloading ANE...");
         _context.removeEventListener(StatusEvent.STATUS, gotEvent);
         _context.dispose();
         _context = null;
+    }
+
+    public static function get isDisposed():Boolean {
+        return _isDisposed;
     }
 }
 }

@@ -478,8 +478,11 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         default:
             mapView.mapType = MKMapType.standard
         }
-
-
+    }
+    
+    func dispose() {
+        self.view.removeFromSuperview()
+        self.removeFromParentViewController()
     }
 
     override func didReceiveMemoryWarning() {

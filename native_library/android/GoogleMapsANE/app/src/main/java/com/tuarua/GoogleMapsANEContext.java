@@ -69,5 +69,7 @@ public class GoogleMapsANEContext extends FreKotlinContext implements TRActivity
             aaw.removeActivityStateChangeListner(this);
             aaw = null;
         }
+        controller.dispose();
+        controller = null;
     }
 }

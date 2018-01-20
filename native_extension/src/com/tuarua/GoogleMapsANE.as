@@ -481,7 +481,7 @@ public class GoogleMapsANE extends EventDispatcher {
      * This method is omitted from the output. * * @private
      */
     private function safetyCheck():Boolean {
-        if (!_isInited && _isMapInited) {
+        if (!_isInited && _isMapInited || GoogleMapsANEContext.isDisposed) {
             trace("You need to init first");
             return false;
         }
