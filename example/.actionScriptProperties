@@ -40,12 +40,13 @@
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/GoogleMapsANE.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.android.support.support-v4-25.4.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-base-11.8.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-location-11.8.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-maps-11.8.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/com.tuarua.frekotlin.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="D:/dev/flash/Google-Maps-ANE/native_extension/ane/org.greenrobot.eventbus-3.0.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.android.support.support-v4-25.4.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-base-11.8.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-location-11.8.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-maps-11.8.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.code.gson.gson-2.8.1.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.tuarua.frekotlin.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/org.greenrobot.eventbus-3.0.0.ane"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -61,18 +62,16 @@
   <buildTargets>
     <buildTarget airDownloadURL="https://market.android.com/details?id=com.adobe.air" androidSettingsVersion="2" buildTargetName="device" isCurrent="true" platformId="com.adobe.flexide.multiplatform.android.platform">
       <airSettings airCertificatePath="D:/dev/flash/tuaruaWin.p12" airTimestamp="true" anePathSet="true" version="1">
-        <airExcludes>
-          <pathEntry path="GoogleMapsANESample-app-26.xml"/>
-          <pathEntry path="GoogleMapsANESample-app-27.xml"/>
-        </airExcludes>
+        <airExcludes/>
         <anePaths>
           <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/GoogleMapsANE.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.android.support.support-v4-25.4.0.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-base-11.8.0.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-location-11.8.0.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.google.android.gms.play-services-maps-11.8.0.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/com.tuarua.frekotlin.ane"/>
-          <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/org.greenrobot.eventbus-3.0.0.ane"/>
+          <anePathEntry path="android_dependencies/com.android.support.support-v4-25.4.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-base-11.8.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-location-11.8.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-maps-11.8.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.code.gson.gson-2.8.1.ane"/>
+          <anePathEntry path="android_dependencies/com.tuarua.frekotlin.ane"/>
+          <anePathEntry path="android_dependencies/org.greenrobot.eventbus-3.0.0.ane"/>
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams/>
@@ -95,11 +94,15 @@
       <actionScriptSettings version="1"/>
     </buildTarget>
     <buildTarget buildTargetName="device" iosSettingsVersion="2" isCurrent="true" platformId="com.adobe.flexide.multiplatform.ios.platform" provisioningFile="" releasePackageType="">
-      <multiPlatformSettings enabled="false" hideAneLibSymbols="0" includePlatformLibs="false" platformID="com.adobe.flexide.multiplatform.ios.platform" reducedSizePackaging="false" version="1"/>
       <airSettings airCertificatePath="" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
+        <newLaunchParams/>
+        <modifiedLaunchParams/>
+        <newPackagingParams/>
+        <modifiedPackagingParams/>
       </airSettings>
+      <multiPlatformSettings enabled="false" hideAneLibSymbols="0" includePlatformLibs="false" platformID="com.adobe.flexide.multiplatform.ios.platform" reducedSizePackaging="false" version="1"/>
       <actionScriptSettings version="1"/>
     </buildTarget>
   </buildTargets>
