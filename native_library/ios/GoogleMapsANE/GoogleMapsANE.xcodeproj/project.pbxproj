@@ -328,6 +328,7 @@
 				CE39809B1E58BEE10062485B /* Sources */,
 				CE39809C1E58BEE10062485B /* Frameworks */,
 				CE3980AE1E58BF530062485B /* Headers */,
+				CE4E3CE0201FE1FD00291513 /* ShellScript */,
 				CE3980B21E58C0D80062485B /* ShellScript */,
 			);
 			buildRules = (
@@ -383,7 +384,20 @@
 /* Begin PBXShellScriptBuildPhase section */
 		CE3980B21E58C0D80062485B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = ../../../native_extension/ane/build_mobile.sh;
+		};
+		CE4E3CE0201FE1FD00291513 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
@@ -392,7 +406,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = ../../../native_extension/ane/build_mobile.sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

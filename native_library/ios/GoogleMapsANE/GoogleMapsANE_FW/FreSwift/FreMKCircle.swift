@@ -37,17 +37,14 @@ public extension CustomMKCircle {
         self.strokeWidth = strokeWidth
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
-            break
         case "strokeColor":
             self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
-            break
         case "fillColor":
             self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
-            break
         default:
             break
         }

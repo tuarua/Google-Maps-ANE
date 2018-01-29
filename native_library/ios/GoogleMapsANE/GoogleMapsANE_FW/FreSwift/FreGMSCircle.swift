@@ -41,31 +41,24 @@ public extension GMSCircle {
         
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "center":
             self.position = CLLocationCoordinate2D.init(value) ?? self.position
-            break
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
-            break
         case "radius":
             self.radius = Double(value) ?? self.radius
-            break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
-            break
         case "zIndex":
             if let z = Int(value) {
                 self.zIndex = Int32(z)
             }
-            break
         case "strokeColor":
             self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
-            break
         case "fillColor":
             self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
-            break
         default:
             break
         }

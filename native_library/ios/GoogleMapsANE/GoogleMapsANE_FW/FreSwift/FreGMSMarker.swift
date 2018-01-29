@@ -51,42 +51,32 @@ public extension GMSMarker {
         }
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "coordinate":
             self.position = CLLocationCoordinate2D.init(value) ?? self.position
-            break
         case "title":
             self.title = String(value) ?? self.title
-            break
         case "snippet":
             self.snippet = String(value) ?? self.snippet
-            break
         case "isDraggable":
             self.isDraggable = Bool(value) ?? self.isDraggable
-            break
         case "isFlat":
             self.isFlat = Bool(value) ?? self.isFlat
-            break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
-            break
         case "rotation":
             self.rotation = CLLocationDegrees(value) ?? self.rotation
-            break
         case "color":
             if let color = UIColor.init(freObjectARGB: value) {
                 self.icon = GMSMarker.markerImage(with: color)
             }
-            break
         case "icon":
             if let img = UIImage.init(freObject: value) {
                 self.icon = img
             }
-            break
         case "alpha":
             self.opacity = Float(value) ?? self.opacity
-            break
         default:
             break
         }

@@ -39,4 +39,3 @@ public extension CLLocationCoordinate2D {
         return freObject
     }
 }
-

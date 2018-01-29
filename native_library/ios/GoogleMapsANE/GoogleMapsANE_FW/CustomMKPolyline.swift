@@ -23,7 +23,7 @@ open class CustomMKPolyline: MKPolyline {
     var identifier: String = ""
     var width: CGFloat = 1.0
     var color: UIColor?
-    convenience init(points: Array<CLLocationCoordinate2D>, identifier: String) {
+    convenience init(points: [CLLocationCoordinate2D], identifier: String) {
         var coordinates = [CLLocationCoordinate2D]()
         for point in points {
             coordinates.append(point)

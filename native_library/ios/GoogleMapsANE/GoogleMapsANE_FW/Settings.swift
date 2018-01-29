@@ -28,7 +28,7 @@ public struct Settings {
     public var allowScrollGesturesDuringRotateOrZoom: Bool = true
     public var buildingsEnabled: Bool = true
     
-    init(dictionary: Dictionary<String, AnyObject>) {
+    init(dictionary: [String: AnyObject]) {
         if let sg = dictionary["scrollGestures"] as? Bool {
             scrollGestures = sg
         }

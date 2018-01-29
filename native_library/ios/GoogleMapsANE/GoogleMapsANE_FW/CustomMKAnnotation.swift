@@ -60,40 +60,31 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
         }
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "coordinate":
             self.coordinate = CLLocationCoordinate2D.init(value) ?? self.coordinate
-            break
         case "title":
             self.title = String(value) ?? self.title
-            break
         case "snippet":
             self.subtitle = String(value) ?? self.subtitle
-            break
         case "isDraggable":
             self.isDraggable = Bool(value) ?? self.isDraggable
-            break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
-            break
         case "color":
             if let color = UIColor.init(freObjectARGB: value) {
                 self.color = color
             }
-            break
         case "icon":
             if let img = UIImage.init(freObject: value) {
                 self.icon = img
             }
-            break
         case "alpha":
             self.opacity = CGFloat(value) ?? self.opacity
-            break
         default:
             break
         }
     }
     
-
 }

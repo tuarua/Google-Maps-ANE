@@ -27,7 +27,7 @@ public extension CustomMKPolyline {
                 return nil
         }
         let identifier = UUID.init().uuidString
-        var points:Array<CLLocationCoordinate2D> = []
+        var points: [CLLocationCoordinate2D] = []
         if let pointsFre = rv["points"] {
             let pointsArray = FREArray.init(pointsFre)
             for i in 0..<pointsArray.length {
@@ -41,12 +41,12 @@ public extension CustomMKPolyline {
         self.width = width
     }
     
-    convenience init?(_ freObject: FREObject?, polyline:CustomMKPolyline) {
+    convenience init?(_ freObject: FREObject?, polyline: CustomMKPolyline) {
         guard let rv = freObject
             else {
                 return nil
         }
-        var points:Array<CLLocationCoordinate2D> = []
+        var points: [CLLocationCoordinate2D] = []
         let pointsArray = FREArray.init(rv)
         for i in 0..<pointsArray.length {
             if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
@@ -58,14 +58,12 @@ public extension CustomMKPolyline {
         self.width = polyline.width
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "width":
             self.width = CGFloat(value) ?? self.width
-            break
         case "color":
             self.color = UIColor.init(freObjectARGB: value) ?? self.color
-            break
         default:
             break
         }

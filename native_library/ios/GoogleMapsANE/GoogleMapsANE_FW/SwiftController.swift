@@ -29,10 +29,10 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     private var mapControllerGMS: GMSMapController?
     private var mapControllerMK: MKMapController?
     private var settings: Settings?
-    private var asListeners: Array<String> = []
+    private var asListeners: [String] = []
     private var listenersAddedToMapC: Bool = false
     private var isAdded: Bool = false
-    private var permissionsGranted:Bool = false
+    private var permissionsGranted: Bool = false
 
     public enum MapProvider: Int {
         case google
@@ -42,7 +42,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     private var mapProvider: MapProvider = MapProvider.google
 
     // Must have this function. It exposes the methods to our entry ObjC.
-    @objc public func getFunctions(prefix: String) -> Array<String> {
+    @objc public func getFunctions(prefix: String) -> [String] {
 
         functionsToSet["\(prefix)isSupported"] = isSupported
         functionsToSet["\(prefix)init"] = initController
@@ -83,9 +83,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         functionsToSet["\(prefix)capture"] = capture
         functionsToSet["\(prefix)getCapture"] = getCapture
         
-        
-
-        var arr: Array<String> = []
+        var arr: [String] = []
         for key in functionsToSet.keys {
             arr.append(key)
         }
@@ -142,14 +140,13 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
                 return ArgCountError(message: "capture").getError(#file, #line, #column)
         }
 
-        
         let x = xFre * Int(UIScreen.main.scale)
         let y = yFre * Int(UIScreen.main.scale)
         let w = wFre * Int(UIScreen.main.scale)
         let h = hFre * Int(UIScreen.main.scale)
         
-        mapControllerGMS?.capture(captureDimensions:CGRect.init(x: x,y: y,width: w, height: h))
-        mapControllerMK?.capture(captureDimensions:CGRect.init(x: x,y: y,width: w, height: h))
+        mapControllerGMS?.capture(captureDimensions: CGRect.init(x: x, y: y, width: w, height: h))
+        mapControllerMK?.capture(captureDimensions: CGRect.init(x: x, y: y, width: w, height: h))
         
         return nil
     }
@@ -157,16 +154,18 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     func getCapture(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         if let capGMS = mapControllerGMS?.getCapture(), let cgiGMS = capGMS.0 {
             return getCaptureImage(cgImage: cgiGMS, captureDimensions: capGMS.1)
-        } else if let capMK = mapControllerMK?.getCapture(), let cgiMK = capMK.0{
+        } else if let capMK = mapControllerMK?.getCapture(), let cgiMK = capMK.0 {
             return getCaptureImage(cgImage: cgiMK, captureDimensions: capMK.1)
         }
         return nil
     }
     
-    private func getCaptureImage(cgImage: CGImage, captureDimensions:CGRect) -> FREObject? {
+    private func getCaptureImage(cgImage: CGImage, captureDimensions: CGRect) -> FREObject? {
         do {
-            if let freObject = try FREObject.init(className: "flash.display.BitmapData", args: cgImage.width, cgImage.height, false),
-                let destBmd = try FREObject.init(className: "flash.display.BitmapData", args: captureDimensions.width, captureDimensions.height, false) {
+            if let freObject = try FREObject.init(className: "flash.display.BitmapData",
+                                                  args: cgImage.width, cgImage.height, false),
+                let destBmd = try FREObject.init(className: "flash.display.BitmapData",
+                                                 args: captureDimensions.width, captureDimensions.height, false) {
                 
                 let asBitmapData = FreBitmapDataSwift.init(freObject: freObject)
                 defer {
@@ -248,7 +247,6 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         return nil
     }
     
-    
     func addGroundOverlay(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         warning("Ground overlays are available on Android only")
         return nil
@@ -261,7 +259,6 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         warning("Ground overlays are available on Android only")
         return nil
     }
-    
     
     func addPolyline(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0
@@ -352,8 +349,10 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
               let animates = Bool(argv[2]) else {
             return ArgCountError(message: "setBounds").getError(#file, #line, #column)
         }
-        mapControllerMK?.setBounds(bounds: GMSCoordinateBounds.init(coordinate: southWest, coordinate: northEast), animates: animates)
-        mapControllerGMS?.setBounds(bounds: GMSCoordinateBounds.init(coordinate: southWest, coordinate: northEast), animates: animates)
+        mapControllerMK?.setBounds(bounds: GMSCoordinateBounds.init(coordinate: southWest, coordinate: northEast),
+                                   animates: animates)
+        mapControllerGMS?.setBounds(bounds: GMSCoordinateBounds.init(coordinate: southWest, coordinate: northEast),
+                                    animates: animates)
         return nil
     }
 
@@ -427,19 +426,19 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
             return ArgCountError(message: "initMap").getError(#file, #line, #column)
         }
 
-        
         if let settingsDict = Dictionary.init(inFRE3) {
             settings = Settings.init(dictionary: settingsDict)
         }
 
         if self.mapProvider == .google {
-            mapControllerGMS = GMSMapController.init(context: context, coordinate: coordinate, zoomLevel: zoomLevel, frame: viewPort, settings: settings)
+            mapControllerGMS = GMSMapController.init(context: context, coordinate: coordinate,
+                                                     zoomLevel: zoomLevel, frame: viewPort, settings: settings)
         } else {
-            mapControllerMK = MKMapController.init(context: context, coordinate: coordinate, zoomLevel: zoomLevel, frame: viewPort, settings: settings)
+            mapControllerMK = MKMapController.init(context: context, coordinate: coordinate,
+                                                   zoomLevel: zoomLevel, frame: viewPort, settings: settings)
         }
         return nil
     }
-
 
     func addMarker(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
@@ -534,7 +533,6 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         return nil
     }
 
-
     func setMapType(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
               let type = Int(argv[0])
@@ -545,7 +543,6 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         mapControllerGMS?.setMapType(type: UInt(type))
         return nil
     }
-
 
     func setVisible(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
@@ -563,10 +560,8 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
                 switch mapProvider {
                 case .apple:
                     rootViewController.view.addSubview((mapControllerMK?.view)!)
-                    break
                 case .google:
                     rootViewController.view.addSubview((mapControllerGMS?.view)!)
-                    break
                 }
                 isAdded = true
             }
@@ -587,18 +582,18 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         var hasRequiredInfoAddition = false
         if let dict = pListDict {
             for key in dict.allKeys {
-                if (key as! String) == requiredKey {
+                if let k = key as? String, k == requiredKey {
                     hasRequiredInfoAddition = true
                     break
                 }
             }
         }
-        if(hasRequiredInfoAddition){
+        if hasRequiredInfoAddition {
             locationManager = CLLocationManager()
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.requestAlwaysAuthorization()
             locationManager.delegate = self
-        }else{
+        } else {
             warning("Please add \(requiredKey) to InfoAdditions in your AIR manifest")
         }
         
@@ -626,7 +621,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
 
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location: CLLocation = locations.last!
-        var props: Dictionary<String, Any> = Dictionary()
+        var props: [String: Any] = Dictionary()
         props["latitude"] = location.coordinate.latitude
         props["longitude"] = location.coordinate.longitude
         let json = JSON(props)
@@ -634,7 +629,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     }
 
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        var props: Dictionary<String, Any> = Dictionary()
+        var props: [String: Any] = Dictionary()
         props["status"] = status.rawValue
         switch status {
         case .restricted:
@@ -686,6 +681,5 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
 
     @objc public func onLoad() {
     }
-
-
+    
 }

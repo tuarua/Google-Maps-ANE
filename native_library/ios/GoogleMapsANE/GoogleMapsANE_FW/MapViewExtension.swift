@@ -423,7 +423,8 @@ fileprivate extension MKMapView {
         }
     }
     
-    fileprivate func coordinateSpanWithCenterCoordinate(_ center: CLLocationCoordinate2D, zoomLevel: UInt) -> MKCoordinateSpan {
+    fileprivate func coordinateSpanWithCenterCoordinate(_ center: CLLocationCoordinate2D,
+                                                        zoomLevel: UInt) -> MKCoordinateSpan {
         // convert center coordinate to pixel space
         let centerPixelX = center.longitude.pixelSpaceXForLongitude
         let centerPixelY = center.latitude.pixelSpaceYForLatitude

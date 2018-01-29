@@ -24,7 +24,8 @@ open class CustomMKPolygon: MKPolygon {
     var strokeWidth: CGFloat = 1.0
     var strokeColor: UIColor?
     var fillColor: UIColor?
-    convenience init(points: Array<CLLocationCoordinate2D>, holes: Array<Array<CLLocationCoordinate2D>>, identifier: String) {
+    convenience init(points: [CLLocationCoordinate2D],
+                     holes: [[CLLocationCoordinate2D]], identifier: String) {
         var coordinates = [CLLocationCoordinate2D]()
         for point in points {
             coordinates.append(point)
@@ -37,7 +38,8 @@ open class CustomMKPolygon: MKPolygon {
         self.init(coordinates: &coordinates, count: points.count, interiorPolygons: holePolygons)
         self.identifier = identifier
     }
-    convenience init(points: Array<CLLocationCoordinate2D>, holePolygons: [MKPolygon]?, identifier: String) {
+    
+    convenience init(points: [CLLocationCoordinate2D], holePolygons: [MKPolygon]?, identifier: String) {
         var coordinates = [CLLocationCoordinate2D]()
         for point in points {
             coordinates.append(point)

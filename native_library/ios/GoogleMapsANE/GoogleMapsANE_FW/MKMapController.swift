@@ -29,21 +29,20 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     private var container: UIView!
     private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D.init()
     private var viewPort: CGRect = CGRect.zero
-    private var asListeners: Array<String> = []
-    private var markers: Dictionary<String, CustomMKAnnotation> = Dictionary()
-    private var circles: Dictionary<String, CustomMKCircle> = Dictionary()
+    private var asListeners: [String] = []
+    private var markers: [String: CustomMKAnnotation] = Dictionary()
+    private var circles: [String: CustomMKCircle] = Dictionary()
+    private var circleRenderers: [String: MKCircleRenderer] = Dictionary()
+    private var polygonRenderers: [String: MKPolygonRenderer] = Dictionary()
+    private var polylineRenderers: [String: MKPolylineRenderer] = Dictionary()
+    private var polygons: [String: CustomMKPolygon] = Dictionary()
+    private var polylines: [String: CustomMKPolyline] = Dictionary()
     
-    private var circleRenderers: Dictionary<String, MKCircleRenderer> = Dictionary()
-    private var polygonRenderers: Dictionary<String, MKPolygonRenderer> = Dictionary()
-    private var polylineRenderers: Dictionary<String, MKPolylineRenderer> = Dictionary()
-    private var polygons: Dictionary<String, CustomMKPolygon> = Dictionary()
-    private var polylines: Dictionary<String, CustomMKPolyline> = Dictionary()
-    
-    private var tapGestureRecogniser:UITapGestureRecognizer?
+    private var tapGestureRecogniser: UITapGestureRecognizer?
     private var _showsUserLocation: Bool = false
-    private var lastCapture:CGImage? = nil
-    private var captureDimensions:CGRect = CGRect.zero
-    private var isMapLoaded:Bool = false
+    private var lastCapture: CGImage?
+    private var captureDimensions: CGRect = CGRect.zero
+    private var isMapLoaded: Bool = false
     
     var showsUserLocation: Bool {
         set {
@@ -57,7 +56,8 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         }
     }
 
-    convenience init(context: FreContextSwift, coordinate: CLLocationCoordinate2D, zoomLevel: CGFloat, frame: CGRect, settings: Settings?) {
+    convenience init(context: FreContextSwift, coordinate: CLLocationCoordinate2D,
+                     zoomLevel: CGFloat, frame: CGRect, settings: Settings?) {
         self.init()
         self.context = context
         self.initialCoordinate = coordinate
@@ -66,12 +66,11 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         self.settings = settings
     }
 
-
     internal func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if !asListeners.contains(Constants.ON_CAMERA_MOVE) {
             return
         }
-        var props: Dictionary<String, Any> = Dictionary()
+        var props: [String: Any] = Dictionary()
         let camera = mapView.camera
         props["latitude"] = camera.centerCoordinate.latitude
         props["longitude"] = camera.centerCoordinate.longitude
@@ -90,7 +89,10 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         isMapLoaded = true
     }
 
-    internal func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
+    internal func mapView(_ mapView: MKMapView,
+                          annotationView view: MKAnnotationView,
+                          didChange newState: MKAnnotationViewDragState,
+                          fromOldState oldState: MKAnnotationViewDragState) {
 
         guard let anno = view.annotation,
         let annotation = anno as? CustomMKAnnotation else { return }
@@ -103,7 +105,6 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
                 return
             }
             sendEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
-            break
         case .none:
             break
         case .dragging:
@@ -113,14 +114,13 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
             if !asListeners.contains(Constants.DID_END_DRAGGING) {
                 return
             }
-            var props: Dictionary<String, Any> = Dictionary()
+            var props: [String: Any] = Dictionary()
             props["id"] = identifier
             props["latitude"] = annotation.coordinate.latitude
             props["longitude"] = annotation.coordinate.longitude
             let json = JSON(props)
             sendEvent(name: Constants.DID_END_DRAGGING, value: json.description)
             view.setDragState(.none, animated: false)
-            break
         case .canceling:
             break
         }
@@ -140,7 +140,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     @objc internal func didTapAt(_ recogniser: UITapGestureRecognizer) {
         let firstTouch = recogniser.location(ofTouch: 0, in: self.mapView)
         let coordinate = mapView.convert(firstTouch, toCoordinateFrom: mapView)
-        var props: Dictionary<String, Any> = Dictionary()
+        var props: [String: Any] = Dictionary()
         props["latitude"] = coordinate.latitude
         props["longitude"] = coordinate.longitude
         let json = JSON(props)
@@ -246,7 +246,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         sendEvent(name: Constants.ON_READY, value: "")
     }
     
-    func capture(captureDimensions:CGRect) {
+    func capture(captureDimensions: CGRect) {
         self.captureDimensions = captureDimensions
         DispatchQueue.main.async {
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, UIScreen.main.scale )
@@ -278,14 +278,14 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         mapView.frame = container.bounds
     }
     
-    func addMarker(marker:CustomMKAnnotation) {
+    func addMarker(marker: CustomMKAnnotation) {
         if let id = marker.userData as? String {
             markers[id] = marker
             mapView.addAnnotation(marker)
         }
     }
     
-    func setMarkerProp(id:String, name: String, value: FREObject) {
+    func setMarkerProp(id: String, name: String, value: FREObject) {
         guard let marker =  markers[id]
             else { return }
         marker.setProp(name: name, value: value)
@@ -299,7 +299,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     }
 
     func clear() {
-        var annos: Array<MKAnnotation> = []
+        var annos: [MKAnnotation] = []
         for anno in markers {
             annos.append(anno.value)
         }
@@ -307,16 +307,18 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     }
 
     func setBounds(bounds: GMSCoordinateBounds, animates: Bool) {
-        let topLeftCoord = CLLocationCoordinate2D.init(latitude: bounds.southWest.latitude, longitude: bounds.northEast.longitude)
+        let topLeftCoord = CLLocationCoordinate2D.init(latitude: bounds.southWest.latitude,
+                                                       longitude: bounds.northEast.longitude)
         
-        let bottomRightCoord = CLLocationCoordinate2D.init(latitude: bounds.northEast.latitude, longitude: bounds.southWest.longitude)
+        let bottomRightCoord = CLLocationCoordinate2D.init(latitude: bounds.northEast.latitude,
+                                                           longitude: bounds.southWest.longitude)
         
-        var region:MKCoordinateRegion = MKCoordinateRegion.init()
+        var region: MKCoordinateRegion = MKCoordinateRegion.init()
         
-        region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
-        region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
-        region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.1;
-        region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1.1;
+        region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5
+        region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5
+        region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.1
+        region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1.1
         
         region = mapView.regionThatFits(region)
         mapView.setRegion(region, animated: animates)
@@ -328,7 +330,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         mapView.add(circle)
     }
     
-    func setCircleProp(id:String, name: String, value: FREObject) {
+    func setCircleProp(id: String, name: String, value: FREObject) {
         guard let circle =  circles[id],
         let renderer = circleRenderers[id]
             else { return }
@@ -339,7 +341,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         renderer.setNeedsDisplay()
     }
     
-    func removeCircle(id:String){
+    func removeCircle(id: String) {
         if let circle: CustomMKCircle = circles[id] {
             mapView.removeAnnotation(circle)
             circles.removeValue(forKey: id)
@@ -351,7 +353,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         mapView.add(polygon)
     }
     
-    func setPolygonProp(id:String, name: String, value: FREObject) {
+    func setPolygonProp(id: String, name: String, value: FREObject) {
         guard let polygon = polygons[id],
         let renderer = polygonRenderers[id]
             else { return }
@@ -371,7 +373,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         }
     }
     
-    func removePolygon(id:String) {
+    func removePolygon(id: String) {
         if let polygon = polygons[id] {
             mapView.removeAnnotation(polygon)
             polygons.removeValue(forKey: id)
@@ -383,7 +385,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         mapView.add(polyline)
     }
     
-    func setPolylineProp(id:String, name: String, value: FREObject) {
+    func setPolylineProp(id: String, name: String, value: FREObject) {
         guard let polyline = polylines[id],
             let renderer = polylineRenderers[id]
             else { return }
@@ -403,7 +405,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         }
     }
     
-    func removePolyline(id:String) {
+    func removePolyline(id: String) {
         if let polyline = polylines[id] {
             mapView.removeAnnotation(polyline)
             polylines.removeValue(forKey: id)
@@ -468,13 +470,10 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         switch type {
         case 1:
             mapView.mapType = MKMapType.standard
-            break
         case 2:
             mapView.mapType = MKMapType.satellite
-            break
         case 4:
             mapView.mapType = MKMapType.hybrid
-            break
         default:
             mapView.mapType = MKMapType.standard
         }

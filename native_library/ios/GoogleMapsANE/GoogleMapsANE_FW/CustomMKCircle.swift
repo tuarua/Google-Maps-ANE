@@ -29,5 +29,3 @@ open class CustomMKCircle: MKCircle {
         self.identifier = identifier
     }
 }
-
-

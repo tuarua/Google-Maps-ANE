@@ -21,7 +21,7 @@ import FreSwift
 class MarkerOptions: NSObject {
     var coordinate: CLLocationCoordinate2D?
     var rotation: CLLocationDegrees = CLLocationDegrees.init(0)
-    var color:UIColor?
+    var color: UIColor?
     var alpha: CGFloat = CGFloat.init(1)
     var title: String?
     var snippet: String?
@@ -58,12 +58,10 @@ class MarkerOptions: NSObject {
                 if let _isTappable = try Bool(freObject?.getProp(name: "isTappable")) {
                     isTappable = _isTappable
                 }
-                
-                
+            
                 if let rotationInt: Int = try Int(freObject?.getProp(name: "rotation")) {
                     rotation = CLLocationDegrees.init(rotationInt)
                 }
-                
                 
                 if let _alpha = try CGFloat(freObject?.getProp(name: "alpha")) {
                     alpha = _alpha
@@ -78,8 +76,7 @@ class MarkerOptions: NSObject {
                         if let cgimg = try asBitmapData.asCGImage() {
                             icon = UIImage.init(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
                         }
-                    }
-                    catch {}
+                    } catch {}
                 }
             }
         } catch _ as FreError {

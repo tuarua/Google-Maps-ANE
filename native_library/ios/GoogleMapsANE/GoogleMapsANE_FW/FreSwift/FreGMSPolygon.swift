@@ -50,7 +50,7 @@ public extension GMSPolygon {
         }
         self.path = points
         
-        var holes:Array<GMSMutablePath> = []
+        var holes: [GMSMutablePath] = []
         if let holesFre = rv["holes"] {
             let holesArray = FREArray.init(holesFre)
             for i in 0..<holesArray.length {
@@ -72,28 +72,22 @@ public extension GMSPolygon {
         
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "geodesic":
             self.geodesic = Bool(value) ?? self.geodesic
-            break
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
-            break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
-            break
         case "zIndex":
             if let z = Int(value) {
                 self.zIndex = Int32(z)
             }
-            break
         case "strokeColor":
             self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
-            break
         case "fillColor":
             self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
-            break
         case "points":
             let points = GMSMutablePath.init()
             let pointsArray = FREArray.init(value)
@@ -103,9 +97,8 @@ public extension GMSPolygon {
                 }
             }
             self.path = points
-            break
         case "holes":
-            var holes:Array<GMSMutablePath> = []
+            var holes: [GMSMutablePath] = []
             let holesArray = FREArray.init(value)
             for i in 0..<holesArray.length {
                 if let freItem = holesArray[i] {
@@ -122,7 +115,6 @@ public extension GMSPolygon {
                 }
             }
             self.holes = holes
-            break
         default:
             break
         }
