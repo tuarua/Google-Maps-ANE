@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -32,6 +32,8 @@ public struct Constants {
     public static let ON_CAMERA_MOVE_STARTED: String = "GoogleMaps.OnCameraMoveStarted"
     public static let ON_CAMERA_IDLE: String = "GoogleMaps.OnCameraIdle"
     public static let LOCATION_UPDATED: String = "Location.LocationUpdated"
+    public static let ON_ADDRESS_LOOKUP: String = "Location.OnAddressLookup"
+    public static let ON_ADDRESS_LOOKUP_ERROR: String = "Location.OnAddressLookupError"
     public static let ON_PERMISSION_STATUS: String = "Permission.OnStatus"
     public static let ON_BITMAP_READY: String = "GoogleMaps.OnBitmapReady"
     public static let PERMISSION_NOT_DETERMINED = 0

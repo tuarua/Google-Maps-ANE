@@ -50,6 +50,8 @@ public class GoogleMapsANE implements FREExtension {
             ,"setStyle"
             ,"setMapType"
             ,"showUserLocation"
+            ,"reverseGeocodeLocation"
+            ,"forwardGeocodeLocation"
             ,"setBounds"
             ,"zoomIn"
             ,"zoomOut"

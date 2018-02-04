@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class MarkerOptions: NSObject {
     
     public init(freObject: FREObject?) {
         do {
-            if let _coordinate = try CLLocationCoordinate2D.init(freObject?.getProp(name: "coordinate")) {
+            if let _coordinate = try CLLocationCoordinate2D(freObject?.getProp(name: "coordinate")) {
                 coordinate = _coordinate
                 
                 if let _title = try String(freObject?.getProp(name: "title")) {
@@ -60,7 +60,7 @@ class MarkerOptions: NSObject {
                 }
             
                 if let rotationInt: Int = try Int(freObject?.getProp(name: "rotation")) {
-                    rotation = CLLocationDegrees.init(rotationInt)
+                    rotation = CLLocationDegrees(rotationInt)
                 }
                 
                 if let _alpha = try CGFloat(freObject?.getProp(name: "alpha")) {
@@ -68,13 +68,13 @@ class MarkerOptions: NSObject {
                 }
                 
                 if let _icon = try freObject?.getProp(name: "icon") {
-                    let asBitmapData = FreBitmapDataSwift.init(freObject: _icon)
+                    let asBitmapData = FreBitmapDataSwift(freObject: _icon)
                     defer {
                         asBitmapData.releaseData()
                     }
                     do {
                         if let cgimg = try asBitmapData.asCGImage() {
-                            icon = UIImage.init(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
+                            icon = UIImage(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
                         }
                     } catch {}
                 }

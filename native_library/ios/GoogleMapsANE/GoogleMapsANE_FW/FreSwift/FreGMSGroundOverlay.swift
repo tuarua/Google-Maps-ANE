@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,20 +20,20 @@ import FreSwift
 public extension GMSGroundOverlay {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
-            let coordinate = CLLocationCoordinate2D.init(rv["coordinate"]),
+            let coordinate = CLLocationCoordinate2D(rv["coordinate"]),
             let zIndex = Int(rv["zIndex"]),
-            let img = UIImage.init(freObject: rv["image"]),
+            let img = UIImage(freObject: rv["image"]),
             let transparency = Float(rv["transparency"]),
             let isTappable = Bool(rv["isTappable"]),
             let bearing = Double(rv["bearing"])
             else {
                 return nil
         }
-        self.init(position: coordinate, icon: img, zoomLevel: CGFloat.init(1))
+        self.init(position: coordinate, icon: img, zoomLevel: CGFloat(1))
         self.bearing = bearing
         self.opacity = 1.0 - transparency
         self.isTappable = isTappable
         self.zIndex = Int32(zIndex)
-        self.userData = UUID.init().uuidString
+        self.userData = UUID().uuidString
     }
 }

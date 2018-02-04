@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ public extension GMSPolygon {
             let zIndex = Int(rv["zIndex"]),
             let isTappable = Bool(rv["isTappable"]),
             let strokeWidth = CGFloat(rv["strokeWidth"]),
-            let strokeColor = UIColor.init(freObjectARGB: rv["strokeColor"]),
-            let fillColor = UIColor.init(freObjectARGB: rv["fillColor"])
+            let strokeColor = UIColor(freObjectARGB: rv["strokeColor"]),
+            let fillColor = UIColor(freObjectARGB: rv["fillColor"])
             else {
                 return nil
         }
@@ -36,14 +36,14 @@ public extension GMSPolygon {
         self.strokeColor = strokeColor
         self.fillColor = fillColor
         self.zIndex = Int32(zIndex)
-        self.userData = UUID.init().uuidString
+        self.userData = UUID().uuidString
         self.isTappable = isTappable
         
-        let points = GMSMutablePath.init()
+        let points = GMSMutablePath()
         if let pointsFre = rv["points"] {
-            let pointsArray = FREArray.init(pointsFre)
+            let pointsArray = FREArray(pointsFre)
             for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                if let point = CLLocationCoordinate2D(pointsArray[i]) {
                     points.add(point)
                 }
             }
@@ -52,13 +52,13 @@ public extension GMSPolygon {
         
         var holes: [GMSMutablePath] = []
         if let holesFre = rv["holes"] {
-            let holesArray = FREArray.init(holesFre)
+            let holesArray = FREArray(holesFre)
             for i in 0..<holesArray.length {
                 if let freItem = holesArray[i] {
-                    let holePoints = GMSMutablePath.init()
-                    let holePointsArray = FREArray.init(freItem)
+                    let holePoints = GMSMutablePath()
+                    let holePointsArray = FREArray(freItem)
                     for j in 0..<holePointsArray.length {
-                        if let point = CLLocationCoordinate2D.init(holePointsArray[j]) {
+                        if let point = CLLocationCoordinate2D(holePointsArray[j]) {
                             holePoints.add(point)
                         }
                     }
@@ -85,27 +85,27 @@ public extension GMSPolygon {
                 self.zIndex = Int32(z)
             }
         case "strokeColor":
-            self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
         case "fillColor":
-            self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
+            self.fillColor = UIColor(freObjectARGB: value) ?? self.fillColor
         case "points":
-            let points = GMSMutablePath.init()
-            let pointsArray = FREArray.init(value)
+            let points = GMSMutablePath()
+            let pointsArray = FREArray(value)
             for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                if let point = CLLocationCoordinate2D(pointsArray[i]) {
                     points.add(point)
                 }
             }
             self.path = points
         case "holes":
             var holes: [GMSMutablePath] = []
-            let holesArray = FREArray.init(value)
+            let holesArray = FREArray(value)
             for i in 0..<holesArray.length {
                 if let freItem = holesArray[i] {
-                    let holePoints = GMSMutablePath.init()
-                    let holePointsArray = FREArray.init(freItem)
+                    let holePoints = GMSMutablePath()
+                    let holePointsArray = FREArray(freItem)
                     for j in 0..<holePointsArray.length {
-                        if let point = CLLocationCoordinate2D.init(holePointsArray[j]) {
+                        if let point = CLLocationCoordinate2D(holePointsArray[j]) {
                             holePoints.add(point)
                         }
                     }

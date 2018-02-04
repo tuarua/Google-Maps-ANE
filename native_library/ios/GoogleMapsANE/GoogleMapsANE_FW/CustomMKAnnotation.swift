@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import MapKit
 import UIKit
 
 class CustomMKAnnotation: NSObject, MKAnnotation {
-    var identifier: String = UUID.init().uuidString
+    var identifier: String = UUID().uuidString
     var color: UIColor?
     var icon: UIImage?
     var userData: Any?
@@ -33,13 +33,13 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
 
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
-            let coordinate = CLLocationCoordinate2D.init(rv["coordinate"]),
+            let coordinate = CLLocationCoordinate2D(rv["coordinate"]),
             let title = String(rv["title"]),
             let snippet = String(rv["snippet"]),
             let isDraggable = Bool(rv["isDraggable"]),
             let isTappable = Bool(rv["isTappable"]),
             let alpha = CGFloat(rv["alpha"]),
-            let color = UIColor.init(freObjectARGB: rv["color"])
+            let color = UIColor(freObjectARGB: rv["color"])
             else {
                 return nil
         }
@@ -55,7 +55,7 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
         self.color = color
         self.subtitle = snippet
         if let icon = rv["icon"],
-            let img = UIImage.init(freObject: icon) {
+            let img = UIImage(freObject: icon) {
             self.icon = img
         }
     }
@@ -63,7 +63,7 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
     func setProp(name: String, value: FREObject) {
         switch name {
         case "coordinate":
-            self.coordinate = CLLocationCoordinate2D.init(value) ?? self.coordinate
+            self.coordinate = CLLocationCoordinate2D(value) ?? self.coordinate
         case "title":
             self.title = String(value) ?? self.title
         case "snippet":
@@ -73,11 +73,11 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
         case "color":
-            if let color = UIColor.init(freObjectARGB: value) {
+            if let color = UIColor(freObjectARGB: value) {
                 self.color = color
             }
         case "icon":
-            if let img = UIImage.init(freObject: value) {
+            if let img = UIImage(freObject: value) {
                 self.icon = img
             }
         case "alpha":

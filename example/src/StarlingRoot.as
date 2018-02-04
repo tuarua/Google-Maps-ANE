@@ -16,6 +16,7 @@ import com.tuarua.googlemaps.StrokePattern;
 import com.tuarua.googlemaps.StrokePatternType;
 import com.tuarua.googlemaps.permissions.PermissionEvent;
 import com.tuarua.googlemaps.permissions.PermissionStatus;
+import com.tuarua.location.Address;
 import com.tuarua.location.LocationEvent;
 
 import flash.desktop.NativeApplication;
@@ -118,6 +119,7 @@ public class StarlingRoot extends Sprite {
         //mapView.addEventListener(GoogleMapsEvent.ON_CAMERA_MOVE, onCameraMove);
         mapView.addEventListener(GoogleMapsEvent.ON_CAMERA_IDLE, onCameraIdle);
         mapView.addEventListener(LocationEvent.LOCATION_UPDATED, onLocationUpdated);
+        mapView.addEventListener(LocationEvent.ON_ADDRESS_LOOKUP, onAddressLookup);
         mapView.addEventListener(PermissionEvent.ON_PERMISSION_STATUS, onPermissionStatus);
         mapView.visible = true; //map is invisible by default when inited
 
@@ -162,6 +164,19 @@ public class StarlingRoot extends Sprite {
 
         stage.addEventListener(Event.RESIZE, onResize);
 
+    }
+
+    private function onAddressLookup(event:LocationEvent):void {
+        var coord:Coordinate = event.coordinate;
+        var address:Address = event.address;
+        if (coord && address) {
+            trace(coord.latitude,coord.longitude, " as address: ", address.formattedAddress);
+            trace(address.name);
+            trace(address.street);
+            trace(address.city);
+            trace(address.zip);
+            trace(address.country);
+        }
     }
 
     private function onMapsLoaded(event:GoogleMapsEvent):void {
@@ -306,7 +321,7 @@ public class StarlingRoot extends Sprite {
     }
 
     private function onLocationUpdated(event:LocationEvent):void {
-        var coordinate:Coordinate = event.params as Coordinate;
+        var coordinate:Coordinate = event.coordinate;
         trace("user found at", coordinate.latitude, coordinate.longitude);
         var cameraPosition:CameraPosition = new CameraPosition();
         cameraPosition.centerAt = coordinate;
@@ -362,8 +377,13 @@ public class StarlingRoot extends Sprite {
             circle.strokeColor = ColorARGB.GREEN;
             circle.strokePattern = new StrokePattern(StrokePatternType.DOTTED, 100, 100);
             mapView.addCircle(circle);
+
+            mapView.reverseGeocodeLocation(new Coordinate(51.5033640, -0.1276250));
+            //mapView.forwardGeocodeLocation("Dalvik, Iceland");
+
         }
     }
+
 
     private function onScrollBy(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn);

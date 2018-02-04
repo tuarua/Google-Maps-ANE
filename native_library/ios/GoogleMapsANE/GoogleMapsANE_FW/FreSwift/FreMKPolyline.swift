@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@
 import FreSwift
 import MapKit
 
-public extension CustomMKPolyline {
+extension CustomMKPolyline {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
             let width = CGFloat(rv["width"]),
-            let color = UIColor.init(freObjectARGB: rv["color"])
+            let color = UIColor(freObjectARGB: rv["color"])
             
             else {
                 return nil
         }
-        let identifier = UUID.init().uuidString
+        let identifier = UUID().uuidString
         var points: [CLLocationCoordinate2D] = []
         if let pointsFre = rv["points"] {
-            let pointsArray = FREArray.init(pointsFre)
+            let pointsArray = FREArray(pointsFre)
             for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                if let point = CLLocationCoordinate2D(pointsArray[i]) {
                     points.append(point)
                 }
             }
@@ -47,9 +47,9 @@ public extension CustomMKPolyline {
                 return nil
         }
         var points: [CLLocationCoordinate2D] = []
-        let pointsArray = FREArray.init(rv)
+        let pointsArray = FREArray(rv)
         for i in 0..<pointsArray.length {
-            if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+            if let point = CLLocationCoordinate2D(pointsArray[i]) {
                 points.append(point)
             }
         }
@@ -63,7 +63,7 @@ public extension CustomMKPolyline {
         case "width":
             self.width = CGFloat(value) ?? self.width
         case "color":
-            self.color = UIColor.init(freObjectARGB: value) ?? self.color
+            self.color = UIColor(freObjectARGB: value) ?? self.color
         default:
             break
         }

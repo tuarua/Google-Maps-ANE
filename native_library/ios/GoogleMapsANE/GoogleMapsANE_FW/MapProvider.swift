@@ -14,7 +14,8 @@
  *  limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-
-@interface GoogleMapsANE_LIB : NSObject
-@end
+import Foundation
+public enum MapProvider: Int {
+    case google
+    case apple
+}

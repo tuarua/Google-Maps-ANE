@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ public extension GMSPolyline {
             let zIndex = Int(rv["zIndex"]),
             let isTappable = Bool(rv["isTappable"]),
             let strokeWidth = CGFloat(rv["width"]),
-            let strokeColor = UIColor.init(freObjectARGB: rv["color"])
+            let strokeColor = UIColor(freObjectARGB: rv["color"])
             else {
                 return nil
         }
@@ -35,13 +35,13 @@ public extension GMSPolyline {
         self.strokeColor = strokeColor
         self.zIndex = Int32(zIndex)
         self.isTappable = isTappable
-        self.userData = UUID.init().uuidString
+        self.userData = UUID().uuidString
         
-        let points = GMSMutablePath.init()
+        let points = GMSMutablePath()
         if let pointsFre = rv["points"] {
-            let pointsArray = FREArray.init(pointsFre)
+            let pointsArray = FREArray(pointsFre)
             for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                if let point = CLLocationCoordinate2D(pointsArray[i]) {
                     points.add(point)
                 } 
             }
@@ -62,12 +62,12 @@ public extension GMSPolyline {
                 self.zIndex = Int32(z)
             }
         case "color":
-            self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
         case "points":
-            let points = GMSMutablePath.init()
-            let pointsArray = FREArray.init(value)
+            let points = GMSMutablePath()
+            let pointsArray = FREArray(value)
             for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                if let point = CLLocationCoordinate2D(pointsArray[i]) {
                     points.add(point)
                 }
             }

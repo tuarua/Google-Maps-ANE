@@ -23,6 +23,8 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.GET_PERMISSIONS
+import android.location.Address
+import android.location.Geocoder
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import com.adobe.fre.FREContext
@@ -33,10 +35,12 @@ import com.google.gson.Gson
 import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.display.toFREObject
 import com.tuarua.frekotlin.geom.Rect
+import com.tuarua.googlemapsane.data.AddressLookup
 import com.tuarua.googlemapsane.data.Settings
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.IOException
 
 @Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST")
 class KotlinController : FreKotlinMainController {
@@ -65,6 +69,120 @@ class KotlinController : FreKotlinMainController {
     fun showUserLocation(ctx: FREContext, argv: FREArgv): FREObject? {
         if (permissionsGranted) {
             mapController?.showUserLocation()
+        }
+        return null
+    }
+
+    fun reverseGeocodeLocation(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val coordinate = LatLng(argv[0])
+            val appActivity = ctx.activity
+            if (appActivity != null) {
+                val geocoder = Geocoder(appActivity)
+                // https://developer.android.com/reference/android/location/Geocoder.html
+                // https://developer.android.com/reference/android/location/Address.html
+                val addresses: List<Address>?
+                val address: Address?
+                try {
+                    addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
+                    if (null != addresses && !addresses.isEmpty()) {
+                        address = addresses[0]
+                        val name: String? = if (address.subThoroughfare != null) {
+                            """${address.subThoroughfare} ${address.thoroughfare}"""
+                        } else {
+                            address.thoroughfare
+                        }
+
+                        var formattedAddress = ""
+                        if (address.maxAddressLineIndex > 0) {
+                            for (i in 0 until address.maxAddressLineIndex) {
+                                formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
+                            }
+                        } else {
+                            formattedAddress = name + "\n"
+                        }
+
+                        formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
+
+                        sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
+                                AddressLookup(
+                                        coordinate.latitude,
+                                        coordinate.longitude,
+                                        formattedAddress,
+                                        name,
+                                        address.thoroughfare,
+                                        address.locality,
+                                        address.postalCode,
+                                        address.countryName
+
+                                ))
+                        )
+                    }
+                } catch (e: IOException) {
+                    sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+                }
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
+        }
+        return null
+    }
+
+    fun forwardGeocodeLocation(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        try {
+            val addressSearch = String(argv[0])
+            val appActivity = ctx.activity
+            if (appActivity != null) {
+                val geocoder = Geocoder(appActivity)
+                val addresses: List<Address>?
+                val address: Address?
+                try {
+                    addresses = geocoder.getFromLocationName(addressSearch,1)
+                    if (null != addresses && !addresses.isEmpty()) {
+                        address = addresses[0]
+                        val name: String? = if (address.subThoroughfare != null) {
+                            """${address.subThoroughfare} ${address.thoroughfare}"""
+                        } else {
+                            address.thoroughfare
+                        }
+
+                        var formattedAddress = ""
+                        if (address.maxAddressLineIndex > 0) {
+                            for (i in 0 until address.maxAddressLineIndex) {
+                                formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
+                            }
+                        } else {
+                            formattedAddress = name + "\n"
+                        }
+
+                        formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
+
+                        sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
+                                AddressLookup(
+                                        address.latitude,
+                                        address.longitude,
+                                        formattedAddress,
+                                        name,
+                                        address.thoroughfare,
+                                        address.locality,
+                                        address.postalCode,
+                                        address.countryName
+
+                                ))
+                        )
+                    }
+                } catch (e: IOException) {
+                    sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+                }
+            }
+        } catch (e: FreException) {
+            return e.getError(Thread.currentThread().stackTrace)
+        } catch (e: Exception) {
+            return FreException(e).getError(Thread.currentThread().stackTrace)
         }
         return null
     }

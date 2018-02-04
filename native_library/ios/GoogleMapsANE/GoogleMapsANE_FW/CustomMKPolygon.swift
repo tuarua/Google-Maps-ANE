@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import Foundation
 import MapKit
 import UIKit
 
-open class CustomMKPolygon: MKPolygon {
+internal class CustomMKPolygon: MKPolygon {
     var identifier: String = ""
     var strokeWidth: CGFloat = 1.0
     var strokeColor: UIColor?
@@ -32,7 +32,7 @@ open class CustomMKPolygon: MKPolygon {
         }
         var holePolygons = [MKPolygon]()
         for hole in holes {
-            holePolygons.append(MKPolygon.init(coordinates: hole, count: hole.count))
+            holePolygons.append(MKPolygon(coordinates: hole, count: hole.count))
         }
         
         self.init(coordinates: &coordinates, count: points.count, interiorPolygons: holePolygons)

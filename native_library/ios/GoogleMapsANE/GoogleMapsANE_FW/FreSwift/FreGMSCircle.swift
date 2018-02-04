@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,13 +21,13 @@ import MapKit
 public extension GMSCircle {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
-        let center = CLLocationCoordinate2D.init(rv["center"]),
+        let center = CLLocationCoordinate2D(rv["center"]),
         let radius = Double(rv["radius"]),
         let isTappable = Bool(rv["isTappable"]),
         let zIndex = Int(rv["zIndex"]),
         let strokeWidth = CGFloat(rv["strokeWidth"]),
-        let strokeColor = UIColor.init(freObjectARGB: rv["strokeColor"]),
-        let fillColor = UIColor.init(freObjectARGB: rv["fillColor"])
+        let strokeColor = UIColor(freObjectARGB: rv["strokeColor"]),
+        let fillColor = UIColor(freObjectARGB: rv["fillColor"])
         else {
             return nil
         }
@@ -37,7 +37,7 @@ public extension GMSCircle {
         self.fillColor = fillColor
         self.zIndex = Int32(zIndex)
         self.isTappable = isTappable
-        self.userData = UUID.init().uuidString
+        self.userData = UUID().uuidString
         
     }
     
@@ -56,9 +56,9 @@ public extension GMSCircle {
                 self.zIndex = Int32(z)
             }
         case "strokeColor":
-            self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
         case "fillColor":
-            self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
+            self.fillColor = UIColor(freObjectARGB: value) ?? self.fillColor
         default:
             break
         }

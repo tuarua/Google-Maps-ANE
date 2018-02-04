@@ -1,6 +1,7 @@
 ### 1.3.0
 - iOS: SwiftLint
 - Android: Updated to FreKotlin 1.1.0
+- AND/iOS: added reverseGeocodeLocation, forwardGeocodeLocation methods
 
 ### 1.2.0
 - iOS: Updated to FreSwift 2.2.0

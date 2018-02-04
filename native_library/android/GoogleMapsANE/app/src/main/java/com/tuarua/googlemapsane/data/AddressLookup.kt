@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018 Tua Rua Ltd.
+ *  Copyright 2017 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,7 +14,14 @@
  *  limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
+package com.tuarua.googlemapsane.data
 
-@interface GoogleMapsANE_LIB : NSObject
-@end
+data class AddressLookup (val latitude: Double,
+                          val longitude: Double,
+                          val formattedAddress:String? = null,
+                          val name:String? = null,
+                          val street:String? = null,
+                          val city:String? = null,
+                          val zip:String? = null,
+                          val country:String? = null
+)

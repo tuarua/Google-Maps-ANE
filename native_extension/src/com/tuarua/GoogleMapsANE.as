@@ -461,6 +461,28 @@ public class GoogleMapsANE extends EventDispatcher {
 
     /**
      *
+     * @param coordinate
+     *
+     */
+    public function reverseGeocodeLocation(coordinate:Coordinate):void {
+        if (safetyCheck()) {
+            GoogleMapsANEContext.context.call("reverseGeocodeLocation", coordinate);
+        }
+    }
+
+    /**
+     *
+     * @param addressString
+     *
+     */
+    public function forwardGeocodeLocation(addressString:String):void {
+        if (safetyCheck()) {
+            GoogleMapsANEContext.context.call("forwardGeocodeLocation", addressString);
+        }
+    }
+
+    /**
+     *
      * @return whether we have inited the Google Maps API
      *
      */

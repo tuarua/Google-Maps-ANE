@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -64,6 +64,8 @@ CONTEXT_INIT(TRGMA) {
         ,MAP_FUNCTION(TRGMA, setStyle)
         ,MAP_FUNCTION(TRGMA, setMapType)
         ,MAP_FUNCTION(TRGMA, showUserLocation)
+        ,MAP_FUNCTION(TRGMA, reverseGeocodeLocation)
+        ,MAP_FUNCTION(TRGMA, forwardGeocodeLocation)
         ,MAP_FUNCTION(TRGMA, addEventListener)
         ,MAP_FUNCTION(TRGMA, removeEventListener)
         ,MAP_FUNCTION(TRGMA, zoomIn)

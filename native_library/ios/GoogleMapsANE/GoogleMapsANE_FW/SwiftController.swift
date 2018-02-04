@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,26 +19,17 @@ import CoreImage
 import GoogleMaps
 import FreSwift
 
-public class SwiftController: NSObject, FreSwiftMainController, CLLocationManagerDelegate {
+public class SwiftController: NSObject, FreSwiftMainController {
     public var TAG: String? = "SwiftController"
     public var context: FreContextSwift!
     public var functionsToSet: FREFunctionMap = [:]
-    private var locationManager = CLLocationManager()
-    private var currentLocation: CLLocation?
-    private var userLocation: CLLocation?
+    private var locationController: LocationController!
     private var mapControllerGMS: GMSMapController?
     private var mapControllerMK: MKMapController?
     private var settings: Settings?
     private var asListeners: [String] = []
     private var listenersAddedToMapC: Bool = false
     private var isAdded: Bool = false
-    private var permissionsGranted: Bool = false
-
-    public enum MapProvider: Int {
-        case google
-        case apple
-    }
-
     private var mapProvider: MapProvider = MapProvider.google
 
     // Must have this function. It exposes the methods to our entry ObjC.
@@ -69,6 +60,8 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         functionsToSet["\(prefix)setStyle"] = setStyle
         functionsToSet["\(prefix)setMapType"] = setMapType
         functionsToSet["\(prefix)showUserLocation"] = showUserLocation
+        functionsToSet["\(prefix)reverseGeocodeLocation"] = reverseGeocodeLocation
+        functionsToSet["\(prefix)forwardGeocodeLocation"] = forwardGeocodeLocation
         functionsToSet["\(prefix)addEventListener"] = addEventListener
         functionsToSet["\(prefix)removeEventListener"] = removeEventListener
         functionsToSet["\(prefix)zoomIn"] = zoomIn
@@ -145,8 +138,8 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         let w = wFre * Int(UIScreen.main.scale)
         let h = hFre * Int(UIScreen.main.scale)
         
-        mapControllerGMS?.capture(captureDimensions: CGRect.init(x: x, y: y, width: w, height: h))
-        mapControllerMK?.capture(captureDimensions: CGRect.init(x: x, y: y, width: w, height: h))
+        mapControllerGMS?.capture(captureDimensions: CGRect(x: x, y: y, width: w, height: h))
+        mapControllerMK?.capture(captureDimensions: CGRect(x: x, y: y, width: w, height: h))
         
         return nil
     }
@@ -162,12 +155,12 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
     
     private func getCaptureImage(cgImage: CGImage, captureDimensions: CGRect) -> FREObject? {
         do {
-            if let freObject = try FREObject.init(className: "flash.display.BitmapData",
+            if let freObject = try FREObject(className: "flash.display.BitmapData",
                                                   args: cgImage.width, cgImage.height, false),
-                let destBmd = try FREObject.init(className: "flash.display.BitmapData",
+                let destBmd = try FREObject(className: "flash.display.BitmapData",
                                                  args: captureDimensions.width, captureDimensions.height, false) {
                 
-                let asBitmapData = FreBitmapDataSwift.init(freObject: freObject)
+                let asBitmapData = FreBitmapDataSwift(freObject: freObject)
                 defer {
                     asBitmapData.releaseData()
                 }
@@ -176,8 +169,8 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
                     try asBitmapData.setPixels(cgImage: cgImage)
                     asBitmapData.releaseData()
                     
-                    let rect = FreRectangleSwift.init(value: captureDimensions)
-                    let pt = FrePointSwift.init(value: CGPoint.zero)
+                    let rect = FreRectangleSwift(value: captureDimensions)
+                    let pt = FrePointSwift(value: CGPoint.zero)
                     if let bmd = asBitmapData.rawValue, let sourceRect = rect.rawValue, let destPoint = pt.rawValue {
                         _ = try destBmd.call(method: "copyPixels", args: bmd, sourceRect, destPoint)
                         return destBmd
@@ -210,10 +203,10 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         }
         if mapProvider == .apple,
             let mvc = mapControllerMK,
-            let circle = CustomMKCircle.init(argv[0]) {
+            let circle = CustomMKCircle(argv[0]) {
             mvc.addCircle(circle: circle)
             return circle.identifier.toFREObject()
-        } else if let mvc = mapControllerGMS, let circle = GMSCircle.init(argv[0]) {
+        } else if let mvc = mapControllerGMS, let circle = GMSCircle(argv[0]) {
             mvc.addCircle(circle: circle)
             if let id = circle.userData as? String {
                 return id.toFREObject()
@@ -267,10 +260,10 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         }
         if mapProvider == .apple,
             let mvc = mapControllerMK,
-            let polyline = CustomMKPolyline.init(argv[0]) {
+            let polyline = CustomMKPolyline(argv[0]) {
             mvc.addPolyline(polyline: polyline)
             return polyline.identifier.toFREObject()
-        } else if let mvc = mapControllerGMS, let polyline = GMSPolyline.init(argv[0]) {
+        } else if let mvc = mapControllerGMS, let polyline = GMSPolyline(argv[0]) {
             mvc.addPolyline(polyline: polyline)
             if let id = polyline.userData as? String {
                 return id.toFREObject()
@@ -308,10 +301,10 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         }
         if mapProvider == .apple,
             let mvc = mapControllerMK,
-            let polygon = CustomMKPolygon.init(argv[0]) {
+            let polygon = CustomMKPolygon(argv[0]) {
             mvc.addPolygon(polygon: polygon)
             return polygon.identifier.toFREObject()
-        } else if let mvc = mapControllerGMS, let polygon = GMSPolygon.init(argv[0]) {
+        } else if let mvc = mapControllerGMS, let polygon = GMSPolygon(argv[0]) {
             mvc.addPolygon(polygon: polygon)
             if let id = polygon.userData as? String {
                 return id.toFREObject()
@@ -344,14 +337,14 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
 
     func setBounds(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 2,
-              let southWest = CLLocationCoordinate2D.init(argv[0]),
-              let northEast = CLLocationCoordinate2D.init(argv[1]),
+              let southWest = CLLocationCoordinate2D(argv[0]),
+              let northEast = CLLocationCoordinate2D(argv[1]),
               let animates = Bool(argv[2]) else {
             return ArgCountError(message: "setBounds").getError(#file, #line, #column)
         }
-        mapControllerMK?.setBounds(bounds: GMSCoordinateBounds.init(coordinate: southWest, coordinate: northEast),
+        mapControllerMK?.setBounds(bounds: GMSCoordinateBounds(coordinate: southWest, coordinate: northEast),
                                    animates: animates)
-        mapControllerGMS?.setBounds(bounds: GMSCoordinateBounds.init(coordinate: southWest, coordinate: northEast),
+        mapControllerGMS?.setBounds(bounds: GMSCoordinateBounds(coordinate: southWest, coordinate: northEast),
                                     animates: animates)
         return nil
     }
@@ -408,6 +401,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
               let mapProvider = Int(argv[1]) else {
             return ArgCountError(message: "initController").getError(#file, #line, #column)
         }
+        
         self.mapProvider = mapProvider == 0 ? .google : .apple
         if self.mapProvider == .google {
             return GMSServices.provideAPIKey(key).toFREObject()
@@ -421,20 +415,22 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
               let inFRE3 = argv[3], // settings:Settings
               let viewPort = CGRect(argv[0]),
               let zoomLevel = CGFloat(argv[2]),
-              let coordinate = CLLocationCoordinate2D.init(argv[1])
+              let coordinate = CLLocationCoordinate2D(argv[1])
           else {
             return ArgCountError(message: "initMap").getError(#file, #line, #column)
         }
 
-        if let settingsDict = Dictionary.init(inFRE3) {
-            settings = Settings.init(dictionary: settingsDict)
+        if let settingsDict = Dictionary(inFRE3) {
+            settings = Settings(dictionary: settingsDict)
         }
 
+        locationController = LocationController(context: context)
+        
         if self.mapProvider == .google {
-            mapControllerGMS = GMSMapController.init(context: context, coordinate: coordinate,
+            mapControllerGMS = GMSMapController(context: context, coordinate: coordinate,
                                                      zoomLevel: zoomLevel, frame: viewPort, settings: settings)
         } else {
-            mapControllerMK = MKMapController.init(context: context, coordinate: coordinate,
+            mapControllerMK = MKMapController(context: context, coordinate: coordinate,
                                                    zoomLevel: zoomLevel, frame: viewPort, settings: settings)
         }
         return nil
@@ -447,14 +443,14 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
             return ArgCountError(message: "addMarker").getError(#file, #line, #column)
         }
         if self.mapProvider == .google {
-            if let marker = GMSMarker.init(inFRE0) {
+            if let marker = GMSMarker(inFRE0) {
                 mapControllerGMS?.addMarker(marker: marker)
                 if let id = marker.userData as? String {
                     return id.toFREObject()
                 }
             }
         } else {
-            if let marker = CustomMKAnnotation.init(inFRE0) {
+            if let marker = CustomMKAnnotation(inFRE0) {
                 mapControllerMK?.addMarker(marker: marker)
                 if let userData = marker.userData as? String {
                     return userData.toFREObject()
@@ -514,7 +510,7 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
             return ArgCountError(message: "moveCamera").getError(#file, #line, #column)
         }
 
-        let centerAt: CLLocationCoordinate2D? = CLLocationCoordinate2D.init(argv[0])
+        let centerAt: CLLocationCoordinate2D? = CLLocationCoordinate2D(argv[0])
         let zoom: Float? = Float(argv[1])
         let tilt: Double? = Double(argv[2])
         let bearing: Double? = Double(argv[3])
@@ -573,92 +569,41 @@ public class SwiftController: NSObject, FreSwiftMainController, CLLocationManage
         return nil
     }
 
-    public func requestPermissions(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        let requiredKey = "NSLocationAlwaysUsageDescription"
-        var pListDict: NSDictionary?
-        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
-            pListDict = NSDictionary(contentsOfFile: path)
-        }
-        var hasRequiredInfoAddition = false
-        if let dict = pListDict {
-            for key in dict.allKeys {
-                if let k = key as? String, k == requiredKey {
-                    hasRequiredInfoAddition = true
-                    break
-                }
-            }
-        }
-        if hasRequiredInfoAddition {
-            locationManager = CLLocationManager()
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestAlwaysAuthorization()
-            locationManager.delegate = self
-        } else {
-            warning("Please add \(requiredKey) to InfoAdditions in your AIR manifest")
-        }
-        
+    func requestPermissions(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        locationController.requestPermissions()
         return nil
     }
     
-    public func showUserLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        if permissionsGranted {
-            locationManager.requestLocation()
-            if let sttngs = settings {
-                mapControllerMK?.showsUserLocation = sttngs.myLocationEnabled
-                mapControllerGMS?.mapView.settings.myLocationButton = sttngs.myLocationButtonEnabled
-                mapControllerGMS?.mapView.isMyLocationEnabled = sttngs.myLocationEnabled
-            }
-            
-            if let loc = userLocation?.coordinate {
-                mapControllerMK?.moveCamera(centerAt: loc, tilt: nil, bearing: nil, animates: true)
-                mapControllerGMS?.moveCamera(centerAt: loc, zoom: nil, tilt: nil, bearing: nil, animates: true)
-            }
-        } else {
-            warning("No permissions to locate user")
+    func showUserLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        locationController.showUserLocation()
+        if let sttngs = settings {
+            mapControllerMK?.showsUserLocation = sttngs.myLocationEnabled
+            mapControllerGMS?.mapView.settings.myLocationButton = sttngs.myLocationButtonEnabled
+            mapControllerGMS?.mapView.isMyLocationEnabled = sttngs.myLocationEnabled
         }
         return nil
     }
-
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location: CLLocation = locations.last!
-        var props: [String: Any] = Dictionary()
-        props["latitude"] = location.coordinate.latitude
-        props["longitude"] = location.coordinate.longitude
-        let json = JSON(props)
-        sendEvent(name: Constants.LOCATION_UPDATED, value: json.description)
-    }
-
-    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        var props: [String: Any] = Dictionary()
-        props["status"] = status.rawValue
-        switch status {
-        case .restricted:
-            props["status"] = Constants.PERMISSION_RESTRICTED
-        case .notDetermined:
-            props["status"] = Constants.PERMISSION_NOT_DETERMINED
-        case .denied:
-            props["status"] = Constants.PERMISSION_DENIED
-        case .authorizedAlways:
-            props["status"] = Constants.PERMISSION_ALWAYS
-            permissionsGranted = true
-        case .authorizedWhenInUse:
-            props["status"] = Constants.PERMISSION_WHEN_IN_USE
-            permissionsGranted = true
+    
+    func reverseGeocodeLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let coordinate = CLLocationCoordinate2D(argv[0])
+            else {
+                return ArgCountError(message: "reverseGeocodeLocation").getError(#file, #line, #column)
         }
-        
-        if permissionsGranted {
-            locationManager.startUpdatingLocation()
-            locationManager.distanceFilter = 50
+        locationController.reverseGeocodeLocation(coordinate: coordinate)
+        return nil
+    }
+    
+    func forwardGeocodeLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let address = String(argv[0])
+            else {
+                return ArgCountError(message: "forwardGeocodeLocation").getError(#file, #line, #column)
         }
-        
-        let json = JSON(props)
-        sendEvent(name: Constants.ON_PERMISSION_STATUS, value: json.description)
+        locationController.forwardGeocodeLocation(address: address)
+        return nil
     }
-
-    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        trace("locationManager:didFailWithError", error.localizedDescription) //TODO
-    }
-
+    
     @objc public func dispose() {
         mapControllerMK?.dispose()
         mapControllerGMS?.dispose()

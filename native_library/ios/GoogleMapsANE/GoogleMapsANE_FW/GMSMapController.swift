@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     private var settings: Settings?
     private var zoomLevel: Float = 13.0
     private var container: UIView!
-    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D.init()
+    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     private var viewPort: CGRect = CGRect.zero
     private var markers: [String: GMSMarker] = Dictionary()
     private var circles: [String: GMSCircle] = Dictionary()
@@ -53,7 +53,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
                                               longitude: initialCoordinate.longitude,
                                               zoom: zoomLevel)
         self.view.frame = viewPort
-        container = UIView.init(frame: CGRect.init(origin: CGPoint.zero, size: self.view.frame.size))
+        container = UIView(frame: CGRect(origin: CGPoint.zero, size: self.view.frame.size))
         mapView = GMSMapView.map(withFrame: container.bounds, camera: camera)
         mapView.delegate = self
         if let settings = self.settings {
@@ -80,7 +80,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
             let newImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             if let ui = newImage {
-                if let ci = CIImage.init(image: ui) {
+                if let ci = CIImage(image: ui) {
                     let context = CIContext(options: nil)
                     if let cg = context.createCGImage(ci, from: ci.extent) {
                         if let ret = cg.copy(colorSpace: CGColorSpaceCreateDeviceRGB()) {
@@ -228,7 +228,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         if let z = zoom {
             newZoom = z
         }
-        let camPosition: GMSCameraPosition = GMSCameraPosition.init(target: newCenterAt,
+        let camPosition: GMSCameraPosition = GMSCameraPosition(target: newCenterAt,
                                                                    zoom: newZoom,
                                                                    bearing: newBearing,
                                                                    viewingAngle: newViewingAngle)
@@ -268,7 +268,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     func setViewPort(frame: CGRect) {
         viewPort = frame
         self.view.frame = viewPort
-        container.frame = CGRect.init(origin: CGPoint.zero, size: self.view.frame.size)
+        container.frame = CGRect(origin: CGPoint.zero, size: self.view.frame.size)
         mapView.frame = container.bounds
     }
     

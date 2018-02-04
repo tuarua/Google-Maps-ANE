@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     private var settings: Settings?
     private var zoomLevel: UInt = 13
     private var container: UIView!
-    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D.init()
+    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     private var viewPort: CGRect = CGRect.zero
     private var asListeners: [String] = []
     private var markers: [String: CustomMKAnnotation] = Dictionary()
@@ -221,13 +221,13 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
         tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(didTapAt(_:)))
         self.view.addGestureRecognizer(tapGestureRecogniser!)
 
-        let camera = MKMapCamera.init()
+        let camera = MKMapCamera()
         camera.centerCoordinate = initialCoordinate
 
         self.view.frame = viewPort
-        container = UIView.init(frame: CGRect.init(origin: CGPoint.zero, size: self.view.frame.size))
+        container = UIView(frame: CGRect(origin: CGPoint.zero, size: self.view.frame.size))
 
-        mapView = MKMapView.init(frame: container.bounds)
+        mapView = MKMapView(frame: container.bounds)
         mapView.camera = camera
         mapView.delegate = self
         if let settings = self.settings {
@@ -254,7 +254,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
             let newImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             if let ui = newImage {
-                if let ci = CIImage.init(image: ui) {
+                if let ci = CIImage(image: ui) {
                     let context = CIContext(options: nil)
                     if let cg = context.createCGImage(ci, from: ci.extent) {
                         if let ret = cg.copy(colorSpace: CGColorSpaceCreateDeviceRGB()) {
@@ -274,7 +274,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     func setViewPort(frame: CGRect) {
         viewPort = frame
         self.view.frame = viewPort
-        container.frame = CGRect.init(origin: CGPoint.zero, size: self.view.frame.size)
+        container.frame = CGRect(origin: CGPoint.zero, size: self.view.frame.size)
         mapView.frame = container.bounds
     }
     
@@ -307,13 +307,13 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
     }
 
     func setBounds(bounds: GMSCoordinateBounds, animates: Bool) {
-        let topLeftCoord = CLLocationCoordinate2D.init(latitude: bounds.southWest.latitude,
+        let topLeftCoord = CLLocationCoordinate2D(latitude: bounds.southWest.latitude,
                                                        longitude: bounds.northEast.longitude)
         
-        let bottomRightCoord = CLLocationCoordinate2D.init(latitude: bounds.northEast.latitude,
+        let bottomRightCoord = CLLocationCoordinate2D(latitude: bounds.northEast.latitude,
                                                            longitude: bounds.southWest.longitude)
         
-        var region: MKCoordinateRegion = MKCoordinateRegion.init()
+        var region: MKCoordinateRegion = MKCoordinateRegion()
         
         region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5
         region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5
@@ -359,7 +359,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
             else { return }
         // TODO holes
         if name == "points" {
-            if let replaceWith = CustomMKPolygon.init(value, polygon: polygon) {
+            if let replaceWith = CustomMKPolygon(value, polygon: polygon) {
                 mapView.removeAnnotation(polygon)
                 polygons[id] = replaceWith
                 mapView.add(replaceWith)
@@ -391,7 +391,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
             else { return }
         // if points we have to reinit the polyline
         if name == "points" {
-            if let replaceWith = CustomMKPolyline.init(value, polyline: polyline) {
+            if let replaceWith = CustomMKPolyline(value, polyline: polyline) {
                 trace("replacing with", replaceWith.debugDescription)
                 mapView.removeAnnotation(polyline)
                 polylines[id] = replaceWith
@@ -451,7 +451,7 @@ class MKMapController: UIViewController, MKMapViewDelegate, FreSwiftController {
             newViewingAngle = CGFloat(va)
         }
 
-        let camera = MKMapCamera.init()
+        let camera = MKMapCamera()
         camera.centerCoordinate = newCenterAt
         camera.heading = newBearing
         camera.pitch = newViewingAngle

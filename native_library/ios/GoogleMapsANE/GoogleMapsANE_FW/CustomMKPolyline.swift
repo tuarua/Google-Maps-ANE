@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import Foundation
 import MapKit
 import UIKit
 
-open class CustomMKPolyline: MKPolyline {
+internal class CustomMKPolyline: MKPolyline {
     var identifier: String = ""
     var width: CGFloat = 1.0
     var color: UIColor?
