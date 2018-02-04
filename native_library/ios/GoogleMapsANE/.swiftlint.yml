@@ -12,5 +12,5 @@ type_body_length:
  - 1000 # warning
 
 excluded:
-  - GoogleMapsANE_FW/MapViewExtension.swift
+  - GoogleMapsANE_FW/MapKit/MapViewExtension.swift
   - GoogleMapsANE_FW/SwiftyJSON

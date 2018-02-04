@@ -174,7 +174,7 @@ public class StarlingRoot extends Sprite {
             trace(address.name);
             trace(address.street);
             trace(address.city);
-            trace(address.zip);
+            trace(address.postalCode);
             trace(address.country);
         }
     }
@@ -378,9 +378,14 @@ public class StarlingRoot extends Sprite {
             circle.strokePattern = new StrokePattern(StrokePatternType.DOTTED, 100, 100);
             mapView.addCircle(circle);
 
+        }
+    }
+
+    private function onGeoLookup(event:TouchEvent):void {
+        var touch:Touch = event.getTouch(btn);
+        if (touch != null && touch.phase == TouchPhase.ENDED) {
             mapView.reverseGeocodeLocation(new Coordinate(51.5033640, -0.1276250));
             //mapView.forwardGeocodeLocation("Dalvik, Iceland");
-
         }
     }
 

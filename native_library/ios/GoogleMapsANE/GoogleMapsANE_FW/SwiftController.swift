@@ -19,70 +19,19 @@ import CoreImage
 import GoogleMaps
 import FreSwift
 
-public class SwiftController: NSObject, FreSwiftMainController {
+public class SwiftController: NSObject {
     public var TAG: String? = "SwiftController"
     public var context: FreContextSwift!
     public var functionsToSet: FREFunctionMap = [:]
     private var locationController: LocationController!
-    private var mapControllerGMS: GMSMapController?
-    private var mapControllerMK: MKMapController?
     private var settings: Settings?
     private var asListeners: [String] = []
     private var listenersAddedToMapC: Bool = false
     private var isAdded: Bool = false
     private var mapProvider: MapProvider = MapProvider.google
-
-    // Must have this function. It exposes the methods to our entry ObjC.
-    @objc public func getFunctions(prefix: String) -> [String] {
-
-        functionsToSet["\(prefix)isSupported"] = isSupported
-        functionsToSet["\(prefix)init"] = initController
-        functionsToSet["\(prefix)initMap"] = initMap
-        functionsToSet["\(prefix)addMarker"] = addMarker
-        functionsToSet["\(prefix)setMarkerProp"] = setMarkerProp
-        functionsToSet["\(prefix)removeMarker"] = removeMarker
-        functionsToSet["\(prefix)addGroundOverlay"] = addGroundOverlay
-        functionsToSet["\(prefix)setGroundOverlayProp"] = setGroundOverlayProp
-        functionsToSet["\(prefix)removeGroundOverlay"] = removeGroundOverlay
-        functionsToSet["\(prefix)addCircle"] = addCircle
-        functionsToSet["\(prefix)setCircleProp"] = setCircleProp
-        functionsToSet["\(prefix)removeCircle"] = removeCircle
-        functionsToSet["\(prefix)addPolyline"] = addPolyline
-        functionsToSet["\(prefix)setPolylineProp"] = setPolylineProp
-        functionsToSet["\(prefix)removePolyline"] = removePolyline
-        functionsToSet["\(prefix)addPolygon"] = addPolygon
-        functionsToSet["\(prefix)setPolygonProp"] = setPolygonProp
-        functionsToSet["\(prefix)removePolygon"] = removePolygon
-        functionsToSet["\(prefix)clear"] = clear
-        functionsToSet["\(prefix)setViewPort"] = setViewPort
-        functionsToSet["\(prefix)setVisible"] = setVisible
-        functionsToSet["\(prefix)moveCamera"] = moveCamera
-        functionsToSet["\(prefix)setStyle"] = setStyle
-        functionsToSet["\(prefix)setMapType"] = setMapType
-        functionsToSet["\(prefix)showUserLocation"] = showUserLocation
-        functionsToSet["\(prefix)reverseGeocodeLocation"] = reverseGeocodeLocation
-        functionsToSet["\(prefix)forwardGeocodeLocation"] = forwardGeocodeLocation
-        functionsToSet["\(prefix)addEventListener"] = addEventListener
-        functionsToSet["\(prefix)removeEventListener"] = removeEventListener
-        functionsToSet["\(prefix)zoomIn"] = zoomIn
-        functionsToSet["\(prefix)zoomOut"] = zoomOut
-        functionsToSet["\(prefix)zoomTo"] = zoomTo
-        functionsToSet["\(prefix)scrollBy"] = scrollBy
-        functionsToSet["\(prefix)setAnimationDuration"] = setAnimationDuration
-        functionsToSet["\(prefix)showInfoWindow"] = showInfoWindow
-        functionsToSet["\(prefix)hideInfoWindow"] = hideInfoWindow
-        functionsToSet["\(prefix)setBounds"] = setBounds
-        functionsToSet["\(prefix)requestPermissions"] = requestPermissions
-        functionsToSet["\(prefix)capture"] = capture
-        functionsToSet["\(prefix)getCapture"] = getCapture
-        
-        var arr: [String] = []
-        for key in functionsToSet.keys {
-            arr.append(key)
-        }
-        return arr
-    }
-
+    internal var mapControllerGMS: GMSMapController?
+    internal var mapControllerMK: MKMapController?
+    
     func addEventListener(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
               let type = String(argv[0]) else {
@@ -212,7 +161,6 @@ public class SwiftController: NSObject, FreSwiftMainController {
                 return id.toFREObject()
             }
         }
-
         return nil
     }
     
@@ -457,9 +405,7 @@ public class SwiftController: NSObject, FreSwiftMainController {
                 }
             }
         }
-
         return nil
-
     }
 
     func setMarkerProp(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
@@ -543,14 +489,11 @@ public class SwiftController: NSObject, FreSwiftMainController {
     func setVisible(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
               let visible = Bool(argv[0])
-          else {
-            return ArgCountError(message: "setVisible").getError(#file, #line, #column)
-        }
-        
+            else {
+                return ArgCountError(message: "setVisible").getError(#file, #line, #column) }
         if mapControllerMK == nil && mapControllerGMS == nil {
             return nil
         }
-        
         if !isAdded {
             if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
                 switch mapProvider {
@@ -562,10 +505,8 @@ public class SwiftController: NSObject, FreSwiftMainController {
                 isAdded = true
             }
         }
-        
         mapControllerMK?.view.isHidden = !visible
         mapControllerGMS?.view.isHidden = !visible
-
         return nil
     }
 
@@ -602,29 +543,6 @@ public class SwiftController: NSObject, FreSwiftMainController {
         }
         locationController.forwardGeocodeLocation(address: address)
         return nil
-    }
-    
-    @objc public func dispose() {
-        mapControllerMK?.dispose()
-        mapControllerGMS?.dispose()
-        
-        mapControllerMK = nil
-        mapControllerGMS = nil
-    }
-
-    // Must have this function. It exposes the methods to our entry ObjC.
-    @objc public func callSwiftFunction(name: String, ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        if let fm = functionsToSet[name] {
-            return fm(ctx, argc, argv)
-        }
-        return nil
-    }
-
-    @objc public func setFREContext(ctx: FREContext) {
-        self.context = FreContextSwift.init(freContext: ctx)
-    }
-
-    @objc public func onLoad() {
     }
     
 }
