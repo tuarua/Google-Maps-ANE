@@ -14,20 +14,14 @@
  *  limitations under the License.
  */
 
-import FreSwift
-import Foundation
-import MapKit
-import UIKit
+package com.tuarua.googlemapsane.data
 
-open class CustomMKCircle: MKCircle {
-    var identifier: String = ""
-    var strokeWidth: CGFloat = 1.0
-    var strokeColor: UIColor?
-    var fillColor: UIColor?
-    convenience init(center: CLLocationCoordinate2D, radius: CLLocationDistance, identifier: String) {
-        self.init(center: center, radius: radius)
-        self.identifier = identifier
-    }
-}
-
-
+data class AddressLookup (val latitude: Double,
+                          val longitude: Double,
+                          val formattedAddress:String? = null,
+                          val name:String? = null,
+                          val street:String? = null,
+                          val city:String? = null,
+                          val zip:String? = null,
+                          val country:String? = null
+)

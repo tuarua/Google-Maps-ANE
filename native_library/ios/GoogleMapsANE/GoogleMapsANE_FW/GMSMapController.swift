@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,25 +19,25 @@ import UIKit
 import GoogleMaps
 import FreSwift
 
-class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController {
+class GMSMapController: UIViewController, FreSwiftController {
     internal var TAG: String? = "GMSMapController"
     internal var context: FreContextSwift!
     public var mapView: GMSMapView!
     private var settings: Settings?
     private var zoomLevel: Float = 13.0
     private var container: UIView!
-    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D.init()
+    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     private var viewPort: CGRect = CGRect.zero
-    private var markers: Dictionary<String, GMSMarker> = Dictionary()
-    private var circles: Dictionary<String, GMSCircle> = Dictionary()
-    private var polygons: Dictionary<String, GMSPolygon> = Dictionary()
-    private var polylines: Dictionary<String, GMSPolyline> = Dictionary()
-    private var asListeners:Array<String> = []
-    private var lastCapture:CGImage? = nil
-    private var captureDimensions:CGRect = CGRect.zero
-    private var isMapLoaded:Bool = false
-    
-    convenience init(context: FreContextSwift, coordinate: CLLocationCoordinate2D, zoomLevel: CGFloat, frame: CGRect, settings: Settings?) {
+    private var markers: [String: GMSMarker] = Dictionary()
+    private var circles: [String: GMSCircle] = Dictionary()
+    private var polygons: [String: GMSPolygon] = Dictionary()
+    private var polylines: [String: GMSPolyline] = Dictionary()
+    private var lastCapture: CGImage?
+    private var captureDimensions: CGRect = CGRect.zero
+    internal var isMapLoaded: Bool = false
+    internal var asListeners: [String] = []
+    convenience init(context: FreContextSwift, coordinate: CLLocationCoordinate2D, zoomLevel: CGFloat,
+                     frame: CGRect, settings: Settings?) {
         self.init()
         self.context = context
         self.initialCoordinate = coordinate
@@ -52,7 +52,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
                                               longitude: initialCoordinate.longitude,
                                               zoom: zoomLevel)
         self.view.frame = viewPort
-        container = UIView.init(frame: CGRect.init(origin: CGPoint.zero, size: self.view.frame.size))
+        container = UIView(frame: CGRect(origin: CGPoint.zero, size: self.view.frame.size))
         mapView = GMSMapView.map(withFrame: container.bounds, camera: camera)
         mapView.delegate = self
         if let settings = self.settings {
@@ -71,7 +71,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         sendEvent(name: Constants.ON_READY, value: "")
     }
     
-    func capture(captureDimensions:CGRect) {
+    func capture(captureDimensions: CGRect) {
         self.captureDimensions = captureDimensions
         DispatchQueue.main.async {
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, UIScreen.main.scale )
@@ -79,7 +79,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
             let newImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             if let ui = newImage {
-                if let ci = CIImage.init(image: ui) {
+                if let ci = CIImage(image: ui) {
                     let context = CIContext(options: nil)
                     if let cg = context.createCGImage(ci, from: ci.extent) {
                         if let ret = cg.copy(colorSpace: CGColorSpaceCreateDeviceRGB()) {
@@ -103,7 +103,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    func setMarkerProp(id:String, name: String, value: FREObject) {
+    func setMarkerProp(id: String, name: String, value: FREObject) {
         guard let marker =  markers[id]
             else { return }
         marker.setProp(name: name, value: value)
@@ -120,7 +120,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         mapView.clear()
     }
     
-    func setBounds(bounds: GMSCoordinateBounds, animates: Bool){
+    func setBounds(bounds: GMSCoordinateBounds, animates: Bool) {
         let update = GMSCameraUpdate.fit(bounds)
         updateCamera(update, animates)
     }
@@ -132,13 +132,13 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    func setCircleProp(id:String, name: String, value: FREObject) {
+    func setCircleProp(id: String, name: String, value: FREObject) {
         guard let circle =  circles[id]
             else { return }
         circle.setProp(name: name, value: value)
     }
     
-    func removeCircle(id:String){
+    func removeCircle(id: String) {
         if let circle = circles[id] {
             circle.map = nil
             circles.removeValue(forKey: id)
@@ -152,13 +152,13 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    func setPolygonProp(id:String, name: String, value: FREObject) {
+    func setPolygonProp(id: String, name: String, value: FREObject) {
         guard let polygon =  polygons[id]
             else { return }
         polygon.setProp(name: name, value: value)
     }
     
-    func removePolygon(id:String){
+    func removePolygon(id: String) {
         if let polygon = polygons[id] {
             polygon.map = nil
             polygons.removeValue(forKey: id)
@@ -172,13 +172,13 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         }
     }
     
-    func setPolylineProp(id:String, name: String, value: FREObject) {
+    func setPolylineProp(id: String, name: String, value: FREObject) {
         guard let polyline =  polylines[id]
             else { return }
         polyline.setProp(name: name, value: value)
     }
     
-    func removePolyline(id:String){
+    func removePolyline(id: String) {
         if let polyline = polylines[id] {
             polyline.map = nil
             polylines.removeValue(forKey: id)
@@ -190,7 +190,7 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     }
     
     func removeEventListener(type: String) {
-        asListeners = asListeners.filter( {$0 != type} )
+        asListeners = asListeners.filter({$0 != type})
     }
     
     func zoomIn(animates: Bool) {
@@ -203,13 +203,13 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         updateCamera(update, animates)
     }
     
-    func zoomTo(zoomLevel: CGFloat, animates: Bool){
+    func zoomTo(zoomLevel: CGFloat, animates: Bool) {
         let update = GMSCameraUpdate.zoom(to: Float(zoomLevel))
         updateCamera(update, animates)
     }
     
-    
-    func moveCamera(centerAt: CLLocationCoordinate2D?, zoom: Float?, tilt:Double?, bearing:Double?, animates: Bool) {
+    func moveCamera(centerAt: CLLocationCoordinate2D?, zoom: Float?,
+                    tilt: Double?, bearing: Double?, animates: Bool) {
         let currentCamPosition = mapView.camera
         var newCenterAt = currentCamPosition.target
         var newBearing = currentCamPosition.bearing
@@ -227,7 +227,10 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
         if let z = zoom {
             newZoom = z
         }
-        let camPosition:GMSCameraPosition = GMSCameraPosition.init(target: newCenterAt, zoom: newZoom, bearing: newBearing, viewingAngle: newViewingAngle)
+        let camPosition: GMSCameraPosition = GMSCameraPosition(target: newCenterAt,
+                                                                   zoom: newZoom,
+                                                                   bearing: newBearing,
+                                                                   viewingAngle: newViewingAngle)
         
         let update = GMSCameraUpdate.setCamera(camPosition)
         
@@ -264,140 +267,8 @@ class GMSMapController: UIViewController, GMSMapViewDelegate, FreSwiftController
     func setViewPort(frame: CGRect) {
         viewPort = frame
         self.view.frame = viewPort
-        container.frame = CGRect.init(origin: CGPoint.zero, size: self.view.frame.size)
+        container.frame = CGRect(origin: CGPoint.zero, size: self.view.frame.size)
         mapView.frame = container.bounds
-    }
-    
-    
-    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        if !asListeners.contains(Constants.DID_TAP_AT) {return}
-        var props: Dictionary<String, Any> = Dictionary()
-        props["latitude"] = coordinate.latitude
-        props["longitude"] = coordinate.longitude
-        let json = JSON(props)
-        sendEvent(name: Constants.DID_TAP_AT, value: json.description)
-    }
-    
-    
-    func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
-        if !asListeners.contains(Constants.DID_LONG_PRESS_AT) {return}
-        var props: Dictionary<String, Any> = Dictionary()
-        props["latitude"] = coordinate.latitude
-        props["longitude"] = coordinate.longitude
-        let json = JSON(props)
-        sendEvent(name: Constants.DID_LONG_PRESS_AT, value: json.description)
-    }
-    
-    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-        if (!asListeners.contains(Constants.ON_CAMERA_MOVE)) {return}
-        var props: Dictionary<String, Any> = Dictionary()
-        props["latitude"] = position.target.latitude
-        props["longitude"] = position.target.longitude
-        props["zoom"] = position.zoom
-        props["tilt"] = position.viewingAngle
-        props["bearing"] = position.bearing
-        
-        let json = JSON(props)
-        sendEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
-    }
-    
-    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-        if (!asListeners.contains(Constants.ON_CAMERA_IDLE)) {return}
-        sendEvent(name: Constants.ON_CAMERA_IDLE, value: "")
-    }
-    
-    func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
-        if (!asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED)) {return}
-        var props: Dictionary<String, Any> = Dictionary()
-        props["reason"] = gesture ? 1: 3
-        let json = JSON(props)
-        sendEvent(name: Constants.ON_CAMERA_MOVE_STARTED, value: json.description)
-    }
-    
-    func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_DRAG) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        sendEvent(name: Constants.DID_DRAG, value: identifier)
-    }
-    
-    func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_END_DRAGGING) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        var props: Dictionary<String, Any> = Dictionary()
-        props["id"] = identifier
-        props["latitude"] = marker.position.latitude
-        props["longitude"] = marker.position.longitude
-        let json = JSON(props)
-        sendEvent(name: Constants.DID_END_DRAGGING, value: json.description)
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        if !asListeners.contains(Constants.DID_TAP_MARKER) {return false}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        sendEvent(name: Constants.DID_TAP_MARKER, value: identifier)
-        return false
-    }
-    
-    func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_BEGIN_DRAGGING) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        sendEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
-    }
-    
-    
-    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_TAP_INFO_WINDOW) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        sendEvent(name: Constants.DID_TAP_INFO_WINDOW, value: identifier)
-    }
-    
-    func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        sendEvent(name: Constants.DID_CLOSE_INFO_WINDOW, value: identifier)
-    }
-    
-    func mapView(_ mapView: GMSMapView, didLongPressInfoWindowOf marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        sendEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: identifier)
-    }
-    
-    func mapViewDidFinishTileRendering(_ mapView: GMSMapView) {
-        if !isMapLoaded {
-            sendEvent(name: Constants.ON_LOADED, value: "")
-        }
-        isMapLoaded = true
-        
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTapPOIWithPlaceID placeID: String, name: String, location: CLLocationCoordinate2D) {
-        sendEvent(name: "TRACE", value: "placeID \(placeID.debugDescription) \(name) \(location.latitude) \(location.longitude)")
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
-        sendEvent(name: "TRACE", value: "didTap overlay \(overlay.debugDescription)")
     }
     
     func dispose() {

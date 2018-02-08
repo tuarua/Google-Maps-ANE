@@ -3,6 +3,7 @@ import com.tuarua.googlemaps.Coordinate;
 import com.tuarua.googlemaps.GoogleMapsEvent;
 import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.permissions.PermissionEvent;
+import com.tuarua.location.Address;
 import com.tuarua.location.LocationEvent;
 
 import flash.events.EventDispatcher;
@@ -21,8 +22,10 @@ public class GoogleMapsANEContext {
     public static var circles:Dictionary = new Dictionary();
     public static var polylines:Dictionary = new Dictionary();
     public static var polygons:Dictionary = new Dictionary();
+
     public function GoogleMapsANEContext() {
     }
+
     public static function get context():ExtensionContext {
         if (_context == null) {
             try {
@@ -95,11 +98,31 @@ public class GoogleMapsANEContext {
             case LocationEvent.LOCATION_UPDATED:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    var location:Coordinate = new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude);
-                    GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level, location));
+                    GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level,
+                            new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude)));
                 } catch (e:Error) {
                     trace(e.message);
                 }
+                break;
+            case LocationEvent.ON_ADDRESS_LOOKUP:
+                try {
+                    argsAsJSON = JSON.parse(event.code);
+                    GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level,
+                            new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude),
+                            new Address(
+                                    argsAsJSON.formattedAddress,
+                                    argsAsJSON.name,
+                                    argsAsJSON.street,
+                                    argsAsJSON.city,
+                                    argsAsJSON.zip,
+                                    argsAsJSON.country
+                            )));
+                } catch (e:Error) {
+                    trace(e.message);
+                }
+                break;
+            case LocationEvent.ON_ADDRESS_LOOKUP_ERROR:
+                GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level, null, null, event.code));
                 break;
             case PermissionEvent.ON_PERMISSION_STATUS:
                 try {
@@ -109,10 +132,9 @@ public class GoogleMapsANEContext {
                     trace(e.message);
                 }
                 break;
-
         }
-
     }
+
     public static function dispose():void {
         if (!_context) {
             return;

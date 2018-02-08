@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import FreSwift
 public extension GMSMarker {
     convenience init?(_ freObject: FREObject?) {
        guard let rv = freObject,
-        let coordinate = CLLocationCoordinate2D.init(rv["coordinate"]),
+        let coordinate = CLLocationCoordinate2D(rv["coordinate"]),
             let title = String(rv["title"]),
             let snippet = String(rv["snippet"]),
             let isDraggable = Bool(rv["isDraggable"]),
@@ -29,7 +29,7 @@ public extension GMSMarker {
             let isTappable = Bool(rv["isTappable"]),
             let rotation = CLLocationDegrees(rv["rotation"]),
             let alpha = Float(rv["alpha"]),
-            let color = UIColor.init(freObjectARGB: rv["color"])
+            let color = UIColor(freObjectARGB: rv["color"])
             else {
                 return nil
         }
@@ -42,51 +42,41 @@ public extension GMSMarker {
         self.isTappable = isTappable
         self.rotation = rotation
         self.opacity = alpha
-        self.userData = UUID.init().uuidString
+        self.userData = UUID().uuidString
         
-        if let icon = rv["icon"], let img = UIImage.init(freObject: icon) {
+        if let icon = rv["icon"], let img = UIImage(freObject: icon) {
             self.icon = img
         } else {
             self.icon = GMSMarker.markerImage(with: color)
         }
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "coordinate":
-            self.position = CLLocationCoordinate2D.init(value) ?? self.position
-            break
+            self.position = CLLocationCoordinate2D(value) ?? self.position
         case "title":
             self.title = String(value) ?? self.title
-            break
         case "snippet":
             self.snippet = String(value) ?? self.snippet
-            break
         case "isDraggable":
             self.isDraggable = Bool(value) ?? self.isDraggable
-            break
         case "isFlat":
             self.isFlat = Bool(value) ?? self.isFlat
-            break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
-            break
         case "rotation":
             self.rotation = CLLocationDegrees(value) ?? self.rotation
-            break
         case "color":
-            if let color = UIColor.init(freObjectARGB: value) {
+            if let color = UIColor(freObjectARGB: value) {
                 self.icon = GMSMarker.markerImage(with: color)
             }
-            break
         case "icon":
-            if let img = UIImage.init(freObject: value) {
+            if let img = UIImage(freObject: value) {
                 self.icon = img
             }
-            break
         case "alpha":
             self.opacity = Float(value) ?? self.opacity
-            break
         default:
             break
         }

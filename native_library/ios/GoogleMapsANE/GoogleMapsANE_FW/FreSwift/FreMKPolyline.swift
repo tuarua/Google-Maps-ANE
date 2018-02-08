@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@
 import FreSwift
 import MapKit
 
-public extension CustomMKPolyline {
+extension CustomMKPolyline {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
             let width = CGFloat(rv["width"]),
-            let color = UIColor.init(freObjectARGB: rv["color"])
+            let color = UIColor(freObjectARGB: rv["color"])
             
             else {
                 return nil
         }
-        let identifier = UUID.init().uuidString
-        var points:Array<CLLocationCoordinate2D> = []
+        let identifier = UUID().uuidString
+        var points: [CLLocationCoordinate2D] = []
         if let pointsFre = rv["points"] {
-            let pointsArray = FREArray.init(pointsFre)
+            let pointsArray = FREArray(pointsFre)
             for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+                if let point = CLLocationCoordinate2D(pointsArray[i]) {
                     points.append(point)
                 }
             }
@@ -41,15 +41,15 @@ public extension CustomMKPolyline {
         self.width = width
     }
     
-    convenience init?(_ freObject: FREObject?, polyline:CustomMKPolyline) {
+    convenience init?(_ freObject: FREObject?, polyline: CustomMKPolyline) {
         guard let rv = freObject
             else {
                 return nil
         }
-        var points:Array<CLLocationCoordinate2D> = []
-        let pointsArray = FREArray.init(rv)
+        var points: [CLLocationCoordinate2D] = []
+        let pointsArray = FREArray(rv)
         for i in 0..<pointsArray.length {
-            if let point = CLLocationCoordinate2D.init(pointsArray[i]) {
+            if let point = CLLocationCoordinate2D(pointsArray[i]) {
                 points.append(point)
             }
         }
@@ -58,14 +58,12 @@ public extension CustomMKPolyline {
         self.width = polyline.width
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "width":
             self.width = CGFloat(value) ?? self.width
-            break
         case "color":
-            self.color = UIColor.init(freObjectARGB: value) ?? self.color
-            break
+            self.color = UIColor(freObjectARGB: value) ?? self.color
         default:
             break
         }

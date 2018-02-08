@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,25 +19,27 @@ import Foundation
 import MapKit
 import UIKit
 
-open class CustomMKPolygon: MKPolygon {
+internal class CustomMKPolygon: MKPolygon {
     var identifier: String = ""
     var strokeWidth: CGFloat = 1.0
     var strokeColor: UIColor?
     var fillColor: UIColor?
-    convenience init(points: Array<CLLocationCoordinate2D>, holes: Array<Array<CLLocationCoordinate2D>>, identifier: String) {
+    convenience init(points: [CLLocationCoordinate2D],
+                     holes: [[CLLocationCoordinate2D]], identifier: String) {
         var coordinates = [CLLocationCoordinate2D]()
         for point in points {
             coordinates.append(point)
         }
         var holePolygons = [MKPolygon]()
         for hole in holes {
-            holePolygons.append(MKPolygon.init(coordinates: hole, count: hole.count))
+            holePolygons.append(MKPolygon(coordinates: hole, count: hole.count))
         }
         
         self.init(coordinates: &coordinates, count: points.count, interiorPolygons: holePolygons)
         self.identifier = identifier
     }
-    convenience init(points: Array<CLLocationCoordinate2D>, holePolygons: [MKPolygon]?, identifier: String) {
+    
+    convenience init(points: [CLLocationCoordinate2D], holePolygons: [MKPolygon]?, identifier: String) {
         var coordinates = [CLLocationCoordinate2D]()
         for point in points {
             coordinates.append(point)

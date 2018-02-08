@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,13 +21,13 @@ import MapKit
 public extension GMSCircle {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
-        let center = CLLocationCoordinate2D.init(rv["center"]),
+        let center = CLLocationCoordinate2D(rv["center"]),
         let radius = Double(rv["radius"]),
         let isTappable = Bool(rv["isTappable"]),
         let zIndex = Int(rv["zIndex"]),
         let strokeWidth = CGFloat(rv["strokeWidth"]),
-        let strokeColor = UIColor.init(freObjectARGB: rv["strokeColor"]),
-        let fillColor = UIColor.init(freObjectARGB: rv["fillColor"])
+        let strokeColor = UIColor(freObjectARGB: rv["strokeColor"]),
+        let fillColor = UIColor(freObjectARGB: rv["fillColor"])
         else {
             return nil
         }
@@ -37,35 +37,28 @@ public extension GMSCircle {
         self.fillColor = fillColor
         self.zIndex = Int32(zIndex)
         self.isTappable = isTappable
-        self.userData = UUID.init().uuidString
+        self.userData = UUID().uuidString
         
     }
     
-    func setProp(name:String, value:FREObject) {
+    func setProp(name: String, value: FREObject) {
         switch name {
         case "center":
             self.position = CLLocationCoordinate2D.init(value) ?? self.position
-            break
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
-            break
         case "radius":
             self.radius = Double(value) ?? self.radius
-            break
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
-            break
         case "zIndex":
             if let z = Int(value) {
                 self.zIndex = Int32(z)
             }
-            break
         case "strokeColor":
-            self.strokeColor = UIColor.init(freObjectARGB: value) ?? self.strokeColor
-            break
+            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
         case "fillColor":
-            self.fillColor = UIColor.init(freObjectARGB: value) ?? self.fillColor
-            break
+            self.fillColor = UIColor(freObjectARGB: value) ?? self.fillColor
         default:
             break
         }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Tua Rua Ltd.
+ *  Copyright 2018 Tua Rua Ltd.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -31,12 +31,11 @@ public extension CLLocationCoordinate2D {
     func toFREObject() -> FREObject? {
         var freObject: FREObject? = nil
         do {
-            freObject = try FREObject.init(className: "com.tuarua.googlemaps.Coordinate",
-                                                       args: CGFloat.init(self.latitude), CGFloat.init(self.longitude))
+            freObject = try FREObject(className: "com.tuarua.googlemaps.Coordinate",
+                                                       args: CGFloat(self.latitude), CGFloat(self.longitude))
             
         } catch {
         }
         return freObject
     }
 }
-
