@@ -19,10 +19,9 @@ Download the latest from the [Releases](https://github.com/tuarua/Google-Maps-AN
  
 ## Android
  
-##### Dependencies
-Several dependency ANEs are needed.
-
-From the command line cd into /example and run:
+##### The ANE + Dependencies
+ 
+From the command line cd into /example and run:   
  - OSX
 ````shell
 bash get_android_dependencies.sh
@@ -32,7 +31,7 @@ bash get_android_dependencies.sh
 PS get_android_dependencies.ps1
 `````
 
-They can be downloaded directly from this repo:  
+The dependencies can be downloaded directly from this repo: 
 [https://github.com/tuarua/Android-ANE-Dependancies/tree/master/anes]
  
 ````xml
@@ -76,16 +75,23 @@ You will also need to include the following in your app manifest. Update accordi
     </application>
 </manifest>
 `````
+
+-------------
+
 ## iOS
 
-##### Dependencies
+##### The ANE + Dependencies
+
+N.B. You must use a Mac to build an iOS app using this ANE. Windows is NOT supported.
+
 From the command line cd into /example and run:
 ````shell
 bash get_ios_dependencies.sh
 `````
 
-You will need a Google API key   
-[https://developers.google.com/maps/documentation/ios-sdk/get-api-key]
+
+The folder, ios_dependencies/device/Frameworks, must be packaged as part of your app when creating the ipa. How this is done will depend on the IDE you are using.   
+After the ipa is created unzip it and confirm there is a "Frameworks" folder in the root of the .app package.
 
 You will also need to include the following in your app manifest. Update accordingly.
 ````xml
@@ -101,6 +107,9 @@ You will also need to include the following in your app manifest. Update accordi
     <string>Your message</string>
 ]]></InfoAdditions>
 `````
+
+You will need a Google API key   
+[https://developers.google.com/maps/documentation/ios-sdk/get-api-key]
 
 ### Running on Simulator
 
