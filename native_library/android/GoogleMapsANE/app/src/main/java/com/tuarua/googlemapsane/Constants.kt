@@ -16,32 +16,31 @@
 package com.tuarua.googlemapsane
 
 object Constants {
-    val ON_READY: String = "GoogleMaps.OnReady"
-    val ON_LOADED: String = "GoogleMaps.OnLoaded"
-    val DID_TAP_AT: String = "GoogleMaps.DidTapAt"
-    val DID_LONG_PRESS_AT: String = "GoogleMaps.DidLongPressAt"
-    val DID_TAP_MARKER: String = "GoogleMaps.DidTapMarker"
-    val DID_BEGIN_DRAGGING: String = "GoogleMaps.DidBeginDragging"
-    val DID_END_DRAGGING: String = "GoogleMaps.DidEndDragging"
-    val DID_DRAG: String = "GoogleMaps.DidDrag"
-    val DID_TAP_INFO_WINDOW: String = "GoogleMaps.DidTapInfoWindow"
-    val DID_TAP_GROUND_OVERLAY: String = "GoogleMaps.DidTapGroundOverlay"
-    val DID_TAP_POLYLINE: String = "GoogleMaps.DidTapPolyline"
-    val DID_TAP_POLYGON: String = "GoogleMaps.DidTapPolygon"
-    val DID_CLOSE_INFO_WINDOW: String = "GoogleMaps.DidCloseInfoWindow"
-    val DID_LONG_PRESS_INFO_WINDOW: String = "GoogleMaps.DidLongPressInfoWindow"
-    val ON_CAMERA_MOVE: String = "GoogleMaps.OnCameraMove"
-    val ON_CAMERA_MOVE_STARTED: String = "GoogleMaps.OnCameraMoveStarted"
-    val ON_CAMERA_IDLE: String = "GoogleMaps.OnCameraIdle"
-    val ON_BITMAP_READY: String = "GoogleMaps.OnBitmapReady"
+    const val ON_READY: String = "GoogleMaps.OnReady"
+    const val ON_LOADED: String = "GoogleMaps.OnLoaded"
+    const val DID_TAP_AT: String = "GoogleMaps.DidTapAt"
+    const val DID_LONG_PRESS_AT: String = "GoogleMaps.DidLongPressAt"
+    const val DID_TAP_MARKER: String = "GoogleMaps.DidTapMarker"
+    const val DID_BEGIN_DRAGGING: String = "GoogleMaps.DidBeginDragging"
+    const val DID_END_DRAGGING: String = "GoogleMaps.DidEndDragging"
+    const val DID_DRAG: String = "GoogleMaps.DidDrag"
+    const val DID_TAP_INFO_WINDOW: String = "GoogleMaps.DidTapInfoWindow"
+    const val DID_TAP_GROUND_OVERLAY: String = "GoogleMaps.DidTapGroundOverlay"
+    const val DID_TAP_POLYLINE: String = "GoogleMaps.DidTapPolyline"
+    const val DID_TAP_POLYGON: String = "GoogleMaps.DidTapPolygon"
+    const val DID_CLOSE_INFO_WINDOW: String = "GoogleMaps.DidCloseInfoWindow"
+    const val DID_LONG_PRESS_INFO_WINDOW: String = "GoogleMaps.DidLongPressInfoWindow"
+    const val ON_CAMERA_MOVE: String = "GoogleMaps.OnCameraMove"
+    const val ON_CAMERA_MOVE_STARTED: String = "GoogleMaps.OnCameraMoveStarted"
+    const val ON_CAMERA_IDLE: String = "GoogleMaps.OnCameraIdle"
+    const val ON_BITMAP_READY: String = "GoogleMaps.OnBitmapReady"
 
-    val LOCATION_UPDATED: String = "Location.LocationUpdated"
-    val ON_ADDRESS_LOOKUP: String = "Location.OnAddressLookup"
-    val ON_ADDRESS_LOOKUP_ERROR: String = "Location.OnAddressLookupError"
+    const val LOCATION_UPDATED: String = "Location.LocationUpdated"
+    const val ON_ADDRESS_LOOKUP: String = "Location.OnAddressLookup"
+    const val ON_ADDRESS_LOOKUP_ERROR: String = "Location.OnAddressLookupError"
 
-    val ON_PERMISSION_STATUS: String = "Permission.OnStatus"
-    val PERMISSION_DENIED = 2
-    val PERMISSION_ALWAYS = 3
-    val PERMISSION_SHOW_RATIONALE = 5
-
+    const val ON_PERMISSION_STATUS: String = "Permission.OnStatus"
+    const val PERMISSION_DENIED = 2
+    const val PERMISSION_ALWAYS = 3
+    const val PERMISSION_SHOW_RATIONALE = 5
 }

@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
-        versionName "1.1.0"
+        versionName "1.4.0"
     }
     buildTypes {
         release {
@@ -24,10 +24,10 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$play_services_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "com.google.code.gson:gson:$gson_version"
-    implementation 'com.android.support:support-v4:25.4.0'
+    implementation 'com.android.support:support-v4:27.1.0'
     implementation files('libs/FlashRuntimeExtensions.jar')
     implementation files('libs/runtimeClasses.jar')
-    implementation files('libs/frekotlin-1.2.10.jar')
+    implementation files('libs/frekotlin-1.2.30.jar')
 }
 repositories {
     mavenCentral()

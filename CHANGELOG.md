@@ -1,6 +1,11 @@
+### 1.4.0
+- iOS: Updated to FreSwift 2.3.0
+- AND: Updated Android Support to 27.1.0
+- AND: Updated to FreKotlin 1.2.0
+
 ### 1.3.0
 - iOS: SwiftLint
-- Android: Updated to FreKotlin 1.1.0
+- AND: Updated to FreKotlin 1.1.0
 - AND/iOS: added reverseGeocodeLocation, forwardGeocodeLocation methods
 
 ### 1.2.0
@@ -9,8 +14,8 @@
 
 ### 1.1.0
 - iOS: Updated to FreSwift 2.1.0
-- Android: Updated to FreKotlin 1.0.0
-- Android: Updated to Android Play Services to 11.8.0
+- AND: Updated to FreKotlin 1.0.0
+- AND: Updated to Android Play Services to 11.8.0
 - iOS: Updated to Google Maps SDK 2.5
 - Colors are now ARGB eg 0xFF000000
 - Added support for Polyline

@@ -600,7 +600,7 @@ class MapController(override var context: FREContext?, private var airView: View
     }
 
     fun dispose() {
-        (airView as ViewGroup).removeView(container)
+        airView.removeView(container)
         container = null
         mapView = null
     }

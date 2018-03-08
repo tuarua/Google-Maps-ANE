@@ -141,7 +141,7 @@ class KotlinController : FreKotlinMainController {
                 val addresses: List<Address>?
                 val address: Address?
                 try {
-                    addresses = geocoder.getFromLocationName(addressSearch,1)
+                    addresses = geocoder.getFromLocationName(addressSearch, 1)
                     if (null != addresses && !addresses.isEmpty()) {
                         address = addresses[0]
                         val name: String? = if (address.subThoroughfare != null) {

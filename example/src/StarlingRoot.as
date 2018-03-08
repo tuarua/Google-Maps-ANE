@@ -170,7 +170,7 @@ public class StarlingRoot extends Sprite {
         var coord:Coordinate = event.coordinate;
         var address:Address = event.address;
         if (coord && address) {
-            trace(coord.latitude,coord.longitude, " as address: ", address.formattedAddress);
+            trace(coord.latitude, coord.longitude, " as address: ", address.formattedAddress);
             trace(address.name);
             trace(address.street);
             trace(address.city);
