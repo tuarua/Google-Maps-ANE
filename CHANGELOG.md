@@ -1,4 +1,5 @@
 ### 1.4.0
+- Updated to AIR 29
 - iOS: Updated to FreSwift 2.3.0
 - AND: Updated Android Support to 27.1.0
 - AND: Updated to FreKotlin 1.2.0
