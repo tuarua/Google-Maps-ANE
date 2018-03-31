@@ -1,3 +1,6 @@
+### 1.5.0
+- iOS: Updated to FreSwift 2.4.0
+
 ### 1.4.0
 - Updated to AIR 29
 - iOS: Updated to FreSwift 2.3.0
