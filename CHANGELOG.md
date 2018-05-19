@@ -1,4 +1,9 @@
 ### 1.5.0
+- AND: Updated Android Support to 27.1.0
+- AND: Updated to FreKotlin 1.3.0
+- AND: Updated to Android Play Services to 12.0.1
+
+### 1.5.0
 - iOS: Updated to FreSwift 2.4.0
 
 ### 1.4.0

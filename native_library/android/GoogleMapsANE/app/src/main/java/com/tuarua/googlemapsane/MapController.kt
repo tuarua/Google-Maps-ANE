@@ -32,6 +32,7 @@ import android.support.v4.content.ContextCompat.checkSelfPermission
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.tasks.Task
@@ -189,7 +190,7 @@ class MapController(override var context: FREContext?, private var airView: View
         val ctx = this.context ?: return
         if (checkSelfPermission(ctx.activity.applicationContext, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (fusedLocationProviderClient == null) {
-                fusedLocationProviderClient = FusedLocationProviderClient(ctx.activity.applicationContext)
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(ctx.activity.applicationContext)
             }
             val fusedProvider = fusedLocationProviderClient ?: return
 
@@ -503,11 +504,9 @@ class MapController(override var context: FREContext?, private var airView: View
         var theH = h
 
         mv.snapshot { _bitmap ->
-
             if ((x + theW) > _bitmap.width) {
                 theW = _bitmap.width - x
             }
-
             if ((y + theH) > _bitmap.height) {
                 theH = _bitmap.height - y
             }
@@ -635,8 +634,6 @@ class MapController(override var context: FREContext?, private var airView: View
 
     override val TAG: String
         get() = this::class.java.simpleName
-
-
 
 
 }
