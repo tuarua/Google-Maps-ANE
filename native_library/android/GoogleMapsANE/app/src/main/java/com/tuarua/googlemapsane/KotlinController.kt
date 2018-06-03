@@ -471,9 +471,9 @@ class KotlinController : FreKotlinMainController {
         if (argv[0].type != FreObjectTypeKotlin.NULL) {
             centerAt = LatLng(argv[0])
         }
-        val zoom = Float(argv[1]) ?: return FreConversionException("zoom")
-        val tilt = Float(argv[2]) ?: return FreConversionException("tilt")
-        val bearing = Float(argv[3]) ?: return FreConversionException("bearing")
+        val zoom = Float(argv[1])
+        val tilt = Float(argv[2])
+        val bearing = Float(argv[3])
         val animates = Boolean(argv[4]) == true
         mapController?.moveCamera(centerAt, zoom, tilt, bearing, animates)
         return null
