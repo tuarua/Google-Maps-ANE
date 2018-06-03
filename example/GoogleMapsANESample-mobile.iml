@@ -26,13 +26,13 @@
             <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-location-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-base-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-location-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-maps-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -85,13 +85,13 @@
             <entry library-name="com.android.support.support-v4-27.1.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-location-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-base-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-location-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-maps-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -142,13 +142,13 @@
             <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-location-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-base-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-location-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-12.0.1" library-level="project">
+            <entry library-name="com.google.android.gms.play-services-maps-15.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -206,5 +206,8 @@
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-location-12.0.1" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-base-12.0.1" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-maps-12.0.1" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-base-15.0.1" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-location-15.0.1" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-maps-15.0.1" level="project" />
   </component>
 </module>
