@@ -1,3 +1,9 @@
+### 1.6.0
+- Updated to AIR 30
+- AND: Updated to FreKotlin 1.3.0
+- AND: Updated to Android Play Services to 15.0.1
+- iOS: Updated to Google Maps SDK 2.7
+
 ### 1.5.0
 - iOS: Updated to FreSwift 2.4.0
 

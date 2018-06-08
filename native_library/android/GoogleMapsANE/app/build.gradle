@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        disable 'GradleDependency','UnusedResources'
+    }
 }
 
 dependencies {
@@ -27,7 +31,7 @@ dependencies {
     implementation "com.android.support:support-v4:$support_4_version"
     implementation files('libs/FlashRuntimeExtensions.jar')
     implementation files('libs/runtimeClasses.jar')
-    implementation files('libs/frekotlin-1.2.30.jar')
+    implementation files('libs/frekotlin-1.2.41.jar')
 }
 repositories {
     mavenCentral()

@@ -74,115 +74,101 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun reverseGeocodeLocation(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val coordinate = LatLng(argv[0])
-            val appActivity = ctx.activity
-            if (appActivity != null) {
-                val geocoder = Geocoder(appActivity)
-                // https://developer.android.com/reference/android/location/Geocoder.html
-                // https://developer.android.com/reference/android/location/Address.html
-                val addresses: List<Address>?
-                val address: Address?
-                try {
-                    addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
-                    if (null != addresses && !addresses.isEmpty()) {
-                        address = addresses[0]
-                        val name: String? = if (address.subThoroughfare != null) {
-                            """${address.subThoroughfare} ${address.thoroughfare}"""
-                        } else {
-                            address.thoroughfare
-                        }
-
-                        var formattedAddress = ""
-                        if (address.maxAddressLineIndex > 0) {
-                            for (i in 0 until address.maxAddressLineIndex) {
-                                formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
-                            }
-                        } else {
-                            formattedAddress = name + "\n"
-                        }
-
-                        formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
-
-                        sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
-                                AddressLookup(
-                                        coordinate.latitude,
-                                        coordinate.longitude,
-                                        formattedAddress,
-                                        name,
-                                        address.thoroughfare,
-                                        address.locality,
-                                        address.postalCode,
-                                        address.countryName
-
-                                ))
-                        )
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("reverseGeocodeLocation")
+        val coordinate = LatLng(argv[0])
+        val appActivity = ctx.activity
+        if (appActivity != null) {
+            val geocoder = Geocoder(appActivity)
+            val addresses: List<Address>?
+            val address: Address?
+            try {
+                addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
+                if (null != addresses && !addresses.isEmpty()) {
+                    address = addresses[0]
+                    val name: String? = if (address.subThoroughfare != null) {
+                        """${address.subThoroughfare} ${address.thoroughfare}"""
+                    } else {
+                        address.thoroughfare
                     }
-                } catch (e: IOException) {
-                    sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+
+                    var formattedAddress = ""
+                    if (address.maxAddressLineIndex > 0) {
+                        for (i in 0 until address.maxAddressLineIndex) {
+                            formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
+                        }
+                    } else {
+                        formattedAddress = name + "\n"
+                    }
+
+                    formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
+
+                    sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
+                            AddressLookup(
+                                    coordinate.latitude,
+                                    coordinate.longitude,
+                                    formattedAddress,
+                                    name,
+                                    address.thoroughfare,
+                                    address.locality,
+                                    address.postalCode,
+                                    address.countryName
+
+                            ))
+                    )
                 }
+            } catch (e: IOException) {
+                sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
             }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
         }
         return null
     }
 
     fun forwardGeocodeLocation(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val addressSearch = String(argv[0])
-            val appActivity = ctx.activity
-            if (appActivity != null) {
-                val geocoder = Geocoder(appActivity)
-                val addresses: List<Address>?
-                val address: Address?
-                try {
-                    addresses = geocoder.getFromLocationName(addressSearch, 1)
-                    if (null != addresses && !addresses.isEmpty()) {
-                        address = addresses[0]
-                        val name: String? = if (address.subThoroughfare != null) {
-                            """${address.subThoroughfare} ${address.thoroughfare}"""
-                        } else {
-                            address.thoroughfare
-                        }
-
-                        var formattedAddress = ""
-                        if (address.maxAddressLineIndex > 0) {
-                            for (i in 0 until address.maxAddressLineIndex) {
-                                formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
-                            }
-                        } else {
-                            formattedAddress = name + "\n"
-                        }
-
-                        formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
-
-                        sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
-                                AddressLookup(
-                                        address.latitude,
-                                        address.longitude,
-                                        formattedAddress,
-                                        name,
-                                        address.thoroughfare,
-                                        address.locality,
-                                        address.postalCode,
-                                        address.countryName
-
-                                ))
-                        )
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("forwardGeocodeLocation")
+        val addressSearch = String(argv[0]) ?: return FreConversionException("addressSearch")
+        val appActivity = ctx.activity
+        if (appActivity != null) {
+            val geocoder = Geocoder(appActivity)
+            val addresses: List<Address>?
+            val address: Address?
+            try {
+                addresses = geocoder.getFromLocationName(addressSearch, 1)
+                if (null != addresses && !addresses.isEmpty()) {
+                    address = addresses[0]
+                    val name: String? = if (address.subThoroughfare != null) {
+                        """${address.subThoroughfare} ${address.thoroughfare}"""
+                    } else {
+                        address.thoroughfare
                     }
-                } catch (e: IOException) {
-                    sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+
+                    var formattedAddress = ""
+                    if (address.maxAddressLineIndex > 0) {
+                        for (i in 0 until address.maxAddressLineIndex) {
+                            formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
+                        }
+                    } else {
+                        formattedAddress = name + "\n"
+                    }
+
+                    formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
+
+                    sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
+                            AddressLookup(
+                                    address.latitude,
+                                    address.longitude,
+                                    formattedAddress,
+                                    name,
+                                    address.thoroughfare,
+                                    address.locality,
+                                    address.postalCode,
+                                    address.countryName
+
+                            ))
+                    )
                 }
+            } catch (e: IOException) {
+                sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
             }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
         }
         return null
     }
@@ -205,18 +191,16 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun capture(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 3 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val xFre = Int(argv[0])
-        val yFre = Int(argv[1])
-        val wFre = Int(argv[2])
-        val hFre = Int(argv[3])
-        if (xFre != null && yFre != null && wFre != null && hFre != null) {
-            val x: Int = (xFre * scaleFactor).toInt()
-            val y: Int = (yFre * scaleFactor).toInt()
-            val w: Int = (wFre * scaleFactor).toInt()
-            val h: Int = (hFre * scaleFactor).toInt()
-            mapController?.capture(x, y, w, h)
-        }
+        argv.takeIf { argv.size > 3 } ?: return FreArgException("initMap")
+        val xFre = Int(argv[0]) ?: return FreConversionException("x")
+        val yFre = Int(argv[1]) ?: return FreConversionException("y")
+        val wFre = Int(argv[2]) ?: return FreConversionException("w")
+        val hFre = Int(argv[3]) ?: return FreConversionException("h")
+        val x: Int = (xFre * scaleFactor).toInt()
+        val y: Int = (yFre * scaleFactor).toInt()
+        val w: Int = (wFre * scaleFactor).toInt()
+        val h: Int = (hFre * scaleFactor).toInt()
+        mapController?.capture(x, y, w, h)
         return null
     }
 
@@ -273,36 +257,30 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun initMap(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 4 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val zoomLevel = Float(argv[2]) ?: 12.0F
-            scaleFactor = Double(argv[4]) ?: 1.0
-            val centerAt = LatLng(argv[1])
-            val viewPort = Rect(argv[0])
-            val settingsFre = argv[3] // settings: Settings
-            settings.compassButton = Boolean(settingsFre["compassButton"]) == true
-            settings.indoorPicker = Boolean(settingsFre["indoorPicker"]) == true
-            settings.myLocationButtonEnabled = Boolean(settingsFre["myLocationButtonEnabled"]) == true
-            settings.myLocationEnabled = Boolean(settingsFre["myLocationEnabled"]) == true
-            settings.rotateGestures = Boolean(settingsFre["rotateGestures"]) == true
-            settings.scrollGestures = Boolean(settingsFre["scrollGestures"]) == true
-            settings.tiltGestures = Boolean(settingsFre["tiltGestures"]) == true
-            settings.zoomGestures = Boolean(settingsFre["zoomGestures"]) == true
-            settings.mapToolbarEnabled = Boolean(settingsFre["mapToolbarEnabled"]) == true
-            settings.buildingsEnabled = Boolean(settingsFre["buildingsEnabled"]) == true
+        argv.takeIf { argv.size > 4 } ?: return FreArgException("initMap")
+        val zoomLevel = Float(argv[2]) ?: 12.0F
+        scaleFactor = Double(argv[4]) ?: 1.0
+        val centerAt = LatLng(argv[1])
+        val viewPort = Rect(argv[0]) ?: return FreConversionException("viewPort")
+        val settingsFre = argv[3]
+        settings.compassButton = Boolean(settingsFre["compassButton"]) == true
+        settings.indoorPicker = Boolean(settingsFre["indoorPicker"]) == true
+        settings.myLocationButtonEnabled = Boolean(settingsFre["myLocationButtonEnabled"]) == true
+        settings.myLocationEnabled = Boolean(settingsFre["myLocationEnabled"]) == true
+        settings.rotateGestures = Boolean(settingsFre["rotateGestures"]) == true
+        settings.scrollGestures = Boolean(settingsFre["scrollGestures"]) == true
+        settings.tiltGestures = Boolean(settingsFre["tiltGestures"]) == true
+        settings.zoomGestures = Boolean(settingsFre["zoomGestures"]) == true
+        settings.mapToolbarEnabled = Boolean(settingsFre["mapToolbarEnabled"]) == true
+        settings.buildingsEnabled = Boolean(settingsFre["buildingsEnabled"]) == true
 
-            mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
         return null
     }
 
     fun addEventListener(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val type = String(argv[0]) ?: return null
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("addEventListener")
+        val type = String(argv[0]) ?: return FreConversionException("type")
         if (mapController == null) {
             asListeners.add(type)
         } else {
@@ -319,8 +297,8 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun removeEventListener(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val type = String(argv[0]) ?: return null
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("removeEventListener")
+        val type = String(argv[0]) ?: return FreConversionException("type")
         if (mapController == null) {
             asListeners.remove(type)
         } else {
@@ -335,257 +313,121 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun addCircle(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        return try {
-            val addedCircle: Circle? = mapController?.addCircle(CircleOptions(argv[0]))
-            addedCircle?.id?.toFREObject()
-        } catch (e: FreException) {
-            e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("addCircle")
+        val addedCircle: Circle? = mapController?.addCircle(CircleOptions(argv[0]))
+        return addedCircle?.id?.toFREObject()
     }
 
     fun setCircleProp(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            val name = String(argv[1])
-            val inFRE2 = argv[2]
-            if (id != null && name != null) {
-                mapController?.setCircleProp(id, name, inFRE2)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 2 } ?: return FreArgException("setCircleProp")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        val name = String(argv[1]) ?: return FreConversionException("name")
+        mapController?.setCircleProp(id, name, argv[2])
         return null
     }
 
     fun removeCircle(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            if (id != null) {
-                mapController?.removeCircle(id)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("removeCircle")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        mapController?.removeCircle(id)
         return null
     }
 
     fun addMarker(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        return try {
-            val addedMarker: Marker? = mapController?.addMarker(MarkerOptions(argv[0]))
-            addedMarker?.id?.toFREObject()
-        } catch (e: FreException) {
-            e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("addMarker")
+        val addedMarker: Marker? = mapController?.addMarker(MarkerOptions(argv[0]))
+        return addedMarker?.id?.toFREObject()
     }
 
     fun setMarkerProp(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            val name = String(argv[1])
-            val inFRE2 = argv[2]
-            if (id != null && name != null) {
-                mapController?.setMarkerProp(id, name, inFRE2)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
-
+        argv.takeIf { argv.size > 2 } ?: return FreArgException("setMarkerProp")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        val name = String(argv[1]) ?: return FreConversionException("name")
+        mapController?.setMarkerProp(id, name, argv[2])
         return null
     }
 
     fun removeMarker(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            if (id != null) {
-                mapController?.removeMarker(id)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("removeMarker")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        mapController?.removeMarker(id)
         return null
     }
 
     fun addGroundOverlay(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        return try {
-            val addedOverlay: GroundOverlay? = mapController?.addGroundOverlay(GroundOverlayOptions(argv[0]))
-            addedOverlay?.id?.toFREObject()
-        } catch (e: FreException) {
-            e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("addGroundOverlay")
+        val addedOverlay: GroundOverlay? = mapController?.addGroundOverlay(GroundOverlayOptions(argv[0]))
+        return addedOverlay?.id?.toFREObject()
     }
 
     fun setGroundOverlayProp(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            val name = String(argv[1])
-            val inFRE2 = argv[2]
-            if (id != null && name != null) {
-                mapController?.setGroundOverlayProp(id, name, inFRE2)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
-
+        argv.takeIf { argv.size > 1 } ?: return FreArgException("setGroundOverlayProp")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        val name = String(argv[1]) ?: return FreConversionException("name")
+        mapController?.setGroundOverlayProp(id, name, argv[2])
         return null
     }
 
     fun removeGroundOverlay(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            if (id != null) {
-                mapController?.removeGroundOverlay(id)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("removeGroundOverlay")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        mapController?.removeGroundOverlay(id)
         return null
     }
 
     fun addPolyline(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        return try {
-            val addedPolyline: Polyline? = mapController?.addPolyline(PolylineOptions(argv[0]))
-            addedPolyline?.id?.toFREObject()
-        } catch (e: FreException) {
-            e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("addPolyline")
+        val addedPolyline: Polyline? = mapController?.addPolyline(PolylineOptions(argv[0]))
+        return addedPolyline?.id?.toFREObject()
     }
 
     fun setPolylineProp(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            val name = String(argv[1])
-            val inFRE2 = argv[2]
-            if (id != null && name != null) {
-                mapController?.setPolylineProp(id, name, inFRE2)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
-
+        argv.takeIf { argv.size > 1 } ?: return FreArgException("setPolylineProp")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        val name = String(argv[1]) ?: return FreConversionException("name")
+        mapController?.setPolylineProp(id, name, argv[2])
         return null
     }
 
     fun removePolyline(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            if (id != null) {
-                mapController?.removePolyline(id)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("removePolyline")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        mapController?.removePolyline(id) ?: return FreConversionException("name")
         return null
     }
 
     fun addPolygon(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        return try {
-            trace("addPolygon Polygon")
-            val addedPolygon: Polygon? = mapController?.addPolygon(PolygonOptions(argv[0]))
-            addedPolygon?.id?.toFREObject()
-        } catch (e: FreException) {
-            e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("addPolygon")
+        val addedPolygon: Polygon? = mapController?.addPolygon(PolygonOptions(argv[0]))
+        return addedPolygon?.id?.toFREObject()
     }
 
     fun setPolygonProp(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            val name = String(argv[1])
-            val inFRE2 = argv[2]
-            if (id != null && name != null) {
-                mapController?.setPolygonProp(id, name, inFRE2)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
-
+        argv.takeIf { argv.size > 1 } ?: return FreArgException("setPolygonProp")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        val name = String(argv[1]) ?: return FreConversionException("name")
+        mapController?.setPolygonProp(id, name, argv[2])
         return null
     }
 
     fun removePolygon(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            if (id != null) {
-                mapController?.removePolygon(id)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("removePolygon")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        mapController?.removePolygon(id)
         return null
     }
 
     fun showInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            if (id != null) {
-                mapController?.showInfoWindow(id)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("showInfoWindow")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        mapController?.showInfoWindow(id)
         return null
     }
 
     fun hideInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val id = String(argv[0])
-            if (id != null) {
-                mapController?.hideInfoWindow(id)
-            }
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("hideInfoWindow")
+        val id = String(argv[0]) ?: return FreConversionException("id")
+        mapController?.hideInfoWindow(id)
         return null
     }
 
@@ -606,14 +448,14 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun setViewPort(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("initMap")
         val viewPortFre = Rect(argv[0])
         mapController?.viewPort = scaleViewPort(viewPortFre)
         return null
     }
 
     fun setVisible(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setVisible")
         val visible = Boolean(argv[0]) == true
         if (!isAdded) {
             mapController?.add()
@@ -624,27 +466,21 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun moveCamera(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 4 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            var centerAt: LatLng? = null
-            if (argv[0].type != FreObjectTypeKotlin.NULL) {
-                centerAt = LatLng(argv[0])
-            }
-            val zoom = Float(argv[1])
-            val tilt = Float(argv[2])
-            val bearing = Float(argv[3])
-            val animates = Boolean(argv[4]) == true
-            mapController?.moveCamera(centerAt, zoom, tilt, bearing, animates)
-        } catch (e: FreException) {
-            return e.getError(Thread.currentThread().stackTrace)
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
+        argv.takeIf { argv.size > 4 } ?: return FreArgException("moveCamera")
+        var centerAt: LatLng? = null
+        if (argv[0].type != FreObjectTypeKotlin.NULL) {
+            centerAt = LatLng(argv[0])
         }
+        val zoom = Float(argv[1])
+        val tilt = Float(argv[2])
+        val bearing = Float(argv[3])
+        val animates = Boolean(argv[4]) == true
+        mapController?.moveCamera(centerAt, zoom, tilt, bearing, animates)
         return null
     }
 
     fun setBounds(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        argv.takeIf { argv.size > 2 } ?: return FreArgException("setBounds")
         val southWest = LatLng(argv[0])
         val northEast = LatLng(argv[1])
         val animates = Boolean(argv[2]) == true
@@ -653,64 +489,55 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun zoomIn(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("zoomIn")
         val animates = Boolean(argv[0]) == true
         mapController?.zoomIn(animates)
         return null
     }
 
     fun zoomOut(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("zoomOut")
         val animates = Boolean(argv[0]) == true
         mapController?.zoomOut(animates)
         return null
     }
 
     fun zoomTo(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 1 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val zoomLevel = Float(argv[0])
+        argv.takeIf { argv.size > 1 } ?: return FreArgException("zoomTo")
+        val zoomLevel = Float(argv[0]) ?: return FreConversionException("zoomLevel")
         val animates = Boolean(argv[1]) == true
-        if (zoomLevel != null) {
-            mapController?.zoomTo(zoomLevel, animates)
-        }
+        mapController?.zoomTo(zoomLevel, animates)
         return null
     }
 
     fun scrollBy(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 2 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val x = Float(argv[0])
-        val y = Float(argv[1])
+        argv.takeIf { argv.size > 2 } ?: return FreArgException("scrollBy")
+        val x = Float(argv[0]) ?: return FreConversionException("x")
+        val y = Float(argv[1]) ?: return FreConversionException("y")
         val animates = Boolean(argv[2]) == true
-        if (x != null && y != null) {
-            mapController?.scrollBy(x, y, animates)
-        }
+        mapController?.scrollBy(x, y, animates)
         return null
     }
 
     fun setAnimationDuration(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val duration = Int(argv[0])
-        if (duration != null) {
-            mapController?.animationDuration = duration
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setAnimationDuration")
+        val duration = Int(argv[0]) ?: return FreConversionException("duration")
+        mapController?.animationDuration = duration
         return null
     }
 
     fun setStyle(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        try {
-            val json = String(argv[0])
-            mapController?.style = json
-        } catch (e: Exception) {
-            return FreException(e).getError(Thread.currentThread().stackTrace)
-        }
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setStyle")
+        val json = String(argv[0]) ?: return FreConversionException("json")
+        mapController?.style = json
+
         return null
     }
 
     fun setMapType(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 0 } ?: return ArgCountException().getError(Thread.currentThread().stackTrace)
-        val type = Int(argv[0])
-        if (type is Int) mapController?.mapType = type
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setMapType")
+        val type = Int(argv[0]) ?: return FreConversionException("type")
+        mapController?.mapType = type
         return null
     }
 
