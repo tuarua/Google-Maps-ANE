@@ -14,10 +14,11 @@
  *  limitations under the License.
  */
 
-package com.tuarua.frekotlin
+package com.tuarua.googlemapsane.extensions
 import com.adobe.fre.FREArray
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
+import com.tuarua.frekotlin.*
 import java.util.*
 
 class FrePolygonOptions() : FreObjectKotlin() {
@@ -40,9 +41,12 @@ class FrePolygonOptions() : FreObjectKotlin() {
                     val strokeColor = rv["strokeColor"]?.toColor(true) ?: 0
                     val strokeWidth = Float(rv["strokeWidth"]) ?: 10.0F
                     val strokePatternFre = rv["strokePattern"]
-                    val strokePatternType = Int(strokePatternFre?.get("type")) ?: 0
-                    val strokePatternDashLength = Int(strokePatternFre?.get("dashLength")) ?: 50
-                    val strokePatternGapLength = Int(strokePatternFre?.get("gapLength")) ?: 50
+                    val strokePatternType = Int(strokePatternFre?.get("type"))
+                            ?: 0
+                    val strokePatternDashLength = Int(strokePatternFre?.get("dashLength"))
+                            ?: 50
+                    val strokePatternGapLength = Int(strokePatternFre?.get("gapLength"))
+                            ?: 50
 
                     val dot = Dot()
                     val dash = Dash(strokePatternDashLength.toFloat())

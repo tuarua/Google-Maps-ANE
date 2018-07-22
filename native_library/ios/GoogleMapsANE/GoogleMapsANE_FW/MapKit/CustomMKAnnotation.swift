@@ -55,7 +55,7 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
         self.color = color
         self.subtitle = snippet
         if let icon = rv["icon"],
-            let img = UIImage(freObject: icon) {
+            let img = UIImage(freObject: icon, scale: UIScreen.main.scale, orientation: .up) {
             self.icon = img
         }
     }
@@ -77,7 +77,7 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
                 self.color = color
             }
         case "icon":
-            if let img = UIImage(freObject: value) {
+            if let img = UIImage(freObject: value, scale: UIScreen.main.scale, orientation: .up) {
                 self.icon = img
             }
         case "alpha":

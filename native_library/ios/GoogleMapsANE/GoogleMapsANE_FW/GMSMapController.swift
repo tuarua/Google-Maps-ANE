@@ -68,7 +68,7 @@ class GMSMapController: UIViewController, FreSwiftController {
 
         view.addSubview(container)
         container.addSubview(mapView)
-        sendEvent(name: Constants.ON_READY, value: "")
+        dispatchEvent(name: Constants.ON_READY, value: "")
     }
     
     func capture(captureDimensions: CGRect) {
@@ -84,7 +84,7 @@ class GMSMapController: UIViewController, FreSwiftController {
                     if let cg = context.createCGImage(ci, from: ci.extent) {
                         if let ret = cg.copy(colorSpace: CGColorSpaceCreateDeviceRGB()) {
                             self.lastCapture = ret
-                            self.sendEvent(name: Constants.ON_BITMAP_READY, value: "")
+                            self.dispatchEvent(name: Constants.ON_BITMAP_READY, value: "")
                         }
                     }
                 }

@@ -13,13 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tuarua.frekotlin
+package com.tuarua.googlemapsane.extensions
 
 import android.graphics.Bitmap
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.display.Bitmap
 
 class FreMarkerOptions() : FreObjectKotlin() {
@@ -33,8 +34,8 @@ class FreMarkerOptions() : FreObjectKotlin() {
             val rv = rawValue
             if (rv != null) {
                 val coordinate = LatLng(rv["coordinate"])
-                val title = String(rv["title"])
-                val snippet = String(rv["snippet"])
+                val title = com.tuarua.frekotlin.String(rv["title"])
+                val snippet = com.tuarua.frekotlin.String(rv["snippet"])
                 val draggable = Boolean(rv["isDraggable"]) == true
                 val flat = Boolean(rv["isFlat"]) == true
                 val alpha = Float(rv["alpha"]) ?: 1.0F
@@ -77,11 +78,11 @@ fun Marker.setFlat(value: FREObject?) {
 }
 
 fun Marker.setTitle(value: FREObject?) {
-    this.title = String(value)
+    this.title = com.tuarua.frekotlin.String(value)
 }
 
 fun Marker.setSnippet(value: FREObject?) {
-    this.snippet = String(value)
+    this.snippet = com.tuarua.frekotlin.String(value)
 }
 
 fun Marker.setDraggable(value: FREObject?) {

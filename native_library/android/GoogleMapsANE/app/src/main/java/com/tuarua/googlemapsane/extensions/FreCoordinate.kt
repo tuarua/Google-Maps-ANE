@@ -15,10 +15,11 @@
  */
 @file:Suppress("unused")
 
-package com.tuarua.frekotlin
+package com.tuarua.googlemapsane.extensions
 
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.LatLng
+import com.tuarua.frekotlin.*
 
 class FreCoordinate() : FreObjectKotlin() {
     private var TAG = "com.tuarua.FreCoordinate"
@@ -34,28 +35,8 @@ class FreCoordinate() : FreObjectKotlin() {
     override val value: LatLng
         @Throws(FreException::class)
         get() {
-            var lat = 0.0
-            var lng = 0.0
-
-            val rv = rawValue
-            if (rv == null) {
-                return LatLng(lat, lng)
-            } else {
-                try {
-                    val latFre = Double(rv["latitude"])
-                    val lngFre = Double(rv["longitude"])
-                    if (latFre != null && lngFre != null) {
-                        lat = latFre
-                        lng = lngFre
-                    }
-                } catch (e: FreException) {
-                    throw e
-                } catch (e: Exception) {
-                    throw FreException(e)
-                }
-                return LatLng(lat, lng)
-            }
-
+            return LatLng(Double(rawValue?.get("latitude")) ?: 0.0,
+                    Double(rawValue?.get("longitude")) ?: 0.0)
         }
 }
 

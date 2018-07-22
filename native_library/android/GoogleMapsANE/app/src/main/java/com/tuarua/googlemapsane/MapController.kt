@@ -40,6 +40,10 @@ import com.google.gson.Gson
 import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.*
+import com.tuarua.googlemapsane.events.CameraMoveEvent
+import com.tuarua.googlemapsane.events.CameraMoveStartedEvent
+import com.tuarua.googlemapsane.events.MapEvent
+import com.tuarua.googlemapsane.extensions.*
 
 class MapController(override var context: FREContext?, private var airView: ViewGroup, coordinate: LatLng,
                     private var zoomLevel: Float, viewPort: Rect, private var settings: Settings) : FreKotlinController,
@@ -108,11 +112,11 @@ class MapController(override var context: FREContext?, private var airView: View
         if (asListeners.contains(Constants.ON_CAMERA_IDLE)) mv.setOnCameraIdleListener(this)
 
         mv.moveCamera(CameraUpdateFactory.newLatLngZoom(centerAt, zoomLevel))
-        sendEvent(Constants.ON_READY, "")
+        dispatchEvent(Constants.ON_READY, "")
     }
 
     override fun onMapLoaded() {
-        sendEvent(Constants.ON_LOADED, "")
+        dispatchEvent(Constants.ON_LOADED, "")
     }
 
     fun addEventListener(type: String) {
@@ -195,13 +199,13 @@ class MapController(override var context: FREContext?, private var airView: View
             val fusedProvider = fusedLocationProviderClient ?: return
 
             val locationResult = fusedProvider.lastLocation
-            locationResult.addOnCompleteListener(ctx.activity, { task: Task<Location> ->
+            locationResult.addOnCompleteListener(ctx.activity) { task: Task<Location> ->
                 if (task.isSuccessful) {
                     mv.isMyLocationEnabled = settings.myLocationEnabled
                     mv.uiSettings?.isMyLocationButtonEnabled = settings.myLocationButtonEnabled
                     val lastKnownLocation = task.result
                     if (lastKnownLocation != null) {
-                        sendEvent(Constants.LOCATION_UPDATED, gson.toJson(MapEvent(
+                        dispatchEvent(Constants.LOCATION_UPDATED, gson.toJson(MapEvent(
                                 lastKnownLocation.latitude,
                                 lastKnownLocation.longitude)))
                     }
@@ -209,7 +213,7 @@ class MapController(override var context: FREContext?, private var airView: View
                     mv.isMyLocationEnabled = false
                     mv.uiSettings?.isMyLocationButtonEnabled = false
                 }
-            })
+            }
 
         }
     }
@@ -515,7 +519,7 @@ class MapController(override var context: FREContext?, private var airView: View
                 w > 0 && h > 0 -> Bitmap.createBitmap(_bitmap, x, y, theW, theH)
                 else -> _bitmap
             }
-            sendEvent(Constants.ON_BITMAP_READY, "")
+            dispatchEvent(Constants.ON_BITMAP_READY, "")
         }
     }
 
@@ -526,7 +530,7 @@ class MapController(override var context: FREContext?, private var airView: View
     override fun onMarkerClick(p0: Marker?): Boolean {
         if (!asListeners.contains(Constants.DID_TAP_MARKER)) return false
         val marker = p0 ?: return true
-        sendEvent(Constants.DID_TAP_MARKER, marker.id)
+        dispatchEvent(Constants.DID_TAP_MARKER, marker.id)
         return false
     }
 
@@ -534,7 +538,7 @@ class MapController(override var context: FREContext?, private var airView: View
         if (!asListeners.contains(Constants.DID_END_DRAGGING)) return
         val marker = p0 ?: return
         val coordinate = marker.position
-        sendEvent(Constants.DID_END_DRAGGING, gson.toJson(MapEvent(
+        dispatchEvent(Constants.DID_END_DRAGGING, gson.toJson(MapEvent(
                 coordinate.latitude,
                 coordinate.longitude, marker.id)))
     }
@@ -542,20 +546,20 @@ class MapController(override var context: FREContext?, private var airView: View
     override fun onMarkerDragStart(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_BEGIN_DRAGGING)) return
         val marker = p0 ?: return
-        sendEvent(Constants.DID_BEGIN_DRAGGING, marker.id)
+        dispatchEvent(Constants.DID_BEGIN_DRAGGING, marker.id)
     }
 
     override fun onMarkerDrag(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_DRAG)) return
         val marker = p0 ?: return
-        sendEvent(Constants.DID_DRAG, marker.id) //TODO coordinates ?
+        dispatchEvent(Constants.DID_DRAG, marker.id) //TODO coordinates ?
     }
 
     override fun onMapClick(p0: LatLng?) {
         if (!asListeners.contains(Constants.DID_TAP_AT)) return
         val coordinate = p0 ?: return
 
-        sendEvent(Constants.DID_TAP_AT, gson.toJson(MapEvent(
+        dispatchEvent(Constants.DID_TAP_AT, gson.toJson(MapEvent(
                 coordinate.latitude,
                 coordinate.longitude)))
     }
@@ -563,7 +567,7 @@ class MapController(override var context: FREContext?, private var airView: View
     override fun onMapLongClick(p0: LatLng?) {
         if (!asListeners.contains(Constants.DID_LONG_PRESS_AT)) return
         val coordinate = p0 ?: return
-        sendEvent(Constants.DID_LONG_PRESS_AT, gson.toJson(MapEvent(
+        dispatchEvent(Constants.DID_LONG_PRESS_AT, gson.toJson(MapEvent(
                 coordinate.latitude,
                 coordinate.longitude)))
     }
@@ -571,26 +575,26 @@ class MapController(override var context: FREContext?, private var airView: View
     override fun onInfoWindowClick(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_TAP_INFO_WINDOW)) return
         val marker = p0 ?: return
-        sendEvent(Constants.DID_TAP_INFO_WINDOW, marker.id)
+        dispatchEvent(Constants.DID_TAP_INFO_WINDOW, marker.id)
     }
 
     override fun onInfoWindowClose(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW)) return
         val marker = p0 ?: return
-        sendEvent(Constants.DID_CLOSE_INFO_WINDOW, marker.id)
+        dispatchEvent(Constants.DID_CLOSE_INFO_WINDOW, marker.id)
     }
 
     override fun onInfoWindowLongClick(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW)) return
         val marker = p0 ?: return
-        sendEvent(Constants.DID_LONG_PRESS_INFO_WINDOW, marker.id)
+        dispatchEvent(Constants.DID_LONG_PRESS_INFO_WINDOW, marker.id)
     }
 
     override fun onCameraMove() {
         if (!asListeners.contains(Constants.ON_CAMERA_MOVE)) return
         val mv: GoogleMap = mapView ?: return
 
-        sendEvent(Constants.ON_CAMERA_MOVE, gson.toJson(CameraMoveEvent(
+        dispatchEvent(Constants.ON_CAMERA_MOVE, gson.toJson(CameraMoveEvent(
                 mv.cameraPosition.target.latitude,
                 mv.cameraPosition.target.longitude,
                 mv.cameraPosition.zoom,
@@ -606,30 +610,30 @@ class MapController(override var context: FREContext?, private var airView: View
 
     override fun onCameraMoveStarted(reason: Int) {
         if (!asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED)) return
-        sendEvent(Constants.ON_CAMERA_MOVE_STARTED, gson.toJson(CameraMoveStartedEvent(reason)))
+        dispatchEvent(Constants.ON_CAMERA_MOVE_STARTED, gson.toJson(CameraMoveStartedEvent(reason)))
     }
 
     override fun onCameraIdle() {
         if (!asListeners.contains(Constants.ON_CAMERA_IDLE)) return
-        sendEvent(Constants.ON_CAMERA_IDLE, "")
+        dispatchEvent(Constants.ON_CAMERA_IDLE, "")
     }
 
     override fun onGroundOverlayClick(p0: GroundOverlay?) {
         if (!asListeners.contains(Constants.DID_TAP_GROUND_OVERLAY)) return
         val overlay = p0 ?: return
-        sendEvent(Constants.DID_TAP_GROUND_OVERLAY, overlay.id)
+        dispatchEvent(Constants.DID_TAP_GROUND_OVERLAY, overlay.id)
     }
 
     override fun onPolylineClick(p0: Polyline?) {
         if (!asListeners.contains(Constants.DID_TAP_POLYLINE)) return
         val polyline = p0 ?: return
-        sendEvent(Constants.DID_TAP_POLYLINE, polyline.id)
+        dispatchEvent(Constants.DID_TAP_POLYLINE, polyline.id)
     }
 
     override fun onPolygonClick(p0: Polygon?) {
         if (!asListeners.contains(Constants.DID_TAP_POLYGON)) return
         val polygon = p0 ?: return
-        sendEvent(Constants.DID_TAP_POLYGON, polygon.id)
+        dispatchEvent(Constants.DID_TAP_POLYGON, polygon.id)
     }
 
     override val TAG: String

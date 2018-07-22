@@ -13,10 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tuarua.frekotlin
+package com.tuarua.googlemapsane.extensions
 
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
+import com.tuarua.frekotlin.*
 import java.util.Arrays
 
 
@@ -38,9 +39,12 @@ class FreCircleOptions() : FreObjectKotlin() {
                     val zIndex = Float(rv["zIndex"]) ?: 0.0F
                     val visible = Boolean(rv["visible"]) == true
                     val strokePatternFre = rv["strokePattern"]
-                    val strokePatternType = Int(strokePatternFre?.get("type")) ?: 0
-                    val strokePatternDashLength = Int(strokePatternFre?.get("dashLength")) ?: 50
-                    val strokePatternGapLength = Int(strokePatternFre?.get("gapLength")) ?: 50
+                    val strokePatternType = Int(strokePatternFre?.get("type"))
+                            ?: 0
+                    val strokePatternDashLength = Int(strokePatternFre?.get("dashLength"))
+                            ?: 50
+                    val strokePatternGapLength = Int(strokePatternFre?.get("gapLength"))
+                            ?: 50
                     val strokeColor = rv["strokeColor"]?.toColor(true) ?: 0
                     val fillColor = rv["fillColor"]?.toColor(true) ?: 0
 

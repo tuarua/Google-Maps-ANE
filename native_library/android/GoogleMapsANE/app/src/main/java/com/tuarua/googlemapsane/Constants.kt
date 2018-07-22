@@ -39,8 +39,4 @@ object Constants {
     const val ON_ADDRESS_LOOKUP = "Location.OnAddressLookup"
     const val ON_ADDRESS_LOOKUP_ERROR = "Location.OnAddressLookupError"
 
-    const val ON_PERMISSION_STATUS = "Permission.OnStatus"
-    const val PERMISSION_DENIED = 2
-    const val PERMISSION_ALWAYS = 3
-    const val PERMISSION_SHOW_RATIONALE = 5
 }

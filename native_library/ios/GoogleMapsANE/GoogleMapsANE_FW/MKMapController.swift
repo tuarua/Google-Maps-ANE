@@ -71,7 +71,7 @@ class MKMapController: UIViewController, FreSwiftController {
         props["latitude"] = coordinate.latitude
         props["longitude"] = coordinate.longitude
         let json = JSON(props)
-        sendEvent(name: Constants.DID_TAP_AT, value: json.description)
+        dispatchEvent(name: Constants.DID_TAP_AT, value: json.description)
     }
     
     override func viewDidLoad() {
@@ -102,7 +102,7 @@ class MKMapController: UIViewController, FreSwiftController {
 
         view.addSubview(container)
         container.addSubview(mapView)
-        sendEvent(name: Constants.ON_READY, value: "")
+        dispatchEvent(name: Constants.ON_READY, value: "")
     }
     
     func capture(captureDimensions: CGRect) {
@@ -118,7 +118,7 @@ class MKMapController: UIViewController, FreSwiftController {
                     if let cg = context.createCGImage(ci, from: ci.extent) {
                         if let ret = cg.copy(colorSpace: CGColorSpaceCreateDeviceRGB()) {
                             self.lastCapture = ret
-                            self.sendEvent(name: Constants.ON_BITMAP_READY, value: "")
+                            self.dispatchEvent(name: Constants.ON_BITMAP_READY, value: "")
                         }
                     }
                 }

@@ -24,7 +24,7 @@ extension GMSMapController: GMSMapViewDelegate {
         props["latitude"] = coordinate.latitude
         props["longitude"] = coordinate.longitude
         let json = JSON(props)
-        sendEvent(name: Constants.DID_TAP_AT, value: json.description)
+        dispatchEvent(name: Constants.DID_TAP_AT, value: json.description)
     }
     
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
@@ -33,7 +33,7 @@ extension GMSMapController: GMSMapViewDelegate {
         props["latitude"] = coordinate.latitude
         props["longitude"] = coordinate.longitude
         let json = JSON(props)
-        sendEvent(name: Constants.DID_LONG_PRESS_AT, value: json.description)
+        dispatchEvent(name: Constants.DID_LONG_PRESS_AT, value: json.description)
     }
     
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
@@ -46,12 +46,12 @@ extension GMSMapController: GMSMapViewDelegate {
         props["bearing"] = position.bearing
         
         let json = JSON(props)
-        sendEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
+        dispatchEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
     }
     
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
         if !asListeners.contains(Constants.ON_CAMERA_IDLE) { return }
-        sendEvent(name: Constants.ON_CAMERA_IDLE, value: "")
+        dispatchEvent(name: Constants.ON_CAMERA_IDLE, value: "")
     }
     
     func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
@@ -59,7 +59,7 @@ extension GMSMapController: GMSMapViewDelegate {
         var props: [String: Any] = Dictionary()
         props["reason"] = gesture ? 1: 3
         let json = JSON(props)
-        sendEvent(name: Constants.ON_CAMERA_MOVE_STARTED, value: json.description)
+        dispatchEvent(name: Constants.ON_CAMERA_MOVE_STARTED, value: json.description)
     }
     
     func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
@@ -68,7 +68,7 @@ extension GMSMapController: GMSMapViewDelegate {
         if let _identifier = marker.userData as? String {
             identifier = _identifier
         }
-        sendEvent(name: Constants.DID_DRAG, value: identifier)
+        dispatchEvent(name: Constants.DID_DRAG, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
@@ -82,7 +82,7 @@ extension GMSMapController: GMSMapViewDelegate {
         props["latitude"] = marker.position.latitude
         props["longitude"] = marker.position.longitude
         let json = JSON(props)
-        sendEvent(name: Constants.DID_END_DRAGGING, value: json.description)
+        dispatchEvent(name: Constants.DID_END_DRAGGING, value: json.description)
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
@@ -91,7 +91,7 @@ extension GMSMapController: GMSMapViewDelegate {
         if let _identifier = marker.userData as? String {
             identifier = _identifier
         }
-        sendEvent(name: Constants.DID_TAP_MARKER, value: identifier)
+        dispatchEvent(name: Constants.DID_TAP_MARKER, value: identifier)
         return false
     }
     
@@ -101,7 +101,7 @@ extension GMSMapController: GMSMapViewDelegate {
         if let _identifier = marker.userData as? String {
             identifier = _identifier
         }
-        sendEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
+        dispatchEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
@@ -110,7 +110,7 @@ extension GMSMapController: GMSMapViewDelegate {
         if let _identifier = marker.userData as? String {
             identifier = _identifier
         }
-        sendEvent(name: Constants.DID_TAP_INFO_WINDOW, value: identifier)
+        dispatchEvent(name: Constants.DID_TAP_INFO_WINDOW, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
@@ -119,7 +119,7 @@ extension GMSMapController: GMSMapViewDelegate {
         if let _identifier = marker.userData as? String {
             identifier = _identifier
         }
-        sendEvent(name: Constants.DID_CLOSE_INFO_WINDOW, value: identifier)
+        dispatchEvent(name: Constants.DID_CLOSE_INFO_WINDOW, value: identifier)
     }
     
     func mapView(_ mapView: GMSMapView, didLongPressInfoWindowOf marker: GMSMarker) {
@@ -128,12 +128,12 @@ extension GMSMapController: GMSMapViewDelegate {
         if let _identifier = marker.userData as? String {
             identifier = _identifier
         }
-        sendEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: identifier)
+        dispatchEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: identifier)
     }
     
     func mapViewDidFinishTileRendering(_ mapView: GMSMapView) {
         if !isMapLoaded {
-            sendEvent(name: Constants.ON_LOADED, value: "")
+            dispatchEvent(name: Constants.ON_LOADED, value: "")
         }
         isMapLoaded = true
         
@@ -141,11 +141,11 @@ extension GMSMapController: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, didTapPOIWithPlaceID placeID: String, name: String,
                  location: CLLocationCoordinate2D) {
-        sendEvent(name: "TRACE",
+        dispatchEvent(name: "TRACE",
                   value: "placeID \(placeID.debugDescription) \(name) \(location.latitude) \(location.longitude)")
     }
     
     func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
-        sendEvent(name: "TRACE", value: "didTap overlay \(overlay.debugDescription)")
+        dispatchEvent(name: "TRACE", value: "didTap overlay \(overlay.debugDescription)")
     }
 }
