@@ -66,7 +66,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
             if let error = error {
-                self.sendEvent(name: Constants.ON_ADDRESS_LOOKUP_ERROR, value: error.localizedDescription)
+                self.dispatchEvent(name: Constants.ON_ADDRESS_LOOKUP_ERROR, value: error.localizedDescription)
                 return
             }
             guard let addressDict = placemarks?[0].addressDictionary else {
@@ -87,7 +87,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
             props["country"] = addressDict["Country"] as? String
             
             let json = JSON(props)
-            self.sendEvent(name: Constants.ON_ADDRESS_LOOKUP, value: json.description)
+            self.dispatchEvent(name: Constants.ON_ADDRESS_LOOKUP, value: json.description)
         })
     }
     
@@ -95,7 +95,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(address, completionHandler: {placemarks, error in
             if let error = error {
-                self.sendEvent(name: Constants.ON_ADDRESS_LOOKUP_ERROR, value: error.localizedDescription)
+                self.dispatchEvent(name: Constants.ON_ADDRESS_LOOKUP_ERROR, value: error.localizedDescription)
                 return
             }
             guard let location = placemarks?[0].location, let addressDict = placemarks?[0].addressDictionary else {
@@ -116,7 +116,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
             props["country"] = addressDict["Country"] as? String
             
             let json = JSON(props)
-            self.sendEvent(name: Constants.ON_ADDRESS_LOOKUP, value: json.description)
+            self.dispatchEvent(name: Constants.ON_ADDRESS_LOOKUP, value: json.description)
             
         })
     }
@@ -127,7 +127,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
         props["latitude"] = location.coordinate.latitude
         props["longitude"] = location.coordinate.longitude
         let json = JSON(props)
-        sendEvent(name: Constants.LOCATION_UPDATED, value: json.description)
+        dispatchEvent(name: Constants.LOCATION_UPDATED, value: json.description)
     }
     
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -154,7 +154,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
         }
         
         let json = JSON(props)
-        sendEvent(name: Constants.ON_PERMISSION_STATUS, value: json.description)
+        dispatchEvent(name: Constants.ON_PERMISSION_STATUS, value: json.description)
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

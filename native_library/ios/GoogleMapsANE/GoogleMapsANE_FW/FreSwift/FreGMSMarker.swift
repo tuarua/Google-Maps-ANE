@@ -44,7 +44,7 @@ public extension GMSMarker {
         self.opacity = alpha
         self.userData = UUID().uuidString
         
-        if let icon = rv["icon"], let img = UIImage(freObject: icon) {
+        if let icon = rv["icon"], let img = UIImage(freObject: icon, scale: UIScreen.main.scale, orientation: .up) {
             self.icon = img
         } else {
             self.icon = GMSMarker.markerImage(with: color)
@@ -72,7 +72,7 @@ public extension GMSMarker {
                 self.icon = GMSMarker.markerImage(with: color)
             }
         case "icon":
-            if let img = UIImage(freObject: value) {
+            if let img = UIImage(freObject: value, scale: UIScreen.main.scale, orientation: .up) {
                 self.icon = img
             }
         case "alpha":

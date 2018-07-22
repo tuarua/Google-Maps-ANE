@@ -13,13 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tuarua.frekotlin
+package com.tuarua.googlemapsane.extensions
 
 import com.adobe.fre.FREArray
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
 import java.util.*
 import com.google.android.gms.maps.model.RoundCap
+import com.tuarua.frekotlin.*
 
 class FrePolylineOptions() : FreObjectKotlin() {
     constructor(freObject: FREObject?) : this() {
@@ -41,7 +42,8 @@ class FrePolylineOptions() : FreObjectKotlin() {
                     val jointType = Int(rv["jointType"]) ?: 0
                     val patternFre = rv["pattern"]
                     val patternType = Int(patternFre?.get("type")) ?: 0
-                    val patternDashLength = Int(patternFre?.get("dashLength")) ?: 50
+                    val patternDashLength = Int(patternFre?.get("dashLength"))
+                            ?: 50
                     val patternGapLength = Int(patternFre?.get("gapLength")) ?: 50
 
                     val dot = Dot()

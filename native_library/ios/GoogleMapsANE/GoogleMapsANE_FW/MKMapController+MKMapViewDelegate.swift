@@ -30,13 +30,13 @@ extension MKMapController: MKMapViewDelegate {
         props["tilt"] = camera.pitch
         props["bearing"] = camera.heading
         let json = JSON(props)
-        sendEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
+        dispatchEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
         
     }
     
     internal func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         if !isMapLoaded {
-            sendEvent(name: Constants.ON_LOADED, value: "")
+            dispatchEvent(name: Constants.ON_LOADED, value: "")
         }
         isMapLoaded = true
     }
@@ -56,7 +56,7 @@ extension MKMapController: MKMapViewDelegate {
             if !asListeners.contains(Constants.DID_BEGIN_DRAGGING) {
                 return
             }
-            sendEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
+            dispatchEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
         case .none:
             break
         case .dragging:
@@ -71,7 +71,7 @@ extension MKMapController: MKMapViewDelegate {
             props["latitude"] = annotation.coordinate.latitude
             props["longitude"] = annotation.coordinate.longitude
             let json = JSON(props)
-            sendEvent(name: Constants.DID_END_DRAGGING, value: json.description)
+            dispatchEvent(name: Constants.DID_END_DRAGGING, value: json.description)
             view.setDragState(.none, animated: false)
         case .canceling:
             break
@@ -85,7 +85,7 @@ extension MKMapController: MKMapViewDelegate {
                 return
         }
         let identifier = annotation.identifier
-        sendEvent(name: Constants.DID_TAP_MARKER, value: identifier)
+        dispatchEvent(name: Constants.DID_TAP_MARKER, value: identifier)
         return
     }
     

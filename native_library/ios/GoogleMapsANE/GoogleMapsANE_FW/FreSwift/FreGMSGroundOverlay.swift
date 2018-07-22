@@ -22,7 +22,7 @@ public extension GMSGroundOverlay {
         guard let rv = freObject,
             let coordinate = CLLocationCoordinate2D(rv["coordinate"]),
             let zIndex = Int(rv["zIndex"]),
-            let img = UIImage(freObject: rv["image"]),
+            let img = UIImage(freObject: rv["image"], scale: UIScreen.main.scale, orientation: .up),
             let transparency = Float(rv["transparency"]),
             let isTappable = Bool(rv["isTappable"]),
             let bearing = Double(rv["bearing"])

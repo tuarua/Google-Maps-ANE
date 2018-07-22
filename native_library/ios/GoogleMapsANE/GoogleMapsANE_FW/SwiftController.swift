@@ -35,7 +35,7 @@ public class SwiftController: NSObject {
     func addEventListener(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
               let type = String(argv[0]) else {
-            return ArgCountError(message: "addEventListener").getError(#file, #line, #column)
+                return FreArgError(message: "addEventListener").getError(#file, #line, #column)
         }
 
         if mapControllerMK == nil && mapControllerGMS == nil {
@@ -57,7 +57,7 @@ public class SwiftController: NSObject {
     func removeEventListener(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
               let type = String(argv[0]) else {
-            return ArgCountError(message: "removeEventListener").getError(#file, #line, #column)
+            return FreArgError(message: "removeEventListener").getError(#file, #line, #column)
         }
         if mapControllerMK == nil && mapControllerGMS == nil {
             asListeners = asListeners.filter({ $0 != type })
@@ -79,7 +79,7 @@ public class SwiftController: NSObject {
             let yFre = Int(argv[1]),
             let wFre = Int(argv[2]),
             let hFre = Int(argv[3]) else {
-                return ArgCountError(message: "capture").getError(#file, #line, #column)
+                return FreArgError(message: "capture").getError(#file, #line, #column)
         }
 
         let x = xFre * Int(UIScreen.main.scale)
@@ -118,9 +118,9 @@ public class SwiftController: NSObject {
                     try asBitmapData.setPixels(cgImage: cgImage)
                     asBitmapData.releaseData()
                     
-                    let rect = FreRectangleSwift(value: captureDimensions)
-                    let pt = FrePointSwift(value: CGPoint.zero)
-                    if let bmd = asBitmapData.rawValue, let sourceRect = rect.rawValue, let destPoint = pt.rawValue {
+                    if let bmd = asBitmapData.rawValue,
+                        let sourceRect = captureDimensions.toFREObject(),
+                        let destPoint = CGPoint.zero.toFREObject() {
                         _ = try destBmd.call(method: "copyPixels", args: bmd, sourceRect, destPoint)
                         return destBmd
                     }
@@ -148,7 +148,7 @@ public class SwiftController: NSObject {
     func addCircle(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0
           else {
-            return ArgCountError(message: "addCircle").getError(#file, #line, #column)
+            return FreArgError(message: "addCircle").getError(#file, #line, #column)
         }
         if mapProvider == .apple,
             let mvc = mapControllerMK,
@@ -170,7 +170,7 @@ public class SwiftController: NSObject {
             let name = String(argv[1]),
             let freValue = argv[2]
             else {
-                return ArgCountError(message: "setCircleProp").getError(#file, #line, #column)
+                return FreArgError(message: "setCircleProp").getError(#file, #line, #column)
         }
         mapControllerMK?.setCircleProp(id: id, name: name, value: freValue)
         mapControllerGMS?.setCircleProp(id: id, name: name, value: freValue)
@@ -181,7 +181,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
             let id = String(argv[0])
             else {
-                return ArgCountError(message: "removeCircle").getError(#file, #line, #column)
+                return FreArgError(message: "removeCircle").getError(#file, #line, #column)
         }
         mapControllerMK?.removeCircle(id: id)
         mapControllerGMS?.removeCircle(id: id)
@@ -204,7 +204,7 @@ public class SwiftController: NSObject {
     func addPolyline(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0
             else {
-                return ArgCountError(message: "addPolyline").getError(#file, #line, #column)
+                return FreArgError(message: "addPolyline").getError(#file, #line, #column)
         }
         if mapProvider == .apple,
             let mvc = mapControllerMK,
@@ -225,7 +225,7 @@ public class SwiftController: NSObject {
             let name = String(argv[1]),
             let freValue = argv[2]
             else {
-                return ArgCountError(message: "setPolylineProp").getError(#file, #line, #column)
+                return FreArgError(message: "setPolylineProp").getError(#file, #line, #column)
         }
         mapControllerMK?.setPolylineProp(id: id, name: name, value: freValue) //TODO
         mapControllerGMS?.setPolylineProp(id: id, name: name, value: freValue)
@@ -235,7 +235,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
             let id = String(argv[0])
             else {
-                return ArgCountError(message: "removePolyline").getError(#file, #line, #column)
+                return FreArgError(message: "removePolyline").getError(#file, #line, #column)
         }
         mapControllerMK?.removePolyline(id: id)
         mapControllerGMS?.removePolyline(id: id)
@@ -245,7 +245,7 @@ public class SwiftController: NSObject {
     func addPolygon(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0
             else {
-                return ArgCountError(message: "addPolygon").getError(#file, #line, #column)
+                return FreArgError(message: "addPolygon").getError(#file, #line, #column)
         }
         if mapProvider == .apple,
             let mvc = mapControllerMK,
@@ -266,7 +266,7 @@ public class SwiftController: NSObject {
             let name = String(argv[1]),
             let freValue = argv[2]
             else {
-                return ArgCountError(message: "setPolygonProp").getError(#file, #line, #column)
+                return FreArgError(message: "setPolygonProp").getError(#file, #line, #column)
         }
         mapControllerMK?.setPolygonProp(id: id, name: name, value: freValue) //TODO
         mapControllerGMS?.setPolygonProp(id: id, name: name, value: freValue)
@@ -276,7 +276,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
             let id = String(argv[0])
             else {
-                return ArgCountError(message: "removePolygon").getError(#file, #line, #column)
+                return FreArgError(message: "removePolygon").getError(#file, #line, #column)
         }
         //mapControllerMK?.removePolygon(id: id) //TODO
         mapControllerGMS?.removePolygon(id: id)
@@ -288,7 +288,7 @@ public class SwiftController: NSObject {
               let southWest = CLLocationCoordinate2D(argv[0]),
               let northEast = CLLocationCoordinate2D(argv[1]),
               let animates = Bool(argv[2]) else {
-            return ArgCountError(message: "setBounds").getError(#file, #line, #column)
+            return FreArgError(message: "setBounds").getError(#file, #line, #column)
         }
         mapControllerMK?.setBounds(bounds: GMSCoordinateBounds(coordinate: southWest, coordinate: northEast),
                                    animates: animates)
@@ -300,7 +300,7 @@ public class SwiftController: NSObject {
     func zoomIn(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
               let animates = Bool(argv[0]) else {
-            return ArgCountError(message: "zoomIn").getError(#file, #line, #column)
+            return FreArgError(message: "zoomIn").getError(#file, #line, #column)
         }
         mapControllerMK?.zoomIn(animates: animates)
         mapControllerGMS?.zoomIn(animates: animates)
@@ -310,7 +310,7 @@ public class SwiftController: NSObject {
     func zoomOut(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
               let animates = Bool(argv[0]) else {
-            return ArgCountError(message: "zoomOut").getError(#file, #line, #column)
+            return FreArgError(message: "zoomOut").getError(#file, #line, #column)
         }
         mapControllerMK?.zoomOut(animates: animates)
         mapControllerGMS?.zoomOut(animates: animates)
@@ -321,7 +321,7 @@ public class SwiftController: NSObject {
         guard argc > 1,
               let zoomLevel = CGFloat(argv[1]),
               let animates = Bool(argv[0]) else {
-            return ArgCountError(message: "zoomTo").getError(#file, #line, #column)
+            return FreArgError(message: "zoomTo").getError(#file, #line, #column)
         }
 
         mapControllerMK?.zoomTo(zoomLevel: zoomLevel, animates: animates)
@@ -347,7 +347,7 @@ public class SwiftController: NSObject {
         guard argc > 1,
               let key = String(argv[0]),
               let mapProvider = Int(argv[1]) else {
-            return ArgCountError(message: "initController").getError(#file, #line, #column)
+            return FreArgError(message: "initController").getError(#file, #line, #column)
         }
         
         self.mapProvider = mapProvider == 0 ? .google : .apple
@@ -365,7 +365,7 @@ public class SwiftController: NSObject {
               let zoomLevel = CGFloat(argv[2]),
               let coordinate = CLLocationCoordinate2D(argv[1])
           else {
-            return ArgCountError(message: "initMap").getError(#file, #line, #column)
+            return FreArgError(message: "initMap").getError(#file, #line, #column)
         }
 
         if let settingsDict = Dictionary(inFRE3) {
@@ -388,7 +388,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
               let inFRE0 = argv[0] //marker:Marker
           else {
-            return ArgCountError(message: "addMarker").getError(#file, #line, #column)
+            return FreArgError(message: "addMarker").getError(#file, #line, #column)
         }
         if self.mapProvider == .google {
             if let marker = GMSMarker(inFRE0) {
@@ -414,7 +414,7 @@ public class SwiftController: NSObject {
             let name = String(argv[1]),
             let freValue = argv[2]
           else {
-            return ArgCountError(message: "updateMarker").getError(#file, #line, #column)
+            return FreArgError(message: "updateMarker").getError(#file, #line, #column)
         }
         mapControllerMK?.setMarkerProp(id: id, name: name, value: freValue)
         mapControllerGMS?.setMarkerProp(id: id, name: name, value: freValue)
@@ -425,7 +425,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
               let id = String(argv[0])
           else {
-            return ArgCountError(message: "removeMarker").getError(#file, #line, #column)
+            return FreArgError(message: "removeMarker").getError(#file, #line, #column)
         }
         mapControllerMK?.removeMarker(id: id)
         mapControllerGMS?.removeMarker(id: id)
@@ -442,7 +442,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
               let viewPort = CGRect(argv[0])
           else {
-            return ArgCountError(message: "setViewPort").getError(#file, #line, #column)
+            return FreArgError(message: "setViewPort").getError(#file, #line, #column)
         }
         mapControllerMK?.setViewPort(frame: viewPort)
         mapControllerGMS?.setViewPort(frame: viewPort)
@@ -453,7 +453,7 @@ public class SwiftController: NSObject {
         guard argc > 4,
               let animates = Bool(argv[4])
           else {
-            return ArgCountError(message: "moveCamera").getError(#file, #line, #column)
+            return FreArgError(message: "moveCamera").getError(#file, #line, #column)
         }
 
         let centerAt: CLLocationCoordinate2D? = CLLocationCoordinate2D(argv[0])
@@ -469,7 +469,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
               let json = String(argv[0])
           else {
-            return ArgCountError(message: "setStyle").getError(#file, #line, #column)
+            return FreArgError(message: "setStyle").getError(#file, #line, #column)
         }
         mapControllerGMS?.setStyle(json: json)
         return nil
@@ -479,7 +479,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
               let type = Int(argv[0])
           else {
-            return ArgCountError(message: "setMapType").getError(#file, #line, #column)
+            return FreArgError(message: "setMapType").getError(#file, #line, #column)
         }
         mapControllerMK?.setMapType(type: UInt(type))
         mapControllerGMS?.setMapType(type: UInt(type))
@@ -490,7 +490,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
               let visible = Bool(argv[0])
             else {
-                return ArgCountError(message: "setVisible").getError(#file, #line, #column) }
+                return FreArgError(message: "setVisible").getError(#file, #line, #column) }
         if mapControllerMK == nil && mapControllerGMS == nil {
             return nil
         }
@@ -529,7 +529,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
             let coordinate = CLLocationCoordinate2D(argv[0])
             else {
-                return ArgCountError(message: "reverseGeocodeLocation").getError(#file, #line, #column)
+                return FreArgError(message: "reverseGeocodeLocation").getError(#file, #line, #column)
         }
         locationController.reverseGeocodeLocation(coordinate: coordinate)
         return nil
@@ -539,7 +539,7 @@ public class SwiftController: NSObject {
         guard argc > 0,
             let address = String(argv[0])
             else {
-                return ArgCountError(message: "forwardGeocodeLocation").getError(#file, #line, #column)
+                return FreArgError(message: "forwardGeocodeLocation").getError(#file, #line, #column)
         }
         locationController.forwardGeocodeLocation(address: address)
         return nil

@@ -37,12 +37,14 @@ import com.tuarua.frekotlin.display.toFREObject
 import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.AddressLookup
 import com.tuarua.googlemapsane.data.Settings
+import com.tuarua.googlemapsane.events.PermissionEvent
+import com.tuarua.googlemapsane.extensions.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.IOException
 
-@Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST")
+@Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST", "PrivatePropertyName")
 class KotlinController : FreKotlinMainController {
     private var scaleFactor: Double = 1.0
     private lateinit var airView: ViewGroup
@@ -102,7 +104,7 @@ class KotlinController : FreKotlinMainController {
 
                     formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
 
-                    sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
+                    dispatchEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
                             AddressLookup(
                                     coordinate.latitude,
                                     coordinate.longitude,
@@ -117,7 +119,7 @@ class KotlinController : FreKotlinMainController {
                     )
                 }
             } catch (e: IOException) {
-                sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+                dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
             }
         }
         return null
@@ -152,7 +154,7 @@ class KotlinController : FreKotlinMainController {
 
                     formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
 
-                    sendEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
+                    dispatchEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
                             AddressLookup(
                                     address.latitude,
                                     address.longitude,
@@ -167,7 +169,7 @@ class KotlinController : FreKotlinMainController {
                     )
                 }
             } catch (e: IOException) {
-                sendEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+                dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
             }
         }
         return null
@@ -177,7 +179,7 @@ class KotlinController : FreKotlinMainController {
         try {
             val permissionsToCheck = getPermissionsToCheck()
             if (permissionsToCheck.size == 0 || SDK_INT < M) {
-                sendEvent(Constants.ON_PERMISSION_STATUS, gson.toJson(PermissionEvent(ACCESS_FINE_LOCATION, Constants.PERMISSION_ALWAYS)))
+                dispatchEvent(PermissionEvent.ON_PERMISSION_STATUS, gson.toJson(PermissionEvent(ACCESS_FINE_LOCATION, PermissionEvent.PERMISSION_ALWAYS)))
                 permissionsGranted = true
                 return null
             }
@@ -237,9 +239,9 @@ class KotlinController : FreKotlinMainController {
     @Throws(FreException::class)
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: PermissionEvent) {
-        sendEvent(Constants.ON_PERMISSION_STATUS, gson.toJson(event))
+        dispatchEvent(PermissionEvent.ON_PERMISSION_STATUS, gson.toJson(event))
         when {
-            event.status == Constants.PERMISSION_ALWAYS -> {
+            event.status == PermissionEvent.PERMISSION_ALWAYS -> {
                 permissionsGranted = true
             }
         }

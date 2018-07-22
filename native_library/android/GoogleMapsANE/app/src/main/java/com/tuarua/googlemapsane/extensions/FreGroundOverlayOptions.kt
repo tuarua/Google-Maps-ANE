@@ -14,12 +14,13 @@
  *  limitations under the License.
  */
 
-package com.tuarua.frekotlin
+package com.tuarua.googlemapsane.extensions
 import android.graphics.Bitmap
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.GroundOverlay
 import com.google.android.gms.maps.model.GroundOverlayOptions
+import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.display.Bitmap
 
 class FreGroundOverlayOptions() : FreObjectKotlin() {

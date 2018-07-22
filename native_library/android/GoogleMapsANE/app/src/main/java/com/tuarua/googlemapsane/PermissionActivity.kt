@@ -20,6 +20,7 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import com.tuarua.googlemapsane.events.PermissionEvent
 import org.greenrobot.eventbus.EventBus
 
 class PermissionActivity : Activity(), ActivityCompat.OnRequestPermissionsResultCallback {
@@ -35,12 +36,12 @@ class PermissionActivity : Activity(), ActivityCompat.OnRequestPermissionsResult
         if (requestCode == 19001) {
             for ((index, permission) in permissions.withIndex()) {
                 if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
-                    EventBus.getDefault().post(PermissionEvent(permission, Constants.PERMISSION_ALWAYS))
+                    EventBus.getDefault().post(PermissionEvent(permission, PermissionEvent.PERMISSION_ALWAYS))
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                        EventBus.getDefault().post(PermissionEvent(permission, Constants.PERMISSION_SHOW_RATIONALE))
+                        EventBus.getDefault().post(PermissionEvent(permission, PermissionEvent.PERMISSION_SHOW_RATIONALE))
                     } else {
-                        EventBus.getDefault().post(PermissionEvent(permission, Constants.PERMISSION_DENIED))
+                        EventBus.getDefault().post(PermissionEvent(permission, PermissionEvent.PERMISSION_DENIED))
                     }
                 }
             }

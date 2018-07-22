@@ -2,12 +2,14 @@
 
 Install [Carthage](https://github.com/Carthage/Carthage)  
  
-run Carthage update in Terminal
-
+run  in Terminal
+```shell
+Carthage update --platform iOS
+```
 #### To download the required Google Mobile Maps Frameworks
 
 Download and unzip the latest SDK 
-https://dl.google.com/dl/cpdc/6e5f7d9da3112ca6/GoogleMaps-2.5.0.tar.gz
+https://dl.google.com/dl/cpdc/6e5f7d9da3112ca6/GoogleMaps-2.7.0.tar.gz
 
 Copy GoogleMaps.framework into the Frameworks folder
 
