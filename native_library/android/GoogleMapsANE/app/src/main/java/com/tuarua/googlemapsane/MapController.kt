@@ -19,6 +19,7 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.FragmentTransaction
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.RectF
 import android.location.Location
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,6 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
 import com.tuarua.frekotlin.*
-import com.tuarua.frekotlin.geom.Rect
 import com.tuarua.googlemapsane.data.*
 import com.tuarua.googlemapsane.events.CameraMoveEvent
 import com.tuarua.googlemapsane.events.CameraMoveStartedEvent
@@ -46,7 +46,7 @@ import com.tuarua.googlemapsane.events.MapEvent
 import com.tuarua.googlemapsane.extensions.*
 
 class MapController(override var context: FREContext?, private var airView: ViewGroup, coordinate: LatLng,
-                    private var zoomLevel: Float, viewPort: Rect, private var settings: Settings) : FreKotlinController,
+                    private var zoomLevel: Float, viewPort: RectF, private var settings: Settings) : FreKotlinController,
         OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowClickListener,
@@ -57,7 +57,7 @@ class MapController(override var context: FREContext?, private var airView: View
 
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
-    private var _viewPort: Rect = viewPort
+    private var _viewPort: RectF = viewPort
     private var _visible: Boolean = false
     private var _style: String? = null
     private var _mapType = 0
@@ -223,9 +223,9 @@ class MapController(override var context: FREContext?, private var airView: View
         val ctx = this.context ?: return
         container = FrameLayout(ctx.activity)
         val frame = container ?: return
-        frame.layoutParams = FrameLayout.LayoutParams(viewPort.width.toInt(), viewPort.height.toInt())
-        frame.x = viewPort.x.toFloat()
-        frame.y = viewPort.y.toFloat()
+        frame.layoutParams = FrameLayout.LayoutParams(viewPort.width().toInt(), viewPort.height().toInt())
+        frame.x = viewPort.left
+        frame.y = viewPort.top
         frame.id = newId
         airView.addView(frame)
 
@@ -249,13 +249,13 @@ class MapController(override var context: FREContext?, private var airView: View
         }
         get() = _visible
 
-    var viewPort: Rect
+    var viewPort: RectF
         set(value) {
             this._viewPort = value
             val frame = container ?: return
-            frame.layoutParams = FrameLayout.LayoutParams(viewPort.width.toInt(), viewPort.height.toInt())
-            frame.x = viewPort.x.toFloat()
-            frame.y = viewPort.y.toFloat()
+            frame.layoutParams = FrameLayout.LayoutParams(viewPort.width().toInt(), viewPort.height().toInt())
+            frame.x = viewPort.left
+            frame.y = viewPort.top
         }
         get() = _viewPort
 
@@ -552,7 +552,7 @@ class MapController(override var context: FREContext?, private var airView: View
     override fun onMarkerDrag(p0: Marker?) {
         if (!asListeners.contains(Constants.DID_DRAG)) return
         val marker = p0 ?: return
-        dispatchEvent(Constants.DID_DRAG, marker.id) //TODO coordinates ?
+        dispatchEvent(Constants.DID_DRAG, marker.id)
     }
 
     override fun onMapClick(p0: LatLng?) {

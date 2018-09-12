@@ -15,6 +15,7 @@
  */
 
 package com.tuarua.googlemapsane.extensions
+
 import android.graphics.Bitmap
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -23,84 +24,56 @@ import com.google.android.gms.maps.model.GroundOverlayOptions
 import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.display.Bitmap
 
-class FreGroundOverlayOptions() : FreObjectKotlin() {
-    constructor(freObject: FREObject?) : this() {
-        rawValue = freObject
+fun GroundOverlayOptions(freObject: FREObject?): GroundOverlayOptions {
+    val rv = freObject ?: return GroundOverlayOptions()
+    val coordinate = LatLng(rv["coordinate"])
+    val bearing = Float(rv["bearing"]) ?: 0f
+    val clickable = Boolean(rv["isTappable"]) == true
+    val visible = Boolean(rv["visible"]) == true
+    val zIndex = Float(rv["zIndex"]) ?: 0f
+    val transparency = Float(rv["transparency"]) ?: 0f
+    val width = Float(rv["width"]) ?: 0f
+    val imageFre = rv["image"]
+    val image: Bitmap?
+    try {
+        image = Bitmap(imageFre)
+    } catch (e: Exception) {
+        return GroundOverlayOptions()
     }
-    override val value: GroundOverlayOptions
-        @Throws(FreException::class)
-        get() {
-            val rv = rawValue
-            if (rv != null) {
-                val coordinate = LatLng(rv["coordinate"])
-                val bearing = Float(rv["bearing"]) ?: 0f
-                val clickable = Boolean(rv["isTappable"]) == true
-                val visible = Boolean(rv["visible"]) == true
-                val zIndex = Float(rv["zIndex"]) ?: 0f
-                val transparency = Float(rv["transparency"]) ?: 0f
-                val width = Float(rv["width"]) ?: 0f
-                val imageFre = rv["image"]
-                val image: Bitmap?
-                try {
-                    image = Bitmap(imageFre)
-                } catch (e: FreException) {
-                    throw e
-                } catch (e: Exception) {
-                    throw FreException(e)
-                }
 
-                return GroundOverlayOptions()
-                        .position(coordinate, width)
-                        .bearing(bearing)
-                        .clickable(clickable)
-                        .visible(visible)
-                        .zIndex(zIndex)
-                        .transparency(transparency)
-                        .image(BitmapDescriptorFactory.fromBitmap(image))
-            }
-            return GroundOverlayOptions()
-        }
+    return GroundOverlayOptions()
+            .position(coordinate, width)
+            .bearing(bearing)
+            .clickable(clickable)
+            .visible(visible)
+            .zIndex(zIndex)
+            .transparency(transparency)
+            .image(BitmapDescriptorFactory.fromBitmap(image))
+
 }
-fun GroundOverlayOptions(freObject: FREObject?): GroundOverlayOptions = FreGroundOverlayOptions(freObject = freObject).value
 
 fun GroundOverlay.setPosition(value: FREObject?) {
-    val coordinate = LatLng(value)
-    this.position = coordinate
+    this.position = LatLng(value)
 }
 
 fun GroundOverlay.setBearing(value: FREObject?) {
-    val v = Float(value)
-    if (v != null) {
-        this.bearing = v
-    }
+    Float(value)?.let { this.bearing = it }
 }
 
 fun GroundOverlay.setZIndex(value: FREObject?) {
-    val v = Float(value)
-    if (v != null) {
-        this.zIndex = v
-    }
+    Float(value)?.let { this.zIndex = it }
 }
 
 fun GroundOverlay.setTransparency(value: FREObject?) {
-    val v = Float(value)
-    if (v != null) {
-        this.transparency = v
-    }
+    Float(value)?.let { this.transparency = it }
 }
 
 fun GroundOverlay.setVisible(value: FREObject?) {
-    val v = Boolean(value)
-    if (v != null) {
-        this.isVisible = v
-    }
+    Boolean(value)?.let { this.isVisible = it }
 }
 
 fun GroundOverlay.setClickable(value: FREObject?) {
-    val v = Boolean(value)
-    if (v != null) {
-        this.isClickable = v
-    }
+    Boolean(value)?.let { this.isClickable = it }
 }
 
 fun GroundOverlay.setImage(value: FREObject?) {

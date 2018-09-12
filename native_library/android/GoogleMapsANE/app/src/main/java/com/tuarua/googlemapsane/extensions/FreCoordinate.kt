@@ -13,31 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-@file:Suppress("unused")
-
 package com.tuarua.googlemapsane.extensions
 
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.LatLng
 import com.tuarua.frekotlin.*
 
-class FreCoordinate() : FreObjectKotlin() {
-    private var TAG = "com.tuarua.FreCoordinate"
-
-    constructor(value: LatLng) : this() {
-        rawValue = FREObject("com.tuarua.googlemaps.Coordinate", value.longitude, value.latitude)
-    }
-
-    constructor(freObject: FREObject?) : this() {
-        rawValue = freObject
-    }
-
-    override val value: LatLng
-        @Throws(FreException::class)
-        get() {
-            return LatLng(Double(rawValue?.get("latitude")) ?: 0.0,
-                    Double(rawValue?.get("longitude")) ?: 0.0)
-        }
+fun LatLng(freObject: FREObject?): LatLng {
+    return LatLng(Double(freObject["latitude"]) ?: 0.0,
+            Double(freObject["longitude"]) ?: 0.0)
 }
 
-fun LatLng(freObject: FREObject?): LatLng = FreCoordinate(freObject = freObject).value
+fun LatLng.toFREObject(): FREObject? {
+    return FREObject("com.tuarua.googlemaps.Coordinate", this.latitude, this.longitude)
+}
