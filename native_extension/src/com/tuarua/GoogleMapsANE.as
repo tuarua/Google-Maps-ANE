@@ -465,7 +465,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function reverseGeocodeLocation(coordinate:Coordinate):void {
-        if (safetyCheck()) {
+        if (_isInited && !GoogleMapsANEContext.isDisposed) {
             GoogleMapsANEContext.context.call("reverseGeocodeLocation", coordinate);
         }
     }
@@ -476,7 +476,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function forwardGeocodeLocation(addressString:String):void {
-        if (safetyCheck()) {
+        if (_isInited && !GoogleMapsANEContext.isDisposed) {
             GoogleMapsANEContext.context.call("forwardGeocodeLocation", addressString);
         }
     }

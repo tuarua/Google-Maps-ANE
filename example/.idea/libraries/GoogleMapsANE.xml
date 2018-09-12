@@ -3,7 +3,9 @@
     <CLASSES>
       <root url="jar://$DOCUMENTS$/Google-Maps-ANE/native_extension/ane/GoogleMapsANE.ane!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="https://tuarua.github.io/asdocs/googlemapsane/index.html" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>

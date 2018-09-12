@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 package com.tuarua;
-import android.content.Intent;
 import com.adobe.air.TRActivityResultCallback;
 import com.adobe.air.AndroidActivityWrapper;
 import com.adobe.air.TRStateChangeCallback;
@@ -30,10 +29,6 @@ public class GoogleMapsANEContext extends FreKotlinContext implements TRActivity
         aaw = AndroidActivityWrapper.GetAndroidActivityWrapper();
         aaw.addActivityResultListener(this);
         aaw.addActivityStateChangeListner(this);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
     }
 
     @Override

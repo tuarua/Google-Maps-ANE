@@ -23,6 +23,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.GET_PERMISSIONS
+import android.graphics.RectF
 import android.location.Address
 import android.location.Geocoder
 import android.support.v4.content.ContextCompat
@@ -34,7 +35,7 @@ import com.google.gson.Gson
 
 import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.display.toFREObject
-import com.tuarua.frekotlin.geom.Rect
+import com.tuarua.frekotlin.geom.RectF
 import com.tuarua.googlemapsane.data.AddressLookup
 import com.tuarua.googlemapsane.data.Settings
 import com.tuarua.googlemapsane.events.PermissionEvent
@@ -46,7 +47,7 @@ import java.io.IOException
 
 @Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST", "PrivatePropertyName")
 class KotlinController : FreKotlinMainController {
-    private var scaleFactor: Double = 1.0
+    private var scaleFactor: Float = 1.0f
     private lateinit var airView: ViewGroup
     private val TRACE = "TRACE"
     private var isAdded: Boolean = false
@@ -194,10 +195,10 @@ class KotlinController : FreKotlinMainController {
 
     fun capture(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 3 } ?: return FreArgException("initMap")
-        val xFre = Int(argv[0]) ?: return FreConversionException("x")
-        val yFre = Int(argv[1]) ?: return FreConversionException("y")
-        val wFre = Int(argv[2]) ?: return FreConversionException("w")
-        val hFre = Int(argv[3]) ?: return FreConversionException("h")
+        val xFre = Int(argv[0]) ?: return null
+        val yFre = Int(argv[1]) ?: return null
+        val wFre = Int(argv[2]) ?: return null
+        val hFre = Int(argv[3]) ?: return null
         val x: Int = (xFre * scaleFactor).toInt()
         val y: Int = (yFre * scaleFactor).toInt()
         val w: Int = (wFre * scaleFactor).toInt()
@@ -260,10 +261,10 @@ class KotlinController : FreKotlinMainController {
 
     fun initMap(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 4 } ?: return FreArgException("initMap")
-        val zoomLevel = Float(argv[2]) ?: 12.0F
-        scaleFactor = Double(argv[4]) ?: 1.0
+        val zoomLevel = Float(argv[2]) ?: 12.0f
+        scaleFactor = Float(argv[4]) ?: 1.0f
         val centerAt = LatLng(argv[1])
-        val viewPort = Rect(argv[0]) ?: return FreConversionException("viewPort")
+        val viewPort = RectF(argv[0])
         val settingsFre = argv[3]
         settings.compassButton = Boolean(settingsFre["compassButton"]) == true
         settings.indoorPicker = Boolean(settingsFre["indoorPicker"]) == true
@@ -438,20 +439,17 @@ class KotlinController : FreKotlinMainController {
         return null
     }
 
-    private fun scaleViewPort(rect: Rect?): Rect {
-        if (rect == null) {
-            return Rect(0, 0, 0, 0)
-        }
-        return Rect(
-                (rect.x * scaleFactor).toInt(),
-                (rect.y * scaleFactor).toInt(),
-                (rect.width * scaleFactor).toInt(),
-                (rect.height * scaleFactor).toInt())
+    private fun scaleViewPort(rect: RectF): RectF {
+        return RectF(
+                (rect.left * scaleFactor),
+                (rect.top * scaleFactor),
+                (rect.right * scaleFactor),
+                (rect.bottom * scaleFactor))
     }
 
     fun setViewPort(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("initMap")
-        val viewPortFre = Rect(argv[0])
+        val viewPortFre = RectF(argv[0])
         mapController?.viewPort = scaleViewPort(viewPortFre)
         return null
     }
