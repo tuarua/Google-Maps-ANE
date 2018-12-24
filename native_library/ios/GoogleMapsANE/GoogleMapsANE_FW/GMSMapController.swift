@@ -20,21 +20,21 @@ import GoogleMaps
 import FreSwift
 
 class GMSMapController: UIViewController, FreSwiftController {
-    internal var TAG: String? = "GMSMapController"
+    internal static var TAG = "GMSMapController"
     internal var context: FreContextSwift!
     public var mapView: GMSMapView!
     private var settings: Settings?
     private var zoomLevel: Float = 13.0
     private var container: UIView!
-    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
-    private var viewPort: CGRect = CGRect.zero
+    private var initialCoordinate = CLLocationCoordinate2D()
+    private var viewPort = CGRect.zero
     private var markers: [String: GMSMarker] = Dictionary()
     private var circles: [String: GMSCircle] = Dictionary()
     private var polygons: [String: GMSPolygon] = Dictionary()
     private var polylines: [String: GMSPolyline] = Dictionary()
     private var lastCapture: CGImage?
-    private var captureDimensions: CGRect = CGRect.zero
-    internal var isMapLoaded: Bool = false
+    private var captureDimensions = CGRect.zero
+    internal var isMapLoaded = false
     internal var asListeners: [String] = []
     convenience init(context: FreContextSwift, coordinate: CLLocationCoordinate2D, zoomLevel: CGFloat,
                      frame: CGRect, settings: Settings?) {
@@ -273,13 +273,11 @@ class GMSMapController: UIViewController, FreSwiftController {
     
     func dispose() {
         self.view.removeFromSuperview()
-        self.removeFromParentViewController()
+        self.removeFromParent()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        trace("didReceiveMemoryWarning")
-        // Dispose of any resources that can be recreated.
     }
     
 }

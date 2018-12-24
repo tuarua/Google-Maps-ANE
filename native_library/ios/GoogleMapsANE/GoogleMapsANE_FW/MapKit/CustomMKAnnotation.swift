@@ -39,7 +39,7 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
             let isDraggable = Bool(rv["isDraggable"]),
             let isTappable = Bool(rv["isTappable"]),
             let alpha = CGFloat(rv["alpha"]),
-            let color = UIColor(freObjectARGB: rv["color"])
+            let color = UIColor(rv["color"])
             else {
                 return nil
         }
@@ -73,7 +73,7 @@ class CustomMKAnnotation: NSObject, MKAnnotation {
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
         case "color":
-            if let color = UIColor(freObjectARGB: value) {
+            if let color = UIColor(value) {
                 self.color = color
             }
         case "icon":

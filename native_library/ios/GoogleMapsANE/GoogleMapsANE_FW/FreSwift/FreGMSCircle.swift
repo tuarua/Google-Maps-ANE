@@ -26,8 +26,8 @@ public extension GMSCircle {
         let isTappable = Bool(rv["isTappable"]),
         let zIndex = Int(rv["zIndex"]),
         let strokeWidth = CGFloat(rv["strokeWidth"]),
-        let strokeColor = UIColor(freObjectARGB: rv["strokeColor"]),
-        let fillColor = UIColor(freObjectARGB: rv["fillColor"])
+        let strokeColor = UIColor(rv["strokeColor"]),
+        let fillColor = UIColor(rv["fillColor"])
         else {
             return nil
         }
@@ -37,14 +37,13 @@ public extension GMSCircle {
         self.fillColor = fillColor
         self.zIndex = Int32(zIndex)
         self.isTappable = isTappable
-        self.userData = UUID().uuidString
-        
+        self.userData = UUID().uuidString   
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "center":
-            self.position = CLLocationCoordinate2D.init(value) ?? self.position
+            self.position = CLLocationCoordinate2D(value) ?? self.position
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
         case "radius":
@@ -56,9 +55,9 @@ public extension GMSCircle {
                 self.zIndex = Int32(z)
             }
         case "strokeColor":
-            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(value) ?? self.strokeColor
         case "fillColor":
-            self.fillColor = UIColor(freObjectARGB: value) ?? self.fillColor
+            self.fillColor = UIColor(value) ?? self.fillColor
         default:
             break
         }

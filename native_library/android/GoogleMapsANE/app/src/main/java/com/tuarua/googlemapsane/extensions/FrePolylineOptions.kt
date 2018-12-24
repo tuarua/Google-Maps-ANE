@@ -15,7 +15,6 @@
  */
 package com.tuarua.googlemapsane.extensions
 
-import com.adobe.fre.FREArray
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
 import java.util.*

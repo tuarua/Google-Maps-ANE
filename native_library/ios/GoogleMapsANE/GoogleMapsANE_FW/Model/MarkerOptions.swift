@@ -20,69 +20,33 @@ import FreSwift
 
 class MarkerOptions: NSObject {
     var coordinate: CLLocationCoordinate2D?
-    var rotation: CLLocationDegrees = CLLocationDegrees.init(0)
+    var rotation = CLLocationDegrees(0)
     var color: UIColor?
-    var alpha: CGFloat = CGFloat.init(1)
+    var alpha = CGFloat(1)
     var title: String?
     var snippet: String?
-    var isDraggable: Bool = false
-    var isFlat: Bool = false
-    var isTappable: Bool = false
+    var isDraggable = false
+    var isFlat = false
+    var isTappable = false
     var icon: UIImage?
     
     public init(freObject: FREObject?) {
-        do {
-            if let _coordinate = try CLLocationCoordinate2D(freObject?.getProp(name: "coordinate")) {
-                coordinate = _coordinate
-                
-                if let _title = try String(freObject?.getProp(name: "title")) {
-                    title = _title
-                }
-
-                if let _snippet = try String(freObject?.getProp(name: "snippet")) {
-                    snippet = _snippet
-                }
-                if let freColor = try freObject?.getProp(name: "color") {
-                    let _color = UIColor.init(freObject: freColor)
-                    color = _color
-                }
-                
-                if let _isDraggable = try Bool(freObject?.getProp(name: "isDraggable")) {
-                    isDraggable = _isDraggable
-                }
-                
-                if let _isFlat = try Bool(freObject?.getProp(name: "isFlat")) {
-                    isFlat = _isFlat
-                }
-                
-                if let _isTappable = try Bool(freObject?.getProp(name: "isTappable")) {
-                    isTappable = _isTappable
-                }
-            
-                if let rotationInt: Int = try Int(freObject?.getProp(name: "rotation")) {
-                    rotation = CLLocationDegrees(rotationInt)
-                }
-                
-                if let _alpha = try CGFloat(freObject?.getProp(name: "alpha")) {
-                    alpha = _alpha
-                }
-                
-                if let _icon = try freObject?.getProp(name: "icon") {
-                    let asBitmapData = FreBitmapDataSwift(freObject: _icon)
-                    defer {
-                        asBitmapData.releaseData()
-                    }
-                    do {
-                        if let cgimg = try asBitmapData.asCGImage() {
-                            icon = UIImage(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
-                        }
-                    } catch {}
-                }
-            }
-        } catch _ as FreError {
-        } catch {
-        }
+        guard let rv = freObject else { return }
+        coordinate = CLLocationCoordinate2D(rv["coordinate"])
+        title = String(rv["title"])
+        snippet = String(rv["snippet"])
+        color = UIColor(rv["color"])
+        isDraggable = Bool(rv["isDraggable"]) ?? false
+        isFlat = Bool(rv["isFlat"]) ?? false
+        isTappable = Bool(rv["isTappable"]) ?? false
+        rotation = CLLocationDegrees(Int(rv["rotation"]) ?? 0)
+        alpha = CGFloat(rv["alpha"]) ?? CGFloat(1)
         
+        if let _icon = rv["icon"] {
+            let asBitmapData = FreBitmapDataSwift(freObject: _icon)
+            if let cgimg = asBitmapData.asCGImage() {
+                icon = UIImage(cgImage: cgimg, scale: UIScreen.main.scale, orientation: .up)
+            }
+        }
     }
-
 }

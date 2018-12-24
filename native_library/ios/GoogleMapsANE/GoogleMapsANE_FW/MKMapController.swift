@@ -21,18 +21,18 @@ import GoogleMaps
 import MapKit
 
 class MKMapController: UIViewController, FreSwiftController {
-    internal var TAG: String? = "MKMapController"
+    internal static var TAG = "MKMapController"
     internal var context: FreContextSwift!
     public var mapView: MKMapView!
     private var settings: Settings?
     private var zoomLevel: UInt = 13
     private var container: UIView!
-    private var initialCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
-    private var viewPort: CGRect = CGRect.zero
+    private var initialCoordinate = CLLocationCoordinate2D()
+    private var viewPort = CGRect.zero
     private var tapGestureRecogniser: UITapGestureRecognizer?
-    private var _showsUserLocation: Bool = false
+    private var _showsUserLocation = false
     private var lastCapture: CGImage?
-    private var captureDimensions: CGRect = CGRect.zero
+    private var captureDimensions = CGRect.zero
     internal var polygons: [String: CustomMKPolygon] = Dictionary()
     internal var polylines: [String: CustomMKPolyline] = Dictionary()
     internal var markers: [String: CustomMKAnnotation] = Dictionary()
@@ -41,7 +41,7 @@ class MKMapController: UIViewController, FreSwiftController {
     internal var polylineRenderers: [String: MKPolylineRenderer] = Dictionary()
     internal var circles: [String: CustomMKCircle] = Dictionary()
     internal var asListeners: [String] = []
-    internal var isMapLoaded: Bool = false
+    internal var isMapLoaded = false
     internal var showsUserLocation: Bool {
         set {
             _showsUserLocation = newValue
@@ -186,7 +186,7 @@ class MKMapController: UIViewController, FreSwiftController {
 
     func addCircle(circle: CustomMKCircle) {
         circles[circle.identifier] = circle
-        mapView.add(circle)
+        mapView.addOverlay(circle)
     }
     
     func setCircleProp(id: String, name: String, value: FREObject) {
@@ -209,7 +209,7 @@ class MKMapController: UIViewController, FreSwiftController {
     
     func addPolygon(polygon: CustomMKPolygon) {
         polygons[polygon.identifier] = polygon
-        mapView.add(polygon)
+        mapView.addOverlay(polygon)
     }
     
     func setPolygonProp(id: String, name: String, value: FREObject) {
@@ -221,7 +221,7 @@ class MKMapController: UIViewController, FreSwiftController {
             if let replaceWith = CustomMKPolygon(value, polygon: polygon) {
                 mapView.removeAnnotation(polygon)
                 polygons[id] = replaceWith
-                mapView.add(replaceWith)
+                mapView.addOverlay(replaceWith)
             }
         } else {
             polygon.setProp(name: name, value: value)
@@ -241,7 +241,7 @@ class MKMapController: UIViewController, FreSwiftController {
     
     func addPolyline(polyline: CustomMKPolyline) {
         polylines[polyline.identifier] = polyline
-        mapView.add(polyline)
+        mapView.addOverlay(polyline)
     }
     
     func setPolylineProp(id: String, name: String, value: FREObject) {
@@ -254,7 +254,7 @@ class MKMapController: UIViewController, FreSwiftController {
                 trace("replacing with", replaceWith.debugDescription)
                 mapView.removeAnnotation(polyline)
                 polylines[id] = replaceWith
-                mapView.add(replaceWith)
+                mapView.addOverlay(replaceWith)
             }
         } else {
             polyline.setProp(name: name, value: value)
@@ -340,13 +340,11 @@ class MKMapController: UIViewController, FreSwiftController {
     
     func dispose() {
         self.view.removeFromSuperview()
-        self.removeFromParentViewController()
+        self.removeFromParent()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        trace("didReceiveMemoryWarning")
-        // Dispose of any resources that can be recreated.
     }
 
 }

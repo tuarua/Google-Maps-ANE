@@ -29,7 +29,7 @@ public extension GMSMarker {
             let isTappable = Bool(rv["isTappable"]),
             let rotation = CLLocationDegrees(rv["rotation"]),
             let alpha = Float(rv["alpha"]),
-            let color = UIColor(freObjectARGB: rv["color"])
+            let color = UIColor(rv["color"])
             else {
                 return nil
         }
@@ -68,7 +68,7 @@ public extension GMSMarker {
         case "rotation":
             self.rotation = CLLocationDegrees(value) ?? self.rotation
         case "color":
-            if let color = UIColor(freObjectARGB: value) {
+            if let color = UIColor(value) {
                 self.icon = GMSMarker.markerImage(with: color)
             }
         case "icon":

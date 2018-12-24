@@ -29,13 +29,7 @@ public extension CLLocationCoordinate2D {
         self.init(latitude: lat, longitude: lng)
     }
     func toFREObject() -> FREObject? {
-        var freObject: FREObject? = nil
-        do {
-            freObject = try FREObject(className: "com.tuarua.googlemaps.Coordinate",
-                                                       args: CGFloat(self.latitude), CGFloat(self.longitude))
-            
-        } catch {
-        }
-        return freObject
+        return FREObject(className: "com.tuarua.googlemaps.Coordinate",
+                                                       args: CGFloat(latitude), CGFloat(longitude))
     }
 }
