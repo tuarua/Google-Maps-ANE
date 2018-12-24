@@ -43,8 +43,8 @@ extension MKMapController: MKMapViewDelegate {
     
     internal func mapView(_ mapView: MKMapView,
                           annotationView view: MKAnnotationView,
-                          didChange newState: MKAnnotationViewDragState,
-                          fromOldState oldState: MKAnnotationViewDragState) {
+                          didChange newState: MKAnnotationView.DragState,
+                          fromOldState oldState: MKAnnotationView.DragState) {
         
         guard let anno = view.annotation,
             let annotation = anno as? CustomMKAnnotation else { return }

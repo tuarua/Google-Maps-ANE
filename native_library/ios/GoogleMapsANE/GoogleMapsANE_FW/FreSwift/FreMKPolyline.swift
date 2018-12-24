@@ -21,8 +21,7 @@ extension CustomMKPolyline {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
             let width = CGFloat(rv["width"]),
-            let color = UIColor(freObjectARGB: rv["color"])
-            
+            let color = UIColor(rv["color"])
             else {
                 return nil
         }
@@ -30,8 +29,8 @@ extension CustomMKPolyline {
         var points: [CLLocationCoordinate2D] = []
         if let pointsFre = rv["points"] {
             let pointsArray = FREArray(pointsFre)
-            for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D(pointsArray[i]) {
+            for frePoint in pointsArray {
+                if let point = CLLocationCoordinate2D(frePoint) {
                     points.append(point)
                 }
             }
@@ -48,8 +47,8 @@ extension CustomMKPolyline {
         }
         var points: [CLLocationCoordinate2D] = []
         let pointsArray = FREArray(rv)
-        for i in 0..<pointsArray.length {
-            if let point = CLLocationCoordinate2D(pointsArray[i]) {
+        for frePoint in pointsArray {
+            if let point = CLLocationCoordinate2D(frePoint) {
                 points.append(point)
             }
         }
@@ -63,7 +62,7 @@ extension CustomMKPolyline {
         case "width":
             self.width = CGFloat(value) ?? self.width
         case "color":
-            self.color = UIColor(freObjectARGB: value) ?? self.color
+            self.color = UIColor(value) ?? self.color
         default:
             break
         }

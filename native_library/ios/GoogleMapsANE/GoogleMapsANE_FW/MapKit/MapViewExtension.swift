@@ -197,14 +197,12 @@ public extension MKMapView {
 
 public extension MKMapRect {
     /// The rect that contains every map point in the world.
-    public static var world: MKMapRect { return MKMapRectWorld }
     public static var zero: MKMapRect { return MKMapRect(x: 0, y: 0, width: 0, height: 0) }
-    public static var null: MKMapRect { return MKMapRectNull }
     public static var infinite: MKMapRect {
         //let max = DBL_MAX
         let max = Double.greatestFiniteMagnitude
         let origin = -max / 2
-        return MKMapRectMake(origin, origin, max, max)
+        return MKMapRect(x: origin, y: origin, width: max, height: max)
     }
     
     public init(x: Double, y: Double, width: Double, height: Double) {
@@ -217,17 +215,6 @@ public extension MKMapRect {
         self.init(origin: MKMapPoint(x: Double(x), y: Double(y)), size: MKMapSize(width: Double(width), height: Double(height)))
     }
     
-    public var width: Double { return MKMapRectGetWidth(self.standardized) }
-    public var height: Double { return MKMapRectGetHeight(self.standardized) }
-    public var minX: Double { return MKMapRectGetMinX(self.standardized) }
-    public var midX: Double { return MKMapRectGetMidX(self.standardized) }
-    public var maxX: Double { return MKMapRectGetMaxX(self.standardized) }
-    public var minY: Double { return MKMapRectGetMinY(self.standardized) }
-    public var midY: Double { return MKMapRectGetMidY(self.standardized) }
-    public var maxY: Double { return MKMapRectGetMaxY(self.standardized) }
-    
-    public var isNull: Bool { return MKMapRectIsNull(self.standardized) }
-    public var isEmpty: Bool { return MKMapRectIsEmpty(self.standardized) }
     public var isInfinite: Bool { return self == MKMapRect.infinite }
     public var standardized: MKMapRect {
         let realWidth = abs(self.size.width)
@@ -240,19 +227,13 @@ public extension MKMapRect {
     public mutating func standardizeInPlace() { self = standardized }
     public mutating func makeIntegralInPlace() { self = integral }
     
-    public func insetBy(_ dx: Double, _ dy: Double) -> MKMapRect { return MKMapRectInset(self.standardized, dx, dy) }
+    public mutating func insetInPlace(_ dx: Double, _ dy: Double) { self = insetBy(dx: dx, dy: dy) }
     
-    public mutating func insetInPlace(_ dx: Double, _ dy: Double) { self = insetBy(dx, dy) }
-    
-    public func offsetBy(_ dx: Double, _ dy: Double) -> MKMapRect { return MKMapRectOffset(self.standardized, dx, dy) }
-    
-    public mutating func offsetInPlace(_ dx: Double, _ dy: Double) { self = offsetBy(dx, dy) }
-    
-    public func union(_ rect: MKMapRect) -> MKMapRect { return MKMapRectUnion(self.standardized, rect.standardized) }
+    public mutating func offsetInPlace(_ dx: Double, _ dy: Double) { self = offsetBy(dx: dx, dy: dy) }
     
     public mutating func unionInPlace(_ rect: MKMapRect) { self = union(rect.standardized) }
     
-    public func intersect(_ rect: MKMapRect) -> MKMapRect { return MKMapRectIntersection(self.standardized, rect.standardized) }
+    public func intersect(_ rect: MKMapRect) -> MKMapRect { return self.standardized.intersection(rect.standardized) }
     
     public mutating func intersectInPlace(_ rect: MKMapRect) { self = intersect(rect.standardized) }
     
@@ -262,21 +243,16 @@ public extension MKMapRect {
         MKMapRectDivide(self.standardized, &slice, &remainder, atDistance, fromEdge)
         return (slice, remainder)
     }
-    
-    public func contains(_ rect: MKMapRect) -> Bool { return MKMapRectContainsRect(self.standardized, rect.standardized) }
-    
-    public func contains(_ point: MKMapPoint) -> Bool { return MKMapRectContainsPoint(self.standardized, point) }
-    
-    public func intersects(_ rect: MKMapRect) -> Bool { return MKMapRectIntersectsRect(self.standardized, rect.standardized) }
+
 }
 
 public extension MKMapRect {
     public var coordinateRegion: MKCoordinateRegion {
-        return MKCoordinateRegionForMapRect(self)
+        return MKCoordinateRegion(self)
     }
     
     public var mapRectSpans180thMeridian: Bool {
-        return MKMapRectSpans180thMeridian(self)
+        return self.spans180thMeridian
     }
     
     /// For map rects that span the 180th meridian, this returns the portion of the rect
@@ -284,7 +260,7 @@ public extension MKMapRect {
     /// world.  The portion of the rect that lies inside the world rect can be
     /// determined with rect.intersect(MKMapRect.world).
     public var mapRectRemainder: MKMapRect {
-        return MKMapRectRemainder(self)
+        return self.remainder
     }
 }
 
@@ -315,10 +291,10 @@ public extension MKMapPoint {
 
 public extension MKMapPoint {
     /// Conversion between unprojected and projected coordinates
-    public var coordinate: CLLocationCoordinate2D { return MKCoordinateForMapPoint(self) }
+    // public var coordinate: CLLocationCoordinate2D { return self.coordinate }
     
     public func getMeters(to mapPoint: MKMapPoint) -> CLLocationDistance {
-        return MKMetersBetweenMapPoints(self, mapPoint)
+        return self.distance(to:mapPoint)
     }
 }
 
@@ -339,7 +315,7 @@ extension MKMapPoint: CustomStringConvertible {
 public extension MKMapSize {
     public static var zero: MKMapSize { return MKMapSize(width: 0, height: 0) }
     /// The size that contains every map point in the world.
-    public static var world: MKMapSize { return MKMapSizeWorld }
+    // public static var world: MKMapSize { return MKMapSize.world }
     
     public init(width: Int, height: Int) {
         self.init(width: Double(width), height: Double(height))
@@ -365,7 +341,7 @@ extension MKMapSize: CustomStringConvertible {
 
 public extension CLLocationCoordinate2D {
     /// Conversion between unprojected and projected coordinates
-    public var mapPoint: MKMapPoint { return MKMapPointForCoordinate(self) }
+    public var mapPoint: MKMapPoint { return MKMapPoint(self) }
 }
 
 // MARK: Degrees

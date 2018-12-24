@@ -16,17 +16,17 @@
 
 import Foundation
 public struct Settings {
-    public var scrollGestures: Bool = true
-    public var zoomGestures: Bool = true
-    public var tiltGestures: Bool = true
-    public var rotateGestures: Bool = true
-    public var consumesGesturesInView: Bool = true
-    public var compassButton: Bool = false
-    public var myLocationButtonEnabled: Bool = false
-    public var myLocationEnabled: Bool = false
-    public var indoorPicker: Bool = true
-    public var allowScrollGesturesDuringRotateOrZoom: Bool = true
-    public var buildingsEnabled: Bool = true
+    public var scrollGestures = true
+    public var zoomGestures = true
+    public var tiltGestures = true
+    public var rotateGestures = true
+    public var consumesGesturesInView = true
+    public var compassButton = false
+    public var myLocationButtonEnabled = false
+    public var myLocationEnabled = false
+    public var indoorPicker = true
+    public var allowScrollGesturesDuringRotateOrZoom = true
+    public var buildingsEnabled = true
     
     init(dictionary: [String: AnyObject]) {
         if let sg = dictionary["scrollGestures"] as? Bool {

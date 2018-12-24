@@ -19,9 +19,9 @@ import FreSwift
 
 internal class LocationController: NSObject, FreSwiftController, CLLocationManagerDelegate {
     var context: FreContextSwift!
-    var TAG: String? = "LocationController"
+    static var TAG = "LocationController"
     private var locationManager = CLLocationManager()
-    private var permissionsGranted: Bool = false
+    private var permissionsGranted = false
     
     convenience init(context: FreContextSwift) {
         self.init()

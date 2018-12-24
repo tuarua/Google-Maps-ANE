@@ -20,14 +20,14 @@ import GoogleMaps
 import FreSwift
 
 public class SwiftController: NSObject {
-    public var TAG: String? = "SwiftController"
+    public static var TAG = "SwiftController"
     public var context: FreContextSwift!
     public var functionsToSet: FREFunctionMap = [:]
     private var locationController: LocationController!
     private var settings: Settings?
     private var asListeners: [String] = []
-    private var listenersAddedToMapC: Bool = false
-    private var isAdded: Bool = false
+    private var listenersAddedToMapC = false
+    private var isAdded = false
     private var mapProvider: MapProvider = MapProvider.google
     internal var mapControllerGMS: GMSMapController?
     internal var mapControllerMK: MKMapController?
@@ -103,34 +103,22 @@ public class SwiftController: NSObject {
     }
     
     private func getCaptureImage(cgImage: CGImage, captureDimensions: CGRect) -> FREObject? {
-        do {
-            if let freObject = try FREObject(className: "flash.display.BitmapData",
-                                                  args: cgImage.width, cgImage.height, false),
-                let destBmd = try FREObject(className: "flash.display.BitmapData",
-                                                 args: captureDimensions.width, captureDimensions.height, false) {
-                
-                let asBitmapData = FreBitmapDataSwift(freObject: freObject)
-                defer {
-                    asBitmapData.releaseData()
-                }
-                do {
-                    try asBitmapData.acquire()
-                    try asBitmapData.setPixels(cgImage: cgImage)
-                    asBitmapData.releaseData()
-                    
-                    if let bmd = asBitmapData.rawValue,
-                        let sourceRect = captureDimensions.toFREObject(),
-                        let destPoint = CGPoint.zero.toFREObject() {
-                        _ = try destBmd.call(method: "copyPixels", args: bmd, sourceRect, destPoint)
-                        return destBmd
-                    }
-                } catch let e as FreError {
-                    return e.getError(#file, #line, #column)
-                } catch {}
+        if let freObject = FREObject(className: "flash.display.BitmapData",
+                                              args: cgImage.width, cgImage.height, false),
+            let destBmd = FREObject(className: "flash.display.BitmapData",
+                                             args: captureDimensions.width, captureDimensions.height, false) {
+            
+            let asBitmapData = FreBitmapDataSwift(freObject: freObject)
+            asBitmapData.acquire()
+            asBitmapData.setPixels(cgImage)
+            asBitmapData.releaseData()
+            
+            if let bmd = asBitmapData.rawValue,
+                let sourceRect = captureDimensions.toFREObject(),
+                let destPoint = CGPoint.zero.toFREObject() {
+                destBmd.call(method: "copyPixels", args: bmd, sourceRect, destPoint)
+                return destBmd
             }
-        } catch let e as FreError {
-            return e.getError(#file, #line, #column)
-        } catch {
         }
         return nil
     }
@@ -457,9 +445,9 @@ public class SwiftController: NSObject {
         }
 
         let centerAt: CLLocationCoordinate2D? = CLLocationCoordinate2D(argv[0])
-        let zoom: Float? = Float(argv[1])
-        let tilt: Double? = Double(argv[2])
-        let bearing: Double? = Double(argv[3])
+        let zoom = Float(argv[1])
+        let tilt = Double(argv[2])
+        let bearing = Double(argv[3])
         mapControllerMK?.moveCamera(centerAt: centerAt, tilt: tilt, bearing: bearing, animates: animates)
         mapControllerGMS?.moveCamera(centerAt: centerAt, zoom: zoom, tilt: tilt, bearing: bearing, animates: animates)
         return nil

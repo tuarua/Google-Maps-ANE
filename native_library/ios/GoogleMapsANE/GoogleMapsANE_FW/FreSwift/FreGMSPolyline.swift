@@ -25,7 +25,7 @@ public extension GMSPolyline {
             let zIndex = Int(rv["zIndex"]),
             let isTappable = Bool(rv["isTappable"]),
             let strokeWidth = CGFloat(rv["width"]),
-            let strokeColor = UIColor(freObjectARGB: rv["color"])
+            let strokeColor = UIColor(rv["color"])
             else {
                 return nil
         }
@@ -40,8 +40,8 @@ public extension GMSPolyline {
         let points = GMSMutablePath()
         if let pointsFre = rv["points"] {
             let pointsArray = FREArray(pointsFre)
-            for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D(pointsArray[i]) {
+            for frePoint in pointsArray {
+                if let point = CLLocationCoordinate2D(frePoint) {
                     points.add(point)
                 } 
             }
@@ -62,12 +62,12 @@ public extension GMSPolyline {
                 self.zIndex = Int32(z)
             }
         case "color":
-            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(value) ?? self.strokeColor
         case "points":
             let points = GMSMutablePath()
             let pointsArray = FREArray(value)
-            for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D(pointsArray[i]) {
+            for frePoint in pointsArray {
+                if let point = CLLocationCoordinate2D(frePoint) {
                     points.add(point)
                 }
             }

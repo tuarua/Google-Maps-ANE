@@ -25,8 +25,8 @@ public extension GMSPolygon {
             let zIndex = Int(rv["zIndex"]),
             let isTappable = Bool(rv["isTappable"]),
             let strokeWidth = CGFloat(rv["strokeWidth"]),
-            let strokeColor = UIColor(freObjectARGB: rv["strokeColor"]),
-            let fillColor = UIColor(freObjectARGB: rv["fillColor"])
+            let strokeColor = UIColor(rv["strokeColor"]),
+            let fillColor = UIColor(rv["fillColor"])
             else {
                 return nil
         }
@@ -42,8 +42,8 @@ public extension GMSPolygon {
         let points = GMSMutablePath()
         if let pointsFre = rv["points"] {
             let pointsArray = FREArray(pointsFre)
-            for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D(pointsArray[i]) {
+            for frePoint in pointsArray {
+                if let point = CLLocationCoordinate2D(frePoint) {
                     points.add(point)
                 }
             }
@@ -53,18 +53,16 @@ public extension GMSPolygon {
         var holes: [GMSMutablePath] = []
         if let holesFre = rv["holes"] {
             let holesArray = FREArray(holesFre)
-            for i in 0..<holesArray.length {
-                if let freItem = holesArray[i] {
-                    let holePoints = GMSMutablePath()
-                    let holePointsArray = FREArray(freItem)
-                    for j in 0..<holePointsArray.length {
-                        if let point = CLLocationCoordinate2D(holePointsArray[j]) {
-                            holePoints.add(point)
-                        }
+            for freItem in holesArray {
+                let holePoints = GMSMutablePath()
+                let holePointsArray = FREArray(freItem)
+                for j in 0..<holePointsArray.length {
+                    if let point = CLLocationCoordinate2D(holePointsArray[j]) {
+                        holePoints.add(point)
                     }
-                    if holePoints.count() > 0 {
-                        holes.append(holePoints)
-                    } 
+                }
+                if holePoints.count() > 0 {
+                    holes.append(holePoints)
                 }
             }
         } 
@@ -85,14 +83,14 @@ public extension GMSPolygon {
                 self.zIndex = Int32(z)
             }
         case "strokeColor":
-            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(value) ?? self.strokeColor
         case "fillColor":
-            self.fillColor = UIColor(freObjectARGB: value) ?? self.fillColor
+            self.fillColor = UIColor(value) ?? self.fillColor
         case "points":
             let points = GMSMutablePath()
             let pointsArray = FREArray(value)
-            for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D(pointsArray[i]) {
+            for frePoint in pointsArray {
+                if let point = CLLocationCoordinate2D(frePoint) {
                     points.add(point)
                 }
             }
@@ -100,18 +98,16 @@ public extension GMSPolygon {
         case "holes":
             var holes: [GMSMutablePath] = []
             let holesArray = FREArray(value)
-            for i in 0..<holesArray.length {
-                if let freItem = holesArray[i] {
-                    let holePoints = GMSMutablePath()
-                    let holePointsArray = FREArray(freItem)
-                    for j in 0..<holePointsArray.length {
-                        if let point = CLLocationCoordinate2D(holePointsArray[j]) {
-                            holePoints.add(point)
-                        }
+            for freItem in holesArray {
+                let holePoints = GMSMutablePath()
+                let holePointsArray = FREArray(freItem)
+                for j in 0..<holePointsArray.length {
+                    if let point = CLLocationCoordinate2D(holePointsArray[j]) {
+                        holePoints.add(point)
                     }
-                    if holePoints.count() > 0 {
-                        holes.append(holePoints)
-                    }
+                }
+                if holePoints.count() > 0 {
+                    holes.append(holePoints)
                 }
             }
             self.holes = holes

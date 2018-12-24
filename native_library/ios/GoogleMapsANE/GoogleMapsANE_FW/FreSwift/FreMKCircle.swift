@@ -24,14 +24,12 @@ extension CustomMKCircle {
             let center = CLLocationCoordinate2D(rv["center"]),
             let radius = Double(rv["radius"]),
             let strokeWidth = CGFloat(rv["strokeWidth"]),
-            let strokeColor = UIColor(freObjectARGB: rv["strokeColor"]),
-            let fillColor = UIColor(freObjectARGB: rv["fillColor"])
-        
+            let strokeColor = UIColor(rv["strokeColor"]),
+            let fillColor = UIColor(rv["fillColor"])
         else {
             return nil
         }
-        let identifier = UUID.init().uuidString
-        self.init(center: center, radius: radius, identifier: identifier)
+        self.init(center: center, radius: radius, identifier: UUID.init().uuidString)
         self.fillColor = fillColor
         self.strokeColor = strokeColor
         self.strokeWidth = strokeWidth
@@ -42,9 +40,9 @@ extension CustomMKCircle {
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
         case "strokeColor":
-            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(value) ?? self.strokeColor
         case "fillColor":
-            self.fillColor = UIColor(freObjectARGB: value) ?? self.fillColor
+            self.fillColor = UIColor(value) ?? self.fillColor
         default:
             break
         }

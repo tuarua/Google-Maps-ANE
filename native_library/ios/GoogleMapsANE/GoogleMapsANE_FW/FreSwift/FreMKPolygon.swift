@@ -21,8 +21,8 @@ extension CustomMKPolygon {
     convenience init?(_ freObject: FREObject?) {
         guard let rv = freObject,
             let strokeWidth = CGFloat(rv["strokeWidth"]),
-            let strokeColor = UIColor(freObjectARGB: rv["strokeColor"]),
-            let fillColor = UIColor(freObjectARGB: rv["fillColor"])
+            let strokeColor = UIColor(rv["strokeColor"]),
+            let fillColor = UIColor(rv["fillColor"])
             
             else {
                 return nil
@@ -32,8 +32,8 @@ extension CustomMKPolygon {
         var points: [CLLocationCoordinate2D] = []
         if let pointsFre = rv["points"] {
             let pointsArray = FREArray(pointsFre)
-            for i in 0..<pointsArray.length {
-                if let point = CLLocationCoordinate2D(pointsArray[i]) {
+            for frePoint in pointsArray {
+                if let point = CLLocationCoordinate2D(frePoint) {
                     points.append(point)
                 }
             }
@@ -42,18 +42,16 @@ extension CustomMKPolygon {
         var holes: [[CLLocationCoordinate2D]] = [[]]
         if let holesFre = rv["holes"] {
             let holesArray = FREArray(holesFre)
-            for i in 0..<holesArray.length {
-                if let freItem = holesArray[i] {
-                    var holePoints: [CLLocationCoordinate2D] = []
-                    let holePointsArray = FREArray(freItem)
-                    for j in 0..<holePointsArray.length {
-                        if let point = CLLocationCoordinate2D(holePointsArray[j]) {
-                            holePoints.append(point)
-                        }
+            for freItem in holesArray {
+                var holePoints: [CLLocationCoordinate2D] = []
+                let holePointsArray = FREArray(freItem)
+                for freHolePoint in holePointsArray {
+                    if let point = CLLocationCoordinate2D(freHolePoint) {
+                        holePoints.append(point)
                     }
-                    if holePoints.count > 0 {
-                        holes.append(holePoints)
-                    }
+                }
+                if holePoints.count > 0 {
+                    holes.append(holePoints)
                 }
             }
         }
@@ -71,8 +69,8 @@ extension CustomMKPolygon {
         }
         var points: [CLLocationCoordinate2D] = []
         let pointsArray = FREArray(rv)
-        for i in 0..<pointsArray.length {
-            if let point = CLLocationCoordinate2D(pointsArray[i]) {
+        for frePoint in pointsArray {
+            if let point = CLLocationCoordinate2D(frePoint) {
                 points.append(point)
             }
         }
@@ -87,9 +85,9 @@ extension CustomMKPolygon {
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
         case "strokeColor":
-            self.strokeColor = UIColor(freObjectARGB: value) ?? self.strokeColor
+            self.strokeColor = UIColor(value) ?? self.strokeColor
         case "fillColor":
-            self.fillColor = UIColor(freObjectARGB: value) ?? self.fillColor
+            self.fillColor = UIColor(value) ?? self.fillColor
         default:
             break
         }
