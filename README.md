@@ -23,18 +23,18 @@ Download the latest from the [Releases](https://github.com/tuarua/Google-Maps-AN
  
 From the command line cd into /example and run:   
  - OSX
-````shell
+```shell
 bash get_android_dependencies.sh
-`````
+```
  - Windows Powershell
-````shell
+```shell
 PS get_android_dependencies.ps1
-`````
+```
 
 The dependencies can be downloaded directly from this repo: 
 [https://github.com/tuarua/Android-ANE-Dependancies/tree/master/anes]
  
-````xml
+```xml
 <extensions>
     <extensionID>com.tuarua.frekotlin</extensionID>
     <extensionID>org.greenrobot.eventbus</extensionID>
@@ -45,14 +45,14 @@ The dependencies can be downloaded directly from this repo:
     <extensionID>com.google.code.gson.gson</extensionID>
     ...
 </extensions>
-`````
+```
 
 You will need a Google API key   
 [https://developers.google.com/maps/documentation/android-api/signup]
 
 You will also need to include the following in your app manifest. Update accordingly.
 
-````xml
+```xml
 <manifest android:installLocation="auto">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -74,7 +74,7 @@ You will also need to include the following in your app manifest. Update accordi
         </activity>
     </application>
 </manifest>
-`````
+```
 
 -------------
 
@@ -85,9 +85,9 @@ You will also need to include the following in your app manifest. Update accordi
 N.B. You must use a Mac to build an iOS app using this ANE. Windows is NOT supported.
 
 From the command line cd into /example and run:
-````shell
+```shell
 bash get_ios_dependencies.sh
-`````
+```
 
 
 The folder, ios_dependencies/device/Frameworks, must be packaged as part of your app when creating the ipa. How this is done will depend on the IDE you are using.   
@@ -97,12 +97,15 @@ After the ipa is created unzip it and confirm there is a "Frameworks" folder in 
 
 We need to patch some files in AIR SDK. 
 
-Copy the files from **AIRSDK_patch** into the corresponding folders in your AIR SDK.
+1. Copy adt.jar from **AIRSDK_patch** into the corresponding folder in your AIR SDK.
+2. Delete ld64 in your AIR SDK from `/lib/aot/bin/ld64/ld64`
+3. in Terminal:
+`ln -s /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld /PATH/TO/YOUR/AIRSDK_32/lib/aot/bin/ld64/ld64` 
 
 -------------
 
 You will also need to include the following in your app manifest. Update accordingly.
-````xml
+```xml
 <InfoAdditions><![CDATA[            
     <key>UIDeviceFamily</key>
     <array>
@@ -114,7 +117,7 @@ You will also need to include the following in your app manifest. Update accordi
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Your message</string>
 ]]></InfoAdditions>
-`````
+```
 
 You will need a Google API key   
 [https://developers.google.com/maps/documentation/ios-sdk/get-api-key]
