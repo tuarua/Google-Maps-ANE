@@ -19,40 +19,22 @@ import MapKit
 
 extension CustomMKPolyline {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject,
-            let width = CGFloat(rv["width"]),
-            let color = UIColor(rv["color"])
-            else {
-                return nil
+        guard let rv = freObject else {
+            return nil
         }
+        let fre = FreObjectSwift(rv)
         let identifier = UUID().uuidString
-        var points: [CLLocationCoordinate2D] = []
-        if let pointsFre = rv["points"] {
-            let pointsArray = FREArray(pointsFre)
-            for frePoint in pointsArray {
-                if let point = CLLocationCoordinate2D(frePoint) {
-                    points.append(point)
-                }
-            }
-        }
-        self.init(points: points, identifier: identifier)
-        self.color = color
-        self.width = width
+        self.init(points: fre.points, identifier: identifier)
+        self.color = fre.color
+        self.width = fre.width
     }
     
     convenience init?(_ freObject: FREObject?, polyline: CustomMKPolyline) {
-        guard let rv = freObject
-            else {
-                return nil
+        guard let rv = freObject else {
+            return nil
         }
-        var points: [CLLocationCoordinate2D] = []
-        let pointsArray = FREArray(rv)
-        for frePoint in pointsArray {
-            if let point = CLLocationCoordinate2D(frePoint) {
-                points.append(point)
-            }
-        }
-        self.init(points: points, identifier: polyline.identifier)
+        let fre = FreObjectSwift(rv)
+        self.init(points: fre.points, identifier: polyline.identifier)
         self.color = polyline.color
         self.width = polyline.width
     }

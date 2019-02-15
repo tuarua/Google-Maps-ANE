@@ -3,21 +3,21 @@
     <id>com.tuarua.GoogleMapsANE</id>
 	<name>Google Maps ANE</name>
 	<copyright>This work is licensed under Apache License, Copyright (c) 2017 Tua Rua Ltd.</copyright>
-	<versionNumber>2.0.0</versionNumber>
+	<versionNumber>2.1.0</versionNumber>
     <platforms>
-     <platform name="iPhone-ARM">
-        <applicationDeployment>
-            <nativeLibrary>libGoogleMapsANE.a</nativeLibrary>
-            <initializer>TRGMAExtInizer</initializer>
-            <finalizer>TRGMAExtFinizer</finalizer>
-        </applicationDeployment>
-    </platform>
-     <platform name="iPhone-x86">
-         <applicationDeployment>
-             <nativeLibrary>libGoogleMapsANE.a</nativeLibrary>
-             <initializer>TRGMAExtInizer</initializer>
-             <finalizer>TRGMAExtFinizer</finalizer>
-         </applicationDeployment>
-     </platform>
+        <platform name="iPhone-ARM">
+            <applicationDeployment>
+                <nativeLibrary>libGoogleMapsANE.a</nativeLibrary>
+                <initializer>TRGMAExtInizer</initializer>
+                <finalizer>TRGMAExtFinizer</finalizer>
+            </applicationDeployment>
+        </platform>
+        <platform name="iPhone-x86">
+            <applicationDeployment>
+                <nativeLibrary>libGoogleMapsANE.a</nativeLibrary>
+                <initializer>TRGMAExtInizer</initializer>
+                <finalizer>TRGMAExtFinizer</finalizer>
+            </applicationDeployment>
+        </platform>
     </platforms>
 </extension>

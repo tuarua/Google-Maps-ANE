@@ -28,10 +28,10 @@ class GMSMapController: UIViewController, FreSwiftController {
     private var container: UIView!
     private var initialCoordinate = CLLocationCoordinate2D()
     private var viewPort = CGRect.zero
-    private var markers: [String: GMSMarker] = Dictionary()
-    private var circles: [String: GMSCircle] = Dictionary()
-    private var polygons: [String: GMSPolygon] = Dictionary()
-    private var polylines: [String: GMSPolyline] = Dictionary()
+    private var markers = [String: GMSMarker]()
+    private var circles = [String: GMSCircle]()
+    private var polygons = [String: GMSPolygon]()
+    private var polylines = [String: GMSPolyline]()
     private var lastCapture: CGImage?
     private var captureDimensions = CGRect.zero
     internal var isMapLoaded = false

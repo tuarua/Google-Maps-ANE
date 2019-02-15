@@ -20,34 +20,25 @@ import FreSwift
 
 public extension GMSMarker {
     convenience init?(_ freObject: FREObject?) {
-       guard let rv = freObject,
-        let coordinate = CLLocationCoordinate2D(rv["coordinate"]),
-            let title = String(rv["title"]),
-            let snippet = String(rv["snippet"]),
-            let isDraggable = Bool(rv["isDraggable"]),
-            let isFlat = Bool(rv["isFlat"]),
-            let isTappable = Bool(rv["isTappable"]),
-            let rotation = CLLocationDegrees(rv["rotation"]),
-            let alpha = Float(rv["alpha"]),
-            let color = UIColor(rv["color"])
-            else {
-                return nil
+        guard let rv = freObject else {
+            return nil
         }
-        self.init(position: coordinate)
+        let fre = FreObjectSwift(rv)
+        self.init(position: fre.coordinate)
         self.tracksInfoWindowChanges = true
-        self.title = title
-        self.snippet = snippet
-        self.isDraggable = isDraggable
-        self.isFlat = isFlat
-        self.isTappable = isTappable
-        self.rotation = rotation
-        self.opacity = alpha
+        self.title = fre.title
+        self.snippet = fre.snippet
+        self.isDraggable = fre.isDraggable
+        self.isFlat = fre.isFlat
+        self.isTappable = fre.isTappable
+        self.rotation = fre.rotation
+        self.opacity = fre.alpha
         self.userData = UUID().uuidString
         
-        if let icon = rv["icon"], let img = UIImage(freObject: icon, scale: UIScreen.main.scale, orientation: .up) {
+        if let img = UIImage(freObject: fre.icon, scale: UIScreen.main.scale, orientation: .up) {
             self.icon = img
         } else {
-            self.icon = GMSMarker.markerImage(with: color)
+            self.icon = GMSMarker.markerImage(with: fre.color)
         }
     }
     

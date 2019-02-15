@@ -20,7 +20,7 @@ import GoogleMaps
 extension GMSMapController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         if !asListeners.contains(Constants.DID_TAP_AT) {return}
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["latitude"] = coordinate.latitude
         props["longitude"] = coordinate.longitude
         let json = JSON(props)
@@ -29,7 +29,7 @@ extension GMSMapController: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
         if !asListeners.contains(Constants.DID_LONG_PRESS_AT) {return}
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["latitude"] = coordinate.latitude
         props["longitude"] = coordinate.longitude
         let json = JSON(props)
@@ -38,7 +38,7 @@ extension GMSMapController: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
         if !asListeners.contains(Constants.ON_CAMERA_MOVE) { return }
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["latitude"] = position.target.latitude
         props["longitude"] = position.target.longitude
         props["zoom"] = position.zoom
@@ -56,7 +56,7 @@ extension GMSMapController: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
         if !asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) { return }
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["reason"] = gesture ? 1: 3
         let json = JSON(props)
         dispatchEvent(name: Constants.ON_CAMERA_MOVE_STARTED, value: json.description)
@@ -77,7 +77,7 @@ extension GMSMapController: GMSMapViewDelegate {
         if let _identifier = marker.userData as? String {
             identifier = _identifier
         }
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["id"] = identifier
         props["latitude"] = marker.position.latitude
         props["longitude"] = marker.position.longitude

@@ -1,3 +1,7 @@
+### 2.1.0
+- iOS: Refactor
+- iOS: Updated to FreSwift 3.1.0
+
 ### 2.0.0
 - AND: Updated to FreKotlin 1.6.0
 - Upgraded to AIR 32

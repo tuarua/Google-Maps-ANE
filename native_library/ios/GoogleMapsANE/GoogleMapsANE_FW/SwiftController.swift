@@ -215,7 +215,7 @@ public class SwiftController: NSObject {
             else {
                 return FreArgError(message: "setPolylineProp").getError(#file, #line, #column)
         }
-        mapControllerMK?.setPolylineProp(id: id, name: name, value: freValue) //TODO
+        mapControllerMK?.setPolylineProp(id: id, name: name, value: freValue)
         mapControllerGMS?.setPolylineProp(id: id, name: name, value: freValue)
         return nil
     }
@@ -256,7 +256,7 @@ public class SwiftController: NSObject {
             else {
                 return FreArgError(message: "setPolygonProp").getError(#file, #line, #column)
         }
-        mapControllerMK?.setPolygonProp(id: id, name: name, value: freValue) //TODO
+        mapControllerMK?.setPolygonProp(id: id, name: name, value: freValue)
         mapControllerGMS?.setPolygonProp(id: id, name: name, value: freValue)
         return nil
     }
@@ -266,7 +266,7 @@ public class SwiftController: NSObject {
             else {
                 return FreArgError(message: "removePolygon").getError(#file, #line, #column)
         }
-        //mapControllerMK?.removePolygon(id: id) //TODO
+        mapControllerMK?.removePolygon(id: id)
         mapControllerGMS?.removePolygon(id: id)
         return nil
     }
