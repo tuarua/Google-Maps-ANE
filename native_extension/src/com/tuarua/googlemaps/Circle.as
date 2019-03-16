@@ -149,21 +149,19 @@ public class Circle extends Shape {
     }
 
     public function remove():void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("removeCircle", _id);
-            if (theRet is ANEError) throw theRet as ANEError;
-            delete GoogleMapsANEContext.circles[_id];
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("removeCircle", _id);
+        if (ret is ANEError) throw ret as ANEError;
+        delete GoogleMapsANEContext.circles[_id];
     }
 
     /**
      * This method is omitted from the output. * * @private
      */
     private function setAneValue(name:String, value:*):void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("setCircleProp", _id, name, value);
-            if (theRet is ANEError) throw theRet as ANEError;
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("setCircleProp", _id, name, value);
+        if (ret is ANEError) throw ret as ANEError;
     }
 
 }

@@ -50,10 +50,10 @@ class KotlinController : FreKotlinMainController {
     private var scaleFactor: Float = 1.0f
     private lateinit var airView: ViewGroup
     private val TRACE = "TRACE"
-    private var isAdded: Boolean = false
+    private var isAdded = false
     private var settings: Settings = Settings()
     private var asListeners: MutableList<String> = mutableListOf()
-    private var listenersAddedToMapC: Boolean = false
+    private var listenersAddedToMapC = false
 
     private var mapController: MapController? = null
     private var packageManager: PackageManager? = null

@@ -76,16 +76,16 @@ public class Polygon extends Shape {
      * This method is omitted from the output. * * @private
      */
     private function setAneValue(name:String, value:*):void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("setPolygonProp", _id, name, value);
-            if (theRet is ANEError) throw theRet as ANEError;
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("setPolygonProp", _id, name, value);
+        if (ret is ANEError) throw ret as ANEError;
     }
 
 
     public function get strokeJointType():int {
         return _strokeJointType;
     }
+
     /**
      * Sets the joint type for all vertices of the polygon's outline.
      *
@@ -135,6 +135,7 @@ public class Polygon extends Shape {
     public function get strokePattern():StrokePattern {
         return _strokePattern;
     }
+
     /**
      * Sets the stroke pattern of the polygon's outline.
      *
@@ -153,6 +154,7 @@ public class Polygon extends Shape {
     public function get points():Vector.<Coordinate> {
         return _points;
     }
+
     /**
      * Adds a point to the Polygon.
      *
@@ -177,11 +179,10 @@ public class Polygon extends Shape {
     }
 
     public function remove():void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("removePolygon", _id);
-            if (theRet is ANEError) throw theRet as ANEError;
-            delete GoogleMapsANEContext.polygons[_id];
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("removePolygon", _id);
+        if (ret is ANEError) throw ret as ANEError;
+        delete GoogleMapsANEContext.polygons[_id];
     }
 
 }

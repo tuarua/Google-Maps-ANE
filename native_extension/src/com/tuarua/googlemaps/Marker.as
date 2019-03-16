@@ -1,6 +1,7 @@
 package com.tuarua.googlemaps {
 import com.tuarua.GoogleMapsANEContext;
 import com.tuarua.fre.ANEError;
+
 import flash.display.BitmapData;
 
 [RemoteClass(alias="com.tuarua.googlemaps.Marker")]
@@ -48,11 +49,10 @@ public class Marker {
     }
 
     public function remove():void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("removeMarker", _id);
-            if (theRet is ANEError) throw theRet as ANEError;
-            delete GoogleMapsANEContext.markers[_id];
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("removeMarker", _id);
+        if (ret is ANEError) throw ret as ANEError;
+        delete GoogleMapsANEContext.markers[_id];
     }
 
     public function get id():String {
@@ -84,6 +84,7 @@ public class Marker {
     public function get color():uint {
         return _color;
     }
+
     /**
      * The color of the circle outline in ARGB format, the same format used by Color.
      * The default value is red (0xffff0000).
@@ -114,6 +115,7 @@ public class Marker {
     public function get isFlat():Boolean {
         return _isFlat;
     }
+
     /**
      * Ignored when using Apple Maps
      */
@@ -143,6 +145,7 @@ public class Marker {
     public function get rotation():int {
         return _rotation;
     }
+
     /**
      * Ignored when using Apple Maps
      */
@@ -161,10 +164,9 @@ public class Marker {
     }
 
     private function setAneValue(name:String, value:*):void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("setMarkerProp", _id, name, value);
-            if (theRet is ANEError) throw theRet as ANEError;
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("setMarkerProp", _id, name, value);
+        if (ret is ANEError) throw ret as ANEError;
     }
 
     public function set isAdded(value:Boolean):void {

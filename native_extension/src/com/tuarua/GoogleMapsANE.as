@@ -30,17 +30,15 @@ public class GoogleMapsANE extends EventDispatcher {
         }
 
         if (GoogleMapsANEContext.context) {
-            var theRet:* = GoogleMapsANEContext.context.call("init", _key, _mapProvider);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-            _isInited = theRet;
+            var ret:* = GoogleMapsANEContext.context.call("init", _key, _mapProvider);
+            if (ret is ANEError) throw ret as ANEError;
+            _isInited = ret;
         }
         _mapView = this;
     }
 
     public static function get mapView():GoogleMapsANE {
-        if (!_mapView) {
+        if (_mapView == null) {
             new GoogleMapsANE();
         }
         return _mapView;
@@ -108,10 +106,8 @@ public class GoogleMapsANE extends EventDispatcher {
                             scaleFactor:Number = 1.0):void {
         if (_isInited) {
             _viewPort = viewPort;
-            var theRet:* = GoogleMapsANEContext.context.call("initMap", _viewPort, centerAt, zoomLevel, settings, scaleFactor);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
+            var ret:* = GoogleMapsANEContext.context.call("initMap", _viewPort, centerAt, zoomLevel, settings, scaleFactor);
+            if (ret is ANEError) throw ret as ANEError;
             _isMapInited = true;
         } else {
             trace("initMap wasn't successful");
@@ -124,16 +120,13 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addCircle(circle:Circle):void {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("addCircle", circle);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-            var id:String = theRet as String;
-            circle.id = id;
-            circle.isAdded = true;
-            GoogleMapsANEContext.circles[id] = circle;
-        }
+        if (!safetyCheck()) return;
+        var ret:* = GoogleMapsANEContext.context.call("addCircle", circle);
+        if (ret is ANEError) throw ret as ANEError;
+        var id:String = ret as String;
+        circle.id = id;
+        circle.isAdded = true;
+        GoogleMapsANEContext.circles[id] = circle;
     }
 
     /**
@@ -142,16 +135,13 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addPolyline(polyline:Polyline):void {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("addPolyline", polyline);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-            var id:String = theRet as String;
-            polyline.id = id;
-            polyline.isAdded = true;
-            GoogleMapsANEContext.polylines[id] = polyline;
-        }
+        if (!safetyCheck()) return;
+        var ret:* = GoogleMapsANEContext.context.call("addPolyline", polyline);
+        if (ret is ANEError) throw ret as ANEError;
+        var id:String = ret as String;
+        polyline.id = id;
+        polyline.isAdded = true;
+        GoogleMapsANEContext.polylines[id] = polyline;
     }
 
     /**
@@ -160,16 +150,13 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addPolygon(polygon:Polygon):void {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("addPolygon", polygon);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-            var id:String = theRet as String;
-            polygon.id = id;
-            polygon.isAdded = true;
-            GoogleMapsANEContext.polygons[id] = polygon;
-        }
+        if (!safetyCheck()) return;
+        var ret:* = GoogleMapsANEContext.context.call("addPolygon", polygon);
+        if (ret is ANEError) throw ret as ANEError;
+        var id:String = ret as String;
+        polygon.id = id;
+        polygon.isAdded = true;
+        GoogleMapsANEContext.polygons[id] = polygon;
     }
 
     /**
@@ -179,40 +166,16 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addMarker(marker:Marker):void {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("addMarker", marker);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-            var id:String = theRet as String;
-            marker.id = id;
-            marker.isAdded = true;
-            GoogleMapsANEContext.markers[id] = marker;
-        }
+        if (!safetyCheck()) return;
+        var ret:* = GoogleMapsANEContext.context.call("addMarker", marker);
+        if (ret is ANEError) throw ret as ANEError;
+        var id:String = ret as String;
+        marker.id = id;
+        marker.isAdded = true;
+        GoogleMapsANEContext.markers[id] = marker;
     }
 
     /**
-     *
-     * @param overlay
-     * @return
-     *
-     */
-    // TODO try and align iOS and Android versions - the Google SDK is very different
-    /*public function addGroundOverlay(overlay:GroundOverlay):void {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("addGroundOverlay", overlay);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-            var id:String = theRet as String;
-            overlay.id = id;
-            overlay.isAdded = true;
-            GoogleMapsANEContext.overlays[id] = overlay;
-        }
-    }*/
-
-    /**
-     *
      *
      */
     public function clear():void {
@@ -229,25 +192,20 @@ public class GoogleMapsANE extends EventDispatcher {
     public function set visible(value:Boolean):void {
         if (_visible == value) return;
         _visible = value;
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("setVisible", value);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setVisible", value);
     }
 
     /**
-     *
      * @param southWest
      * @param northEast
      * @param animates
      *
      */
     public function setBounds(southWest:Coordinate, northEast:Coordinate, animates:Boolean = false):void {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("setBounds", southWest, northEast, animates);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-        }
+        if (!safetyCheck()) return;
+        var ret:* = GoogleMapsANEContext.context.call("setBounds", southWest, northEast, animates);
+        if (ret is ANEError) throw ret as ANEError;
     }
 
     /**
@@ -257,16 +215,13 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function moveCamera(position:CameraPosition, animates:Boolean = false):void {
-        if (safetyCheck()) {
-            var centerAt:Coordinate = position.centerAt ? position.centerAt : null;
-            var zoom:* = position.zoom != -9999 ? position.zoom : null;
-            var tilt:* = position.tilt != -9999 ? position.tilt : null;
-            var bearing:* = position.bearing != -9999 ? position.bearing : null;
-            var theRet:* = GoogleMapsANEContext.context.call("moveCamera", centerAt, zoom, tilt, bearing, animates);
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-        }
+        if (!safetyCheck()) return;
+        var centerAt:Coordinate = position.centerAt ? position.centerAt : null;
+        var zoom:* = position.zoom != -9999 ? position.zoom : null;
+        var tilt:* = position.tilt != -9999 ? position.tilt : null;
+        var bearing:* = position.bearing != -9999 ? position.bearing : null;
+        var ret:* = GoogleMapsANEContext.context.call("moveCamera", centerAt, zoom, tilt, bearing, animates);
+        if (ret is ANEError) throw ret as ANEError;
     }
 
     /**
@@ -275,9 +230,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function zoomIn(animates:Boolean = false):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("zoomIn", animates);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("zoomIn", animates);
     }
 
     /**
@@ -286,9 +240,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function zoomOut(animates:Boolean = false):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("zoomOut", animates);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("zoomOut", animates);
     }
 
     /**
@@ -298,9 +251,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function zoomTo(zoomLevel:Number, animates:Boolean = false):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("zoomTo", zoomLevel, animates);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("zoomTo", zoomLevel, animates);
     }
 
     /**
@@ -312,9 +264,8 @@ public class GoogleMapsANE extends EventDispatcher {
      * <p>Android Only.</p>
      */
     public function scrollBy(x:Number, y:Number, animates:Boolean = false):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("scrollBy", x, y, animates);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("scrollBy", x, y, animates);
     }
 
     /**
@@ -323,9 +274,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function set mapType(value:uint):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("setMapType", value);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setMapType", value);
     }
 
     /**
@@ -333,9 +283,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function showUserLocation():void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("showUserLocation");
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("showUserLocation");
     }
 
     /**
@@ -350,26 +299,19 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function capture(x:int = 0, y:int = 0, width:int = 0, height:int = 0):void {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("capture", x, y, width, height) as BitmapData;
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-        }
+        if (!safetyCheck()) return;
+        var ret:* = GoogleMapsANEContext.context.call("capture", x, y, width, height) as BitmapData;
+        if (ret is ANEError) throw ret as ANEError;
     }
 
     /**
      * <p>Returns the last bitmap capture of the mapView</p>
      */
     public function getCapture():BitmapData {
-        if (safetyCheck()) {
-            var theRet:* = GoogleMapsANEContext.context.call("getCapture") as BitmapData;
-            if (theRet is ANEError) {
-                throw theRet as ANEError;
-            }
-            return theRet;
-        }
-        return null;
+        if (!safetyCheck()) return null;
+        var ret:* = GoogleMapsANEContext.context.call("getCapture") as BitmapData;
+        if (ret is ANEError) throw ret as ANEError;
+        return ret;
     }
 
     /**
@@ -377,9 +319,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function requestPermissions():void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("requestPermissions");
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("requestPermissions");
     }
 
 
@@ -409,9 +350,8 @@ public class GoogleMapsANE extends EventDispatcher {
      */
     public function set viewPort(value:Rectangle):void {
         _viewPort = value;
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("setViewPort", _viewPort);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setViewPort", _viewPort);
     }
 
     /**
@@ -420,9 +360,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function showInfoWindow(id:String):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("showInfoWindow", id);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("showInfoWindow", id);
     }
 
     /**
@@ -431,9 +370,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function hideInfoWindow(id:String):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("hideInfoWindow", id);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("hideInfoWindow", id);
     }
 
     /**
@@ -443,9 +381,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function set style(json:String):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("setStyle", json);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setStyle", json);
     }
 
     /**
@@ -454,9 +391,8 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function set animationDuration(value:int):void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("setAnimationDuration", value);
-        }
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setAnimationDuration", value);
     }
 
     /**
