@@ -33,13 +33,13 @@ class MKMapController: UIViewController, FreSwiftController {
     private var _showsUserLocation = false
     private var lastCapture: CGImage?
     private var captureDimensions = CGRect.zero
-    internal var polygons: [String: CustomMKPolygon] = Dictionary()
-    internal var polylines: [String: CustomMKPolyline] = Dictionary()
-    internal var markers: [String: CustomMKAnnotation] = Dictionary()
-    internal var circleRenderers: [String: MKCircleRenderer] = Dictionary()
-    internal var polygonRenderers: [String: MKPolygonRenderer] = Dictionary()
-    internal var polylineRenderers: [String: MKPolylineRenderer] = Dictionary()
-    internal var circles: [String: CustomMKCircle] = Dictionary()
+    internal var polygons = [String: CustomMKPolygon]()
+    internal var polylines = [String: CustomMKPolyline]()
+    internal var markers = [String: CustomMKAnnotation]()
+    internal var circleRenderers = [String: MKCircleRenderer]()
+    internal var polygonRenderers = [String: MKPolygonRenderer]()
+    internal var polylineRenderers = [String: MKPolylineRenderer]()
+    internal var circles = [String: CustomMKCircle]()
     internal var asListeners: [String] = []
     internal var isMapLoaded = false
     internal var showsUserLocation: Bool {
@@ -67,7 +67,7 @@ class MKMapController: UIViewController, FreSwiftController {
     @objc internal func didTapAt(_ recogniser: UITapGestureRecognizer) {
         let firstTouch = recogniser.location(ofTouch: 0, in: self.mapView)
         let coordinate = mapView.convert(firstTouch, toCoordinateFrom: mapView)
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["latitude"] = coordinate.latitude
         props["longitude"] = coordinate.longitude
         let json = JSON(props)

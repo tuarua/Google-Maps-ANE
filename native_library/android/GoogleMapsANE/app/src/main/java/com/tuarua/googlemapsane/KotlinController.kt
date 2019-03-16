@@ -50,10 +50,10 @@ class KotlinController : FreKotlinMainController {
     private var scaleFactor: Float = 1.0f
     private lateinit var airView: ViewGroup
     private val TRACE = "TRACE"
-    private var isAdded: Boolean = false
+    private var isAdded = false
     private var settings: Settings = Settings()
     private var asListeners: MutableList<String> = mutableListOf()
-    private var listenersAddedToMapC: Boolean = false
+    private var listenersAddedToMapC = false
 
     private var mapController: MapController? = null
     private var packageManager: PackageManager? = null
@@ -128,7 +128,7 @@ class KotlinController : FreKotlinMainController {
 
     fun forwardGeocodeLocation(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("forwardGeocodeLocation")
-        val addressSearch = String(argv[0]) ?: return FreConversionException("addressSearch")
+        val addressSearch = String(argv[0]) ?: return null
         val appActivity = ctx.activity
         if (appActivity != null) {
             val geocoder = Geocoder(appActivity)
@@ -180,7 +180,9 @@ class KotlinController : FreKotlinMainController {
         try {
             val permissionsToCheck = getPermissionsToCheck()
             if (permissionsToCheck.size == 0 || SDK_INT < M) {
-                dispatchEvent(PermissionEvent.ON_PERMISSION_STATUS, gson.toJson(PermissionEvent(ACCESS_FINE_LOCATION, PermissionEvent.PERMISSION_ALWAYS)))
+                dispatchEvent(PermissionEvent.ON_PERMISSION_STATUS,
+                        gson.toJson(PermissionEvent(ACCESS_FINE_LOCATION,
+                                PermissionEvent.PERMISSION_ALWAYS)))
                 permissionsGranted = true
                 return null
             }
@@ -236,7 +238,6 @@ class KotlinController : FreKotlinMainController {
         return true
     }
 
-
     @Throws(FreException::class)
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: PermissionEvent) {
@@ -283,7 +284,7 @@ class KotlinController : FreKotlinMainController {
 
     fun addEventListener(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("addEventListener")
-        val type = String(argv[0]) ?: return FreConversionException("type")
+        val type = String(argv[0]) ?: return null
         if (mapController == null) {
             asListeners.add(type)
         } else {
@@ -301,7 +302,7 @@ class KotlinController : FreKotlinMainController {
 
     fun removeEventListener(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("removeEventListener")
-        val type = String(argv[0]) ?: return FreConversionException("type")
+        val type = String(argv[0]) ?: return null
         if (mapController == null) {
             asListeners.remove(type)
         } else {
@@ -323,15 +324,15 @@ class KotlinController : FreKotlinMainController {
 
     fun setCircleProp(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 2 } ?: return FreArgException("setCircleProp")
-        val id = String(argv[0]) ?: return FreConversionException("id")
-        val name = String(argv[1]) ?: return FreConversionException("name")
+        val id = String(argv[0]) ?: return null
+        val name = String(argv[1]) ?: return null
         mapController?.setCircleProp(id, name, argv[2])
         return null
     }
 
     fun removeCircle(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("removeCircle")
-        val id = String(argv[0]) ?: return FreConversionException("id")
+        val id = String(argv[0]) ?: return null
         mapController?.removeCircle(id)
         return null
     }
@@ -344,15 +345,15 @@ class KotlinController : FreKotlinMainController {
 
     fun setMarkerProp(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 2 } ?: return FreArgException("setMarkerProp")
-        val id = String(argv[0]) ?: return FreConversionException("id")
-        val name = String(argv[1]) ?: return FreConversionException("name")
+        val id = String(argv[0]) ?: return null
+        val name = String(argv[1]) ?: return null
         mapController?.setMarkerProp(id, name, argv[2])
         return null
     }
 
     fun removeMarker(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("removeMarker")
-        val id = String(argv[0]) ?: return FreConversionException("id")
+        val id = String(argv[0]) ?: return null
         mapController?.removeMarker(id)
         return null
     }
@@ -365,15 +366,15 @@ class KotlinController : FreKotlinMainController {
 
     fun setGroundOverlayProp(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 1 } ?: return FreArgException("setGroundOverlayProp")
-        val id = String(argv[0]) ?: return FreConversionException("id")
-        val name = String(argv[1]) ?: return FreConversionException("name")
+        val id = String(argv[0]) ?: return null
+        val name = String(argv[1]) ?: return null
         mapController?.setGroundOverlayProp(id, name, argv[2])
         return null
     }
 
     fun removeGroundOverlay(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("removeGroundOverlay")
-        val id = String(argv[0]) ?: return FreConversionException("id")
+        val id = String(argv[0]) ?: return null
         mapController?.removeGroundOverlay(id)
         return null
     }
@@ -386,16 +387,16 @@ class KotlinController : FreKotlinMainController {
 
     fun setPolylineProp(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 1 } ?: return FreArgException("setPolylineProp")
-        val id = String(argv[0]) ?: return FreConversionException("id")
-        val name = String(argv[1]) ?: return FreConversionException("name")
+        val id = String(argv[0]) ?: return null
+        val name = String(argv[1]) ?: return null
         mapController?.setPolylineProp(id, name, argv[2])
         return null
     }
 
     fun removePolyline(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("removePolyline")
-        val id = String(argv[0]) ?: return FreConversionException("id")
-        mapController?.removePolyline(id) ?: return FreConversionException("name")
+        val id = String(argv[0]) ?: return null
+        mapController?.removePolyline(id) ?: return null
         return null
     }
 
@@ -407,29 +408,29 @@ class KotlinController : FreKotlinMainController {
 
     fun setPolygonProp(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 1 } ?: return FreArgException("setPolygonProp")
-        val id = String(argv[0]) ?: return FreConversionException("id")
-        val name = String(argv[1]) ?: return FreConversionException("name")
+        val id = String(argv[0]) ?: return null
+        val name = String(argv[1]) ?: return null
         mapController?.setPolygonProp(id, name, argv[2])
         return null
     }
 
     fun removePolygon(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("removePolygon")
-        val id = String(argv[0]) ?: return FreConversionException("id")
+        val id = String(argv[0]) ?: return null
         mapController?.removePolygon(id)
         return null
     }
 
     fun showInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("showInfoWindow")
-        val id = String(argv[0]) ?: return FreConversionException("id")
+        val id = String(argv[0]) ?: return null
         mapController?.showInfoWindow(id)
         return null
     }
 
     fun hideInfoWindow(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("hideInfoWindow")
-        val id = String(argv[0]) ?: return FreConversionException("id")
+        val id = String(argv[0]) ?: return null
         mapController?.hideInfoWindow(id)
         return null
     }
@@ -504,7 +505,7 @@ class KotlinController : FreKotlinMainController {
 
     fun zoomTo(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 1 } ?: return FreArgException("zoomTo")
-        val zoomLevel = Float(argv[0]) ?: return FreConversionException("zoomLevel")
+        val zoomLevel = Float(argv[0]) ?: return null
         val animates = Boolean(argv[1]) == true
         mapController?.zoomTo(zoomLevel, animates)
         return null
@@ -512,8 +513,8 @@ class KotlinController : FreKotlinMainController {
 
     fun scrollBy(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 2 } ?: return FreArgException("scrollBy")
-        val x = Float(argv[0]) ?: return FreConversionException("x")
-        val y = Float(argv[1]) ?: return FreConversionException("y")
+        val x = Float(argv[0]) ?: return null
+        val y = Float(argv[1]) ?: return null
         val animates = Boolean(argv[2]) == true
         mapController?.scrollBy(x, y, animates)
         return null
@@ -521,14 +522,14 @@ class KotlinController : FreKotlinMainController {
 
     fun setAnimationDuration(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("setAnimationDuration")
-        val duration = Int(argv[0]) ?: return FreConversionException("duration")
+        val duration = Int(argv[0]) ?: return null
         mapController?.animationDuration = duration
         return null
     }
 
     fun setStyle(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("setStyle")
-        val json = String(argv[0]) ?: return FreConversionException("json")
+        val json = String(argv[0]) ?: return null
         mapController?.style = json
 
         return null
@@ -536,7 +537,7 @@ class KotlinController : FreKotlinMainController {
 
     fun setMapType(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("setMapType")
-        val type = Int(argv[0]) ?: return FreConversionException("type")
+        val type = Int(argv[0]) ?: return null
         mapController?.mapType = type
         return null
     }
@@ -555,6 +556,7 @@ class KotlinController : FreKotlinMainController {
         get() = _context
         set(value) {
             _context = value
+            FreKotlinLogger.context = _context
         }
 
 }

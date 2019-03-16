@@ -22,7 +22,7 @@ extension MKMapController: MKMapViewDelegate {
         if !asListeners.contains(Constants.ON_CAMERA_MOVE) {
             return
         }
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         let camera = mapView.camera
         props["latitude"] = camera.centerCoordinate.latitude
         props["longitude"] = camera.centerCoordinate.longitude
@@ -66,7 +66,7 @@ extension MKMapController: MKMapViewDelegate {
             if !asListeners.contains(Constants.DID_END_DRAGGING) {
                 return
             }
-            var props: [String: Any] = Dictionary()
+            var props = [String: Any]()
             props["id"] = identifier
             props["latitude"] = annotation.coordinate.latitude
             props["longitude"] = annotation.coordinate.longitude

@@ -32,15 +32,16 @@ class MarkerOptions: NSObject {
     
     public init(freObject: FREObject?) {
         guard let rv = freObject else { return }
-        coordinate = CLLocationCoordinate2D(rv["coordinate"])
-        title = String(rv["title"])
-        snippet = String(rv["snippet"])
-        color = UIColor(rv["color"])
-        isDraggable = Bool(rv["isDraggable"]) ?? false
-        isFlat = Bool(rv["isFlat"]) ?? false
-        isTappable = Bool(rv["isTappable"]) ?? false
+        let fre = FreObjectSwift(rv)
+        coordinate = fre.coordinate
+        title = fre.title
+        snippet = fre.snippet
+        color = fre.color
+        isDraggable = fre.isDraggable
+        isFlat = fre.isFlat
+        isTappable = fre.isTappable
         rotation = CLLocationDegrees(Int(rv["rotation"]) ?? 0)
-        alpha = CGFloat(rv["alpha"]) ?? CGFloat(1)
+        alpha = fre.alpha ?? CGFloat(1)
         
         if let _icon = rv["icon"] {
             let asBitmapData = FreBitmapDataSwift(freObject: _icon)

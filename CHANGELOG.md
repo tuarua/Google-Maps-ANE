@@ -1,3 +1,7 @@
+### 2.1.0
+- iOS: Refactor
+- AND: Updated to Android Play Services to 16.0.1
+
 ### 2.0.0
 - AND: Updated to FreKotlin 1.6.0
 - Upgraded to AIR 32

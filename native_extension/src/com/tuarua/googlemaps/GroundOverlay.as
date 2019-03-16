@@ -43,11 +43,10 @@ public class GroundOverlay {
     }
 
     public function remove():void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("removeGroundOverlay", _id);
-            if (theRet is ANEError) throw theRet as ANEError;
-            delete GoogleMapsANEContext.overlays[_id];
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("removeGroundOverlay", _id);
+        if (ret is ANEError) throw ret as ANEError;
+        delete GoogleMapsANEContext.overlays[_id];
     }
 
     public function set isAdded(value:Boolean):void {
@@ -102,6 +101,7 @@ public class GroundOverlay {
     public function get visible():Boolean {
         return _visible;
     }
+
     /**
      * Ignored on iOS
      */
@@ -146,10 +146,9 @@ public class GroundOverlay {
     }
 
     private function setAneValue(name:String, value:*):void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("setGroundOverlayProp", _id, name, value);
-            if (theRet is ANEError) throw theRet as ANEError;
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("setGroundOverlayProp", _id, name, value);
+        if (ret is ANEError) throw ret as ANEError;
     }
 }
 }

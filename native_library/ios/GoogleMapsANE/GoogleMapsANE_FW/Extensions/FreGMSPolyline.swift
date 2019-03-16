@@ -18,31 +18,42 @@ import GoogleMaps
 import FreSwift
 import MapKit
 
-extension CustomMKCircle {
+public extension GMSPolyline {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject,
-            let center = CLLocationCoordinate2D(rv["center"]),
-            let radius = Double(rv["radius"]),
-            let strokeWidth = CGFloat(rv["strokeWidth"]),
-            let strokeColor = UIColor(rv["strokeColor"]),
-            let fillColor = UIColor(rv["fillColor"])
-        else {
+        guard let rv = freObject else {
             return nil
         }
-        self.init(center: center, radius: radius, identifier: UUID.init().uuidString)
-        self.fillColor = fillColor
-        self.strokeColor = strokeColor
-        self.strokeWidth = strokeWidth
+        let fre = FreObjectSwift(rv)
+        self.init()
+        self.geodesic = fre.geodesic
+        self.strokeWidth = fre.width
+        self.strokeColor = fre.color
+        self.zIndex = Int32(fre.zIndex as Int)
+        self.isTappable = fre.isTappable
+        self.userData = UUID().uuidString
+        if let points = GMSMutablePath(rv["points"]) {
+            self.path = points
+        }
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
-        case "strokeWidth":
+        case "geodesic":
+            self.geodesic = Bool(value) ?? self.geodesic
+        case "width":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
-        case "strokeColor":
+        case "isTappable":
+            self.isTappable = Bool(value) ?? self.isTappable
+        case "zIndex":
+            if let z = Int(value) {
+                self.zIndex = Int32(z)
+            }
+        case "color":
             self.strokeColor = UIColor(value) ?? self.strokeColor
-        case "fillColor":
-            self.fillColor = UIColor(value) ?? self.fillColor
+        case "points":
+            if let points = GMSMutablePath(value) {
+                 self.path = points
+            }
         default:
             break
         }

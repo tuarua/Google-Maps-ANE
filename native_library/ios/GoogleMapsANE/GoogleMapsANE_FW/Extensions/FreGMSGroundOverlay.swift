@@ -19,21 +19,19 @@ import FreSwift
 
 public extension GMSGroundOverlay {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject,
-            let coordinate = CLLocationCoordinate2D(rv["coordinate"]),
-            let zIndex = Int(rv["zIndex"]),
-            let img = UIImage(freObject: rv["image"], scale: UIScreen.main.scale, orientation: .up),
-            let transparency = Float(rv["transparency"]),
-            let isTappable = Bool(rv["isTappable"]),
-            let bearing = Double(rv["bearing"])
+        guard let rv = freObject
             else {
                 return nil
         }
-        self.init(position: coordinate, icon: img, zoomLevel: CGFloat(1))
-        self.bearing = bearing
-        self.opacity = 1.0 - transparency
-        self.isTappable = isTappable
-        self.zIndex = Int32(zIndex)
+        let fre = FreObjectSwift(rv)
+        
+        self.init(position: fre.coordinate, icon: UIImage(freObject: fre.image,
+                                                          scale: UIScreen.main.scale,
+                                                          orientation: .up), zoomLevel: CGFloat(1))
+        self.bearing = fre.bearing
+        self.opacity = 1.0 - fre.transparency
+        self.isTappable = fre.isTappable
+        self.zIndex = Int32(fre.zIndex as Int)
         self.userData = UUID().uuidString
     }
 }

@@ -58,7 +58,7 @@ class MapController(override var context: FREContext?, private var airView: View
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var _viewPort: RectF = viewPort
-    private var _visible: Boolean = false
+    private var _visible = false
     private var _style: String? = null
     private var _mapType = 0
     private var centerAt: LatLng = coordinate

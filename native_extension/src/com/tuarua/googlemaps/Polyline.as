@@ -1,6 +1,7 @@
 package com.tuarua.googlemaps {
 import com.tuarua.GoogleMapsANEContext;
 import com.tuarua.fre.ANEError;
+
 [RemoteClass(alias="com.tuarua.googlemaps.Polyline")]
 public class Polyline extends Shape {
     private var _color:uint = ColorARGB.RED;
@@ -28,6 +29,7 @@ public class Polyline extends Shape {
         _startCap = startCap;
         _endCap = endCap;
     }
+
     /**
      * Ignored on Apple Maps
      */
@@ -86,10 +88,9 @@ public class Polyline extends Shape {
     }
 
     public function remove():void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("removePolyline", _id);
-            if (theRet is ANEError) throw theRet as ANEError;
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("removePolyline", _id);
+        if (ret is ANEError) throw ret as ANEError;
     }
 
     public function get geodesic():Boolean {
@@ -109,6 +110,7 @@ public class Polyline extends Shape {
     public function get pattern():StrokePattern {
         return _pattern;
     }
+
     /**
      * Sets the stroke pattern of the polyline.
      *
@@ -122,6 +124,7 @@ public class Polyline extends Shape {
     public function get jointType():int {
         return _jointType;
     }
+
     /**
      * Sets the joint type for all vertices of the polyline except the start and end vertices.
      *
@@ -135,6 +138,7 @@ public class Polyline extends Shape {
     public function get startCap():int {
         return _startCap;
     }
+
     /**
      * Sets the cap at the start vertex of this polyline.
      *
@@ -148,6 +152,7 @@ public class Polyline extends Shape {
     public function get endCap():int {
         return _endCap;
     }
+
     /**
      * Sets the cap at the end vertex of this polyline.
      *
@@ -180,11 +185,10 @@ public class Polyline extends Shape {
      * This method is omitted from the output. * * @private
      */
     private function setAneValue(name:String, value:*):void {
-        if (_isAdded) {
-            var theRet:* = GoogleMapsANEContext.context.call("setPolylineProp", _id, name, value);
-            if (theRet is ANEError) throw theRet as ANEError;
-            delete GoogleMapsANEContext.polylines[_id];
-        }
+        if (!_isAdded) return;
+        var ret:* = GoogleMapsANEContext.context.call("setPolylineProp", _id, name, value);
+        if (ret is ANEError) throw ret as ANEError;
+        delete GoogleMapsANEContext.polylines[_id];
     }
 
 }

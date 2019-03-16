@@ -18,42 +18,24 @@ import GoogleMaps
 import FreSwift
 import MapKit
 
-public extension GMSCircle {
+extension CustomMKCircle {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject,
-        let center = CLLocationCoordinate2D(rv["center"]),
-        let radius = Double(rv["radius"]),
-        let isTappable = Bool(rv["isTappable"]),
-        let zIndex = Int(rv["zIndex"]),
-        let strokeWidth = CGFloat(rv["strokeWidth"]),
-        let strokeColor = UIColor(rv["strokeColor"]),
-        let fillColor = UIColor(rv["fillColor"])
-        else {
+        guard let rv = freObject else {
             return nil
         }
-        self.init(position: center, radius: radius)
-        self.strokeWidth = strokeWidth
-        self.strokeColor = strokeColor
-        self.fillColor = fillColor
-        self.zIndex = Int32(zIndex)
-        self.isTappable = isTappable
-        self.userData = UUID().uuidString   
+        let fre = FreObjectSwift(rv)
+        self.init(center: fre.center,
+                  radius: fre.radius,
+                  identifier: UUID.init().uuidString)
+        self.fillColor = fre.fillColor
+        self.strokeColor = fre.strokeColor
+        self.strokeWidth = fre.strokeWidth
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
-        case "center":
-            self.position = CLLocationCoordinate2D(value) ?? self.position
         case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
-        case "radius":
-            self.radius = Double(value) ?? self.radius
-        case "isTappable":
-            self.isTappable = Bool(value) ?? self.isTappable
-        case "zIndex":
-            if let z = Int(value) {
-                self.zIndex = Int32(z)
-            }
         case "strokeColor":
             self.strokeColor = UIColor(value) ?? self.strokeColor
         case "fillColor":

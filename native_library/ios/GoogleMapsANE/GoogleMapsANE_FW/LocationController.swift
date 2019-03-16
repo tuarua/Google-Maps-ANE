@@ -73,7 +73,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
                 return
             }
             
-            var props: [String: Any] = Dictionary()
+            var props = [String: Any]()
             props["latitude"] = location.coordinate.latitude
             props["longitude"] = location.coordinate.longitude
             props["formattedAddress"] = ""
@@ -102,7 +102,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
                 return
             }
             
-            var props: [String: Any] = Dictionary()
+            var props = [String: Any]()
             props["latitude"] = location.coordinate.latitude
             props["longitude"] = location.coordinate.longitude
             props["formattedAddress"] = ""
@@ -123,7 +123,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location: CLLocation = locations.last!
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["latitude"] = location.coordinate.latitude
         props["longitude"] = location.coordinate.longitude
         let json = JSON(props)
@@ -131,7 +131,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
     }
     
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        var props: [String: Any] = Dictionary()
+        var props = [String: Any]()
         props["status"] = status.rawValue
         switch status {
         case .restricted:

@@ -18,42 +18,30 @@ import GoogleMaps
 import FreSwift
 import MapKit
 
-public extension GMSPolyline {
+public extension GMSPolygon {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject,
-            let geodesic = Bool(rv["geodesic"]),
-            let zIndex = Int(rv["zIndex"]),
-            let isTappable = Bool(rv["isTappable"]),
-            let strokeWidth = CGFloat(rv["width"]),
-            let strokeColor = UIColor(rv["color"])
-            else {
+        guard let rv = freObject else {
                 return nil
         }
+        let fre = FreObjectSwift(rv)
         self.init()
-        self.geodesic = geodesic
-        self.strokeWidth = strokeWidth
-        self.strokeColor = strokeColor
-        self.zIndex = Int32(zIndex)
-        self.isTappable = isTappable
+        self.geodesic = fre.geodesic
+        self.strokeWidth = fre.strokeWidth
+        self.strokeColor = fre.strokeColor
+        self.fillColor = fre.fillColor
+        self.zIndex = Int32(fre.zIndex as Int)
         self.userData = UUID().uuidString
+        self.isTappable = fre.isTappable
+        self.path = GMSMutablePath(rv["points"]) ?? GMSMutablePath()
+        self.holes = fre.holes
         
-        let points = GMSMutablePath()
-        if let pointsFre = rv["points"] {
-            let pointsArray = FREArray(pointsFre)
-            for frePoint in pointsArray {
-                if let point = CLLocationCoordinate2D(frePoint) {
-                    points.add(point)
-                } 
-            }
-        }
-        self.path = points
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "geodesic":
             self.geodesic = Bool(value) ?? self.geodesic
-        case "width":
+        case "strokeWidth":
             self.strokeWidth = CGFloat(value) ?? self.strokeWidth
         case "isTappable":
             self.isTappable = Bool(value) ?? self.isTappable
@@ -61,17 +49,18 @@ public extension GMSPolyline {
             if let z = Int(value) {
                 self.zIndex = Int32(z)
             }
-        case "color":
+        case "strokeColor":
             self.strokeColor = UIColor(value) ?? self.strokeColor
+        case "fillColor":
+            self.fillColor = UIColor(value) ?? self.fillColor
         case "points":
-            let points = GMSMutablePath()
-            let pointsArray = FREArray(value)
-            for frePoint in pointsArray {
-                if let point = CLLocationCoordinate2D(frePoint) {
-                    points.add(point)
-                }
+            if let points = GMSMutablePath(value) {
+                self.path = points
             }
-            self.path = points
+        case "holes":
+            if let holes = [GMSMutablePath](value) {
+                self.holes = holes
+            }
         default:
             break
         }

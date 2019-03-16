@@ -19,62 +19,35 @@ import MapKit
 
 extension CustomMKPolygon {
     convenience init?(_ freObject: FREObject?) {
-        guard let rv = freObject,
-            let strokeWidth = CGFloat(rv["strokeWidth"]),
-            let strokeColor = UIColor(rv["strokeColor"]),
-            let fillColor = UIColor(rv["fillColor"])
-            
-            else {
-                return nil
+        guard let rv = freObject else {
+            return nil
         }
+        let fre = FreObjectSwift(rv)
         let identifier = UUID().uuidString
-        
-        var points: [CLLocationCoordinate2D] = []
-        if let pointsFre = rv["points"] {
-            let pointsArray = FREArray(pointsFre)
-            for frePoint in pointsArray {
-                if let point = CLLocationCoordinate2D(frePoint) {
-                    points.append(point)
-                }
-            }
-        }
         
         var holes: [[CLLocationCoordinate2D]] = [[]]
         if let holesFre = rv["holes"] {
             let holesArray = FREArray(holesFre)
             for freItem in holesArray {
-                var holePoints: [CLLocationCoordinate2D] = []
-                let holePointsArray = FREArray(freItem)
-                for freHolePoint in holePointsArray {
-                    if let point = CLLocationCoordinate2D(freHolePoint) {
-                        holePoints.append(point)
-                    }
-                }
+                let holePoints = [CLLocationCoordinate2D](freItem) ?? []
                 if holePoints.count > 0 {
                     holes.append(holePoints)
                 }
             }
         }
         
-        self.init(points: points, holes: holes, identifier: identifier)
-        self.fillColor = fillColor
-        self.strokeColor = strokeColor
-        self.strokeWidth = strokeWidth
+        self.init(points: fre.points, holes: holes, identifier: identifier)
+        self.fillColor = fre.fillColor
+        self.strokeColor = fre.strokeColor
+        self.strokeWidth = fre.strokeWidth
     }
     
     convenience init?(_ freObject: FREObject?, polygon: CustomMKPolygon) {
-        guard let rv = freObject
-            else {
-                return nil
+        guard let rv = freObject else {
+            return nil
         }
-        var points: [CLLocationCoordinate2D] = []
-        let pointsArray = FREArray(rv)
-        for frePoint in pointsArray {
-            if let point = CLLocationCoordinate2D(frePoint) {
-                points.append(point)
-            }
-        }
-        self.init(points: points, holePolygons: polygon.interiorPolygons, identifier: polygon.identifier)
+        let fre = FreObjectSwift(rv)
+        self.init(points: fre.points, holePolygons: polygon.interiorPolygons, identifier: polygon.identifier)
         self.fillColor = polygon.fillColor
         self.strokeColor = polygon.strokeColor
         self.strokeWidth = polygon.strokeWidth
