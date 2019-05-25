@@ -48,16 +48,14 @@ fun PolylineOptions(freObject: FREObject?): PolylineOptions {
     }
 
     var startCap: Cap = SquareCap()
-    val startCapFre = Int(patternFre["startCap"]) ?: 2
-    when (startCapFre) {
+    when (Int(patternFre["startCap"]) ?: 2) {
         0 -> startCap = ButtCap()
         1 -> startCap = RoundCap()
         2 -> startCap = SquareCap()
     }
 
     var endCap: Cap = SquareCap()
-    val endCapFre = Int(patternFre["endCap"]) ?: 2
-    when (endCapFre) {
+    when (Int(patternFre["endCap"]) ?: 2) {
         0 -> endCap = ButtCap()
         1 -> endCap = RoundCap()
         2 -> endCap = SquareCap()

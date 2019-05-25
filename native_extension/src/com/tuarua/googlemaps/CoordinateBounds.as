@@ -13,26 +13,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 package com.tuarua.googlemaps {
-[RemoteClass(alias="com.tuarua.googlemaps.Coordinate")]
-public class Coordinate extends Object {
-	/**
-	 * 
-	 */	
-    public var latitude:Number;
-	/**
-	 * 
-	 */	
-    public var longitude:Number;
-	/**
-	 * 
-	 * @param latitude
-	 * @param longitude
-	 * 
-	 */
-    public function Coordinate(latitude:Number, longitude:Number) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+public class CoordinateBounds {
+    private var _northEast:Coordinate;
+    private var _southWest:Coordinate;
+    public function CoordinateBounds(southWest:Coordinate, northEast:Coordinate) {
+        this._southWest = southWest;
+        this._northEast = northEast;
+    }
+
+    public function get southWest():Coordinate {
+        return _southWest;
+    }
+
+    public function get northEast():Coordinate {
+        return _northEast;
     }
 }
 }
+

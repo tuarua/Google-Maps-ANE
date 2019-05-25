@@ -86,7 +86,7 @@ class KotlinController : FreKotlinMainController {
             val address: Address?
             try {
                 addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
-                if (null != addresses && !addresses.isEmpty()) {
+                if (null != addresses && addresses.isNotEmpty()) {
                     address = addresses[0]
                     val name: String? = if (address.subThoroughfare != null) {
                         """${address.subThoroughfare} ${address.thoroughfare}"""
@@ -136,7 +136,7 @@ class KotlinController : FreKotlinMainController {
             val address: Address?
             try {
                 addresses = geocoder.getFromLocationName(addressSearch, 1)
-                if (null != addresses && !addresses.isEmpty()) {
+                if (null != addresses && addresses.isNotEmpty()) {
                     address = addresses[0]
                     val name: String? = if (address.subThoroughfare != null) {
                         """${address.subThoroughfare} ${address.thoroughfare}"""
@@ -481,11 +481,10 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun setBounds(ctx: FREContext, argv: FREArgv): FREObject? {
-        argv.takeIf { argv.size > 2 } ?: return FreArgException("setBounds")
-        val southWest = LatLng(argv[0])
-        val northEast = LatLng(argv[1])
-        val animates = Boolean(argv[2]) == true
-        mapController?.setBounds(LatLngBounds(southWest, northEast), animates)
+        argv.takeIf { argv.size > 1 } ?: return FreArgException("setBounds")
+        val bounds = LatLngBounds(argv[0])
+        val animates = Boolean(argv[1]) == true
+        mapController?.setBounds(bounds, animates)
         return null
     }
 

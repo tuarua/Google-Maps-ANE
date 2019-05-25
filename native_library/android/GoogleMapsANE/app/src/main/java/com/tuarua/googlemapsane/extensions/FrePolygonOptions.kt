@@ -68,7 +68,7 @@ fun PolygonOptions(freObject: FREObject?): PolygonOptions {
         }
     }
 
-    if (!points.isEmpty()) {
+    if (points.isNotEmpty()) {
         po.addAll(points)
     }
 

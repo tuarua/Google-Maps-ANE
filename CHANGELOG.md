@@ -1,3 +1,8 @@
+### 2.3.0
+- iOS: Updated to Google Maps SDK 3.1
+- add GroundOverlay support
+- add `setBounds` now takes `CoordinateBounds` as param
+
 ### 2.2.0
 - Upgraded to AIR 32.0.0.116
 - AND: Updated to FreKotlin 1.7.0

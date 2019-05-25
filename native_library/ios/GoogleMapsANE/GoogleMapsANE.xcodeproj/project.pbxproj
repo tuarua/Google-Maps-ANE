@@ -13,6 +13,10 @@
 		285FE645B808125071F7A08A /* CustomMKCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FE9BC1B43C00633CEE916 /* CustomMKCircle.swift */; };
 		285FE6FF36D515256EAE7B63 /* FreGMSCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FE41C9FE2CEB9DCF6CB30 /* FreGMSCircle.swift */; };
 		285FECB67C2311471C2CD119 /* GoogleMapsANE_LIB.m in Sources */ = {isa = PBXBuildFile; fileRef = 285FE6D7F3D6356FA03A26C0 /* GoogleMapsANE_LIB.m */; };
+		9022967A2299736400495FDE /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902296792299736300495FDE /* CoreImage.framework */; };
+		9022967C2299737B00495FDE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9022967B2299737B00495FDE /* CoreTelephony.framework */; };
+		9022967E229973B300495FDE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9022967D229973B300495FDE /* UIKit.framework */; };
+		902296802299903900495FDE /* FreGMSCoordinateBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9022967F2299903900495FDE /* FreGMSCoordinateBounds.swift */; };
 		90C3B5D721F4D83B002F59AB /* FreGMSPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C3B5D621F4D83B002F59AB /* FreGMSPolygon.swift */; };
 		90C3B5D921F4E135002F59AB /* FreGMSMutablePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C3B5D821F4E135002F59AB /* FreGMSMutablePath.swift */; };
 		CE39808E1E58BAA90062485B /* GoogleMapsANE_FW.h in Headers */ = {isa = PBXBuildFile; fileRef = CE39808C1E58BAA90062485B /* GoogleMapsANE_FW.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -82,6 +86,10 @@
 		285FE6D7F3D6356FA03A26C0 /* GoogleMapsANE_LIB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleMapsANE_LIB.m; sourceTree = "<group>"; };
 		285FE9BC1B43C00633CEE916 /* CustomMKCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomMKCircle.swift; sourceTree = "<group>"; };
 		285FEBB3CADF8D704FAB5E4D /* GoogleMapsANE_LIB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleMapsANE_LIB.h; sourceTree = "<group>"; };
+		902296792299736300495FDE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		9022967B2299737B00495FDE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		9022967D229973B300495FDE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9022967F2299903900495FDE /* FreGMSCoordinateBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreGMSCoordinateBounds.swift; sourceTree = "<group>"; };
 		90C3B5D621F4D83B002F59AB /* FreGMSPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreGMSPolygon.swift; sourceTree = "<group>"; };
 		90C3B5D821F4E135002F59AB /* FreGMSMutablePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreGMSMutablePath.swift; sourceTree = "<group>"; };
 		CE39808A1E58BAA90062485B /* GoogleMapsANE_FW.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GoogleMapsANE_FW.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,20 +149,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE6589F71F6F1B6200656914 /* MapKit.framework in Frameworks */,
-				CEA0DE361F5DF8040012EB4E /* AVFoundation.framework in Frameworks */,
+				CEA0DE3D1F5DF8820012EB4E /* GoogleMapsBase.framework in Frameworks */,
+				CEA0DE3C1F5DF8820012EB4E /* GoogleMaps.framework in Frameworks */,
+				CEA0DE3E1F5DF8820012EB4E /* GoogleMapsCore.framework in Frameworks */,
+				CEA0DE161F5DF7330012EB4E /* Accelerate.framework in Frameworks */,
 				CEA0DE341F5DF7FA0012EB4E /* CoreData.framework in Frameworks */,
+				CEA0DE241F5DF7A10012EB4E /* CoreGraphics.framework in Frameworks */,
+				9022967A2299736400495FDE /* CoreImage.framework in Frameworks */,
 				CEA0DE321F5DF7F30012EB4E /* CoreLocation.framework in Frameworks */,
+				9022967C2299737B00495FDE /* CoreTelephony.framework in Frameworks */,
 				CEA0DE301F5DF7E80012EB4E /* CoreText.framework in Frameworks */,
 				CEA0DE2E1F5DF7D90012EB4E /* GLKit.framework in Frameworks */,
 				CEA0DE2C1F5DF7CE0012EB4E /* ImageIO.framework in Frameworks */,
-				CEA0DE3C1F5DF8820012EB4E /* GoogleMaps.framework in Frameworks */,
-				CEA0DE3E1F5DF8820012EB4E /* GoogleMapsCore.framework in Frameworks */,
-				CEA0DE3D1F5DF8820012EB4E /* GoogleMapsBase.framework in Frameworks */,
 				CEA0DE2A1F5DF7C40012EB4E /* OpenGLES.framework in Frameworks */,
 				CEA0DE281F5DF7B80012EB4E /* QuartzCore.framework in Frameworks */,
 				CEA0DE261F5DF7AC0012EB4E /* SystemConfiguration.framework in Frameworks */,
-				CEA0DE241F5DF7A10012EB4E /* CoreGraphics.framework in Frameworks */,
+				9022967E229973B300495FDE /* UIKit.framework in Frameworks */,
+				CE6589F71F6F1B6200656914 /* MapKit.framework in Frameworks */,
+				CEA0DE361F5DF8040012EB4E /* AVFoundation.framework in Frameworks */,
 				CEA0DE221F5DF7940012EB4E /* libc.tbd in Frameworks */,
 				CEA0DE201F5DF78A0012EB4E /* libc++abi.tbd in Frameworks */,
 				CE60CCC41F63DA7F004B1BE7 /* FreSwift.framework in Frameworks */,
@@ -162,7 +174,6 @@
 				CEA0DE1C1F5DF7710012EB4E /* libicucore.tbd in Frameworks */,
 				CEA0DE1A1F5DF7650012EB4E /* libz.tbd in Frameworks */,
 				CEA0DE181F5DF7490012EB4E /* CoreBluetooth.framework in Frameworks */,
-				CEA0DE161F5DF7330012EB4E /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +259,9 @@
 		CE46CA6B1F5B6BC30067794D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9022967D229973B300495FDE /* UIKit.framework */,
+				9022967B2299737B00495FDE /* CoreTelephony.framework */,
+				902296792299736300495FDE /* CoreImage.framework */,
 				CE6589F61F6F1B6200656914 /* MapKit.framework */,
 				CE60CCC31F63DA7F004B1BE7 /* FreSwift.framework */,
 				CEA0DE391F5DF8820012EB4E /* GoogleMaps.framework */,
@@ -287,6 +301,7 @@
 				CEFB3BC81FF805D00095DE62 /* FreMKPolygon.swift */,
 				CEFB3BCC1FF82D8F0095DE62 /* FreMKPolyline.swift */,
 				90C3B5D821F4E135002F59AB /* FreGMSMutablePath.swift */,
+				9022967F2299903900495FDE /* FreGMSCoordinateBounds.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -463,6 +478,7 @@
 				CEC1A0FD1FF7187600ED797A /* FreGMSMarker.swift in Sources */,
 				CEFB3BC71FF802360095DE62 /* CustomMKPolygon.swift in Sources */,
 				CE3980981E58BB070062485B /* SwiftController.swift in Sources */,
+				902296802299903900495FDE /* FreGMSCoordinateBounds.swift in Sources */,
 				CE6589F51F6F1A9900656914 /* MapViewExtension.swift in Sources */,
 				CEB5ED131F5C4F7800AE8B16 /* SwiftyJSON.swift in Sources */,
 				CE6589F31F6EE39100656914 /* MKMapController.swift in Sources */,

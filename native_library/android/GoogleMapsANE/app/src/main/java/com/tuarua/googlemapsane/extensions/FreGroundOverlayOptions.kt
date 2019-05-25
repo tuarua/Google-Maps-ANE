@@ -26,13 +26,12 @@ import com.tuarua.frekotlin.display.Bitmap
 
 fun GroundOverlayOptions(freObject: FREObject?): GroundOverlayOptions {
     val rv = freObject ?: return GroundOverlayOptions()
-    val coordinate = LatLng(rv["coordinate"])
+    val bounds = LatLngBounds(rv["bounds"])
     val bearing = Float(rv["bearing"]) ?: 0f
     val clickable = Boolean(rv["isTappable"]) == true
     val visible = Boolean(rv["visible"]) == true
     val zIndex = Float(rv["zIndex"]) ?: 0f
     val transparency = Float(rv["transparency"]) ?: 0f
-    val width = Float(rv["width"]) ?: 0f
     val imageFre = rv["image"]
     val image: Bitmap?
     try {
@@ -42,7 +41,7 @@ fun GroundOverlayOptions(freObject: FREObject?): GroundOverlayOptions {
     }
 
     return GroundOverlayOptions()
-            .position(coordinate, width)
+            .positionFromBounds(bounds)
             .bearing(bearing)
             .clickable(clickable)
             .visible(visible)
@@ -52,8 +51,8 @@ fun GroundOverlayOptions(freObject: FREObject?): GroundOverlayOptions {
 
 }
 
-fun GroundOverlay.setPosition(value: FREObject?) {
-    this.position = LatLng(value)
+fun GroundOverlay.setBounds(value: FREObject?) {
+    this.setPositionFromBounds(LatLngBounds(value))
 }
 
 fun GroundOverlay.setBearing(value: FREObject?) {

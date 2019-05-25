@@ -177,15 +177,38 @@ public class SwiftController: NSObject {
     }
     
     func addGroundOverlay(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        warning("Ground overlays are available on Android only")
+        guard argc > 0
+            else {
+                return FreArgError(message: "addCircle").getError(#file, #line, #column)
+        }
+        if mapProvider == .apple {
+            warning("Ground overlays are available on GoogleMaps only")
+        } else if let mvc = mapControllerGMS, let groundOverlay = GMSGroundOverlay(argv[0]) {
+            mvc.addGroundOverlay(groundOverlay: groundOverlay)
+            if let id = groundOverlay.userData as? String {
+                return id.toFREObject()
+            }
+        }
         return nil
     }
     func setGroundOverlayProp(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        warning("Ground overlays are available on Android only")
+        guard argc > 0,
+            let id = String(argv[0]),
+            let name = String(argv[1]),
+            let freValue = argv[2]
+            else {
+                return FreArgError(message: "setGroundOverlayProp").getError(#file, #line, #column)
+        }
+        mapControllerGMS?.setGroundOverlay(id: id, name: name, value: freValue)
         return nil
     }
     func removeGroundOverlay(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        warning("Ground overlays are available on Android only")
+        guard argc > 0,
+            let id = String(argv[0])
+            else {
+                return FreArgError(message: "removeGroundOverlay").getError(#file, #line, #column)
+        }
+        mapControllerGMS?.removeGroundOverlay(id: id)
         return nil
     }
     
@@ -272,16 +295,13 @@ public class SwiftController: NSObject {
     }
 
     func setBounds(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
-        guard argc > 2,
-              let southWest = CLLocationCoordinate2D(argv[0]),
-              let northEast = CLLocationCoordinate2D(argv[1]),
-              let animates = Bool(argv[2]) else {
+        guard argc > 1,
+              let bounds = GMSCoordinateBounds(argv[0]),
+              let animates = Bool(argv[1]) else {
             return FreArgError(message: "setBounds").getError(#file, #line, #column)
         }
-        mapControllerMK?.setBounds(bounds: GMSCoordinateBounds(coordinate: southWest, coordinate: northEast),
-                                   animates: animates)
-        mapControllerGMS?.setBounds(bounds: GMSCoordinateBounds(coordinate: southWest, coordinate: northEast),
-                                    animates: animates)
+        mapControllerMK?.setBounds(bounds: bounds, animates: animates)
+        mapControllerGMS?.setBounds(bounds: bounds, animates: animates)
         return nil
     }
 

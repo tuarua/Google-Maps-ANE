@@ -26,8 +26,8 @@ import com.tuarua.frekotlin.display.Bitmap
 fun MarkerOptions(freObject: FREObject?): MarkerOptions {
     val rv = freObject ?: return MarkerOptions()
     val coordinate = LatLng(rv["coordinate"])
-    val title = com.tuarua.frekotlin.String(rv["title"])
-    val snippet = com.tuarua.frekotlin.String(rv["snippet"])
+    val title = String(rv["title"])
+    val snippet = String(rv["snippet"])
     val draggable = Boolean(rv["isDraggable"]) == true
     val flat = Boolean(rv["isFlat"]) == true
     val alpha = Float(rv["alpha"]) ?: 1.0F

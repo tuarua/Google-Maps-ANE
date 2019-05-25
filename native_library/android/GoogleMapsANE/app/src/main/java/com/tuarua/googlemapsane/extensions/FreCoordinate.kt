@@ -17,6 +17,7 @@ package com.tuarua.googlemapsane.extensions
 
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.tuarua.frekotlin.*
 
 fun LatLng(freObject: FREObject?): LatLng {
@@ -26,4 +27,14 @@ fun LatLng(freObject: FREObject?): LatLng {
 
 fun LatLng.toFREObject(): FREObject? {
     return FREObject("com.tuarua.googlemaps.Coordinate", this.latitude, this.longitude)
+}
+
+fun LatLngBounds(freObject: FREObject?): LatLngBounds {
+    return LatLngBounds(LatLng(freObject["southWest"]),
+            LatLng(freObject["northEast"]))
+}
+
+fun LatLngBounds.toFREObject(): FREObject? {
+    return FREObject("ccom.tuarua.googlemaps.CoordinateBounds",
+            this.southwest.toFREObject(), this.northeast.toFREObject())
 }
