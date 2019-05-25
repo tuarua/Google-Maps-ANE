@@ -424,7 +424,7 @@ class MapController(override var context: FREContext?, private var airView: View
             "transparency" -> overlay.setTransparency(value)
             "zIndex" -> overlay.setZIndex(value)
             "image" -> overlay.setImage(value)
-            "coordinate" -> overlay.setPosition(value)
+            "bounds" -> overlay.setBounds(value)
         }
     }
 

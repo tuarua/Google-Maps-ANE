@@ -30,6 +30,7 @@ class GMSMapController: UIViewController, FreSwiftController {
     private var viewPort = CGRect.zero
     private var markers = [String: GMSMarker]()
     private var circles = [String: GMSCircle]()
+    private var groundOverlays = [String: GMSGroundOverlay]()
     private var polygons = [String: GMSPolygon]()
     private var polylines = [String: GMSPolyline]()
     private var lastCapture: CGImage?
@@ -124,7 +125,7 @@ class GMSMapController: UIViewController, FreSwiftController {
         let update = GMSCameraUpdate.fit(bounds)
         updateCamera(update, animates)
     }
-    
+      
     func addCircle(circle: GMSCircle) {
         if let id = circle.userData as? String {
             circles[id] = circle
@@ -142,6 +143,26 @@ class GMSMapController: UIViewController, FreSwiftController {
         if let circle = circles[id] {
             circle.map = nil
             circles.removeValue(forKey: id)
+        }
+    }
+    
+    func addGroundOverlay(groundOverlay: GMSGroundOverlay) {
+        if let id = groundOverlay.userData as? String {
+            groundOverlays[id] = groundOverlay
+            groundOverlay.map = mapView
+        }
+    }
+    
+    func setGroundOverlay(id: String, name: String, value: FREObject) {
+        guard let groundOverlay =  groundOverlays[id]
+            else { return }
+        groundOverlay.setProp(name: name, value: value)
+    }
+    
+    func removeGroundOverlay(id: String) {
+        if let groundOverlay = groundOverlays[id] {
+            groundOverlay.map = nil
+            groundOverlays.removeValue(forKey: id)
         }
     }
     

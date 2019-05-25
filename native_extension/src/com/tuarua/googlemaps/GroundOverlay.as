@@ -1,3 +1,18 @@
+/*
+ *  Copyright 2017 Tua Rua Ltd.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package com.tuarua.googlemaps {
 import com.tuarua.GoogleMapsANEContext;
 import com.tuarua.fre.ANEError;
@@ -9,44 +24,40 @@ public class GroundOverlay {
     private var _isAdded:Boolean = false;
     private var _id:String;
     private var _isTappable:Boolean = false;
-    private var _coordinate:Coordinate = new Coordinate(0, 0);
+    private var _bounds:CoordinateBounds;
     private var _bearing:Number = 0;
     private var _visible:Boolean = true;
     private var _zIndex:Number = 0;
     private var _transparency:Number = 0;
-    private var _width:Number = 100.0;
     private var _image:BitmapData;
 
     /**
      *
-     * @param coordinate
+     * @param bounds
      * @param image
-     * @param width
      * @param bearing
      * @param isTappable
      * @param visible
      * @param zIndex
      * @param transparency
      */
-    public function GroundOverlay(coordinate:Coordinate, image:BitmapData, width:Number, bearing:Number = 0,
+    public function GroundOverlay(bounds:CoordinateBounds, image:BitmapData, bearing:Number = 0,
                                   isTappable:Boolean = false, visible:Boolean = true, zIndex:Number = 0,
                                   transparency:Number = 0) {
-        this._coordinate = coordinate;
+        this._bounds = bounds;
         this._image = image;
-        this._width = width;
         this._bearing = bearing;
         this._isTappable = isTappable;
         this._visible = visible;
         this._zIndex = zIndex;
         this._transparency = transparency;
-
     }
 
     public function remove():void {
         if (!_isAdded) return;
         var ret:* = GoogleMapsANEContext.context.call("removeGroundOverlay", _id);
         if (ret is ANEError) throw ret as ANEError;
-        delete GoogleMapsANEContext.overlays[_id];
+        delete GoogleMapsANEContext.groundOverlays[_id];
     }
 
     public function set isAdded(value:Boolean):void {
@@ -61,13 +72,13 @@ public class GroundOverlay {
         _id = value;
     }
 
-    public function get coordinate():Coordinate {
-        return _coordinate;
+    public function get bounds():CoordinateBounds {
+        return _bounds;
     }
 
-    public function set coordinate(value:Coordinate):void {
-        _coordinate = value;
-        setAneValue("coordinate", value);
+    public function set bounds(value:CoordinateBounds):void {
+        _bounds = value;
+        setAneValue("bounds", value);
     }
 
     public function get bearing():Number {
@@ -130,10 +141,6 @@ public class GroundOverlay {
     public function set transparency(value:Number):void {
         _transparency = value;
         setAneValue("transparency", value);
-    }
-
-    public function get width():Number {
-        return _width;
     }
 
     public function get image():BitmapData {

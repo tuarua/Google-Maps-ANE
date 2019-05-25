@@ -6,11 +6,13 @@ import com.tuarua.googlemaps.Circle;
 import com.tuarua.googlemaps.ColorARGB;
 import com.tuarua.googlemaps.Coordinate;
 import com.tuarua.googlemaps.GoogleMapsEvent;
+import com.tuarua.googlemaps.GroundOverlay;
 import com.tuarua.googlemaps.MapProvider;
 import com.tuarua.googlemaps.MapType;
 import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Polygon;
 import com.tuarua.googlemaps.Polyline;
+import com.tuarua.googlemaps.CoordinateBounds;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.googlemaps.StrokePattern;
 import com.tuarua.googlemaps.StrokePatternType;
@@ -40,6 +42,9 @@ public class StarlingRoot extends Sprite {
     private var mapView:GoogleMapsANE;
     [Embed(source="pin_b.png")]
     public static const pinImage:Class;
+
+    [Embed(source="newark_nj_1922.jpg")]
+    public static const newarkImage:Class;
 
     private var firstMarkerId:String;
 
@@ -127,7 +132,7 @@ public class StarlingRoot extends Sprite {
         btn.x = 10;
         btn8.y = btn7.y = btn3.y = btn2.y = btn.y = 10;
         btn9.y = btn6.y = btn5.y = btn4.y = 60;
-        btn.addEventListener(TouchEvent.TOUCH, onAddCircle);
+        btn.addEventListener(TouchEvent.TOUCH, onAddGroundOverlay);
         addChild(btn);
 
         btn2.x = 100;
@@ -381,6 +386,24 @@ public class StarlingRoot extends Sprite {
         }
     }
 
+    private function onAddGroundOverlay(event:TouchEvent):void {
+        var touch:Touch = event.getTouch(btn);
+        if (touch != null && touch.phase == TouchPhase.ENDED) {
+            var jersey:Coordinate = new Coordinate(40.7321273, -74.2227811);
+            var newPosition:CameraPosition = new CameraPosition();
+            newPosition.centerAt = jersey;
+            newPosition.zoom = 12.0;
+            mapView.moveCamera(newPosition);
+
+            var southWest:Coordinate = new Coordinate(40.712216, -74.22655);
+            var northEast:Coordinate = new Coordinate(40.773941, -74.12544);
+            var overlayBounds:CoordinateBounds = new CoordinateBounds(southWest, northEast);
+            var overlay:GroundOverlay = new GroundOverlay(overlayBounds, (new newarkImage() as Bitmap).bitmapData);
+            mapView.addGroundOverlay(overlay);
+        }
+    }
+
+
     private function onGeoLookup(event:TouchEvent):void {
         var touch:Touch = event.getTouch(btn);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
@@ -410,7 +433,7 @@ public class StarlingRoot extends Sprite {
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             var vancouver:Coordinate = new Coordinate(49.26, -123.11);
             var calgary:Coordinate = new Coordinate(51.05, -114.05);
-            mapView.setBounds(vancouver, calgary)
+            mapView.setBounds(new CoordinateBounds(vancouver, calgary));
         }
     }
 
@@ -445,7 +468,6 @@ public class StarlingRoot extends Sprite {
         var touch:Touch = event.getTouch(btn5);
         if (touch != null && touch.phase == TouchPhase.ENDED) {
             mapView.style = nightStyle;
-
         }
     }
 

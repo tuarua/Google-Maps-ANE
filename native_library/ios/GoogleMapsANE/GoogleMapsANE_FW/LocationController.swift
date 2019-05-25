@@ -158,6 +158,6 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        trace("locationManager:didFailWithError", error.localizedDescription) //TODO
+        trace("locationManager:didFailWithError", error.localizedDescription)
     }
 }

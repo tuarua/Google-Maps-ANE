@@ -24,14 +24,37 @@ public extension GMSGroundOverlay {
                 return nil
         }
         let fre = FreObjectSwift(rv)
-        
-        self.init(position: fre.coordinate, icon: UIImage(freObject: fre.image,
-                                                          scale: UIScreen.main.scale,
-                                                          orientation: .up), zoomLevel: CGFloat(1))
+        self.init(bounds: fre.bounds,
+                  icon: UIImage(freObject: fre.image, scale: UIScreen.main.scale, orientation: .up))
         self.bearing = fre.bearing
         self.opacity = 1.0 - fre.transparency
         self.isTappable = fre.isTappable
         self.zIndex = Int32(fre.zIndex as Int)
         self.userData = UUID().uuidString
+    }
+    
+    func setProp(name: String, value: FREObject) {
+        switch name {
+        case "bounds":
+            self.bounds = GMSCoordinateBounds(value) ?? self.bounds
+        case "bearing":
+            self.bearing = CLLocationDirection(value) ?? self.bearing
+        case "transparency":
+            if let v = Float(value) {
+                self.opacity = 1.0 - v
+            }
+        case "isTappable":
+            self.isTappable = Bool(value) ?? self.isTappable
+        case "zIndex":
+            if let z = Int(value) {
+                self.zIndex = Int32(z)
+            }
+        case "image":
+            if let img = UIImage(freObject: value, scale: UIScreen.main.scale, orientation: .up) {
+                self.icon = img
+            }
+        default:
+            break
+        }
     }
 }
