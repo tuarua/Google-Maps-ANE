@@ -86,7 +86,7 @@ class KotlinController : FreKotlinMainController {
             val address: Address?
             try {
                 addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
-                if (null != addresses && !addresses.isEmpty()) {
+                if (null != addresses && addresses.isNotEmpty()) {
                     address = addresses[0]
                     val name: String? = if (address.subThoroughfare != null) {
                         """${address.subThoroughfare} ${address.thoroughfare}"""
@@ -136,7 +136,7 @@ class KotlinController : FreKotlinMainController {
             val address: Address?
             try {
                 addresses = geocoder.getFromLocationName(addressSearch, 1)
-                if (null != addresses && !addresses.isEmpty()) {
+                if (null != addresses && addresses.isNotEmpty()) {
                     address = addresses[0]
                     val name: String? = if (address.subThoroughfare != null) {
                         """${address.subThoroughfare} ${address.thoroughfare}"""
