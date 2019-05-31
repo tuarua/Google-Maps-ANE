@@ -35,6 +35,6 @@ fun LatLngBounds(freObject: FREObject?): LatLngBounds {
 }
 
 fun LatLngBounds.toFREObject(): FREObject? {
-    return FREObject("ccom.tuarua.googlemaps.CoordinateBounds",
+    return FREObject("com.tuarua.googlemaps.CoordinateBounds",
             this.southwest.toFREObject(), this.northeast.toFREObject())
 }

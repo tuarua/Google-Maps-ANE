@@ -70,10 +70,7 @@ public class Settings {
      * location.
      */
     public var myLocationButtonEnabled:Boolean = false;
-    /**
-     * Enables or disables the my-location layer.
-     */
-    public var myLocationEnabled:Boolean = false;
+
     /**
      * Enables (default) or disables the indoor floor picker. If enabled, it is only
      * visible when the view is focused on a building with indoor floor data.
@@ -102,13 +99,6 @@ public class Settings {
      *
      */
     public var mapToolbarEnabled:Boolean = true;
-    /**
-     * Sets whether 3D buildings layer is enabled. (default true).
-     *
-     * Ignored on iOS
-     *
-     */
-    public var buildingsEnabled:Boolean = true;
 
     public function Settings() {
     }

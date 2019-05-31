@@ -61,7 +61,17 @@ public class GoogleMapsANE implements FREExtension {
             ,"requestPermissions"
             ,"capture"
             ,"getCapture"
-
+            ,"setBuildingsEnabled"
+            ,"setTrafficEnabled"
+            ,"setMinZoom"
+            ,"setMaxZoom"
+            ,"setIndoorEnabled"
+            ,"setMyLocationEnabled"
+            ,"projection_pointForCoordinate"
+            ,"projection_coordinateForPoint"
+            ,"projection_containsCoordinate"
+            ,"projection_visibleRegion"
+            ,"projection_pointsForMeters"
     };
 
     private static GoogleMapsANEContext extensionContext;

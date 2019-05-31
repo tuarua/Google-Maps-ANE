@@ -31,6 +31,12 @@ public extension CLLocationCoordinate2D {
     func toFREObject() -> FREObject? {
         return FREObject(className: "com.tuarua.googlemaps.Coordinate", args: Double(latitude), Double(longitude))
     }
+    func toJSON() -> String {
+        var props = [String: Any]()
+        props["latitude"] = self.latitude
+        props["longitude"] = self.longitude
+        return JSON(props).description
+    }
 }
 
 public extension FreObjectSwift {

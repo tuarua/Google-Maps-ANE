@@ -137,6 +137,11 @@
      
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiType value="flash.utils:Dictionary"/></apiValueDef><apiDesc>
      
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:projection:get"><apiName>projection</apiName><shortdesc>
+     Returns a Projection object that you can use to convert between screen coordinates and latitude/longitude coordinates.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="read"/><apiValueClassifier>com.tuarua.googlemaps:Projection</apiValueClassifier></apiValueDef><apiDesc>
+     Returns a Projection object that you can use to convert between screen coordinates and latitude/longitude coordinates.
+     
+     returns null on Apple Maps
      </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:viewPort:get"><apiName>viewPort</apiName><shortdesc>
      
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="readwrite"/><apiType value="flash.geom:Rectangle"/></apiValueDef><apiDesc>
@@ -149,12 +154,40 @@
      
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="int"/></apiValueDef><apiDesc>
      
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:buildingsEnabled:set"><apiName>buildingsEnabled</apiName><shortdesc>
+     Sets whether 3D buildings layer is enabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Sets whether 3D buildings layer is enabled. (default true).
+     
+     Ignored on Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:indoorEnabled:set"><apiName>indoorEnabled</apiName><shortdesc>
+     Sets whether 3D buildings layer is enabled.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Sets whether 3D buildings layer is enabled. (default true).
+     
+     Ignored on Apple Maps
      </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:key:set"><apiName>key</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="write"/><apiType value="String"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:mapProvider:set"><apiName>mapProvider</apiName><shortdesc/><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiStatic/><apiValueAccess value="write"/><apiType value="int"/></apiValueDef></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:mapType:set"><apiName>mapType</apiName><shortdesc>
      
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="uint"/></apiValueDef><apiDesc>
      
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:maxZoom:set"><apiName>maxZoom</apiName><shortdesc>
+     Maximum zoom (the closest the camera may be to the Earth).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="Number"/></apiValueDef><apiDesc>
+     Maximum zoom (the closest the camera may be to the Earth).
+     
+     Ignored on Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:minZoom:set"><apiName>minZoom</apiName><shortdesc>
+     Minimum zoom (the farthest the camera may be zoomed out).</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="Number"/></apiValueDef><apiDesc>
+     Minimum zoom (the farthest the camera may be zoomed out).
+     
+     Ignored on Apple Maps
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:myLocationEnabled:set"><apiName>myLocationEnabled</apiName><shortdesc>
+     Enables or disables the my-location layer.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Enables or disables the my-location layer.
      </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:style:set"><apiName>style</apiName><shortdesc>
      
      </shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="String"/></apiValueDef><apiDesc>
      
+     </apiDesc></apiValueDetail></apiValue><apiValue id="com.tuarua:GoogleMapsANE:trafficEnabled:set"><apiName>trafficEnabled</apiName><shortdesc>
+     Controls whether the map is drawing traffic data, if available.</shortdesc><prolog/><apiValueDetail><apiValueDef><apiProperty/><apiAccess value="public"/><apiDynamic/><apiValueAccess value="write"/><apiType value="Boolean"/></apiValueDef><apiDesc>
+     Controls whether the map is drawing traffic data, if available.
+     
+     Ignored on Apple Maps
      </apiDesc></apiValueDetail></apiValue></apiClassifier></apiPackage>

@@ -20,7 +20,7 @@ import MapKit
 import UIKit
 
 internal class CustomMKCircle: MKCircle {
-    var identifier: String = ""
+    var identifier = ""
     var strokeWidth: CGFloat = 1.0
     var strokeColor: UIColor?
     var fillColor: UIColor?

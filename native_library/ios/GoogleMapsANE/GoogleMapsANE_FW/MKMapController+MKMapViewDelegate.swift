@@ -29,8 +29,7 @@ extension MKMapController: MKMapViewDelegate {
         props["zoom"] = mapView.zoomLevel
         props["tilt"] = camera.pitch
         props["bearing"] = camera.heading
-        let json = JSON(props)
-        dispatchEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
+        dispatchEvent(name: Constants.ON_CAMERA_MOVE, value: JSON(props).description)
         
     }
     
@@ -60,7 +59,6 @@ extension MKMapController: MKMapViewDelegate {
         case .none:
             break
         case .dragging:
-            
             break
         case .ending:
             if !asListeners.contains(Constants.DID_END_DRAGGING) {
@@ -70,8 +68,7 @@ extension MKMapController: MKMapViewDelegate {
             props["id"] = identifier
             props["latitude"] = annotation.coordinate.latitude
             props["longitude"] = annotation.coordinate.longitude
-            let json = JSON(props)
-            dispatchEvent(name: Constants.DID_END_DRAGGING, value: json.description)
+            dispatchEvent(name: Constants.DID_END_DRAGGING, value: JSON(props).description)
             view.setDragState(.none, animated: false)
         case .canceling:
             break

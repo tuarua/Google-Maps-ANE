@@ -15,6 +15,8 @@
  */
 
 import Foundation
+import FreSwift
+
 public struct Settings {
     public var scrollGestures = true
     public var zoomGestures = true
@@ -23,45 +25,21 @@ public struct Settings {
     public var consumesGesturesInView = true
     public var compassButton = false
     public var myLocationButtonEnabled = false
-    public var myLocationEnabled = false
     public var indoorPicker = true
     public var allowScrollGesturesDuringRotateOrZoom = true
-    public var buildingsEnabled = true
     
-    init(dictionary: [String: AnyObject]) {
-        if let sg = dictionary["scrollGestures"] as? Bool {
-            scrollGestures = sg
-        }
-        if let zg = dictionary["zoomGestures"] as? Bool {
-            zoomGestures = zg
-        }
-        if let tg = dictionary["tiltGestures"] as? Bool {
-            tiltGestures = tg
-        }
-        if let rg = dictionary["rotateGestures"] as? Bool {
-            rotateGestures = rg
-        }
-        if let cg = dictionary["consumesGesturesInView"] as? Bool {
-            rotateGestures = cg
-        }
-        if let cb = dictionary["compassButton"] as? Bool {
-            compassButton = cb
-        }
-        if let mlb = dictionary["myLocationButtonEnabled"] as? Bool {
-            myLocationButtonEnabled = mlb
-        }
-        if let ml = dictionary["myLocationEnabled"] as? Bool {
-            myLocationEnabled = ml
-        }
-        if let ip = dictionary["indoorPicker"] as? Bool {
-            indoorPicker = ip
-        }
-        if let asg = dictionary["allowScrollGesturesDuringRotateOrZoom"] as? Bool {
-            allowScrollGesturesDuringRotateOrZoom = asg
-        }
-        if let bld = dictionary["buildingsEnabled"] as? Bool {
-            buildingsEnabled = bld
-        }
+    init?(freObject: FREObject?) {
+        guard let rv = freObject else { return nil }
+        let fre = FreObjectSwift(rv)
+        scrollGestures = fre.scrollGestures
+        zoomGestures = fre.zoomGestures
+        tiltGestures = fre.tiltGestures
+        rotateGestures = fre.tiltGestures
+        consumesGesturesInView = fre.consumesGesturesInView
+        compassButton = fre.compassButton
+        myLocationButtonEnabled = fre.myLocationButtonEnabled
+        indoorPicker = fre.indoorPicker
+        allowScrollGesturesDuringRotateOrZoom = fre.allowScrollGesturesDuringRotateOrZoom
     }
     
 }

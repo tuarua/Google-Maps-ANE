@@ -25,15 +25,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.adobe.fre.FREContext
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapFragment
-import com.google.android.gms.maps.OnMapReadyCallback
 import android.support.v4.content.ContextCompat.checkSelfPermission
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.tasks.Task
@@ -63,7 +60,7 @@ class MapController(override var context: FREContext?, private var airView: View
     private var _mapType = 0
     private var centerAt: LatLng = coordinate
     private lateinit var mMapFragment: MapFragment
-    private var mapView: GoogleMap? = null
+    var mapView: GoogleMap? = null
     private var container: FrameLayout? = null
     private var asListeners: MutableList<String> = mutableListOf()
     private val markers = mutableMapOf<String, Marker>()
@@ -85,7 +82,6 @@ class MapController(override var context: FREContext?, private var airView: View
             if (ctx.activity != null) {
                 if (checkSelfPermission(ctx.activity.applicationContext, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mv.uiSettings.isMyLocationButtonEnabled = settings.myLocationButtonEnabled
-                    mv.isMyLocationEnabled = settings.myLocationEnabled
                 }
             }
         }
@@ -97,7 +93,7 @@ class MapController(override var context: FREContext?, private var airView: View
         mv.uiSettings.isZoomGesturesEnabled = settings.zoomGestures
         mv.uiSettings.isTiltGesturesEnabled = settings.tiltGestures
         mv.uiSettings.isMapToolbarEnabled = settings.mapToolbarEnabled
-        mv.isBuildingsEnabled = settings.buildingsEnabled
+        mv.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = settings.allowScrollGesturesDuringRotateOrZoom
 
         if (asListeners.contains(Constants.DID_TAP_AT)) mv.setOnMapClickListener(this)
         if (asListeners.contains(Constants.DID_LONG_PRESS_AT)) mv.setOnMapLongClickListener(this)
@@ -135,8 +131,8 @@ class MapController(override var context: FREContext?, private var airView: View
             type == Constants.DID_LONG_PRESS_INFO_WINDOW && asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW) -> mv.setOnInfoWindowLongClickListener(this)
             type == Constants.DID_CLOSE_INFO_WINDOW && asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW) -> mv.setOnInfoWindowCloseListener(this)
             type == Constants.ON_CAMERA_MOVE && asListeners.contains(Constants.ON_CAMERA_MOVE) -> mv.setOnCameraMoveListener(this)
-            asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) && asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) -> mv.setOnCameraMoveStartedListener(this)
-            asListeners.contains(Constants.ON_CAMERA_IDLE) && asListeners.contains(Constants.ON_CAMERA_IDLE) -> mv.setOnCameraIdleListener(this)
+            type == Constants.ON_CAMERA_MOVE_STARTED && asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) -> mv.setOnCameraMoveStartedListener(this)
+            type == Constants.ON_CAMERA_IDLE && asListeners.contains(Constants.ON_CAMERA_IDLE) -> mv.setOnCameraIdleListener(this)
         }
     }
 
@@ -201,7 +197,6 @@ class MapController(override var context: FREContext?, private var airView: View
             val locationResult = fusedProvider.lastLocation
             locationResult.addOnCompleteListener(ctx.activity) { task: Task<Location> ->
                 if (task.isSuccessful) {
-                    mv.isMyLocationEnabled = settings.myLocationEnabled
                     mv.uiSettings?.isMyLocationButtonEnabled = settings.myLocationButtonEnabled
                     val lastKnownLocation = task.result
                     if (lastKnownLocation != null) {
@@ -237,10 +232,6 @@ class MapController(override var context: FREContext?, private var airView: View
 
     }
 
-    fun clear() {
-        mapView?.clear()
-    }
-
     var visible: Boolean
         set(value) {
             this._visible = value
@@ -258,13 +249,6 @@ class MapController(override var context: FREContext?, private var airView: View
             frame.y = viewPort.top
         }
         get() = _viewPort
-
-    var mapType: Int
-        get() = _mapType
-        set(value) {
-            _mapType = value
-            mapView?.mapType = _mapType
-        }
 
     var style: String?
         get() = _style

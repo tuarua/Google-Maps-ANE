@@ -59,12 +59,13 @@ class GMSMapController: UIViewController, FreSwiftController {
         if let settings = self.settings {
             mapView.settings.compassButton = settings.compassButton
             mapView.settings.myLocationButton = settings.myLocationButtonEnabled
-            mapView.isMyLocationEnabled = settings.myLocationEnabled
             mapView.settings.scrollGestures = settings.scrollGestures
             mapView.settings.rotateGestures = settings.rotateGestures
             mapView.settings.zoomGestures = settings.zoomGestures
             mapView.settings.tiltGestures = settings.tiltGestures
-            mapView.isBuildingsEnabled = settings.buildingsEnabled
+            mapView.settings.allowScrollGesturesDuringRotateOrZoom = settings.allowScrollGesturesDuringRotateOrZoom
+            mapView.settings.consumesGesturesInView = settings.consumesGesturesInView
+            mapView.settings.indoorPicker = settings.indoorPicker
         }
 
         view.addSubview(container)
@@ -258,7 +259,7 @@ class GMSMapController: UIViewController, FreSwiftController {
         updateCamera(update, animates)
     }
     
-    func setStyle(json: String) {
+    func setStyle(_ json: String) {
         do {
             mapView.mapStyle = try GMSMapStyle(jsonString: json)
         } catch {
@@ -266,7 +267,7 @@ class GMSMapController: UIViewController, FreSwiftController {
         }
     }
     
-    func setMapType(type: UInt) {
+    func setMapType(_ type: UInt) {
         //Normal is 1
         //Satellite is 2
         //kGMSTypeTerrain is 3
@@ -285,13 +286,13 @@ class GMSMapController: UIViewController, FreSwiftController {
         }
     }
     
-    func setViewPort(frame: CGRect) {
+    func setViewPort(_ frame: CGRect) {
         viewPort = frame
         self.view.frame = viewPort
         container.frame = CGRect(origin: CGPoint.zero, size: self.view.frame.size)
         mapView.frame = container.bounds
     }
-    
+
     func dispose() {
         self.view.removeFromSuperview()
         self.removeFromParent()

@@ -61,6 +61,17 @@ extension SwiftController: FreSwiftMainController {
         functionsToSet["\(prefix)requestPermissions"] = requestPermissions
         functionsToSet["\(prefix)capture"] = capture
         functionsToSet["\(prefix)getCapture"] = getCapture
+        functionsToSet["\(prefix)setBuildingsEnabled"] = setBuildingsEnabled
+        functionsToSet["\(prefix)setTrafficEnabled"] = setTrafficEnabled
+        functionsToSet["\(prefix)setMinZoom"] = setMinZoom
+        functionsToSet["\(prefix)setMaxZoom"] = setMaxZoom
+        functionsToSet["\(prefix)setIndoorEnabled"] = setIndoorEnabled
+        functionsToSet["\(prefix)setMyLocationEnabled"] = setMyLocationEnabled
+        functionsToSet["\(prefix)projection_pointForCoordinate"] = projection_pointForCoordinate
+        functionsToSet["\(prefix)projection_coordinateForPoint"] = projection_coordinateForPoint
+        functionsToSet["\(prefix)projection_containsCoordinate"] = projection_containsCoordinate
+        functionsToSet["\(prefix)projection_visibleRegion"] = projection_visibleRegion
+        functionsToSet["\(prefix)projection_pointsForMeters"] = projection_pointsForMeters
         
         var arr: [String] = []
         for key in functionsToSet.keys {
@@ -86,7 +97,7 @@ extension SwiftController: FreSwiftMainController {
     }
     
     @objc public func setFREContext(ctx: FREContext) {
-        self.context = FreContextSwift.init(freContext: ctx)
+        self.context = FreContextSwift(freContext: ctx)
         // Turn on FreSwift logging
         FreSwiftLogger.shared.context = context
     }

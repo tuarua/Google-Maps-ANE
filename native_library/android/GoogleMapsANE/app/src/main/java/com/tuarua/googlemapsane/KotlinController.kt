@@ -17,6 +17,7 @@ package com.tuarua.googlemapsane
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.annotation.SuppressLint
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
 import android.content.Intent
@@ -35,7 +36,9 @@ import com.google.gson.Gson
 
 import com.tuarua.frekotlin.*
 import com.tuarua.frekotlin.display.toFREObject
+import com.tuarua.frekotlin.geom.Point
 import com.tuarua.frekotlin.geom.RectF
+import com.tuarua.frekotlin.geom.toFREObject
 import com.tuarua.googlemapsane.data.AddressLookup
 import com.tuarua.googlemapsane.data.Settings
 import com.tuarua.googlemapsane.events.PermissionEvent
@@ -47,11 +50,11 @@ import java.io.IOException
 
 @Suppress("unused", "UNUSED_PARAMETER", "UNCHECKED_CAST", "PrivatePropertyName")
 class KotlinController : FreKotlinMainController {
-    private var scaleFactor: Float = 1.0f
+    private var scaleFactor = 1.0f
     private lateinit var airView: ViewGroup
     private val TRACE = "TRACE"
     private var isAdded = false
-    private var settings: Settings = Settings()
+    private var settings = Settings()
     private var asListeners: MutableList<String> = mutableListOf()
     private var listenersAddedToMapC = false
 
@@ -83,42 +86,9 @@ class KotlinController : FreKotlinMainController {
         if (appActivity != null) {
             val geocoder = Geocoder(appActivity)
             val addresses: List<Address>?
-            val address: Address?
             try {
                 addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
-                if (null != addresses && addresses.isNotEmpty()) {
-                    address = addresses[0]
-                    val name: String? = if (address.subThoroughfare != null) {
-                        """${address.subThoroughfare} ${address.thoroughfare}"""
-                    } else {
-                        address.thoroughfare
-                    }
-
-                    var formattedAddress = ""
-                    if (address.maxAddressLineIndex > 0) {
-                        for (i in 0 until address.maxAddressLineIndex) {
-                            formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
-                        }
-                    } else {
-                        formattedAddress = name + "\n"
-                    }
-
-                    formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
-
-                    dispatchEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
-                            AddressLookup(
-                                    coordinate.latitude,
-                                    coordinate.longitude,
-                                    formattedAddress,
-                                    name,
-                                    address.thoroughfare,
-                                    address.locality,
-                                    address.postalCode,
-                                    address.countryName
-
-                            ))
-                    )
-                }
+                sendGeocodeEvent(addresses)
             } catch (e: IOException) {
                 dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
             }
@@ -133,47 +103,49 @@ class KotlinController : FreKotlinMainController {
         if (appActivity != null) {
             val geocoder = Geocoder(appActivity)
             val addresses: List<Address>?
-            val address: Address?
             try {
                 addresses = geocoder.getFromLocationName(addressSearch, 1)
-                if (null != addresses && addresses.isNotEmpty()) {
-                    address = addresses[0]
-                    val name: String? = if (address.subThoroughfare != null) {
-                        """${address.subThoroughfare} ${address.thoroughfare}"""
-                    } else {
-                        address.thoroughfare
-                    }
-
-                    var formattedAddress = ""
-                    if (address.maxAddressLineIndex > 0) {
-                        for (i in 0 until address.maxAddressLineIndex) {
-                            formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
-                        }
-                    } else {
-                        formattedAddress = name + "\n"
-                    }
-
-                    formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
-
-                    dispatchEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
-                            AddressLookup(
-                                    address.latitude,
-                                    address.longitude,
-                                    formattedAddress,
-                                    name,
-                                    address.thoroughfare,
-                                    address.locality,
-                                    address.postalCode,
-                                    address.countryName
-
-                            ))
-                    )
-                }
+                sendGeocodeEvent(addresses)
             } catch (e: IOException) {
                 dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
             }
         }
         return null
+    }
+
+    private fun sendGeocodeEvent(addresses: List<Address>?) {
+        if (null == addresses || addresses.isEmpty()) return
+        val address = addresses[0]
+        val name: String? = if (address.subThoroughfare != null) {
+            """${address.subThoroughfare} ${address.thoroughfare}"""
+        } else {
+            address.thoroughfare
+        }
+
+        var formattedAddress = ""
+        if (address.maxAddressLineIndex > 0) {
+            for (i in 0 until address.maxAddressLineIndex) {
+                formattedAddress += if (i == 0) address.getAddressLine(i) else ", " + address.getAddressLine(i)
+            }
+        } else {
+            formattedAddress = name + "\n"
+        }
+
+        formattedAddress = """$formattedAddress${address.locality}, ${address.postalCode}, ${address.countryName}"""
+
+        dispatchEvent(Constants.ON_ADDRESS_LOOKUP, gson.toJson(
+                AddressLookup(
+                        address.latitude,
+                        address.longitude,
+                        formattedAddress,
+                        name,
+                        address.thoroughfare,
+                        address.locality,
+                        address.postalCode,
+                        address.countryName
+
+                ))
+        )
     }
 
     fun requestPermissions(ctx: FREContext, argv: FREArgv): FREObject? {
@@ -262,22 +234,11 @@ class KotlinController : FreKotlinMainController {
 
     fun initMap(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 4 } ?: return FreArgException("initMap")
-        val zoomLevel = Float(argv[2]) ?: 12.0f
-        scaleFactor = Float(argv[4]) ?: 1.0f
         val centerAt = LatLng(argv[1])
         val viewPort = RectF(argv[0])
-        val settingsFre = argv[3]
-        settings.compassButton = Boolean(settingsFre["compassButton"]) == true
-        settings.indoorPicker = Boolean(settingsFre["indoorPicker"]) == true
-        settings.myLocationButtonEnabled = Boolean(settingsFre["myLocationButtonEnabled"]) == true
-        settings.myLocationEnabled = Boolean(settingsFre["myLocationEnabled"]) == true
-        settings.rotateGestures = Boolean(settingsFre["rotateGestures"]) == true
-        settings.scrollGestures = Boolean(settingsFre["scrollGestures"]) == true
-        settings.tiltGestures = Boolean(settingsFre["tiltGestures"]) == true
-        settings.zoomGestures = Boolean(settingsFre["zoomGestures"]) == true
-        settings.mapToolbarEnabled = Boolean(settingsFre["mapToolbarEnabled"]) == true
-        settings.buildingsEnabled = Boolean(settingsFre["buildingsEnabled"]) == true
-
+        val zoomLevel = Float(argv[2]) ?: 12.0f
+        val settings = Settings(argv[3])
+        scaleFactor = Float(argv[4]) ?: 1.0f
         mapController = MapController(ctx, airView, centerAt, zoomLevel, scaleViewPort(viewPort), settings)
         return null
     }
@@ -436,7 +397,7 @@ class KotlinController : FreKotlinMainController {
     }
 
     fun clear(ctx: FREContext, argv: FREArgv): FREObject? {
-        mapController?.clear()
+        mapController?.mapView?.clear()
         return null
     }
 
@@ -530,17 +491,76 @@ class KotlinController : FreKotlinMainController {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("setStyle")
         val json = String(argv[0]) ?: return null
         mapController?.style = json
-
         return null
     }
 
     fun setMapType(ctx: FREContext, argv: FREArgv): FREObject? {
         argv.takeIf { argv.size > 0 } ?: return FreArgException("setMapType")
         val type = Int(argv[0]) ?: return null
-        mapController?.mapType = type
+        mapController?.mapView?.mapType = type
         return null
     }
 
+    fun setBuildingsEnabled(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setBuildingsEnabled")
+        mapController?.mapView?.isBuildingsEnabled = Boolean(argv[0]) == true
+        return null
+    }
+
+    fun setTrafficEnabled(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setTrafficEnabled")
+        mapController?.mapView?.isTrafficEnabled = Boolean(argv[0]) == true
+        return null
+    }
+
+    fun setMinZoom(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setMinZoom")
+        Float(argv[0])?.let { mapController?.mapView?.setMinZoomPreference(it) }
+        return null
+    }
+
+    fun setMaxZoom(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setMinZoom")
+        Float(argv[0])?.let { mapController?.mapView?.setMaxZoomPreference(it) }
+        return null
+    }
+
+    fun setIndoorEnabled(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setIndoorEnabled")
+        mapController?.mapView?.isIndoorEnabled = Boolean(argv[0]) == true
+        return null
+    }
+
+    @SuppressLint("MissingPermission")
+    fun setMyLocationEnabled(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("setIndoorEnabled")
+        mapController?.mapView?.isMyLocationEnabled = Boolean(argv[0]) == true
+        return null
+    }
+
+    fun projection_pointForCoordinate(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("projection_pointForCoordinate")
+        return mapController?.mapView?.projection?.toScreenLocation(LatLng(argv[0]))?.toFREObject()
+    }
+
+    fun projection_coordinateForPoint(ctx: FREContext, argv: FREArgv): FREObject? {
+        argv.takeIf { argv.size > 0 } ?: return FreArgException("projection_coordinateForPoint")
+        return mapController?.mapView?.projection?.fromScreenLocation(Point(argv[0]))?.toFREObject()
+    }
+
+    fun projection_containsCoordinate(ctx: FREContext, argv: FREArgv): FREObject? {
+        warning("containsCoordinate is iOS only")
+        return null
+    }
+
+    fun projection_visibleRegion(ctx: FREContext, argv: FREArgv): FREObject? {
+        return mapController?.mapView?.projection?.visibleRegion?.toFREObject()
+    }
+
+    fun projection_pointsForMeters(ctx: FREContext, argv: FREArgv): FREObject? {
+        warning("pointsForMeters is iOS only")
+        return null
+    }
 
     override fun dispose() {
         super.dispose()
