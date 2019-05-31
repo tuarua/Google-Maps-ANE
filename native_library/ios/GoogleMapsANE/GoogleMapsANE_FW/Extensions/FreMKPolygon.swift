@@ -23,7 +23,6 @@ extension CustomMKPolygon {
             return nil
         }
         let fre = FreObjectSwift(rv)
-        let identifier = UUID().uuidString
         
         var holes: [[CLLocationCoordinate2D]] = [[]]
         if let holesFre = rv["holes"] {
@@ -36,7 +35,7 @@ extension CustomMKPolygon {
             }
         }
         
-        self.init(points: fre.points, holes: holes, identifier: identifier)
+        self.init(points: fre.points, holes: holes, identifier: UUID().uuidString)
         self.fillColor = fre.fillColor
         self.strokeColor = fre.strokeColor
         self.strokeWidth = fre.strokeWidth

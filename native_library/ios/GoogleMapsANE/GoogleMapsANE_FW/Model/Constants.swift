@@ -28,6 +28,7 @@ public struct Constants {
     public static let DID_TAP_INFO_WINDOW = "GoogleMaps.DidTapInfoWindow"
     public static let DID_CLOSE_INFO_WINDOW = "GoogleMaps.DidCloseInfoWindow"
     public static let DID_LONG_PRESS_INFO_WINDOW = "GoogleMaps.DidLongPressInfoWindow"
+    public static let DID_TAP_GROUND_OVERLAY = "GoogleMaps.DidTapGroundOverlay"
     public static let ON_CAMERA_MOVE = "GoogleMaps.OnCameraMove"
     public static let ON_CAMERA_MOVE_STARTED = "GoogleMaps.OnCameraMoveStarted"
     public static let ON_CAMERA_IDLE = "GoogleMaps.OnCameraIdle"

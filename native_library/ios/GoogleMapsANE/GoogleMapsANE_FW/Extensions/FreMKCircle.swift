@@ -26,7 +26,7 @@ extension CustomMKCircle {
         let fre = FreObjectSwift(rv)
         self.init(center: fre.center,
                   radius: fre.radius,
-                  identifier: UUID.init().uuidString)
+                  identifier: UUID().uuidString)
         self.fillColor = fre.fillColor
         self.strokeColor = fre.strokeColor
         self.strokeWidth = fre.strokeWidth

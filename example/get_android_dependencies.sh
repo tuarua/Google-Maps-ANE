@@ -1,6 +1,6 @@
 #!/bin/sh
 
-AneVersion="2.3.0"
+AneVersion="2.4.0"
 PlayerServicesVersion="16.0.1"
 MapsVersion="16.1.0"
 LocationVersion="16.0.0"

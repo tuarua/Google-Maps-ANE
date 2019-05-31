@@ -30,6 +30,10 @@ public class CoordinateBounds {
     public function get northEast():Coordinate {
         return _northEast;
     }
+
+    public function toString():String {
+        return "(northEast=" + _northEast + ", southWest=" + _southWest + ")";
+    }
 }
 }
 

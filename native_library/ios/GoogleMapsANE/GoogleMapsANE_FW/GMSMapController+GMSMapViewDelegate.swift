@@ -19,34 +19,18 @@ import GoogleMaps
 
 extension GMSMapController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        if !asListeners.contains(Constants.DID_TAP_AT) {return}
-        var props = [String: Any]()
-        props["latitude"] = coordinate.latitude
-        props["longitude"] = coordinate.longitude
-        let json = JSON(props)
-        dispatchEvent(name: Constants.DID_TAP_AT, value: json.description)
+        if !asListeners.contains(Constants.DID_TAP_AT) { return }
+        dispatchEvent(name: Constants.DID_TAP_AT, value: coordinate.toJSON())
     }
     
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
-        if !asListeners.contains(Constants.DID_LONG_PRESS_AT) {return}
-        var props = [String: Any]()
-        props["latitude"] = coordinate.latitude
-        props["longitude"] = coordinate.longitude
-        let json = JSON(props)
-        dispatchEvent(name: Constants.DID_LONG_PRESS_AT, value: json.description)
+        if !asListeners.contains(Constants.DID_LONG_PRESS_AT) { return }
+        dispatchEvent(name: Constants.DID_LONG_PRESS_AT, value: coordinate.toJSON())
     }
     
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
         if !asListeners.contains(Constants.ON_CAMERA_MOVE) { return }
-        var props = [String: Any]()
-        props["latitude"] = position.target.latitude
-        props["longitude"] = position.target.longitude
-        props["zoom"] = position.zoom
-        props["tilt"] = position.viewingAngle
-        props["bearing"] = position.bearing
-        
-        let json = JSON(props)
-        dispatchEvent(name: Constants.ON_CAMERA_MOVE, value: json.description)
+        dispatchEvent(name: Constants.ON_CAMERA_MOVE, value: position.toJSON())
     }
     
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
@@ -56,65 +40,41 @@ extension GMSMapController: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
         if !asListeners.contains(Constants.ON_CAMERA_MOVE_STARTED) { return }
-        var props = [String: Any]()
-        props["reason"] = gesture ? 1: 3
-        let json = JSON(props)
-        dispatchEvent(name: Constants.ON_CAMERA_MOVE_STARTED, value: json.description)
+        dispatchEvent(name: Constants.ON_CAMERA_MOVE_STARTED, value: JSON(["reason": gesture ? 1: 3]).description)
     }
     
     func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_DRAG) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        dispatchEvent(name: Constants.DID_DRAG, value: identifier)
+        if !asListeners.contains(Constants.DID_DRAG) { return }
+        dispatchEvent(name: Constants.DID_DRAG, value: marker.userData as? String ?? "")
     }
     
     func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_END_DRAGGING) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
+        if !asListeners.contains(Constants.DID_END_DRAGGING) { return }
         var props = [String: Any]()
-        props["id"] = identifier
+        props["id"] = marker.userData as? String ?? ""
         props["latitude"] = marker.position.latitude
         props["longitude"] = marker.position.longitude
-        let json = JSON(props)
-        dispatchEvent(name: Constants.DID_END_DRAGGING, value: json.description)
+        dispatchEvent(name: Constants.DID_END_DRAGGING, value: JSON(props).description)
     }
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        if !asListeners.contains(Constants.DID_TAP_MARKER) {return false}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        dispatchEvent(name: Constants.DID_TAP_MARKER, value: identifier)
+        if !asListeners.contains(Constants.DID_TAP_MARKER) { return false }
+        dispatchEvent(name: Constants.DID_TAP_MARKER, value: marker.userData as? String ?? "")
         return false
     }
     
     func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_BEGIN_DRAGGING) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        dispatchEvent(name: Constants.DID_BEGIN_DRAGGING, value: identifier)
+        if !asListeners.contains(Constants.DID_BEGIN_DRAGGING) { return }
+        dispatchEvent(name: Constants.DID_BEGIN_DRAGGING, value: marker.userData as? String ?? "")
     }
     
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_TAP_INFO_WINDOW) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        dispatchEvent(name: Constants.DID_TAP_INFO_WINDOW, value: identifier)
+        if !asListeners.contains(Constants.DID_TAP_INFO_WINDOW) { return }
+        dispatchEvent(name: Constants.DID_TAP_INFO_WINDOW, value: marker.userData as? String ?? "")
     }
     
     func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW) {return}
+        if !asListeners.contains(Constants.DID_CLOSE_INFO_WINDOW) { return }
         var identifier: String = ""
         if let _identifier = marker.userData as? String {
             identifier = _identifier
@@ -123,12 +83,8 @@ extension GMSMapController: GMSMapViewDelegate {
     }
     
     func mapView(_ mapView: GMSMapView, didLongPressInfoWindowOf marker: GMSMarker) {
-        if !asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW) {return}
-        var identifier: String = ""
-        if let _identifier = marker.userData as? String {
-            identifier = _identifier
-        }
-        dispatchEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: identifier)
+        if !asListeners.contains(Constants.DID_LONG_PRESS_INFO_WINDOW) { return }
+        dispatchEvent(name: Constants.DID_LONG_PRESS_INFO_WINDOW, value: marker.userData as? String ?? "")
     }
     
     func mapViewDidFinishTileRendering(_ mapView: GMSMapView) {
@@ -136,7 +92,6 @@ extension GMSMapController: GMSMapViewDelegate {
             dispatchEvent(name: Constants.ON_LOADED, value: "")
         }
         isMapLoaded = true
-        
     }
     
     func mapView(_ mapView: GMSMapView, didTapPOIWithPlaceID placeID: String, name: String,
@@ -146,6 +101,7 @@ extension GMSMapController: GMSMapViewDelegate {
     }
     
     func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
-        dispatchEvent(name: "TRACE", value: "didTap overlay \(overlay.debugDescription)")
+        if !asListeners.contains(Constants.DID_TAP_GROUND_OVERLAY) { return }
+        dispatchEvent(name: Constants.DID_TAP_GROUND_OVERLAY, value: overlay.userData as? String ?? "")
     }
 }

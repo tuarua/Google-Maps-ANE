@@ -61,7 +61,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
         }
     }
     
-    func reverseGeocodeLocation(coordinate: CLLocationCoordinate2D) {
+    func reverseGeocodeLocation(_ coordinate: CLLocationCoordinate2D) {
         let geoCoder = CLGeocoder()
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
@@ -72,26 +72,11 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
             guard let addressDict = placemarks?[0].addressDictionary else {
                 return
             }
-            
-            var props = [String: Any]()
-            props["latitude"] = location.coordinate.latitude
-            props["longitude"] = location.coordinate.longitude
-            props["formattedAddress"] = ""
-            if let formattedAddress = addressDict["FormattedAddressLines"] as? [String] {
-                props["formattedAddress"] = formattedAddress.joined(separator: ", ")
-            }
-            props["name"] = addressDict["Name"] as? String
-            props["street"] = addressDict["Thoroughfare"] as? String
-            props["city"] = addressDict["City"] as? String
-            props["zip"] = addressDict["ZIP"] as? String
-            props["country"] = addressDict["Country"] as? String
-            
-            let json = JSON(props)
-            self.dispatchEvent(name: Constants.ON_ADDRESS_LOOKUP, value: json.description)
+            self.sendGeocodeEvent(location: location, addressDict: addressDict)
         })
     }
     
-    func forwardGeocodeLocation(address: String) {
+    func forwardGeocodeLocation(_ address: String) {
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(address, completionHandler: {placemarks, error in
             if let error = error {
@@ -101,33 +86,30 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
             guard let location = placemarks?[0].location, let addressDict = placemarks?[0].addressDictionary else {
                 return
             }
-            
-            var props = [String: Any]()
-            props["latitude"] = location.coordinate.latitude
-            props["longitude"] = location.coordinate.longitude
-            props["formattedAddress"] = ""
-            if let formattedAddress = addressDict["FormattedAddressLines"] as? [String] {
-                props["formattedAddress"] = formattedAddress.joined(separator: ", ")
-            }
-            props["name"] = addressDict["Name"] as? String
-            props["street"] = addressDict["Thoroughfare"] as? String
-            props["city"] = addressDict["City"] as? String
-            props["zip"] = addressDict["ZIP"] as? String
-            props["country"] = addressDict["Country"] as? String
-            
-            let json = JSON(props)
-            self.dispatchEvent(name: Constants.ON_ADDRESS_LOOKUP, value: json.description)
-            
+            self.sendGeocodeEvent(location: location, addressDict: addressDict)
         })
     }
     
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location: CLLocation = locations.last!
+    func sendGeocodeEvent(location: CLLocation, addressDict: [AnyHashable: Any]) {
         var props = [String: Any]()
         props["latitude"] = location.coordinate.latitude
         props["longitude"] = location.coordinate.longitude
-        let json = JSON(props)
-        dispatchEvent(name: Constants.LOCATION_UPDATED, value: json.description)
+        props["formattedAddress"] = ""
+        if let formattedAddress = addressDict["FormattedAddressLines"] as? [String] {
+            props["formattedAddress"] = formattedAddress.joined(separator: ", ")
+        }
+        props["name"] = addressDict["Name"] as? String
+        props["street"] = addressDict["Thoroughfare"] as? String
+        props["city"] = addressDict["City"] as? String
+        props["zip"] = addressDict["ZIP"] as? String
+        props["country"] = addressDict["Country"] as? String
+        
+        self.dispatchEvent(name: Constants.ON_ADDRESS_LOOKUP, value: JSON(props).description)
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last!
+        dispatchEvent(name: Constants.LOCATION_UPDATED, value: location.coordinate.toJSON())
     }
     
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -153,8 +135,7 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
             manager.distanceFilter = 50
         }
         
-        let json = JSON(props)
-        dispatchEvent(name: Constants.ON_PERMISSION_STATUS, value: json.description)
+        dispatchEvent(name: Constants.ON_PERMISSION_STATUS, value: JSON(props).description)
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

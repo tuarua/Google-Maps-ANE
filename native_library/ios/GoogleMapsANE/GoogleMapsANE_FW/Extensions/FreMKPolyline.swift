@@ -23,8 +23,7 @@ extension CustomMKPolyline {
             return nil
         }
         let fre = FreObjectSwift(rv)
-        let identifier = UUID().uuidString
-        self.init(points: fre.points, identifier: identifier)
+        self.init(points: fre.points, identifier: UUID().uuidString)
         self.color = fre.color
         self.width = fre.width
     }

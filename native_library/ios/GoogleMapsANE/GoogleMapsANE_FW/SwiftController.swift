@@ -376,10 +376,7 @@ public class SwiftController: NSObject {
             return FreArgError(message: "initMap").getError(#file, #line, #column)
         }
 
-        if let settingsDict = Dictionary(inFRE3) {
-            settings = Settings(dictionary: settingsDict)
-        }
-
+        settings = Settings(freObject: inFRE3)
         locationController = LocationController(context: context)
         
         if self.mapProvider == .google {
@@ -452,8 +449,8 @@ public class SwiftController: NSObject {
           else {
             return FreArgError(message: "setViewPort").getError(#file, #line, #column)
         }
-        mapControllerMK?.setViewPort(frame: viewPort)
-        mapControllerGMS?.setViewPort(frame: viewPort)
+        mapControllerMK?.setViewPort(viewPort)
+        mapControllerGMS?.setViewPort(viewPort)
         return nil
     }
 
@@ -479,18 +476,18 @@ public class SwiftController: NSObject {
           else {
             return FreArgError(message: "setStyle").getError(#file, #line, #column)
         }
-        mapControllerGMS?.setStyle(json: json)
+        mapControllerGMS?.setStyle(json)
         return nil
     }
 
     func setMapType(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         guard argc > 0,
-              let type = Int(argv[0])
+              let type = UInt(argv[0])
           else {
             return FreArgError(message: "setMapType").getError(#file, #line, #column)
         }
-        mapControllerMK?.setMapType(type: UInt(type))
-        mapControllerGMS?.setMapType(type: UInt(type))
+        mapControllerMK?.setMapType(type)
+        mapControllerGMS?.setMapType(type)
         return nil
     }
 
@@ -526,9 +523,7 @@ public class SwiftController: NSObject {
     func showUserLocation(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
         locationController.showUserLocation()
         if let sttngs = settings {
-            mapControllerMK?.showsUserLocation = sttngs.myLocationEnabled
             mapControllerGMS?.mapView.settings.myLocationButton = sttngs.myLocationButtonEnabled
-            mapControllerGMS?.mapView.isMyLocationEnabled = sttngs.myLocationEnabled
         }
         return nil
     }
@@ -539,7 +534,7 @@ public class SwiftController: NSObject {
             else {
                 return FreArgError(message: "reverseGeocodeLocation").getError(#file, #line, #column)
         }
-        locationController.reverseGeocodeLocation(coordinate: coordinate)
+        locationController.reverseGeocodeLocation(coordinate)
         return nil
     }
     
@@ -549,8 +544,112 @@ public class SwiftController: NSObject {
             else {
                 return FreArgError(message: "forwardGeocodeLocation").getError(#file, #line, #column)
         }
-        locationController.forwardGeocodeLocation(address: address)
+        locationController.forwardGeocodeLocation(address)
         return nil
     }
     
+    func setBuildingsEnabled(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = Bool(argv[0])
+            else {
+                return FreArgError(message: "setBuildingsEnabled").getError()
+        }
+        mapControllerGMS?.mapView.isBuildingsEnabled = value
+        return nil
+    }
+    
+    func setTrafficEnabled(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = Bool(argv[0])
+            else {
+                return FreArgError(message: "setTrafficEnabled").getError()
+        }
+        mapControllerGMS?.mapView.isTrafficEnabled = value
+        return nil
+    }
+    
+    func setMinZoom(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = Float(argv[0]),
+            let maxZoom = mapControllerGMS?.mapView.maxZoom
+            else {
+                return FreArgError(message: "setMinZoom").getError()
+        }
+        mapControllerGMS?.mapView.setMinZoom(value, maxZoom: maxZoom)
+        return nil
+    }
+    
+    func setMaxZoom(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = Float(argv[0]),
+            let minZoom = mapControllerGMS?.mapView.minZoom
+            else {
+                return FreArgError(message: "setMaxZoom").getError()
+        }
+        mapControllerGMS?.mapView.setMinZoom(minZoom, maxZoom: value)
+        return nil
+    }
+    
+    func setIndoorEnabled(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = Bool(argv[0])
+            else {
+                return FreArgError(message: "setIndoorEnabled").getError()
+        }
+        mapControllerGMS?.mapView.isIndoorEnabled = value
+        return nil
+    }
+    
+    func setMyLocationEnabled(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = Bool(argv[0])
+            else {
+                return FreArgError(message: "setMyLocationEnabled").getError()
+        }
+        mapControllerMK?.showsUserLocation = value
+        mapControllerGMS?.mapView.isMyLocationEnabled = value
+        return nil
+    }
+    
+    func projection_pointForCoordinate(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = CLLocationCoordinate2D(argv[0])
+            else {
+                return FreArgError(message: "projection_pointForCoordinate").getError()
+        }
+        return mapControllerGMS?.mapView.projection.point(for: value).toFREObject()
+    }
+    
+    func projection_coordinateForPoint(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = CGPoint(argv[0])
+            else {
+                return FreArgError(message: "projection_coordinateForPoint").getError()
+        }
+        return mapControllerGMS?.mapView.projection.coordinate(for: value).toFREObject()
+    }
+    
+    func projection_containsCoordinate(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 0,
+            let value = CLLocationCoordinate2D(argv[0])
+            else {
+                return FreArgError(message: "projection_containsCoordinate").getError()
+        }
+        return mapControllerGMS?.mapView.projection.contains(value).toFREObject()
+    }
+    
+    func projection_visibleRegion(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        return mapControllerGMS?.mapView.projection.visibleRegion().toFREObject()
+    }
+    
+    func projection_pointsForMeters(ctx: FREContext, argc: FREArgc, argv: FREArgv) -> FREObject? {
+        guard argc > 1,
+            let forMeters = CLLocationDistance(argv[0]),
+            let at = CLLocationCoordinate2D(argv[1])
+            else {
+                return FreArgError(message: "projection_pointsForMeters").getError()
+        }
+        return mapControllerGMS?.mapView.projection.points(forMeters: forMeters, at: at).toFREObject()
+    }
+
 }

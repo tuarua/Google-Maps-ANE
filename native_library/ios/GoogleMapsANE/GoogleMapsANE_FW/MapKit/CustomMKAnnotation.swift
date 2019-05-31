@@ -20,15 +20,15 @@ import MapKit
 import UIKit
 
 class CustomMKAnnotation: NSObject, MKAnnotation {
-    var identifier: String = UUID().uuidString
+    var identifier = UUID().uuidString
     var color: UIColor?
     var icon: UIImage?
     var userData: Any?
-    var coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var coordinate = CLLocationCoordinate2D()
     var title: String?
     var subtitle: String?
-    var isDraggable: Bool = false
-    var isTappable: Bool = false
+    var isDraggable = false
+    var isTappable = false
     var opacity: CGFloat = 1.0
 
     convenience init?(_ freObject: FREObject?) {

@@ -24,6 +24,7 @@ import com.tuarua.googlemaps.MapProvider;
 import com.tuarua.googlemaps.Marker;
 import com.tuarua.googlemaps.Polygon;
 import com.tuarua.googlemaps.Polyline;
+import com.tuarua.googlemaps.Projection;
 import com.tuarua.googlemaps.Settings;
 
 import flash.display.BitmapData;
@@ -40,6 +41,7 @@ public class GoogleMapsANE extends EventDispatcher {
     private static var _mapView:GoogleMapsANE;
     private static var _key:String;
     private static var _mapProvider:int = MapProvider.GOOGLE;
+    private var _projection:Projection = new Projection();
 
     public function GoogleMapsANE() {
         if (_mapView) {
@@ -409,6 +411,74 @@ public class GoogleMapsANE extends EventDispatcher {
     public function set style(json:String):void {
         if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("setStyle", json);
+    }
+
+    /**
+     * Sets whether 3D buildings layer is enabled. (default true).
+     *
+     * Ignored on Apple Maps
+     */
+    public function set buildingsEnabled(value:Boolean):void {
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setBuildingsEnabled", value);
+    }
+
+    /**
+     * Controls whether the map is drawing traffic data, if available.
+     *
+     * Ignored on Apple Maps
+     */
+    public function set trafficEnabled(value:Boolean):void  {
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setTrafficEnabled", value);
+    }
+
+    /**
+     * Minimum zoom (the farthest the camera may be zoomed out).
+     *
+     * Ignored on Apple Maps
+     */
+    public function set minZoom(value:Number):void  {
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setMinZoom", value);
+    }
+
+    /**
+     * Maximum zoom (the closest the camera may be to the Earth).
+     *
+     * Ignored on Apple Maps
+     */
+    public function set maxZoom(value:Number):void  {
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setMaxZoom", value);
+    }
+
+    /**
+     * Sets whether 3D buildings layer is enabled. (default true).
+     *
+     * Ignored on Apple Maps
+     */
+    public function set indoorEnabled(value:Boolean):void  {
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setIndoorEnabled", value);
+    }
+
+    /**
+     * Enables or disables the my-location layer.
+     */
+    public function set myLocationEnabled(value:Boolean):void  {
+        if (!safetyCheck()) return;
+        GoogleMapsANEContext.context.call("setMyLocationEnabled", value);
+    }
+
+    /**
+     * Returns a Projection object that you can use to convert between screen coordinates and latitude/longitude coordinates.
+     *
+     * returns null on Apple Maps
+     */
+    public function get projection():Projection {
+        if (!safetyCheck()) return null;
+        return _projection;
     }
 
     /**

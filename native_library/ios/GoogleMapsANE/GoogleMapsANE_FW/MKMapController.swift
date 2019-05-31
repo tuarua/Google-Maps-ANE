@@ -67,11 +67,7 @@ class MKMapController: UIViewController, FreSwiftController {
     @objc internal func didTapAt(_ recogniser: UITapGestureRecognizer) {
         let firstTouch = recogniser.location(ofTouch: 0, in: self.mapView)
         let coordinate = mapView.convert(firstTouch, toCoordinateFrom: mapView)
-        var props = [String: Any]()
-        props["latitude"] = coordinate.latitude
-        props["longitude"] = coordinate.longitude
-        let json = JSON(props)
-        dispatchEvent(name: Constants.DID_TAP_AT, value: json.description)
+        dispatchEvent(name: Constants.DID_TAP_AT, value: coordinate.toJSON())
     }
     
     override func viewDidLoad() {
@@ -91,7 +87,6 @@ class MKMapController: UIViewController, FreSwiftController {
         mapView.delegate = self
         if let settings = self.settings {
             mapView.showsCompass = settings.compassButton
-            mapView.showsUserLocation = settings.myLocationEnabled
             mapView.isScrollEnabled = settings.scrollGestures
             mapView.isRotateEnabled = settings.rotateGestures
             mapView.isZoomEnabled = settings.zoomGestures
@@ -130,7 +125,7 @@ class MKMapController: UIViewController, FreSwiftController {
         return (lastCapture, captureDimensions)
     }
 
-    func setViewPort(frame: CGRect) {
+    func setViewPort(_ frame: CGRect) {
         viewPort = frame
         self.view.frame = viewPort
         container.frame = CGRect(origin: CGPoint.zero, size: self.view.frame.size)
@@ -318,11 +313,11 @@ class MKMapController: UIViewController, FreSwiftController {
         mapView.setCamera(camera, animated: animates)
     }
 
-    func setStyle(json: String) {
+    func setStyle(_ json: String) {
         trace("setStyle is Google Maps only")
     }
 
-    func setMapType(type: UInt) {
+    func setMapType(_ type: UInt) {
         //standard is 1
         //satellite is 2
         //hybrid is 4

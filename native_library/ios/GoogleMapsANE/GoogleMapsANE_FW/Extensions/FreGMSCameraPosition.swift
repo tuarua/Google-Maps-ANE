@@ -14,21 +14,17 @@
  *  limitations under the License.
  */
 
-import FreSwift
 import Foundation
-import MapKit
-import UIKit
+import GoogleMaps
 
-internal class CustomMKPolyline: MKPolyline {
-    var identifier = ""
-    var width: CGFloat = 1.0
-    var color: UIColor?
-    convenience init(points: [CLLocationCoordinate2D], identifier: String) {
-        var coordinates = [CLLocationCoordinate2D]()
-        for point in points {
-            coordinates.append(point)
-        }
-        self.init(coordinates: &coordinates, count: points.count)
-        self.identifier = identifier
+public extension GMSCameraPosition {
+    func toJSON() -> String {
+        var props = [String: Any]()
+        props["latitude"] = self.target.latitude
+        props["longitude"] = self.target.longitude
+        props["zoom"] = self.zoom
+        props["tilt"] = self.viewingAngle
+        props["bearing"] = self.bearing
+        return JSON(props).description
     }
 }

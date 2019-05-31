@@ -16,6 +16,7 @@ import com.tuarua.googlemaps.CoordinateBounds;
 import com.tuarua.googlemaps.Settings;
 import com.tuarua.googlemaps.StrokePattern;
 import com.tuarua.googlemaps.StrokePatternType;
+import com.tuarua.googlemaps.VisibleRegion;
 import com.tuarua.googlemaps.permissions.PermissionEvent;
 import com.tuarua.googlemaps.permissions.PermissionStatus;
 import com.tuarua.location.Address;
@@ -25,6 +26,7 @@ import flash.desktop.NativeApplication;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.events.Event;
+import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.setTimeout;
 
@@ -101,8 +103,8 @@ public class StarlingRoot extends Sprite {
 
         var settings:Settings = new Settings();
         settings.myLocationButtonEnabled = false;
-        settings.myLocationEnabled = true;
-        settings.buildingsEnabled = false;
+        mapView.myLocationEnabled = true;
+        mapView.buildingsEnabled = false;
         try {
             mapView.initMap(viewPort, coordinate, 12.0, settings, Starling.current.contentScaleFactor);
         } catch (e:ANEError) {

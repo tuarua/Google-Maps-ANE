@@ -1,3 +1,15 @@
+### 2.4.0
+- Added `mapView.buildingsEnabled` setter replaces `Settings.buildingsEnabled`
+- Added `mapView.trafficEnabled` setter
+- Added `mapView.minZoom` setter
+- Added `mapView.maxZoom` setter
+- Added `mapView.indoorEnabled` setter
+- Added `mapView.myLocationEnabled` setter replaces `Settings.myLocationEnabled`
+- Added `mapView.projection` getter returning `Projection` class
+- Added `Coordinate.toString()` method
+- Added `CoordinateBounds.toString()` method
+- Added `VisibleRegion` class
+
 ### 2.3.0
 - iOS: Updated to Google Maps SDK 3.1
 - add GroundOverlay support

@@ -79,7 +79,18 @@ CONTEXT_INIT(TRGMA) {
         ,MAP_FUNCTION(TRGMA, requestPermissions)
         ,MAP_FUNCTION(TRGMA, capture)
         ,MAP_FUNCTION(TRGMA, getCapture)
-
+        ,MAP_FUNCTION(TRGMA, setBuildingsEnabled)
+        ,MAP_FUNCTION(TRGMA, setTrafficEnabled)
+        ,MAP_FUNCTION(TRGMA, setMinZoom)
+        ,MAP_FUNCTION(TRGMA, setMaxZoom)
+        ,MAP_FUNCTION(TRGMA, setIndoorEnabled)
+        ,MAP_FUNCTION(TRGMA, setMyLocationEnabled)
+        ,MAP_FUNCTION(TRGMA, projection_pointForCoordinate)
+        ,MAP_FUNCTION(TRGMA, projection_coordinateForPoint)
+        ,MAP_FUNCTION(TRGMA, projection_containsCoordinate)
+        ,MAP_FUNCTION(TRGMA, projection_visibleRegion)
+        ,MAP_FUNCTION(TRGMA, projection_pointsForMeters)
+        
     };
     
     /**************************************************************************/
