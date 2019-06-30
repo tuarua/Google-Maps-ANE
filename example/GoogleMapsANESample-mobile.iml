@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
-  <component name="FlexBuildConfigurationManager" active="iOS Device">
+  <component name="FlexBuildConfigurationManager" active="Android Device">
     <configurations>
       <configuration name="iOS Device" target-platform="Mobile" pure-as="true" main-class="GoogleMapsANESample" output-file="GoogleMapsANESample-mobile.swf" output-folder="$MODULE_DIR$/bin-release/device">
         <dependencies>
@@ -14,29 +14,32 @@
             <entry library-name="GoogleMapsANE" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.android.support.support-v4-27.1.0" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-name="com.tuarua.frekotlin" library-level="project">
               <dependency linkage="Merged" />
             </entry>
             <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-15.0.1" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-name="com.google.android.gms.play-services-location-15.0.1" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-15.0.1" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-name="com.google.code.gson.gson-2.8.4" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.android.support.support-v4-27.1.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-base-16.0.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-maps-16.1.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-location-16.0.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.tuarua.frekotlin-1.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
-          <sdk name="AIRSDK_32" />
+          <sdk name="AIRSDK_33" />
         </dependencies>
         <compiler-options>
           <map>
@@ -79,28 +82,32 @@
             <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.android.support.support-v4-27.1.0" library-level="project">
+            <entry library-name="com.google.code.gson.gson-2.8.4" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.code.gson.gson-2.8.4" library-level="project">
+            <entry library-name="com.android.support.support-v4-27.1.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
             <entry library-name="com.google.android.gms.play-services-base-16.0.1" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-location-16.0.0" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-name="com.google.android.gms.play-services-maps-16.1.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.google.android.gms.play-services-location-16.0.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.tuarua.frekotlin-1.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
-          <sdk name="AIRSDK_32" />
+          <sdk name="AIRSDK_33" />
         </dependencies>
         <compiler-options>
           <map>
             <entry key="compiler.locale" value="en_US" />
           </map>
+          <option name="additionalOptions" value="-swf-version=44" />
         </compiler-options>
         <packaging-air-desktop />
         <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="mobile_Android_Device">
@@ -108,6 +115,7 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
           </files-to-package>
+          <AirSigningOptions arch="armv8" />
         </packaging-android>
         <packaging-ios use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/GoogleMapsANESample-app.xml" package-file-name="mobile_Android_Device">
           <files-to-package>
@@ -130,29 +138,32 @@
             <entry library-name="GoogleMapsANE" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.android.support.support-v4-27.1.0" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-name="com.tuarua.frekotlin" library-level="project">
               <dependency linkage="Merged" />
             </entry>
             <entry library-name="org.greenrobot.eventbus-3.0.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="com.google.android.gms.play-services-base-15.0.1" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-name="com.google.android.gms.play-services-location-15.0.1" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-name="com.google.android.gms.play-services-maps-15.0.1" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
             <entry library-name="com.google.code.gson.gson-2.8.4" library-level="project">
               <dependency linkage="Merged" />
             </entry>
+            <entry library-name="com.android.support.support-v4-27.1.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-base-16.0.1" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-maps-16.1.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.google.android.gms.play-services-location-16.0.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="com.tuarua.frekotlin-1.8.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
           </entries>
-          <sdk name="AIRSDK_32" />
+          <sdk name="AIRSDK_33" />
         </dependencies>
         <compiler-options>
           <map>
@@ -187,13 +198,12 @@
       <sourceFolder url="file://$MODULE_DIR$/system" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assets" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="AIRSDK_32" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="AIRSDK_33" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="starling" level="project" />
     <orderEntry type="library" exported="" name="WebViewANE-ios" level="project" />
     <orderEntry type="library" exported="" name="FiraSansSemiBold" level="project" />
     <orderEntry type="library" exported="" name="SwiftIOSANE-ios" level="project" />
-    <orderEntry type="library" exported="" name="GoogleMapsANE" level="project" />
     <orderEntry type="library" exported="" name="GoogleMapsANE-ios" level="project" />
     <orderEntry type="library" exported="" name="frekotlin" level="project" />
     <orderEntry type="library" exported="" name="com.tuarua.frekotlin" level="project" />
@@ -213,5 +223,11 @@
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-base-16.0.1" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-location-16.0.0" level="project" />
     <orderEntry type="library" exported="" name="com.google.android.gms.play-services-maps-16.1.0" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-base-17.0.0" level="project" />
+    <orderEntry type="library" exported="" name="androidx.legacy.legacy-support-v4-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-maps-17.0.0" level="project" />
+    <orderEntry type="library" exported="" name="com.google.android.gms.play-services-location-17.0.0" level="project" />
+    <orderEntry type="library" exported="" name="GoogleMapsANE" level="project" />
+    <orderEntry type="library" exported="" name="com.tuarua.frekotlin-1.8.0" level="project" />
   </component>
 </module>

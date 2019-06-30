@@ -27,8 +27,8 @@ class PermissionActivity : Activity(), ActivityCompat.OnRequestPermissionsResult
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val extras = intent.extras
-        val permissions = extras.getStringArray("ptc")
+        val extras = intent.extras ?: return
+        val permissions = extras.getStringArray("ptc") ?: return
         ActivityCompat.requestPermissions(this, permissions, 19001)
     }
 

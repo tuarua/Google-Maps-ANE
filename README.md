@@ -22,7 +22,7 @@ Download the latest from the [Releases](https://github.com/tuarua/Google-Maps-AN
 ##### The ANE + Dependencies
  
 From the command line cd into /example and run:   
- - OSX
+ - macOS
 ```shell
 bash get_android_dependencies.sh
 ```
@@ -119,10 +119,10 @@ You will need a Google API key
 You will need:
 
 - IntelliJ IDEA / Flash Builder
-- AIR 32.0.0.103 or greater
+- AIR 33 or greater
 - Xcode 10.1
 - Android Studio 3 if you wish to edit the Android source
-- wget on OSX
+- wget on macOS
 - Powershell on Windows
 
 ### References
