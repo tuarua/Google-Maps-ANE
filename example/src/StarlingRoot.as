@@ -26,9 +26,7 @@ import flash.desktop.NativeApplication;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.events.Event;
-import flash.geom.Point;
 import flash.geom.Rectangle;
-import flash.utils.setTimeout;
 
 import starling.core.Starling;
 import starling.display.Sprite;

@@ -38,30 +38,6 @@
         <image180x180>AppIcon60x60@3x.png</image180x180>
     </icon>
 
-    <!-- iOS specific capabilities -->
-    <iPhone>
-        <!-- A list of plist key/value pairs to be added to the application Info.plist -->
-        <!-- UIDeviceFamily: 1 - iPhone/iPod Touch; 2 - iPad; both: universal app -->
-        <InfoAdditions><![CDATA[            
-            <key>UIDeviceFamily</key>
-            <array>
-                <string>1</string>
-                <string>2</string>
-            </array>
-            <key>MinimumOSVersion</key>
-            <string>9.0</string>
-            <key>NSLocationAlwaysUsageDescription</key>
-	        <string>We require your location</string>
-	        <key>NSLocationWhenInUseUsageDescription</key>
-	        <string>We require your location</string>
-	        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	        <string>We require your location</string>
-        ]]></InfoAdditions>
-
-        <!-- Display Resolution for the app ("standard" or "high"). Optional. Default "standard" -->
-        <requestedDisplayResolution>high</requestedDisplayResolution>
-    </iPhone>
-
     <!-- Android specific capabilities -->
     <android>
         <manifestAdditions>

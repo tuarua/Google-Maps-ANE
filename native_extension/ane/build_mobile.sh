@@ -80,8 +80,9 @@ cp -R -L "$pathtome/../../native_library/ios/$PROJECTNAME/Build/Products/Release
 
 echo "Copying Swift dylibs into place for device."
 #Device
-if [ -e "$pathtome/platforms/ios/device/Frameworks/$PROJECTNAME$fwSuffix.framework/Frameworks" ]; then
-for dylib in "$pathtome/platforms/ios/device/Frameworks/$PROJECTNAME$fwSuffix.framework/Frameworks/*"
+if [ -e "$pathtome/platforms/ios/device/Frameworks/$PROJECTNAME$fwSuffix.framework/Frameworks" ]
+then
+for dylib in "$pathtome"/platforms/ios/device/Frameworks/"$PROJECTNAME""$fwSuffix".framework/Frameworks/*
 do
 mv -f "$dylib" "$pathtome/../../example/ios_dependencies/device/Frameworks"
 done
@@ -90,8 +91,9 @@ fi
 
 echo "Copying Swift dylibs into place for simulator."
 #Simulator
-if [ -e "$pathtome/platforms/ios/simulator/Frameworks/$PROJECTNAME$fwSuffix.framework/Frameworks" ]; then
-for dylib in "$pathtome/platforms/ios/simulator/Frameworks/$PROJECTNAME$fwSuffix.framework/Frameworks/*"
+if [ -e "$pathtome/platforms/ios/simulator/Frameworks/$PROJECTNAME$fwSuffix.framework/Frameworks" ]
+then
+for dylib in "$pathtome"/platforms/ios/simulator/Frameworks/"$PROJECTNAME""$fwSuffix".framework/Frameworks/*
 do
 mv -f "$dylib" "$pathtome/../../example/ios_dependencies/simulator/Frameworks"
 done
@@ -130,6 +132,10 @@ echo "Building ANE."
 "$AIR_SDK"/bin/adt -package \
 -target ane "$pathtome/$PROJECTNAME.ane" "$pathtome/extension_mobile.xml" \
 -swc "$pathtome/$PROJECTNAME.swc" \
+-platform Android-x86 \
+-C "$pathtome/platforms/android" "library.swf" "classes.jar" \
+com.tuarua.$PROJECTNAME-res/. \
+-platformoptions "$pathtome/platforms/android/platform.xml" \
 -platform Android-ARM \
 -C "$pathtome/platforms/android" "library.swf" "classes.jar" \
 com.tuarua.$PROJECTNAME-res/. \

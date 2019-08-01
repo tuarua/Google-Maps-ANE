@@ -1,8 +1,6 @@
 ### 2.5.0
 - AND: Updated to FreKotlin 1.8.0
 - Updated to AIR 33 ARM 64bit
-- Remove Android-x86
-
 
 ### 2.4.0
 - Added `mapView.buildingsEnabled` setter replaces `Settings.buildingsEnabled`
