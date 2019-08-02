@@ -225,7 +225,7 @@ class MapController(override var context: FREContext?, private var airView: View
         airView.addView(frame)
 
         mMapFragment = MapFragment.newInstance()
-        val fragmentTransaction: FragmentTransaction = ctx.activity.fragmentManager.beginTransaction()
+        val fragmentTransaction = ctx.activity.fragmentManager.beginTransaction()
         fragmentTransaction.add(newId, mMapFragment)
         fragmentTransaction.commit()
         mMapFragment.getMapAsync(this)
