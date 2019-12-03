@@ -18,15 +18,15 @@ import Foundation
 import FreSwift
 
 public struct Settings {
-    public var scrollGestures = true
-    public var zoomGestures = true
-    public var tiltGestures = true
-    public var rotateGestures = true
-    public var consumesGesturesInView = true
-    public var compassButton = false
-    public var myLocationButtonEnabled = false
-    public var indoorPicker = true
-    public var allowScrollGesturesDuringRotateOrZoom = true
+    var scrollGestures = true
+    var zoomGestures = true
+    var tiltGestures = true
+    var rotateGestures = true
+    var consumesGesturesInView = true
+    var compassButton = false
+    var myLocationButtonEnabled = false
+    var indoorPicker = true
+    var allowScrollGesturesDuringRotateOrZoom = true
     
     init?(freObject: FREObject?) {
         guard let rv = freObject else { return nil }

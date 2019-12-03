@@ -26,32 +26,32 @@ public extension GMSGroundOverlay {
         let fre = FreObjectSwift(rv)
         self.init(bounds: fre.bounds,
                   icon: UIImage(freObject: fre.image, scale: UIScreen.main.scale, orientation: .up))
-        self.bearing = fre.bearing
-        self.opacity = 1.0 - fre.transparency
-        self.isTappable = fre.isTappable
-        self.zIndex = Int32(fre.zIndex as Int)
-        self.userData = UUID().uuidString
+        bearing = fre.bearing
+        opacity = 1.0 - fre.transparency
+        isTappable = fre.isTappable
+        zIndex = Int32(fre.zIndex as Int)
+        userData = UUID().uuidString
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "bounds":
-            self.bounds = GMSCoordinateBounds(value) ?? self.bounds
+            bounds = GMSCoordinateBounds(value) ?? bounds
         case "bearing":
-            self.bearing = CLLocationDirection(value) ?? self.bearing
+            bearing = CLLocationDirection(value) ?? bearing
         case "transparency":
             if let v = Float(value) {
-                self.opacity = 1.0 - v
+                opacity = 1.0 - v
             }
         case "isTappable":
-            self.isTappable = Bool(value) ?? self.isTappable
+            isTappable = Bool(value) ?? isTappable
         case "zIndex":
             if let z = Int(value) {
-                self.zIndex = Int32(z)
+                zIndex = Int32(z)
             }
         case "image":
             if let img = UIImage(freObject: value, scale: UIScreen.main.scale, orientation: .up) {
-                self.icon = img
+                icon = img
             }
         default:
             break

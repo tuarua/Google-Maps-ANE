@@ -36,9 +36,9 @@ extension CustomMKPolygon {
         }
         
         self.init(points: fre.points, holes: holes, identifier: UUID().uuidString)
-        self.fillColor = fre.fillColor
-        self.strokeColor = fre.strokeColor
-        self.strokeWidth = fre.strokeWidth
+        fillColor = fre.fillColor
+        strokeColor = fre.strokeColor
+        strokeWidth = fre.strokeWidth
     }
     
     convenience init?(_ freObject: FREObject?, polygon: CustomMKPolygon) {
@@ -47,19 +47,19 @@ extension CustomMKPolygon {
         }
         let fre = FreObjectSwift(rv)
         self.init(points: fre.points, holePolygons: polygon.interiorPolygons, identifier: polygon.identifier)
-        self.fillColor = polygon.fillColor
-        self.strokeColor = polygon.strokeColor
-        self.strokeWidth = polygon.strokeWidth
+        fillColor = polygon.fillColor
+        strokeColor = polygon.strokeColor
+        strokeWidth = polygon.strokeWidth
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "strokeWidth":
-            self.strokeWidth = CGFloat(value) ?? self.strokeWidth
+            strokeWidth = CGFloat(value) ?? strokeWidth
         case "strokeColor":
-            self.strokeColor = UIColor(value) ?? self.strokeColor
+            strokeColor = UIColor(value) ?? strokeColor
         case "fillColor":
-            self.fillColor = UIColor(value) ?? self.fillColor
+            fillColor = UIColor(value) ?? fillColor
         default:
             break
         }

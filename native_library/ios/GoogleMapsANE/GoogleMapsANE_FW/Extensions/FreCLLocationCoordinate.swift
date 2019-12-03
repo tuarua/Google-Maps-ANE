@@ -17,6 +17,7 @@
 import Foundation
 import GoogleMaps
 import FreSwift
+import SwiftyJSON
 
 public extension CLLocationCoordinate2D {
     init?(_ freObject: FREObject?) {
@@ -40,15 +41,15 @@ public extension CLLocationCoordinate2D {
 }
 
 public extension FreObjectSwift {
-    public subscript(dynamicMember name: String) -> CLLocationCoordinate2D? {
+    subscript(dynamicMember name: String) -> CLLocationCoordinate2D? {
         get { return CLLocationCoordinate2D(rawValue?[name]) }
         set { rawValue?[name] = newValue?.toFREObject() }
     }
-    public subscript(dynamicMember name: String) -> CLLocationCoordinate2D {
+    subscript(dynamicMember name: String) -> CLLocationCoordinate2D {
         get { return CLLocationCoordinate2D(rawValue?[name]) ?? CLLocationCoordinate2D() }
         set { rawValue?[name] = newValue.toFREObject() }
     }
-    public subscript(dynamicMember name: String) -> [CLLocationCoordinate2D] {
+    subscript(dynamicMember name: String) -> [CLLocationCoordinate2D] {
         return [CLLocationCoordinate2D](rawValue?[name]) ?? []
     }
 }

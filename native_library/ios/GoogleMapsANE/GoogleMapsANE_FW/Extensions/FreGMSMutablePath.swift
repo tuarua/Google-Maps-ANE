@@ -18,10 +18,10 @@ import GoogleMaps
 import FreSwift
 
 public extension FreObjectSwift {
-    public subscript(dynamicMember name: String) -> GMSMutablePath {
+    subscript(dynamicMember name: String) -> GMSMutablePath {
         return GMSMutablePath(rawValue?[name]) ?? GMSMutablePath()
     }
-    public subscript(dynamicMember name: String) -> [GMSMutablePath] {
+    subscript(dynamicMember name: String) -> [GMSMutablePath] {
         return [GMSMutablePath](rawValue?[name]) ?? []
     }
 }
@@ -32,7 +32,7 @@ public extension GMSMutablePath {
         self.init()
         for frePoint in FREArray(rv) {
             if let point = CLLocationCoordinate2D(frePoint) {
-                self.add(point)
+                add(point)
             }
         }
     }

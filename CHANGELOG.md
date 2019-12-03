@@ -1,3 +1,7 @@
+### 2.6.0
+- AND: Updated to FreKotlin 1.9.1
+- iOS: Updated to FreSwift 4.1.0
+
 ### 2.5.0
 - AND: Updated to FreKotlin 1.8.0
 - Updated to AIR 33 ARM 64bit
