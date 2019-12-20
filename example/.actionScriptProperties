@@ -40,12 +40,12 @@
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/GoogleMapsANE.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.android.support.support-v4-27.1.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-base-16.0.1.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-location-16.0.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-maps-16.1.0.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.code.gson.gson-2.8.4.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.tuarua.frekotlin-1.8.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/androidx.legacy.legacy-support-v4-1.0.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-base-17.0.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-location-17.0.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.android.gms.play-services-maps-17.0.0.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.google.code.gson.gson-2.8.6.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="android_dependencies/com.tuarua.frekotlin-1.9.1.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="android_dependencies/org.greenrobot.eventbus-3.0.0.ane"/>
     </libraryPath>
     <sourceAttachmentPath/>
@@ -65,12 +65,12 @@
         <airExcludes/>
         <anePaths>
           <anePathEntry path="${DOCUMENTS}/Google-Maps-ANE/native_extension/ane/GoogleMapsANE.ane"/>
-          <anePathEntry path="android_dependencies/com.android.support.support-v4-27.1.0.ane"/>
-          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-base-16.0.1.ane"/>
-          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-location-16.0.0.ane"/>
-          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-maps-16.1.0.ane"/>
-          <anePathEntry path="android_dependencies/com.google.code.gson.gson-2.8.4.ane"/>
-          <anePathEntry path="android_dependencies/com.tuarua.frekotlin-1.8.0.ane"/>
+          <anePathEntry path="android_dependencies/androidx.legacy.legacy-support-v4-1.0.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-base-17.0.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-location-17.0.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.android.gms.play-services-maps-17.0.0.ane"/>
+          <anePathEntry path="android_dependencies/com.google.code.gson.gson-2.8.6.ane"/>
+          <anePathEntry path="android_dependencies/com.tuarua.frekotlin-1.9.1.ane"/>
           <anePathEntry path="android_dependencies/org.greenrobot.eventbus-3.0.0.ane"/>
         </anePaths>
         <newLaunchParams/>

@@ -41,7 +41,7 @@ The dependencies can be downloaded directly from this repo:
     <extensionID>com.google.android.gms.play-services-base</extensionID>
     <extensionID>com.google.android.gms.play-services-location</extensionID>
     <extensionID>com.google.android.gms.play-services-maps</extensionID>
-    <extensionID>com.android.support.support-v4</extensionID>
+     <extensionID>androidx.legacy.legacy-support-v4</extensionID>
     <extensionID>com.google.code.gson.gson</extensionID>
     ...
 </extensions>
@@ -125,7 +125,7 @@ You will need:
 
 - IntelliJ IDEA / Flash Builder
 - AIR 33 or greater
-- Xcode 10.1
+- Xcode 11.2
 - Android Studio 3 if you wish to edit the Android source
 - wget on macOS
 - Powershell on Windows

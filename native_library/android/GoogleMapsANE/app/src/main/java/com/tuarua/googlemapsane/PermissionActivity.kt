@@ -19,7 +19,7 @@ package com.tuarua.googlemapsane
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import com.tuarua.googlemapsane.events.PermissionEvent
 import org.greenrobot.eventbus.EventBus
 

@@ -28,8 +28,8 @@ import android.content.res.Configuration
 import android.graphics.RectF
 import android.location.Address
 import android.location.Geocoder
-import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.adobe.air.AndroidActivityWrapper
 import com.adobe.air.FreKotlinActivityResultCallback
 import com.adobe.air.FreKotlinStateChangeCallback
