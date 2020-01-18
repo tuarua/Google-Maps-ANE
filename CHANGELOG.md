@@ -1,5 +1,5 @@
 ### 2.6.0
-- AND: Updated to FreKotlin 1.9.1
+- AND: Updated to FreKotlin 1.9.5
 - AND: Updated to Android Play Services to 17.0.0
 - AND: Updated to Jetpack
 - iOS: Updated to Google Maps SDK 3.7.0

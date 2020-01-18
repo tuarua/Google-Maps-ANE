@@ -1,5 +1,5 @@
 $AneVersion = "2.6.0"
-$FreKotlinVersion = "1.9.1"
+$FreKotlinVersion = "1.9.5"
 $PlayerServicesVersion = "17.0.0"
 $MapsVersion = "17.0.0"
 $LocationVersion = "17.0.0"
