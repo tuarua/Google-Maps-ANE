@@ -88,7 +88,7 @@ public class StarlingRoot extends Sprite {
         NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
         var _assets:AssetManager = assets;
 
-        GoogleMaps.key = "AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc";
+        GoogleMaps.key = "xxxx";
         GoogleMaps.mapProvider = MapProvider.GOOGLE;
         try {
             mapView = GoogleMaps.mapView;
