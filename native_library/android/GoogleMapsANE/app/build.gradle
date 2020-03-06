@@ -7,9 +7,9 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion compileSdkVersion
+        targetSdkVersion 28
         versionCode 1
-        versionName "2.3.0"
+        versionName "2.6.0"
     }
     buildTypes {
         release {
@@ -32,7 +32,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:$play_location_version"
     implementation "com.google.android.gms:play-services-maps:$play_maps_version"
     implementation "com.google.code.gson:gson:$gson_version"
-    implementation "com.android.support:support-v4:$support_4_version"
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support_4_version"
     implementation "com.tuarua:FreKotlin:$frekotlin_version"
 }
 repositories {

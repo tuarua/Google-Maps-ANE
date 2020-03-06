@@ -25,34 +25,34 @@ public extension GMSPolyline {
         }
         let fre = FreObjectSwift(rv)
         self.init()
-        self.geodesic = fre.geodesic
-        self.strokeWidth = fre.width
-        self.strokeColor = fre.color
-        self.zIndex = Int32(fre.zIndex as Int)
-        self.isTappable = fre.isTappable
-        self.userData = UUID().uuidString
+        geodesic = fre.geodesic
+        strokeWidth = fre.width
+        strokeColor = fre.color
+        zIndex = Int32(fre.zIndex as Int)
+        isTappable = fre.isTappable
+        userData = UUID().uuidString
         if let points = GMSMutablePath(rv["points"]) {
-            self.path = points
+            path = points
         }
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "geodesic":
-            self.geodesic = Bool(value) ?? self.geodesic
+            geodesic = Bool(value) ?? geodesic
         case "width":
-            self.strokeWidth = CGFloat(value) ?? self.strokeWidth
+            strokeWidth = CGFloat(value) ?? strokeWidth
         case "isTappable":
-            self.isTappable = Bool(value) ?? self.isTappable
+            isTappable = Bool(value) ?? isTappable
         case "zIndex":
             if let z = Int(value) {
-                self.zIndex = Int32(z)
+                zIndex = Int32(z)
             }
         case "color":
-            self.strokeColor = UIColor(value) ?? self.strokeColor
+            strokeColor = UIColor(value) ?? strokeColor
         case "points":
             if let points = GMSMutablePath(value) {
-                 self.path = points
+                 path = points
             }
         default:
             break

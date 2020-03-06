@@ -16,6 +16,7 @@
 
 import GoogleMaps
 import FreSwift
+import SwiftyJSON
 
 internal class LocationController: NSObject, FreSwiftController, CLLocationManagerDelegate {
     var context: FreContextSwift!
@@ -128,6 +129,8 @@ internal class LocationController: NSObject, FreSwiftController, CLLocationManag
         case .authorizedWhenInUse:
             props["status"] = Constants.PERMISSION_WHEN_IN_USE
             permissionsGranted = true
+        @unknown default:
+            props["status"] = Constants.PERMISSION_DENIED
         }
         
         if permissionsGranted {

@@ -26,32 +26,32 @@ public extension GMSCircle {
         let fre = FreObjectSwift(rv)
         
         self.init(position: fre.center, radius: fre.radius)
-        self.strokeWidth = fre.strokeWidth
-        self.strokeColor = fre.strokeColor
-        self.fillColor = fre.fillColor
-        self.zIndex = Int32(fre.zIndex as Int)
-        self.isTappable = fre.isTappable
-        self.userData = UUID().uuidString   
+        strokeWidth = fre.strokeWidth
+        strokeColor = fre.strokeColor
+        fillColor = fre.fillColor
+        zIndex = Int32(fre.zIndex as Int)
+        isTappable = fre.isTappable
+        userData = UUID().uuidString
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "center":
-            self.position = CLLocationCoordinate2D(value) ?? self.position
+            position = CLLocationCoordinate2D(value) ?? position
         case "strokeWidth":
-            self.strokeWidth = CGFloat(value) ?? self.strokeWidth
+            strokeWidth = CGFloat(value) ?? strokeWidth
         case "radius":
-            self.radius = Double(value) ?? self.radius
+            radius = Double(value) ?? radius
         case "isTappable":
-            self.isTappable = Bool(value) ?? self.isTappable
+            isTappable = Bool(value) ?? isTappable
         case "zIndex":
             if let z = Int(value) {
-                self.zIndex = Int32(z)
+                zIndex = Int32(z)
             }
         case "strokeColor":
-            self.strokeColor = UIColor(value) ?? self.strokeColor
+            strokeColor = UIColor(value) ?? strokeColor
         case "fillColor":
-            self.fillColor = UIColor(value) ?? self.fillColor
+            fillColor = UIColor(value) ?? fillColor
         default:
             break
         }

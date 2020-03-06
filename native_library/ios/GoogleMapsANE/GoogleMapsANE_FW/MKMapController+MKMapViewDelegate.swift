@@ -16,6 +16,7 @@
 
 import Foundation
 import MapKit
+import SwiftyJSON
 
 extension MKMapController: MKMapViewDelegate {
     internal func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -71,6 +72,8 @@ extension MKMapController: MKMapViewDelegate {
             dispatchEvent(name: Constants.DID_END_DRAGGING, value: JSON(props).description)
             view.setDragState(.none, animated: false)
         case .canceling:
+            break
+        @unknown default:
             break
         }
     }

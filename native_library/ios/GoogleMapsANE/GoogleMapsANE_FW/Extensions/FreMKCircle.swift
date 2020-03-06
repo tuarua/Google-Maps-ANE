@@ -27,19 +27,19 @@ extension CustomMKCircle {
         self.init(center: fre.center,
                   radius: fre.radius,
                   identifier: UUID().uuidString)
-        self.fillColor = fre.fillColor
-        self.strokeColor = fre.strokeColor
-        self.strokeWidth = fre.strokeWidth
+        fillColor = fre.fillColor
+        strokeColor = fre.strokeColor
+        strokeWidth = fre.strokeWidth
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "strokeWidth":
-            self.strokeWidth = CGFloat(value) ?? self.strokeWidth
+            strokeWidth = CGFloat(value) ?? strokeWidth
         case "strokeColor":
-            self.strokeColor = UIColor(value) ?? self.strokeColor
+            strokeColor = UIColor(value) ?? strokeColor
         case "fillColor":
-            self.fillColor = UIColor(value) ?? self.fillColor
+            fillColor = UIColor(value) ?? fillColor
         default:
             break
         }

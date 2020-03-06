@@ -32,33 +32,30 @@ import flash.events.EventDispatcher;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
-public class GoogleMapsANE extends EventDispatcher {
+public class GoogleMaps extends EventDispatcher {
     private var _viewPort:Rectangle;
     private var _visible:Boolean;
-    private var _isInited:Boolean;
-    private var _isMapInited:Boolean;
 
-    private static var _mapView:GoogleMapsANE;
+    private static var _mapView:GoogleMaps;
     private static var _key:String;
     private static var _mapProvider:int = MapProvider.GOOGLE;
     private var _projection:Projection = new Projection();
 
-    public function GoogleMapsANE() {
+    public function GoogleMaps() {
         if (_mapView) {
-            throw new Error(GoogleMapsANEContext.NAME + "GoogleMapsANE is a singleton, use .mapView");
+            throw new Error(GoogleMapsANEContext.NAME + " is a singleton, use .mapView");
         }
 
         if (GoogleMapsANEContext.context) {
             var ret:* = GoogleMapsANEContext.context.call("init", _key, _mapProvider);
             if (ret is ANEError) throw ret as ANEError;
-            _isInited = ret;
         }
         _mapView = this;
     }
 
-    public static function get mapView():GoogleMapsANE {
+    public static function get mapView():GoogleMaps {
         if (_mapView == null) {
-            new GoogleMapsANE();
+            new GoogleMaps();
         }
         return _mapView;
     }
@@ -86,14 +83,9 @@ public class GoogleMapsANE extends EventDispatcher {
      * @param useWeakReference
      *
      */
-    override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0,
-                                              useWeakReference:Boolean = false):void {
+    override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void {
         super.addEventListener(type, listener, useCapture, priority, useWeakReference);
-        if (_isInited) {
-            GoogleMapsANEContext.context.call("addEventListener", type);
-        } else {
-            trace("You need to init before adding EventListeners");
-        }
+        GoogleMapsANEContext.context.call("addEventListener", type);
     }
 
     /**
@@ -105,11 +97,7 @@ public class GoogleMapsANE extends EventDispatcher {
      */
     override public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void {
         super.removeEventListener(type, listener, useCapture);
-        if (_isInited) {
-            GoogleMapsANEContext.context.call("removeEventListener", type);
-        } else {
-            trace("You need to init before removing EventListeners");
-        }
+        GoogleMapsANEContext.context.call("removeEventListener", type);
     }
 
     /**
@@ -121,16 +109,10 @@ public class GoogleMapsANE extends EventDispatcher {
      * @param scaleFactor
      *
      */
-    public function initMap(viewPort:Rectangle, centerAt:Coordinate, zoomLevel:Number, settings:Settings,
-                            scaleFactor:Number = 1.0):void {
-        if (_isInited) {
-            _viewPort = viewPort;
-            var ret:* = GoogleMapsANEContext.context.call("initMap", _viewPort, centerAt, zoomLevel, settings, scaleFactor);
-            if (ret is ANEError) throw ret as ANEError;
-            _isMapInited = true;
-        } else {
-            trace("initMap wasn't successful");
-        }
+    public function initMap(viewPort:Rectangle, centerAt:Coordinate, zoomLevel:Number, settings:Settings, scaleFactor:Number = 1.0):void {
+        _viewPort = viewPort;
+        var ret:* = GoogleMapsANEContext.context.call("initMap", _viewPort, centerAt, zoomLevel, settings, scaleFactor);
+        if (ret is ANEError) throw ret as ANEError;
     }
 
     /**
@@ -139,7 +121,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addCircle(circle:Circle):void {
-        if (!safetyCheck()) return;
         var ret:* = GoogleMapsANEContext.context.call("addCircle", circle);
         if (ret is ANEError) throw ret as ANEError;
         var id:String = ret as String;
@@ -149,7 +130,6 @@ public class GoogleMapsANE extends EventDispatcher {
     }
 
     public function addGroundOverlay(groundOverlay:GroundOverlay):void {
-        if (!safetyCheck()) return;
         var ret:* = GoogleMapsANEContext.context.call("addGroundOverlay", groundOverlay);
         if (ret is ANEError) throw ret as ANEError;
         var id:String = ret as String;
@@ -164,7 +144,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addPolyline(polyline:Polyline):void {
-        if (!safetyCheck()) return;
         var ret:* = GoogleMapsANEContext.context.call("addPolyline", polyline);
         if (ret is ANEError) throw ret as ANEError;
         var id:String = ret as String;
@@ -179,7 +158,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addPolygon(polygon:Polygon):void {
-        if (!safetyCheck()) return;
         var ret:* = GoogleMapsANEContext.context.call("addPolygon", polygon);
         if (ret is ANEError) throw ret as ANEError;
         var id:String = ret as String;
@@ -195,7 +173,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function addMarker(marker:Marker):void {
-        if (!safetyCheck()) return;
         var ret:* = GoogleMapsANEContext.context.call("addMarker", marker);
         if (ret is ANEError) throw ret as ANEError;
         var id:String = ret as String;
@@ -208,9 +185,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function clear():void {
-        if (safetyCheck()) {
-            GoogleMapsANEContext.context.call("clear");
-        }
+        GoogleMapsANEContext.context.call("clear");
     }
 
     /**
@@ -221,7 +196,6 @@ public class GoogleMapsANE extends EventDispatcher {
     public function set visible(value:Boolean):void {
         if (_visible == value) return;
         _visible = value;
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("setVisible", value);
     }
 
@@ -231,7 +205,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function setBounds(bounds:CoordinateBounds, animates:Boolean = false):void {
-        if (!safetyCheck()) return;
         var ret:* = GoogleMapsANEContext.context.call("setBounds", bounds, animates);
         if (ret is ANEError) throw ret as ANEError;
     }
@@ -243,7 +216,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function moveCamera(position:CameraPosition, animates:Boolean = false):void {
-        if (!safetyCheck()) return;
         var centerAt:Coordinate = position.centerAt ? position.centerAt : null;
         var zoom:* = position.zoom != -9999 ? position.zoom : null;
         var tilt:* = position.tilt != -9999 ? position.tilt : null;
@@ -258,7 +230,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function zoomIn(animates:Boolean = false):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("zoomIn", animates);
     }
 
@@ -268,7 +239,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function zoomOut(animates:Boolean = false):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("zoomOut", animates);
     }
 
@@ -279,7 +249,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function zoomTo(zoomLevel:Number, animates:Boolean = false):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("zoomTo", zoomLevel, animates);
     }
 
@@ -292,7 +261,6 @@ public class GoogleMapsANE extends EventDispatcher {
      * <p>Android Only.</p>
      */
     public function scrollBy(x:Number, y:Number, animates:Boolean = false):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("scrollBy", x, y, animates);
     }
 
@@ -302,7 +270,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function set mapType(value:uint):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("setMapType", value);
     }
 
@@ -311,7 +278,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function showUserLocation():void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("showUserLocation");
     }
 
@@ -327,7 +293,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function capture(x:int = 0, y:int = 0, width:int = 0, height:int = 0):void {
-        if (!safetyCheck()) return;
         var ret:* = GoogleMapsANEContext.context.call("capture", x, y, width, height) as BitmapData;
         if (ret is ANEError) throw ret as ANEError;
     }
@@ -336,7 +301,6 @@ public class GoogleMapsANE extends EventDispatcher {
      * <p>Returns the last bitmap capture of the mapView</p>
      */
     public function getCapture():BitmapData {
-        if (!safetyCheck()) return null;
         var ret:* = GoogleMapsANEContext.context.call("getCapture") as BitmapData;
         if (ret is ANEError) throw ret as ANEError;
         return ret;
@@ -347,7 +311,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function requestPermissions():void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("requestPermissions");
     }
 
@@ -378,7 +341,6 @@ public class GoogleMapsANE extends EventDispatcher {
      */
     public function set viewPort(value:Rectangle):void {
         _viewPort = value;
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("setViewPort", _viewPort);
     }
 
@@ -388,7 +350,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function showInfoWindow(id:String):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("showInfoWindow", id);
     }
 
@@ -398,7 +359,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function hideInfoWindow(id:String):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("hideInfoWindow", id);
     }
 
@@ -409,7 +369,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function set style(json:String):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("setStyle", json);
     }
 
@@ -419,7 +378,6 @@ public class GoogleMapsANE extends EventDispatcher {
      * Ignored on Apple Maps
      */
     public function set buildingsEnabled(value:Boolean):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("setBuildingsEnabled", value);
     }
 
@@ -428,8 +386,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      * Ignored on Apple Maps
      */
-    public function set trafficEnabled(value:Boolean):void  {
-        if (!safetyCheck()) return;
+    public function set trafficEnabled(value:Boolean):void {
         GoogleMapsANEContext.context.call("setTrafficEnabled", value);
     }
 
@@ -438,8 +395,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      * Ignored on Apple Maps
      */
-    public function set minZoom(value:Number):void  {
-        if (!safetyCheck()) return;
+    public function set minZoom(value:Number):void {
         GoogleMapsANEContext.context.call("setMinZoom", value);
     }
 
@@ -448,8 +404,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      * Ignored on Apple Maps
      */
-    public function set maxZoom(value:Number):void  {
-        if (!safetyCheck()) return;
+    public function set maxZoom(value:Number):void {
         GoogleMapsANEContext.context.call("setMaxZoom", value);
     }
 
@@ -458,16 +413,14 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      * Ignored on Apple Maps
      */
-    public function set indoorEnabled(value:Boolean):void  {
-        if (!safetyCheck()) return;
+    public function set indoorEnabled(value:Boolean):void {
         GoogleMapsANEContext.context.call("setIndoorEnabled", value);
     }
 
     /**
      * Enables or disables the my-location layer.
      */
-    public function set myLocationEnabled(value:Boolean):void  {
-        if (!safetyCheck()) return;
+    public function set myLocationEnabled(value:Boolean):void {
         GoogleMapsANEContext.context.call("setMyLocationEnabled", value);
     }
 
@@ -477,7 +430,6 @@ public class GoogleMapsANE extends EventDispatcher {
      * returns null on Apple Maps
      */
     public function get projection():Projection {
-        if (!safetyCheck()) return null;
         return _projection;
     }
 
@@ -487,7 +439,6 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function set animationDuration(value:int):void {
-        if (!safetyCheck()) return;
         GoogleMapsANEContext.context.call("setAnimationDuration", value);
     }
 
@@ -497,9 +448,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function reverseGeocodeLocation(coordinate:Coordinate):void {
-        if (_isInited && !GoogleMapsANEContext.isDisposed) {
-            GoogleMapsANEContext.context.call("reverseGeocodeLocation", coordinate);
-        }
+        GoogleMapsANEContext.context.call("reverseGeocodeLocation", coordinate);
     }
 
     /**
@@ -508,38 +457,7 @@ public class GoogleMapsANE extends EventDispatcher {
      *
      */
     public function forwardGeocodeLocation(addressString:String):void {
-        if (_isInited && !GoogleMapsANEContext.isDisposed) {
-            GoogleMapsANEContext.context.call("forwardGeocodeLocation", addressString);
-        }
-    }
-
-    /**
-     *
-     * @return whether we have inited the Google Maps API
-     *
-     */
-    public function get isInited():Boolean {
-        return _isInited;
-    }
-
-    /**
-     *
-     * @return whether we have inited the mapView
-     *
-     */
-    public function get isMapInited():Boolean {
-        return _isMapInited;
-    }
-
-    /**
-     * This method is omitted from the output. * * @private
-     */
-    private function safetyCheck():Boolean {
-        if (!_isInited && _isMapInited || GoogleMapsANEContext.isDisposed) {
-            trace("You need to init first");
-            return false;
-        }
-        return true;
+        GoogleMapsANEContext.context.call("forwardGeocodeLocation", addressString);
     }
 
     //noinspection JSMethodCanBeStatic

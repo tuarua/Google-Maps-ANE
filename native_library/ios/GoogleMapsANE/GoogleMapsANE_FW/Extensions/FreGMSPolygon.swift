@@ -25,37 +25,36 @@ public extension GMSPolygon {
         }
         let fre = FreObjectSwift(rv)
         self.init()
-        self.geodesic = fre.geodesic
-        self.strokeWidth = fre.strokeWidth
-        self.strokeColor = fre.strokeColor
-        self.fillColor = fre.fillColor
-        self.zIndex = Int32(fre.zIndex as Int)
-        self.userData = UUID().uuidString
-        self.isTappable = fre.isTappable
-        self.path = GMSMutablePath(rv["points"]) ?? GMSMutablePath()
-        self.holes = fre.holes
-        
+        geodesic = fre.geodesic
+        strokeWidth = fre.strokeWidth
+        strokeColor = fre.strokeColor
+        fillColor = fre.fillColor
+        zIndex = Int32(fre.zIndex as Int)
+        userData = UUID().uuidString
+        isTappable = fre.isTappable
+        path = GMSMutablePath(rv["points"]) ?? GMSMutablePath()
+        holes = fre.holes
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "geodesic":
-            self.geodesic = Bool(value) ?? self.geodesic
+            geodesic = Bool(value) ?? geodesic
         case "strokeWidth":
-            self.strokeWidth = CGFloat(value) ?? self.strokeWidth
+            strokeWidth = CGFloat(value) ?? strokeWidth
         case "isTappable":
-            self.isTappable = Bool(value) ?? self.isTappable
+            isTappable = Bool(value) ?? isTappable
         case "zIndex":
             if let z = Int(value) {
                 self.zIndex = Int32(z)
             }
         case "strokeColor":
-            self.strokeColor = UIColor(value) ?? self.strokeColor
+            strokeColor = UIColor(value) ?? strokeColor
         case "fillColor":
-            self.fillColor = UIColor(value) ?? self.fillColor
+            fillColor = UIColor(value) ?? fillColor
         case "points":
             if let points = GMSMutablePath(value) {
-                self.path = points
+                path = points
             }
         case "holes":
             if let holes = [GMSMutablePath](value) {

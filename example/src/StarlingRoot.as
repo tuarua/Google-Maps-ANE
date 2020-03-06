@@ -1,5 +1,5 @@
 package {
-import com.tuarua.GoogleMapsANE;
+import com.tuarua.GoogleMaps;
 import com.tuarua.fre.ANEError;
 import com.tuarua.googlemaps.CameraPosition;
 import com.tuarua.googlemaps.Circle;
@@ -39,7 +39,7 @@ import starling.utils.AssetManager;
 import views.SimpleButton;
 
 public class StarlingRoot extends Sprite {
-    private var mapView:GoogleMapsANE;
+    private var mapView:GoogleMaps;
     [Embed(source="pin_b.png")]
     public static const pinImage:Class;
 
@@ -88,11 +88,12 @@ public class StarlingRoot extends Sprite {
         NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
         var _assets:AssetManager = assets;
 
-        GoogleMapsANE.key = "AIzaSyCkmGADGPLtu9WOiRzK_3r9XXw8-3DHvEc";
-        GoogleMapsANE.mapProvider = MapProvider.GOOGLE;
-        mapView = GoogleMapsANE.mapView;
-
-        if (!mapView.isInited) {
+        GoogleMaps.key = "xxxx";
+        GoogleMaps.mapProvider = MapProvider.GOOGLE;
+        try {
+            mapView = GoogleMaps.mapView;
+        } catch(e:ANEError) {
+            trace(e.message);
             return;
         }
 
@@ -520,7 +521,7 @@ public class StarlingRoot extends Sprite {
      * It's very important to call dispose(); on any ANEs when the app is exiting.
      */
     private function onExiting(event:Event):void {
-        GoogleMapsANE.dispose();
+        GoogleMaps.dispose();
     }
 }
 }

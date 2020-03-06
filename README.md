@@ -41,7 +41,7 @@ The dependencies can be downloaded directly from this repo:
     <extensionID>com.google.android.gms.play-services-base</extensionID>
     <extensionID>com.google.android.gms.play-services-location</extensionID>
     <extensionID>com.google.android.gms.play-services-maps</extensionID>
-    <extensionID>com.android.support.support-v4</extensionID>
+     <extensionID>androidx.legacy.legacy-support-v4</extensionID>
     <extensionID>com.google.code.gson.gson</extensionID>
     ...
 </extensions>
@@ -75,9 +75,6 @@ You will also need to include the following in your app manifest. Update accordi
     </application>
 </manifest>
 ```
-
-#### AIR 32 & 33
-This ANE is built against AIR 33 SDK. If you wish to use with AIR 32 you will need to replace dx.jar in lib/android/bin/ with [this one](https://github.com/tuarua/Android-ANE-Dependencies/blob/master/AIR32_patch/lib/android/bin/dx.jar?raw=true)
 
 -------------
 
@@ -116,18 +113,15 @@ You will also need to include the following in your app manifest. Update accordi
 You will need a Google API key   
 [https://developers.google.com/maps/documentation/ios-sdk/get-api-key]
 
-#### AIR 32 & 33
-You should use AIR 32 for iOS builds
-
 ### Prerequisites
 
 You will need:
 
-- IntelliJ IDEA / Flash Builder
-- AIR 33 or greater
-- Xcode 10.1
+- IntelliJ IDEA
+- AIR 33.0.2.338+
+- Xcode 11.3
+- wget on macOS via `brew install wget`
 - Android Studio 3 if you wish to edit the Android source
-- wget on macOS
 - Powershell on Windows
 
 ### References

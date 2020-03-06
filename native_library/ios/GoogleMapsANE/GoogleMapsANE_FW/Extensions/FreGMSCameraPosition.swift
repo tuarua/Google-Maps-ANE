@@ -16,6 +16,7 @@
 
 import Foundation
 import GoogleMaps
+import SwiftyJSON
 
 public extension GMSCameraPosition {
     func toJSON() -> String {

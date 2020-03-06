@@ -35,11 +35,11 @@ public extension GMSCoordinateBounds {
 }
 
 public extension FreObjectSwift {
-    public subscript(dynamicMember name: String) -> GMSCoordinateBounds? {
+    subscript(dynamicMember name: String) -> GMSCoordinateBounds? {
         get { return GMSCoordinateBounds(rawValue?[name]) }
         set { rawValue?[name] = newValue?.toFREObject() }
     }
-    public subscript(dynamicMember name: String) -> GMSCoordinateBounds {
+    subscript(dynamicMember name: String) -> GMSCoordinateBounds {
         get { return GMSCoordinateBounds(rawValue?[name]) ?? GMSCoordinateBounds() }
         set { rawValue?[name] = newValue.toFREObject() }
     }

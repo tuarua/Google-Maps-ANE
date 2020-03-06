@@ -24,8 +24,8 @@ import android.location.Location
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat.checkSelfPermission
 import com.adobe.fre.FREContext
-import android.support.v4.content.ContextCompat.checkSelfPermission
 import com.adobe.fre.FREObject
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.location.FusedLocationProviderClient

@@ -24,8 +24,8 @@ extension CustomMKPolyline {
         }
         let fre = FreObjectSwift(rv)
         self.init(points: fre.points, identifier: UUID().uuidString)
-        self.color = fre.color
-        self.width = fre.width
+        color = fre.color
+        width = fre.width
     }
     
     convenience init?(_ freObject: FREObject?, polyline: CustomMKPolyline) {
@@ -34,16 +34,16 @@ extension CustomMKPolyline {
         }
         let fre = FreObjectSwift(rv)
         self.init(points: fre.points, identifier: polyline.identifier)
-        self.color = polyline.color
-        self.width = polyline.width
+        color = polyline.color
+        width = polyline.width
     }
     
     func setProp(name: String, value: FREObject) {
         switch name {
         case "width":
-            self.width = CGFloat(value) ?? self.width
+            width = CGFloat(value) ?? width
         case "color":
-            self.color = UIColor(value) ?? self.color
+            color = UIColor(value) ?? color
         default:
             break
         }

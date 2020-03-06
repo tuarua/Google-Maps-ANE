@@ -30,7 +30,6 @@ public class GoogleMapsANEContext {
     internal static const NAME:String = "GoogleMapsANE";
     internal static const TRACE:String = "TRACE";
     private static var _context:ExtensionContext;
-    private static var _isDisposed:Boolean;
     private static var argsAsJSON:Object;
     public static var markers:Dictionary = new Dictionary();
     public static var circles:Dictionary = new Dictionary();
@@ -45,13 +44,9 @@ public class GoogleMapsANEContext {
         if (_context == null) {
             try {
                 _context = ExtensionContext.createExtensionContext("com.tuarua." + NAME, null);
-                if (_context == null) {
-                    throw new Error("ANE " + NAME + " not created properly.  Future calls will fail.");
-                }
                 _context.addEventListener(StatusEvent.STATUS, gotEvent);
-                _isDisposed = false;
             } catch (e:Error) {
-                trace("[" + NAME + "] ANE not loaded properly.  Future calls will fail.");
+                throw new Error("ANE " + NAME + " not created properly.  Future calls will fail.");
             }
         }
         return _context;
@@ -67,7 +62,7 @@ public class GoogleMapsANEContext {
                 try {
                     argsAsJSON = JSON.parse(event.code);
                     var coordinate:Coordinate = new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude);
-                    GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, coordinate));
+                    GoogleMaps.mapView.dispatchEvent(new GoogleMapsEvent(event.level, coordinate));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -85,7 +80,7 @@ public class GoogleMapsANEContext {
             case GoogleMapsEvent.ON_LOADED:
             case GoogleMapsEvent.ON_CAMERA_IDLE:
             case GoogleMapsEvent.ON_BITMAP_READY:
-                GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, event.code));
+                GoogleMaps.mapView.dispatchEvent(new GoogleMapsEvent(event.level, event.code));
                 break;
             case GoogleMapsEvent.DID_END_DRAGGING:
                 try {
@@ -96,7 +91,7 @@ public class GoogleMapsANEContext {
                     var marker:Marker = markers[id] as Marker;
                     marker.coordinate.latitude = latitude;
                     marker.coordinate.longitude = longitude;
-                    GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
+                    GoogleMaps.mapView.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -105,7 +100,7 @@ public class GoogleMapsANEContext {
             case GoogleMapsEvent.ON_CAMERA_MOVE_STARTED:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    GoogleMapsANE.mapView.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
+                    GoogleMaps.mapView.dispatchEvent(new GoogleMapsEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -113,7 +108,7 @@ public class GoogleMapsANEContext {
             case LocationEvent.LOCATION_UPDATED:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level,
+                    GoogleMaps.mapView.dispatchEvent(new LocationEvent(event.level,
                             new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude)));
                 } catch (e:Error) {
                     trace(e.message);
@@ -122,7 +117,7 @@ public class GoogleMapsANEContext {
             case LocationEvent.ON_ADDRESS_LOOKUP:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level,
+                    GoogleMaps.mapView.dispatchEvent(new LocationEvent(event.level,
                             new Coordinate(argsAsJSON.latitude, argsAsJSON.longitude),
                             new Address(
                                     argsAsJSON.formattedAddress,
@@ -137,12 +132,12 @@ public class GoogleMapsANEContext {
                 }
                 break;
             case LocationEvent.ON_ADDRESS_LOOKUP_ERROR:
-                GoogleMapsANE.mapView.dispatchEvent(new LocationEvent(event.level, null, null, event.code));
+                GoogleMaps.mapView.dispatchEvent(new LocationEvent(event.level, null, null, event.code));
                 break;
             case PermissionEvent.ON_PERMISSION_STATUS:
                 try {
                     argsAsJSON = JSON.parse(event.code);
-                    GoogleMapsANE.mapView.dispatchEvent(new PermissionEvent(event.level, argsAsJSON));
+                    GoogleMaps.mapView.dispatchEvent(new PermissionEvent(event.level, argsAsJSON));
                 } catch (e:Error) {
                     trace(e.message);
                 }
@@ -151,18 +146,11 @@ public class GoogleMapsANEContext {
     }
 
     public static function dispose():void {
-        if (!_context) {
-            return;
-        }
-        _isDisposed = true;
+        if (!_context) return;
         trace("[" + NAME + "] Unloading ANE...");
         _context.removeEventListener(StatusEvent.STATUS, gotEvent);
         _context.dispose();
         _context = null;
-    }
-
-    public static function get isDisposed():Boolean {
-        return _isDisposed;
     }
 }
 }
