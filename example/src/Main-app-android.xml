@@ -4,7 +4,7 @@
     <id>com.tuarua.googlemapsaneexample</id> <!-- Bundle Identifier. Required. -->
     <filename>GoogleMapsANE</filename> <!-- Used as the filename for the application. Required. -->
     <name>GoogleMapsANE</name> <!-- The name that is displayed below the app icon. -->
-    <versionNumber>2.6.0</versionNumber> <!-- Required. -->
+    <versionNumber>2.7.0</versionNumber> <!-- Required. -->
 
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>
