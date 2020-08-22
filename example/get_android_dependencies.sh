@@ -1,8 +1,8 @@
 #!/bin/sh
 
-AneVersion="2.7.0"
-FreKotlinVersion="1.10.0"
-PlayerServicesVersion="17.0.0"
+AneVersion="2.8.0"
+FreKotlinVersion="1.40.0"
+PlayerServicesVersion="17.1.0"
 MapsVersion="17.0.0"
 LocationVersion="17.0.0"
 SupportV4Version="1.0.0"
