@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/32.0">
+<application xmlns="http://ns.adobe.com/air/application/33.1">
 
     <id>com.tuarua.googlemapsaneexample</id> <!-- Bundle Identifier. Required. -->
     <filename>GoogleMapsANE</filename> <!-- Used as the filename for the application. Required. -->
     <name>GoogleMapsANE</name> <!-- The name that is displayed below the app icon. -->
-    <versionNumber>2.7.0</versionNumber> <!-- Required. -->
+    <versionNumber>2.8.0</versionNumber> <!-- Required. -->
 
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>
