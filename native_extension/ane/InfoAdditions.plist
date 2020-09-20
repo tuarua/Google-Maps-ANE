@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We require your location</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We require your location</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>We require your location</string>
+    <key>MinimumOSVersion</key>
+    <string>9.0</string>
+</dict>
+</plist>
