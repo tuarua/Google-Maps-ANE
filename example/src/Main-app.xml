@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/33.1">
+  <id>com.tuarua.googlemapsaneexample</id>
+  <!-- Bundle Identifier. Required. -->
+  <filename>GoogleMapsANE</filename>
+  <!-- Used as the filename for the application. Required. -->
+  <name>GoogleMapsANE</name>
+  <!-- The name that is displayed below the app icon. -->
+  <versionNumber>2.8.0</versionNumber>
+  <!-- Required. -->
+  <!-- Settings for the application's initial window. Required. -->
+  <initialWindow>
+    <!-- The main SWF or HTML file of the application. Required. -->
+    <content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
+    <!-- The aspect ratio ("portrait", "landscape", or "any"). Optional. -->
+    <aspectRatio>any</aspectRatio>
+    <!-- Whether the app will begin auto-orienting on launch. Optional. Default false -->
+    <autoOrients>true</autoOrients>
+    <!-- Whether the app launches in full screen. Optional. Mobile only. Default false -->
+    <!-- (On iOS, this decides if the StatusBar is visible or not.) -->
+    <fullScreen>true</fullScreen>
+    <!-- Either auto, cpu, gpu, or direct. Default auto -->
+    <renderMode>direct</renderMode>
+    <!-- Whether direct mode allocates storage for depth and stencil buffers. Default false -->
+    <depthAndStencil>true</depthAndStencil>
+    <!-- Whether or not to pan when a soft keyboard is raised or lowered (either "pan" or "none").  Optional.  Defaults "pan." -->
+    <!-- <softKeyboardBehavior></softKeyboardBehavior> -->
+  </initialWindow>
+  <icon>
+    <image76x76>AppIcon76x76~ipad.png</image76x76>
+    <image120x120>AppIcon60x60@2x.png</image120x120>
+    <image152x152>AppIcon76x76@2x~ipad.png</image152x152>
+    <image167x167>AppIcon83.5x83.5@2x~ipad.png</image167x167>
+    <image180x180>AppIcon60x60@3x.png</image180x180>
+  </icon>
+  <extensions>
+    <extensionID>com.tuarua.GoogleMapsANE</extensionID>
+    <extensionID>com.tuarua.frekotlin</extensionID>
+    <extensionID>com.google.code.gson.gson</extensionID>
+    <extensionID>org.greenrobot.eventbus</extensionID>
+    <extensionID>androidx.legacy.legacy-support-v4</extensionID>
+    <extensionID>com.google.android.gms.play-services-location</extensionID>
+    <extensionID>com.google.android.gms.play-services-base</extensionID>
+    <extensionID>com.google.android.gms.play-services-maps</extensionID>
+  </extensions>
+  <android>
+    <manifestAdditions><![CDATA[<manifest android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<!-- Required by older versions of Google Play services to create IID tokens -->
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	<!-- Include required permissions for Google Maps API to run. -->
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
+	<application android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:enabled="true">
+		<meta-data android:name="android.max_aspect" android:value="2.1" />
+		<activity android:excludeFromRecents="false" android:hardwareAccelerated="true">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="XXX-xx-xx" />
+		<activity android:name="com.tuarua.googlemapsane.PermissionActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+		<activity android:name="com.google.android.gms.common.api.GoogleApiActivity" android:exported="false" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+		<!-- Needs to be explicitly declared on P+ -->
+		<uses-library android:name="org.apache.http.legacy" android:required="false" />
+	</application>
+</manifest>]]></manifestAdditions>
+  </android>
+  <iPhone>
+    <requestedDisplayResolution>high</requestedDisplayResolution>
+    <InfoAdditions><![CDATA[
+	<key>MinimumOSVersion</key>
+	<string>9.0</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We require your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We require your location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We require your location</string>
+	<key>UIDeviceFamily</key>
+	<array>
+		<string>1</string>
+		<string>2</string>
+	</array>
+]]></InfoAdditions>
+  </iPhone>
+</application>

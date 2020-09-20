@@ -11,7 +11,7 @@
             <entry library-name="FiraSansSemiBold" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="GoogleMapsANE" library-level="project">
+            <entry library-name="extensions" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -29,7 +29,7 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
           </files-to-package>
         </packaging-android>
-        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Main-app-ios.xml" package-file-name="GoogleMapsANESample">
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Main-app.xml" package-file-name="GoogleMapsANESample">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
@@ -49,10 +49,7 @@
             <entry library-name="FiraSansSemiBold" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="GoogleMapsANE" library-level="project">
-              <dependency linkage="Merged" />
-            </entry>
-            <entry library-name="android_dependencies" library-level="project">
+            <entry library-name="extensions" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -64,7 +61,7 @@
           </map>
         </compiler-options>
         <packaging-air-desktop />
-        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Main-app-android.xml" package-file-name="mobile_Android_Device">
+        <packaging-android enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Main-app.xml" package-file-name="mobile_Android_Device">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
@@ -89,7 +86,7 @@
             <entry library-name="FiraSansSemiBold" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-name="GoogleMapsANE" library-level="project">
+            <entry library-name="extensions" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -107,7 +104,7 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
           </files-to-package>
         </packaging-android>
-        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Main-app-ios.xml" package-file-name="iOS_Simulator">
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Main-app.xml" package-file-name="iOS_Simulator">
           <files-to-package>
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/system" path-in-package="." />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/assets" path-in-package="." />
@@ -163,5 +160,6 @@
     <orderEntry type="library" exported="" name="com.google.code.gson.gson-2.8.6" level="project" />
     <orderEntry type="library" exported="" name="com.tuarua.frekotlin-1.9.5" level="project" />
     <orderEntry type="library" exported="" name="android_dependencies" level="project" />
+    <orderEntry type="library" exported="" name="extensions" level="project" />
   </component>
 </module>
