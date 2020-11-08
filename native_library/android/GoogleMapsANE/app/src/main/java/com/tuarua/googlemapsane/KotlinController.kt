@@ -94,7 +94,7 @@ class KotlinController : FreKotlinMainController, FreKotlinStateChangeCallback, 
                 addresses = geocoder.getFromLocation(coordinate.latitude, coordinate.longitude, 1)
                 sendGeocodeEvent(addresses)
             } catch (e: IOException) {
-                dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+                dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage ?: "")
             }
         }
         return null
@@ -111,7 +111,7 @@ class KotlinController : FreKotlinMainController, FreKotlinStateChangeCallback, 
                 addresses = geocoder.getFromLocationName(addressSearch, 1)
                 sendGeocodeEvent(addresses)
             } catch (e: IOException) {
-                dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage)
+                dispatchEvent(Constants.ON_ADDRESS_LOOKUP_ERROR, e.localizedMessage ?: "")
             }
         }
         return null

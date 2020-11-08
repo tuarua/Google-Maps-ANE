@@ -16,7 +16,6 @@
 package com.tuarua.googlemapsane
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.app.FragmentTransaction
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.RectF
