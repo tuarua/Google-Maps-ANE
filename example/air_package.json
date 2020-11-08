@@ -1,6 +1,6 @@
 {
   "name": "maps-sample",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "appDescriptor": "src/Main-app.xml",
   "variables": {
     "googleAppId": "XXX-xx-xx"
@@ -11,6 +11,6 @@
     "url": "https://tuarua.github.io/air/air_packages.json"
   },
   "dependencies": {
-    "com.tuarua.GoogleMapsANE": "2.8.0"
+    "com.tuarua.GoogleMapsANE": "2.9.0"
   }
 }

@@ -1,3 +1,8 @@
+### 2.9.0
+- AND: Updated to FreKotlin 1.41.0
+- iOS: Updated to FreSwift 5.0.0
+- Upgraded to AIR 33.1.1.300
+
 ### 2.8.0
 - AND: Updated to FreKotlin 1.40.0
 - iOS: Updated to FreSwift 4.5.0
